@@ -802,6 +802,7 @@ def normalize_inventory_changes(items: Any, packet: dict[str, Any] | None = None
     if players and isinstance(players[0], dict) and players[0].get("id"):
         player_id = players[0]["id"]
     action_map = {
+        # English
         "add": "gain",
         "gain": "gain",
         "get": "gain",
@@ -814,6 +815,21 @@ def normalize_inventory_changes(items: Any, packet: dict[str, Any] | None = None
         "damage": "damage",
         "repair": "repair",
         "move": "move",
+        # Chinese (AI often outputs Chinese labels)
+        "获得": "gain",
+        "得到": "gain",
+        "拾取": "gain",
+        "丢失": "lose",
+        "失去": "lose",
+        "使用": "consume",
+        "消耗": "consume",
+        "打开": "consume",
+        "损坏": "damage",
+        "损坏1": "damage",
+        "修复": "repair",
+        "修理": "repair",
+        "移动": "move",
+        "转移": "move",
     }
     for item in items:
         if not isinstance(item, dict):
