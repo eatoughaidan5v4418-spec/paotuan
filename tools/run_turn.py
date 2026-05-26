@@ -154,11 +154,31 @@ def load_recent_turn_history(root: Path, limit: int = 6) -> list[dict[str, str]]
         action = str(packet.get("player_action", ""))
         if "[??]" in action or "????" in action:
             action = "（旧记录行动文本编码损坏）"
+        state_patch = as_dict(data.get("state_patch"))
+        patch_summary_parts = []
+        loc_changes = state_patch.get("location_changes", [])
+        if isinstance(loc_changes, list):
+            for lc in loc_changes[:3]:
+                if isinstance(lc, dict):
+                    patch_summary_parts.append(f"{lc.get('entity_id','?')}: {lc.get('from','?')} -> {lc.get('to','?')}")
+        inv_changes = state_patch.get("inventory_changes", [])
+        if isinstance(inv_changes, list):
+            for ic in inv_changes[:3]:
+                if isinstance(ic, dict):
+                    patch_summary_parts.append(f"??: {ic.get('change','?')} {ic.get('item_id','?')}")
+        ps_changes = state_patch.get("player_state_changes", [])
+        if isinstance(ps_changes, list) and ps_changes:
+            patch_summary_parts.append(f"????: {len(ps_changes)}?")
+        time_delta = state_patch.get("time_delta", "")
+        if time_delta and time_delta not in ("无", "none", "0", ""):
+            patch_summary_parts.insert(0, f"时间: +{time_delta}")
+
         history.append(
             {
                 "turn_id": str(packet.get("turn_id") or path.stem),
                 "player_action": action,
                 "gm_summary": summarize_visible_text(response.get("visible_text")),
+                "patch_summary": "; ".join(patch_summary_parts) if patch_summary_parts else "无重大变更",
                 "artifact": str(path.relative_to(root)),
             }
         )
