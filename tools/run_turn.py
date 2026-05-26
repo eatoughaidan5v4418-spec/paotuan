@@ -346,6 +346,20 @@ def collect_context(root: Path, campaign_state: dict[str, Any], memory_limit: in
         )
     ]
 
+    resources_data = {}
+    resources_path = root / "campaign" / "resources.json"
+    if resources_path.exists():
+        try:
+            with open(resources_path, "r", encoding="utf-8-sig") as rf:
+                raw_res = json.loads(rf.read())
+            entities = raw_res.get("entities", raw_res) if isinstance(raw_res, dict) else {}
+            if isinstance(entities, dict):
+                for eid, data in entities.items():
+                    if isinstance(data, dict):
+                        resources_data[eid] = data
+        except Exception:
+            pass
+
     return {
         "location": {
             "id": location_id,
@@ -359,6 +373,7 @@ def collect_context(root: Path, campaign_state: dict[str, Any], memory_limit: in
         "recent_turn_history": load_recent_turn_history(root),
         "rules_text": read_text_if_exists(root / "campaign" / "lore" / "rules.yaml"),
         "factions_text": read_text_if_exists(root / "campaign" / "lore" / "factions.yaml"),
+        "player_resources": resources_data,
     }
 
 
@@ -409,6 +424,12 @@ def render_gm_input(packet: dict[str, Any], root: Path) -> str:
             "",
             "```json",
             json.dumps(packet["campaign_before"].get("player_characters", []), ensure_ascii=False, indent=2),
+            "```",
+            "",
+            "## 玩家资源",
+            "",
+            "```json",
+            json.dumps(context.get("player_resources", {}), ensure_ascii=False, indent=2),
             "```",
             "",
             "## 当前场景状态",

@@ -702,6 +702,7 @@ def build_turn_packet(root: Path, player_action: str, elapsed_minutes: int | Non
             "quests": campaign_state.get("quests", []),
             "rules": campaign_state.get("rules", {}),
             "player_characters": campaign_state.get("player_characters", []),
+            "player_resources": context.get("player_resources", {}),
         },
         "time_preview": {"from_time": from_time, "to_time": to_time},
         "world_tick_preview": {
