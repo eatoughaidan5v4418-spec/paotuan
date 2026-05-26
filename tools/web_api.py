@@ -288,7 +288,7 @@ def load_public_npcs(root: Path, present_ids: list[str], player_ids: set[str] | 
             {
                 "id": npc_id,
                 "name": parse_yaml_label(profile, "name") or npc_id,
-                "role": parse_yaml_label(profile, "role") or parse_yaml_label(profile, "occupation"),
+                "role": parse_yaml_label(profile, "role") or parse_yaml_label(profile, "occupation") or parse_yaml_label(profile, "type") or "????",
                 "location_id": parse_yaml_label(profile, "location_id"),
                 "memory_count": len(graph.get("memory_nodes", [])),
                 "understanding_count": len(graph.get("understanding_nodes", [])),
