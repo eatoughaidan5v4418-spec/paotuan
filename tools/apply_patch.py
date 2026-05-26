@@ -614,12 +614,21 @@ def apply_patch(
             if pc.get("id") == entity_id:
                 pc["location_id"] = new_location
                 changed = True
+                # When a player character moves, update the current scene location
+                current_scene = campaign.setdefault("current_scene", {})
+                if old_location != new_location and str(entity_id).startswith("player"):
+                    current_scene["location_id"] = new_location
+                    current_scene["present_entities"] = [entity_id]
+                    current_scene["summary"] = f"玩家抵达{new_location}。"
+                    report["locations"].append(
+                        f"{entity_id} moved scene ({old_location} -> {new_location}): {loc_change['reason']}"
+                    )
                 break
 
-        # Update in current_scene if present_entities contain this entity
+        # Update in current_scene if present_entities contain this entity (non-player entities)
         current_scene = campaign.get("current_scene", {})
         present = current_scene.get("present_entities", [])
-        if entity_id in present:
+        if entity_id in present and not str(entity_id).startswith("player"):
             if old_location != new_location:
                 # Remove from present if moving away from current scene
                 current_scene["present_entities"] = [e for e in present if e != entity_id]
