@@ -793,6 +793,29 @@ def normalize_relationship_changes(items: Any) -> list[dict[str, Any]]:
     return normalized
 
 
+def normalize_location_changes(items: Any, packet: dict[str, Any] | None = None) -> list[dict[str, Any]]:
+    normalized = []
+    if not isinstance(items, list):
+        return normalized
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        entity_id = item.get("entity_id") or item.get("owner_id") or item.get("player_id") or ""
+        from_loc = item.get("from") or item.get("from_location") or item.get("current_location") or ""
+        to_loc = item.get("to") or item.get("to_location") or item.get("new_location") or ""
+        reason = item.get("reason") or item.get("evidence") or item.get("note") or item.get("description") or "AI state update"
+        if not entity_id or not to_loc:
+            continue
+        normalized.append({
+            "entity_id": str(entity_id),
+            "from": str(from_loc),
+            "to": str(to_loc),
+            "reason": str(reason),
+        })
+    return normalized
+
+
+
 def normalize_inventory_changes(items: Any, packet: dict[str, Any] | None = None) -> list[dict[str, Any]]:
     normalized = []
     if not isinstance(items, list):
@@ -859,7 +882,29 @@ def normalize_player_state_changes(items: Any) -> list[dict[str, Any]]:
     for item in items:
         if not isinstance(item, dict):
             continue
-        field = str(item.get("field") or item.get("stat") or "").strip()
+        raw_field = item.get("field") or item.get("stat") or ""
+        field_map = {
+            # Chinese -> English (AI often outputs Chinese field names)
+            "生命": "health",
+            "最大生命": "max_health",
+            "灵力": "qi",
+            "最大灵力": "max_qi",
+            "境界": "realm",
+            "境界等级": "realm_level",
+            "灵根": "spiritual_root",
+            "名称": "name",
+            "位置": "location_id",
+            "等级": "system_rank",
+            "系统等级": "system_rank",
+            "特效值": "effect_points",
+            "效果点数": "effect_points",
+            "特殊效果": "special_effects",
+            "特效": "special_effects",
+            "描述": "description",
+            "身份": "description",
+        }
+        raw = str(raw_field).strip()
+        field = field_map.get(raw, raw)
         if item.get("stat") and not field.startswith("stats."):
             field = f"stats.{field}"
         if not field:
@@ -1088,13 +1133,11 @@ def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: 
                 patch[key] = value[key]
     patch["time_delta"] = normalize_time_delta(patch.get("time_delta"), response, packet)
     patch["inventory_changes"] = normalize_inventory_changes(patch.get("inventory_changes"), packet)
+    normalized_locs = normalize_location_changes(patch.get("location_changes"), packet)
     patch["location_changes"] = infer_departure_location_changes(
         response,
         packet,
-        [
-            item for item in patch.get("location_changes", [])
-            if isinstance(item, dict) and {"entity_id", "from", "to", "reason"}.issubset(item)
-        ],
+        normalized_locs,
     )
     patch["relationship_changes"] = normalize_relationship_changes(patch.get("relationship_changes"))
     patch["new_facts"] = [
@@ -1114,7 +1157,7 @@ def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: 
     return patch
 
 
-def save_turn_artifacts(root: Path, packet: dict[str, Any], ai_response: dict[str, Any], patch: dict[str, Any]) -> Path:
+def save_turn_artifacts(root: Path, packet: dict[str, Any], ai_response: dict[str, Any], patch: dict[str, Any], apply_report: dict[str, Any] | None = None) -> Path:
     turn_id = packet["turn_id"]
     out_dir = root / "campaign" / "ai_runs"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -1261,7 +1304,6 @@ def run_ai_turn(config: GameConfig, player_action: str, elapsed_minutes: int | N
         )
 
     patch = normalize_patch(response.get("state_patch"), response, packet)
-    artifact_path = save_turn_artifacts(config.root, packet, response, patch)
     try:
         apply_report = apply_state_patch(config, patch)
     except Exception as exc:
@@ -1269,6 +1311,7 @@ def run_ai_turn(config: GameConfig, player_action: str, elapsed_minutes: int | N
             "applied": False,
             "errors": [f"state patch apply failed: {exc}"],
         }
+    artifact_path = save_turn_artifacts(config.root, packet, response, patch, apply_report)
     return {
         "packet": packet,
         "response": response,

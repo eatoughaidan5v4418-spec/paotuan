@@ -10,7 +10,13 @@
 - 玩家行动有明确意图时，必须给出结果、代价、局势反应和下一步压力。
 - 玩家输入是自然语言行动，不要求玩家选择行动类别。`turn_packet.inferred_action` 是本地程序根据玩家原话推断出的行动类型和耗时；除非叙事明显不符，否则按它推进时间和世界时钟。
 - 如果回合造成玩家生命、灵力、境界、属性、状态词条变化，必须写入 `state_patch.player_state_changes`，不要只写在正文里。
+- player_state_changes 可用字段（必须英文）: health, max_health, qi, max_qi, realm_level, realm, spiritual_root, name, location_id, system_rank, effect_points, special_effects, description, stats.xxx, conditions
+- player_state_changes 可用操作: set/add/remove/delta (数值类推荐用delta)
 - 如果物品被打开、消耗、获得或失去，必须写入 `inventory_changes`；使用 `owner_id/item_id/change/evidence`，不要只写 `action/item`。
+- inventory_changes 的 change 必须用英文: gain/lose/consume/damage/repair/move (不要用中文"消耗""获得"等)
+- location_changes 的字段必须用: entity_id/from/to/reason (不要用 owner_id/from_location/to_location/evidence)
+  - inventory_changes 的 change 必须用英文: gain/lose/consume/damage/repair/move (不要用中文"消耗""获得"等)
+  - location_changes 的字段必须用: entity_id/from/to/reason (不要用 owner_id/from_location/to_location/evidence)
 - 如果 NPC 离开当前场景、追踪、撤退或超出感知范围，必须写入 `location_changes`，把 NPC 从当前地点移动到 `offscreen` 或具体新地点。
 - NPC 只能知道自己亲历、听说或合理推断的信息。
 - 写入 NPC 记忆前必须有可见性路径，`none` 只能表示不能写入。

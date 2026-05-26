@@ -180,9 +180,9 @@ def update_npc_profile_location(root: Path, entity_id: str, new_location: str, d
     return new_text != text
 
 
-NUMERIC_PLAYER_FIELDS = {"health", "max_health", "qi", "max_qi", "realm_level"}
-TEXT_PLAYER_FIELDS = {"name", "realm", "spiritual_root", "location_id"}
-LIST_PLAYER_FIELDS = {"traits", "conditions"}
+NUMERIC_PLAYER_FIELDS = {"health", "max_health", "qi", "max_qi", "realm_level", "system_rank", "effect_points"}
+TEXT_PLAYER_FIELDS = {"name", "realm", "spiritual_root", "location_id", "description"}
+LIST_PLAYER_FIELDS = {"traits", "conditions", "special_effects"}
 PLAYER_STATE_FIELDS = NUMERIC_PLAYER_FIELDS | TEXT_PLAYER_FIELDS | LIST_PLAYER_FIELDS | {
     "condition",
     "stats",
@@ -258,6 +258,58 @@ def sync_condition_record(
     )
 
 
+def apply_resource_change(
+    root: Path,
+    entity_id: str,
+    field: str,
+    value: Any,
+    operation: str,
+    reason: str,
+    has_delta: bool,
+    delta: Any,
+    dry_run: bool,
+) -> str:
+    resources_path, resources = load_resource_state(root)
+    record = resource_entity(resources, entity_id)
+    if record is None:
+        record = {}
+        if isinstance(resources.get("entities"), dict):
+            resources["entities"][entity_id] = record
+        else:
+            resources["entities"] = {entity_id: record}
+    old_value = record.get(field)
+    new_value = old_value
+    if has_delta:
+        try:
+            old_num = float(old_value or 0)
+            new_num = old_num + float(delta)
+            new_value = int(new_num) if new_num == int(new_num) else new_num
+        except (TypeError, ValueError):
+            new_value = value
+    elif operation == "remove":
+        new_value = None
+    elif operation == "add":
+        if isinstance(old_value, list):
+            record.setdefault(field, [])
+            for v in (value if isinstance(value, list) else [value]):
+                if v not in record[field]:
+                    record[field].append(v)
+            new_value = record[field]
+            operation = "list_append"
+        else:
+            new_value = value
+    else:
+        new_value = value
+    if new_value is not None:
+        record[field] = new_value
+    elif field in record:
+        del record[field]
+    if not dry_run:
+        save_json(resources_path, resources)
+    op = operation if operation != "remove" else "cleared"
+    return f"{entity_id} resources.{field}: {old_value} -> {new_value} ({reason})"
+
+
 def apply_player_state_change(
     root: Path,
     campaign: dict[str, Any],
@@ -329,6 +381,29 @@ def apply_player_state_change(
         values = value if isinstance(value, list) else [value]
         pc[field] = [item for item in values if item not in (None, "")]
         return f"{entity_id} {field} set ({reason})"
+
+    if field in {"system_rank", "effect_points"}:
+        old_value = float(pc.get(field) or 0)
+        new_value = old_value + float(change["delta"]) if has_delta else float(value)
+        pc[field] = int(new_value) if new_value.is_integer() else new_value
+        return f"{entity_id} {field}: {old_value:g} -> {new_value:g} ({reason})"
+
+    if field == "special_effects":
+        values = value if isinstance(value, list) else [value]
+        current = pc.setdefault("special_effects", [])
+        if operation == "remove":
+            pc["special_effects"] = [v for v in current if str(v) not in [str(x) for x in values]]
+        elif operation == "set":
+            pc["special_effects"] = [str(v) for v in values if v]
+        else:
+            for v in values:
+                if str(v) not in [str(x) for x in current]:
+                    current.append(str(v))
+        return f"{entity_id} special_effects {operation}: {values} ({reason})"
+
+    # Handle resources.json fields (e.g. ??, ???)
+    if field not in PLAYER_STATE_FIELDS and not field.startswith("stats."):
+        return apply_resource_change(root, str(entity_id), field, value, operation, reason, has_delta, change.get("delta"), dry_run)
 
     return f"{entity_id}: unsupported player state field {field}"
 
