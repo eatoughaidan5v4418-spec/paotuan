@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GM Turn Packet",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "turn_id",
+    "created_at",
+    "player_action",
+    "elapsed_minutes",
+    "campaign_before",
+    "time_preview",
+    "world_tick_preview",
+    "context",
+    "gm_input_markdown",
+    "next_steps"
+  ],
+  "properties": {
+    "turn_id": {"type": "string"},
+    "created_at": {"type": "string"},
+    "player_action": {"type": "string"},
+    "elapsed_minutes": {"type": "integer", "minimum": 0},
+    "campaign_before": {"type": "object"},
+    "time_preview": {
+      "type": "object",
+      "required": ["from_time", "to_time"],
+      "properties": {
+        "from_time": {"type": "string"},
+        "to_time": {"type": "string"}
+      }
+    },
+    "world_tick_preview": {
+      "type": "object",
+      "required": ["clock_updates", "offscreen_event_hints"],
+      "properties": {
+        "clock_updates": {"type": "array"},
+        "offscreen_event_hints": {"type": "array"}
+      }
+    },
+    "context": {"type": "object"},
+    "gm_input_markdown": {"type": "string"},
+    "next_steps": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}
+

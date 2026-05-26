@@ -1,0 +1,16 @@
+{
+  "tracks": [
+    {
+      "id": "thread_blood_mushroom",
+      "title": "黑风岭血灵芝",
+      "type": "quest",
+      "progress": 3,
+      "target": 6,
+      "status": "active",
+      "history": [
+        "+2: 0/6 -> 2/6 (获得黑风岭方向情报)",
+        "+1: 2/6 -> 3/6 (说服苏墨组队)"
+      ]
+    }
+  ]
+}

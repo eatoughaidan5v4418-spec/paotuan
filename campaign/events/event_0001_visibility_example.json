@@ -1,0 +1,41 @@
+{
+  "event_id": "event_0001_player_observes_a",
+  "objective_summary": "玩家在旧码头的缆绳堆后观察 NPC A。NPC A 察觉到暗处有人在观察自己。NPC B 不在视线和听觉范围内，也没有收到任何通信。",
+  "observation_views": [
+    {
+      "observer_id": "pc_main",
+      "can_know": true,
+      "visibility_path": "direct_visual",
+      "fidelity": "full",
+      "subjective_summary": "玩家知道自己正在观察 NPC A，并看到 NPC A 有所警觉。",
+      "confidence": 1.0,
+      "memory_allowed": true,
+      "allowed_memory_scope": ["observed_npc_a", "npc_a_seemed_alert"],
+      "forbidden_memory_scope": ["npc_a_private_thoughts", "npc_b_knowledge"]
+    },
+    {
+      "observer_id": "npc_a_sentry",
+      "can_know": true,
+      "visibility_path": "detected_observer",
+      "fidelity": "partial",
+      "subjective_summary": "NPC A 察觉缆绳堆附近有人盯着自己，但还不能完全确认对方身份。",
+      "confidence": 0.72,
+      "memory_allowed": true,
+      "allowed_memory_scope": ["someone_watched_me", "observer_direction_rope_piles"],
+      "forbidden_memory_scope": ["observer_exact_identity_if_not_confirmed", "npc_b_private_state"]
+    },
+    {
+      "observer_id": "npc_b_clerk",
+      "can_know": false,
+      "visibility_path": "none",
+      "fidelity": "none",
+      "subjective_summary": "",
+      "confidence": 0.0,
+      "memory_allowed": false,
+      "allowed_memory_scope": [],
+      "forbidden_memory_scope": ["entire_event", "npc_a_private_observation", "player_hidden_action"]
+    }
+  ],
+  "communication_required_for_spread": true
+}
+

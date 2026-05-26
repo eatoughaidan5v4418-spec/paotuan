@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Paotuan RPG</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">P</div>
+          <div>
+            <h1>Paotuan RPG</h1>
+            <p id="apiStatus">连接状态读取中</p>
+          </div>
+        </div>
+
+        <section class="panel compact">
+          <div class="panel-title">
+            <span>战役</span>
+            <div class="mini-actions">
+              <button id="refreshCampaigns" class="icon-button" title="刷新">↻</button>
+              <button id="deleteCampaign" class="icon-button danger-button" title="删除当前生成战役">×</button>
+            </div>
+          </div>
+          <select id="campaignSelect"></select>
+          <div class="campaign-meta" id="campaignMeta"></div>
+        </section>
+
+        <section class="panel compact">
+          <div class="panel-title"><span>新世界</span></div>
+          <textarea id="themeInput" rows="4" placeholder="输入新世界设定，例如：边境小城、失踪商队、玩家是刚入行的巡夜人"></textarea>
+          <button id="newCampaignButton" class="primary-button">生成并进入</button>
+        </section>
+
+        <section class="panel compact">
+          <div class="panel-title"><span>角色卡</span></div>
+          <div id="characterSheet" class="stack"></div>
+        </section>
+      </aside>
+
+      <main class="main-stage">
+        <header class="topbar">
+          <div>
+            <div class="eyebrow" id="campaignTitle">未选择战役</div>
+            <h2 id="sceneTitle">当前场景</h2>
+          </div>
+          <div class="topbar-actions">
+            <button id="obsidianButton" class="ghost-button">导出Obsidian</button>
+            <button id="validateButton" class="ghost-button">校验项目</button>
+            <label class="toggle">
+              <input id="mockToggle" type="checkbox">
+              <span>Mock</span>
+            </label>
+          </div>
+        </header>
+
+        <section class="narrative" id="narrative">
+          <article class="gm-card">
+            <h3>等待开团</h3>
+            <p>选择战役或生成新世界后，在下方输入玩家行动。</p>
+          </article>
+        </section>
+
+        <section class="action-bar">
+          <button id="rollButton" class="ghost-button">掷骰</button>
+          <textarea id="actionInput" rows="2" placeholder="直接输入你要做什么，例如：我观察废仓库侧门和漏光窗户；我等半小时；我去仓库问米拉"></textarea>
+          <button id="sendTurnButton" class="primary-button">执行回合</button>
+        </section>
+      </main>
+
+      <aside class="rightbar">
+        <section class="panel">
+          <div class="panel-title"><span>地点与场景</span></div>
+          <div id="scenePanel" class="stack"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-title"><span>NPC</span></div>
+          <div id="npcPanel" class="stack"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-title"><span>任务与悬念</span></div>
+          <div id="questPanel" class="stack"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-title"><span>线索与日志</span></div>
+          <div id="knowledgePanel" class="stack"></div>
+        </section>
+      </aside>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+    <script src="/app.js"></script>
+  </body>
+</html>

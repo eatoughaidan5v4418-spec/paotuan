@@ -1,0 +1,31 @@
+{
+  "rumors": [
+    {
+      "id": "rumor_blood_mushroom",
+      "content": "黑风岭近期有血灵芝出现，年分极足。",
+      "truth_status": "unconfirmed",
+      "origin": "unknown_travelers",
+      "origin_location": "loc_azure_cloud_market",
+      "created_turn": 0,
+      "spread": [
+        {
+          "hearer_id": "npc_qian_baiwei",
+          "heard_from": "street_rumor",
+          "heard_turn": 0,
+          "understood_as": "黑风岭有年份足的血灵芝，魔修在收",
+          "confidence": 0.5,
+          "variant": false
+        },
+        {
+          "hearer_id": "npc_liu_qing",
+          "heard_from": "street_rumor",
+          "heard_turn": 0,
+          "understood_as": "黑风岭灵气异常，可能有灵物出世",
+          "confidence": 0.4,
+          "variant": true
+        }
+      ],
+      "versions": []
+    }
+  ]
+}

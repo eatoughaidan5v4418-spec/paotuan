@@ -1,0 +1,18 @@
+id: rules_lightweight_d20
+name: 轻量 d20 跑团规则
+dice:
+  main: "1d20 + 属性/技能修正"
+checks:
+  easy: 8
+  normal: 12
+  hard: 16
+  extreme: 20
+advantage_policy: "有明显准备、工具、情报或环境优势时取两次较高。"
+disadvantage_policy: "受伤、赶时间、缺少工具或环境恶劣时取两次较低。"
+failure_policy:
+  - "失败应产生代价，而不是让剧情停止。"
+  - "代价可以是时间、资源、暴露、伤害、关系恶化或新危险。"
+combat_policy:
+  - "战斗以意图和局势为核心，避免过度数值化。"
+  - "重要敌人应有目标，不必死战到底。"
+

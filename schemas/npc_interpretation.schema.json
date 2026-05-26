@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NPC Event Interpretation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["interpretations"],
+  "properties": {
+    "interpretations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "npc_id",
+          "derived_from_event_id",
+          "derived_from_memory_id",
+          "text",
+          "appraisal",
+          "emotion",
+          "confidence",
+          "importance",
+          "related_entities",
+          "possible_misunderstanding"
+        ],
+        "properties": {
+          "id": {"type": "string"},
+          "npc_id": {"type": "string"},
+          "derived_from_event_id": {"type": "string"},
+          "derived_from_memory_id": {"type": "string"},
+          "text": {"type": "string"},
+          "appraisal": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "goal_impact",
+              "threat_level",
+              "opportunity_level",
+              "agency",
+              "moral_judgment",
+              "relationship_signal"
+            ],
+            "properties": {
+              "goal_impact": {"enum": ["helps", "blocks", "neutral", "unclear"]},
+              "threat_level": {"type": "number", "minimum": 0, "maximum": 1},
+              "opportunity_level": {"type": "number", "minimum": 0, "maximum": 1},
+              "agency": {"enum": ["player", "npc", "unknown", "environment", "faction"]},
+              "moral_judgment": {"enum": ["good", "bad", "mixed", "irrelevant", "unknown"]},
+              "relationship_signal": {"enum": ["trust", "suspicion", "fear", "debt", "respect", "none"]}
+            }
+          },
+          "emotion": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["label", "valence", "intensity"],
+            "properties": {
+              "label": {"enum": ["fear", "anger", "relief", "curiosity", "shame", "hope", "none"]},
+              "valence": {"type": "number", "minimum": -2, "maximum": 2},
+              "intensity": {"type": "number", "minimum": 0, "maximum": 1}
+            }
+          },
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "importance": {"type": "number", "minimum": 0, "maximum": 1},
+          "related_entities": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "possible_misunderstanding": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

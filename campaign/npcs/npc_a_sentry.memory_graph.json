@@ -1,0 +1,95 @@
+{
+  "npc_id": "npc_a_sentry",
+  "current_turn": 1,
+  "memory_policy_id": "npc_memory_policy_v1",
+  "memory_nodes": [
+    {
+      "id": "mem_a_0001",
+      "type": "episodic",
+      "content": "A 在旧码头巡夜时察觉缆绳堆附近有人盯着自己，但不能完全确认对方身份。",
+      "created_turn": 1,
+      "last_recalled_turn": 1,
+      "recall_count": 1,
+      "importance": 0.62,
+      "salience": 0.7,
+      "emotional_valence": -1,
+      "confidence": 0.72,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "pc_main",
+        "loc_old_dock",
+        "feature_rope_piles"
+      ],
+      "score": 0.617
+    }
+  ],
+  "interpretation_nodes": [
+    {
+      "id": "interp_a_0001",
+      "npc_id": "npc_a_sentry",
+      "derived_from_event_id": "event_0001_player_observes_a",
+      "derived_from_memory_id": "mem_a_0001",
+      "text": "暗处的人可能在试探旧码头守卫；我应该先警觉，但不能贸然喊人。",
+      "appraisal": {
+        "goal_impact": "blocks",
+        "threat_level": 0.58,
+        "opportunity_level": 0.15,
+        "agency": "unknown",
+        "moral_judgment": "unknown",
+        "relationship_signal": "suspicion"
+      },
+      "emotion": {
+        "label": "curiosity",
+        "valence": -1,
+        "intensity": 0.55
+      },
+      "confidence": 0.65,
+      "importance": 0.62,
+      "related_entities": [
+        "pc_main",
+        "loc_old_dock",
+        "feature_rope_piles"
+      ],
+      "possible_misunderstanding": true
+    }
+  ],
+  "understanding_nodes": [],
+  "revision_events": [],
+  "relation_edges": [
+    {
+      "id": "rel_a_suspects_observer",
+      "type": "SUSPECTS",
+      "from": "npc_a_sentry",
+      "to": "pc_main",
+      "memory_id": "mem_a_0001",
+      "confidence": 0.45,
+      "valid": true
+    }
+  ],
+  "beliefs": [
+    {
+      "id": "belief_a_someone_watched",
+      "text": "缆绳堆附近可能有人在观察我。",
+      "truth_status": "unknown",
+      "confidence": 0.72,
+      "source_memory_ids": [
+        "mem_a_0001"
+      ]
+    }
+  ],
+  "plans": [
+    {
+      "id": "plan_a_check_rope_piles",
+      "text": "保持距离，绕开正面接近缆绳堆，先确认动静。",
+      "priority": 0.58,
+      "source_memory_ids": [
+        "mem_a_0001"
+      ],
+      "status": "active"
+    }
+  ]
+}

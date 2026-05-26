@@ -1,0 +1,44 @@
+id: npc_mira
+name: 米拉
+role: 消息贩子
+faction: faction_unaligned_brokers
+location_id: loc_old_dock
+public_face: "瘦削、警觉、说话总像在给自己留后路。"
+core_desire: "用情报换取安全、金钱和离开旧码头的机会。"
+fear: "被黑灯会发现她卖出过他们的消息。"
+bottom_line: "不会无偿透露会让自己立刻送命的情报。"
+traits:
+  personality_tags: ["谨慎", "多疑", "计算型", "自保优先"]
+  instinct: "先试探对方知道多少再决定自己透露什么。"
+  stress_response: "逃避——感到威胁时优先找退路而非对抗。"
+  social_approach: "试探性——从不说完整真相，每句话都留后路。"
+  cognitive_bias: "负面归因——倾向于假设对方可能出卖自己。"
+voice_style:
+  pace: "短句，低声，喜欢反问。"
+  habits:
+    - "先试探对方知道多少。"
+    - "谈价前不说完整事实。"
+  forbidden_topics:
+    - "她的弟弟"
+    - "她和黑灯会旧账"
+known_facts:
+  - id: fact_mira_knows_old_dock_routes
+    text: "米拉知道旧码头三条少有人走的通道。"
+false_beliefs:
+  - id: rumor_mira_black_lantern_time
+    text: "米拉相信黑灯会会在第 1 日 23:00 交易，但她不确定货物是什么。"
+secrets:
+  - id: secret_mira_sold_black_lantern_info
+    text: "米拉曾把黑灯会巡逻路线卖给陌生人。"
+relationship_hooks:
+  - target_id: pc_main
+    trust: 0
+    fear: 0
+    debt: 0
+change_switches:
+  trust:
+    - "玩家证明能保护她。"
+    - "玩家替她保守秘密。"
+  threat:
+    - "玩家直接把她交给黑灯会。"
+    - "玩家当众逼问她的弟弟。"

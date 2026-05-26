@@ -1,0 +1,128 @@
+{
+  "npc_id": "npc_su_mo",
+  "current_turn": 1,
+  "memory_policy_id": "npc_memory_policy_v1",
+  "memory_nodes": [
+    {
+      "id": "mem_su_0001",
+      "type": "episodic",
+      "content": "苏墨昨夜潜入黑风岭外围，感应到血灵芝正在成型，约两日后完全成熟。",
+      "created_turn": 0,
+      "last_recalled_turn": 1,
+      "recall_count": 1,
+      "importance": 0.9,
+      "salience": 0.85,
+      "emotional_valence": 1.5,
+      "confidence": 0.9,
+      "source": "saw",
+      "tier": "core",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "loc_black_wind_ridge"
+      ],
+      "score": 0.87
+    },
+    {
+      "id": "mem_su_0002",
+      "type": "semantic",
+      "content": "黑风岭深处有魔修残党活动痕迹，旧禁制仍在运作。",
+      "created_turn": 0,
+      "last_recalled_turn": 1,
+      "recall_count": 1,
+      "importance": 0.72,
+      "salience": 0.65,
+      "emotional_valence": -1,
+      "confidence": 0.75,
+      "source": "inferred",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "loc_black_wind_ridge",
+        "faction_demonic_remnants"
+      ],
+      "score": 0.67
+    },
+    {
+      "id": "mem_npc_su_mo_0003",
+      "type": "episodic",
+      "content": "茶摊远处听到有人在坊市入口与柳青交谈，提到了黑风岭。此人也在关注血灵芝。",
+      "created_turn": 1,
+      "last_recalled_turn": 1,
+      "recall_count": 0,
+      "importance": 0.6,
+      "salience": 0.6,
+      "emotional_valence": 0.2,
+      "confidence": 0.5,
+      "source": "heard",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "npc_su_mo",
+        "loc_azure_cloud_market"
+      ],
+      "visibility_path": "overheard",
+      "observed_at": "第 1 日 08:10",
+      "location_id": "loc_azure_cloud_market"
+    },
+    {
+      "id": "mem_npc_su_mo_0004",
+      "type": "episodic",
+      "content": "茶摊远处听到有人在坊市入口与柳青交谈，提到了黑风岭。此人也在关注血灵芝。",
+      "created_turn": 1,
+      "last_recalled_turn": 1,
+      "recall_count": 0,
+      "importance": 0.6,
+      "salience": 0.6,
+      "emotional_valence": 0.2,
+      "confidence": 0.5,
+      "source": "heard",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "npc_su_mo",
+        "loc_azure_cloud_market"
+      ],
+      "visibility_path": "overheard",
+      "observed_at": "第 1 日 08:20",
+      "location_id": "loc_azure_cloud_market"
+    },
+    {
+      "id": "mem_npc_su_mo_0005",
+      "type": "episodic",
+      "content": "坊市入口有个新来的修士和青云门的外门弟子说了几句。距离太远听不清内容，但那人没有被拦下——看来不是寻常散修。",
+      "created_turn": 1,
+      "last_recalled_turn": 1,
+      "recall_count": 0,
+      "importance": 0.4,
+      "salience": 0.4,
+      "emotional_valence": 0.1,
+      "confidence": 0.5,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "npc_su_mo",
+        "loc_azure_cloud_market"
+      ],
+      "visibility_path": "direct_visual",
+      "observed_at": "第 1 日 08:25",
+      "location_id": "loc_azure_cloud_market"
+    }
+  ],
+  "interpretation_nodes": [],
+  "understanding_nodes": [],
+  "revision_events": [],
+  "relation_edges": [],
+  "beliefs": [],
+  "plans": []
+}

@@ -1,0 +1,39 @@
+id: npc_liu_qing
+name: 柳青
+role: 青云门外门弟子
+faction: faction_azure_cloud_sect
+location_id: loc_azure_cloud_market
+public_face: "身背一柄制式铁剑，腰挂外门令牌，眼神锐利但尚欠沉稳。"
+core_desire: "在下次外门考核前立功，换取筑基丹。"
+fear: "被师长发现自己守坊市时走神。"
+bottom_line: "不会为陌生人触犯门规。"
+traits:
+  personality_tags: ["上进", "直率", "守规矩", "急于证明自己"]
+  instinct: "先盘问来路不明者，把门规挂嘴边。"
+  stress_response: "硬撑——紧张时反而更刻意摆出正式姿态。"
+  social_approach: "公事公办——先按门规流程走，不轻易通融。"
+  cognitive_bias: "权威依赖——师长的命令高于自己的判断。"
+voice_style:
+  pace: "短促，偶尔带点年轻人不耐。"
+  habits:
+    - "先问身份来历。"
+    - "提到师长时语气恭敬。"
+  forbidden_topics:
+    - "上次考核为何没通过"
+known_facts: []
+false_beliefs: []
+secrets:
+  - id: secret_liu_qing_failed_trial
+    text: "柳青在去年内门选拔中因护友失误被淘汰。"
+relationship_hooks:
+  - target_id: pc_main
+    trust: 0.0  # updated by patch (++0): 柳青被怼后反而觉得此人直爽——至少不是心怀鬼胎的那种
+    fear: 0
+    debt: 0
+change_switches:
+  trust:
+    - "玩家出示青云门信物或师承凭证。"
+    - "玩家协助坊市治安。"
+  threat:
+    - "玩家在坊市内动手施法。"
+    - "玩家打探内门选拔细节。"

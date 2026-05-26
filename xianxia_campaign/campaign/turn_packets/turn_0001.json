@@ -1,0 +1,213 @@
+{
+  "turn_id": "turn_0001",
+  "created_at": "2026-05-23T06:28:39.530384+00:00",
+  "player_action": "洛衍回答：我是来投靠的。师尊临死前让我来青云山脉找某个人或某个地方，但话没说完就走了。",
+  "elapsed_minutes": 2,
+  "campaign_before": {
+    "current_turn": 1,
+    "current_time": "第 1 日 08:25",
+    "current_scene": {
+      "scene_id": "scene_0001",
+      "location_id": "loc_azure_cloud_market",
+      "summary": "玩家抵达青云坊市，血灵芝的传言刚在集市散开。",
+      "present_entities": [
+        "npc_liu_qing"
+      ],
+      "active_threads": [
+        "thread_blood_spirit_mushroom"
+      ]
+    },
+    "quests": [
+      {
+        "id": "thread_blood_spirit_mushroom",
+        "title": "黑风岭的血灵芝",
+        "status": "active",
+        "known_to_players": true,
+        "pressure": "若无人干预，血灵芝将在第 2 日子时成熟并被摘走。"
+      }
+    ],
+    "rules": {
+      "system": "rules_lightweight_d20",
+      "dice_policy": "玩家或程序掷骰，GM 根据结果描述后果。"
+    }
+  },
+  "time_preview": {
+    "from_time": "第 1 日 08:25",
+    "to_time": "第 1 日 08:27"
+  },
+  "world_tick_preview": {
+    "clock_updates": [],
+    "offscreen_event_hints": [],
+    "requires_visibility_resolution": false
+  },
+  "context": {
+    "location": {
+      "id": "loc_azure_cloud_market",
+      "path": "C:\\Users\\Huang\\Desktop\\Proj\\paotuan\\xianxia_campaign\\campaign\\locations\\azure_cloud_market.yaml",
+      "text": "id: loc_azure_cloud_market\nname: 青云坊市\ntype: cultivation_market\nsummary: \"青云山脚的修士坊市，半条街的摊位和两间铺面，来往多是炼气期修士和凡人物商。\"\n\nzones:\n  - id: zone_market_entrance\n    name: \"坊市入口\"\n    description: \"两丈高的石牌坊，刻有青云门禁制符印。柳青就在牌坊下值守。\"\n    ambient_light: bright\n    ambient_noise: moderate\n    features:\n      - id: feature_talisman_gate\n        text: \"石牌坊上的禁制符印会感应灵力波动，触发后青云门内门会收到传讯。\"\n    initial_occupants:\n      - npc_liu_qing\n\n  - id: zone_market_stalls\n    name: \"坊市主街\"\n    description: \"青石板路两边摆着七八个摊位，卖符箓、低阶丹药、灵草、兽骨和凡间杂货。人声起伏。\"\n    ambient_light: bright\n    ambient_noise: loud\n    features:\n      - id: feature_qian_stall\n        text: \"钱百味的摊位摆满黄纸符和几瓶聚气丹，摊前常有两三人流连。\"\n    initial_occupants:\n      - npc_qian_baiwei\n      - pc_main\n\n  - id: zone_tea_corner\n    name: \"茶摊角落\"\n    description: \"街尾的露天茶摊，只摆了三张矮桌。苏墨独自坐在最靠里的角落。\"\n    ambient_light: dim\n    ambient_noise: moderate\n    features: []\n    initial_occupants:\n      - npc_su_mo\n\nzone_connections:\n  - from: zone_market_entrance\n    to: zone_market_stalls\n    type: open\n    distance: 20\n    line_of_sight: true\n    sound: clear\n  - from: zone_market_stalls\n    to: zone_tea_corner\n    type: open\n    distance: 30\n    line_of_sight: true\n    sound: clear\n\nsensory_details:\n  sight:\n    - \"石牌坊上的禁制符印偶尔闪过淡青色微光。\"\n    - \"坊市尽头，黑风岭如一道暗青色剪影压在天边。\"\n  sound:\n    - \"讨价还价声、灵兽笼里的低鸣、远处瀑布水声。\"\n  smell:\n    - \"檀香、药草、烤肉、雨后湿土。\"\n\nhidden_clues:\n  - id: clue_qi_fluctuation\n    location_zone: zone_market_entrance\n    discover_with: \"灵力感知或调查石牌坊\"\n    text: \"牌坊禁制最近三日已触发两次低强度警报，指向同一方向——黑风岭。\"\n\nhazards:\n  - id: hazard_talisman_alarm\n    location_zone: zone_market_entrance\n    trigger: \"在坊市内施展中品以上法术\"\n    consequence: \"青云门内门收到警报，一炷香内有筑基修士赶到。\"\n"
+    },
+    "present_entities": [
+      "npc_liu_qing"
+    ],
+    "present_npcs": [
+      {
+        "id": "npc_liu_qing",
+        "profile_path": "C:\\Users\\Huang\\Desktop\\Proj\\paotuan\\xianxia_campaign\\campaign\\npcs\\npc_liu_qing.yaml",
+        "profile_text": "id: npc_liu_qing\nname: 柳青\nrole: 青云门外门弟子\nfaction: faction_azure_cloud_sect\nlocation_id: loc_azure_cloud_market\npublic_face: \"身背一柄制式铁剑，腰挂外门令牌，眼神锐利但尚欠沉稳。\"\ncore_desire: \"在下次外门考核前立功，换取筑基丹。\"\nfear: \"被师长发现自己守坊市时走神。\"\nbottom_line: \"不会为陌生人触犯门规。\"\ntraits:\n  personality_tags: [\"上进\", \"直率\", \"守规矩\", \"急于证明自己\"]\n  instinct: \"先盘问来路不明者，把门规挂嘴边。\"\n  stress_response: \"硬撑——紧张时反而更刻意摆出正式姿态。\"\n  social_approach: \"公事公办——先按门规流程走，不轻易通融。\"\n  cognitive_bias: \"权威依赖——师长的命令高于自己的判断。\"\nvoice_style:\n  pace: \"短促，偶尔带点年轻人不耐。\"\n  habits:\n    - \"先问身份来历。\"\n    - \"提到师长时语气恭敬。\"\n  forbidden_topics:\n    - \"上次考核为何没通过\"\nknown_facts: []\nfalse_beliefs: []\nsecrets:\n  - id: secret_liu_qing_failed_trial\n    text: \"柳青在去年内门选拔中因护友失误被淘汰。\"\nrelationship_hooks:\n  - target_id: pc_main\n    trust: 0.0  # updated by patch (++0): 柳青被怼后反而觉得此人直爽——至少不是心怀鬼胎的那种\n    fear: 0\n    debt: 0\nchange_switches:\n  trust:\n    - \"玩家出示青云门信物或师承凭证。\"\n    - \"玩家协助坊市治安。\"\n  threat:\n    - \"玩家在坊市内动手施法。\"\n    - \"玩家打探内门选拔细节。\"\n",
+        "memory_graph": {
+          "path": "C:\\Users\\Huang\\Desktop\\Proj\\paotuan\\xianxia_campaign\\campaign\\npcs\\npc_liu_qing.memory_graph.json",
+          "exists": true,
+          "top_memories": [
+            {
+              "id": "mem_npc_liu_qing_0005",
+              "type": "episodic",
+              "content": "一个陌生修士在坊市入口盘问下毫不畏缩，反呛我坊市规矩。此人不是散修做派——但至少直来直去，不像在隐瞒什么。",
+              "created_turn": 1,
+              "last_recalled_turn": 1,
+              "recall_count": 0,
+              "importance": 0.65,
+              "salience": 0.65,
+              "emotional_valence": 0.2,
+              "confidence": 0.9,
+              "source": "saw",
+              "tier": "active",
+              "valid": true,
+              "invalid_at_turn": null,
+              "contradicted_by": null,
+              "related_entities": [
+                "npc_liu_qing",
+                "loc_azure_cloud_market"
+              ],
+              "visibility_path": "direct_visual",
+              "observed_at": "第 1 日 08:25",
+              "location_id": "loc_azure_cloud_market"
+            },
+            {
+              "id": "mem_liu_0001",
+              "type": "semantic",
+              "content": "柳青知道黑风岭方向近日灵气异动，但外门弟子未获准探查。",
+              "created_turn": 0,
+              "last_recalled_turn": 1,
+              "recall_count": 1,
+              "importance": 0.65,
+              "salience": 0.7,
+              "emotional_valence": 0.3,
+              "confidence": 0.8,
+              "source": "heard",
+              "tier": "active",
+              "valid": true,
+              "invalid_at_turn": null,
+              "contradicted_by": null,
+              "related_entities": [
+                "loc_black_wind_ridge",
+                "faction_azure_cloud_sect"
+              ],
+              "score": 0.62
+            },
+            {
+              "id": "mem_npc_liu_qing_0003",
+              "type": "episodic",
+              "content": "一个外来的修士在坊市入口向我行礼，问起黑风岭灵气异动。此人态度恭敬，不像魔修。",
+              "created_turn": 1,
+              "last_recalled_turn": 1,
+              "recall_count": 0,
+              "importance": 0.55,
+              "salience": 0.55,
+              "emotional_valence": 0.3,
+              "confidence": 0.85,
+              "source": "saw",
+              "tier": "active",
+              "valid": true,
+              "invalid_at_turn": null,
+              "contradicted_by": null,
+              "related_entities": [
+                "npc_liu_qing",
+                "loc_azure_cloud_market"
+              ],
+              "visibility_path": "direct_visual",
+              "observed_at": "第 1 日 08:10",
+              "location_id": "loc_azure_cloud_market"
+            },
+            {
+              "id": "mem_npc_liu_qing_0004",
+              "type": "episodic",
+              "content": "一个外来的修士在坊市入口向我行礼，问起黑风岭灵气异动。此人态度恭敬，不像魔修。",
+              "created_turn": 1,
+              "last_recalled_turn": 1,
+              "recall_count": 0,
+              "importance": 0.55,
+              "salience": 0.55,
+              "emotional_valence": 0.3,
+              "confidence": 0.85,
+              "source": "saw",
+              "tier": "active",
+              "valid": true,
+              "invalid_at_turn": null,
+              "contradicted_by": null,
+              "related_entities": [
+                "npc_liu_qing",
+                "loc_azure_cloud_market"
+              ],
+              "visibility_path": "direct_visual",
+              "observed_at": "第 1 日 08:20",
+              "location_id": "loc_azure_cloud_market"
+            },
+            {
+              "id": "mem_liu_0002",
+              "type": "semantic",
+              "content": "坊市规矩：外来修士须登记姓名和师承，不得在坊市内私斗。",
+              "created_turn": 0,
+              "last_recalled_turn": 1,
+              "recall_count": 0,
+              "importance": 0.5,
+              "salience": 0.6,
+              "emotional_valence": 0,
+              "confidence": 0.95,
+              "source": "saw",
+              "tier": "active",
+              "valid": true,
+              "invalid_at_turn": null,
+              "contradicted_by": null,
+              "related_entities": [
+                "loc_azure_cloud_market"
+              ],
+              "score": 0.52
+            }
+          ],
+          "beliefs": [],
+          "plans": [],
+          "understandings": [],
+          "revision_events": []
+        }
+      }
+    ],
+    "active_local_clocks": [
+      {
+        "id": "clock_liu_qing_patrol",
+        "type": "npc_schedule",
+        "owner_id": "npc_liu_qing",
+        "title": "柳青坊市值守",
+        "value": 0,
+        "max_value": 3,
+        "status": "active",
+        "visibility": "private",
+        "location_id": "loc_azure_cloud_market",
+        "next_tick_at": "第 1 日 巳时",
+        "_next_tick_at_tick": 600,
+        "tick_interval": "1 时辰",
+        "stakes": "柳青换岗后坊市入口警戒降低。",
+        "on_complete": "柳青换班回外门，坊市入口无人值守。",
+        "recent_updates": []
+      }
+    ],
+    "rules_text": "id: rules_lightweight_d20\nname: 轻量 d20 仙侠规则\ndice:\n  main: \"1d20 + 修为修正 + 技能修正\"\nchecks:\n  easy: 8\n  normal: 12\n  hard: 16\n  extreme: 20\nadvantage_policy: \"有充分准备、符箓辅助或环境优势时取两次较高。\"\ndisadvantage_policy: \"受伤、灵力不足或环境恶劣时取两次较低。\"\nfailure_policy:\n  - \"失败应产生代价：灵力损耗、符箓消耗、惊动他人、受伤或关系恶化。\"\ncultivation_realms:\n  - \"炼气期 1-3 层：修正 +0\"\n  - \"炼气期 4-6 层：修正 +1\"\n  - \"炼气期 7-9 层：修正 +2\"\n  - \"筑基期：修正 +4\"\ncombat_policy:\n  - \"战斗以意图和局势为核心。\"\n  - \"法术消耗灵力，普通攻击消耗体力。\"\n",
+    "factions_text": "factions:\n  - id: faction_azure_cloud_sect\n    name: 青云门\n    type: orthodox_sect\n    public_reputation: \"正道中型宗门，管控方圆百里的坊市和灵脉。\"\n    goals:\n      - \"维持坊市秩序与税收。\"\n      - \"追查近期黑风岭灵气异动。\"\n    methods:\n      - \"外门弟子值守\"\n      - \"内门筑基执事定期巡视\"\n    secrets:\n      - id: secret_azure_cloud_investigation\n        text: \"青云门已派一名筑基执事暗中调查黑风岭，但暂未公开。\"\n\n  - id: faction_demonic_remnants\n    name: 魔修残党\n    type: demonic_cultivators\n    public_reputation: \"百年前被剿灭的噬魂宗残余，偶尔在偏远地区出没。\"\n    goals:\n      - \"获取血灵芝以炼制噬魂宗失传秘药。\"\n      - \"避免与青云门正面冲突。\"\n    methods:\n      - \"潜伏\"\n      - \"以高价收购掩人耳目\"\n    secrets:\n      - id: secret_demonic_inside_man\n        text: \"魔修残党在坊市周围设有暗哨，伪装成行脚商。\"\n\n  - id: faction_merchant_guild\n    name: 坊市商盟\n    type: merchant_association\n    public_reputation: \"安分守己的修士商人，缴纳灵石换取青云门庇护。\"\n    goals:\n      - \"赚灵石，保摊位。\"\n    secrets: []\n\n  - id: faction_loose_cultivators\n    name: 散修\n    type: unaffiliated\n    public_reputation: \"没有宗门靠山的独自修行者。\"\n    goals:\n      - \"活下来，找机缘。\"\n"
+  },
+  "gm_input_markdown": "# GM Turn Packet\n\n## GM System\n\n\n\n## 当前玩家行动\n\n洛衍回答：我是来投靠的。师尊临死前让我来青云山脉找某个人或某个地方，但话没说完就走了。\n\n## 时间\n\n- 当前回合：1\n- 当前时间：第 1 日 08:25\n- 预览推进到：第 1 日 08:27\n- 消耗分钟：2\n\n## 当前场景状态\n\n```json\n{\n  \"scene_id\": \"scene_0001\",\n  \"location_id\": \"loc_azure_cloud_market\",\n  \"summary\": \"玩家抵达青云坊市，血灵芝的传言刚在集市散开。\",\n  \"present_entities\": [\n    \"npc_liu_qing\"\n  ],\n  \"active_threads\": [\n    \"thread_blood_spirit_mushroom\"\n  ]\n}\n```\n\n## 地点资料\n\n```yaml\nid: loc_azure_cloud_market\nname: 青云坊市\ntype: cultivation_market\nsummary: \"青云山脚的修士坊市，半条街的摊位和两间铺面，来往多是炼气期修士和凡人物商。\"\n\nzones:\n  - id: zone_market_entrance\n    name: \"坊市入口\"\n    description: \"两丈高的石牌坊，刻有青云门禁制符印。柳青就在牌坊下值守。\"\n    ambient_light: bright\n    ambient_noise: moderate\n    features:\n      - id: feature_talisman_gate\n        text: \"石牌坊上的禁制符印会感应灵力波动，触发后青云门内门会收到传讯。\"\n    initial_occupants:\n      - npc_liu_qing\n\n  - id: zone_market_stalls\n    name: \"坊市主街\"\n    description: \"青石板路两边摆着七八个摊位，卖符箓、低阶丹药、灵草、兽骨和凡间杂货。人声起伏。\"\n    ambient_light: bright\n    ambient_noise: loud\n    features:\n      - id: feature_qian_stall\n        text: \"钱百味的摊位摆满黄纸符和几瓶聚气丹，摊前常有两三人流连。\"\n    initial_occupants:\n      - npc_qian_baiwei\n      - pc_main\n\n  - id: zone_tea_corner\n    name: \"茶摊角落\"\n    description: \"街尾的露天茶摊，只摆了三张矮桌。苏墨独自坐在最靠里的角落。\"\n    ambient_light: dim\n    ambient_noise: moderate\n    features: []\n    initial_occupants:\n      - npc_su_mo\n\nzone_connections:\n  - from: zone_market_entrance\n    to: zone_market_stalls\n    type: open\n    distance: 20\n    line_of_sight: true\n    sound: clear\n  - from: zone_market_stalls\n    to: zone_tea_corner\n    type: open\n    distance: 30\n    line_of_sight: true\n    sound: clear\n\nsensory_details:\n  sight:\n    - \"石牌坊上的禁制符印偶尔闪过淡青色微光。\"\n    - \"坊市尽头，黑风岭如一道暗青色剪影压在天边。\"\n  sound:\n    - \"讨价还价声、灵兽笼里的低鸣、远处瀑布水声。\"\n  smell:\n    - \"檀香、药草、烤肉、雨后湿土。\"\n\nhidden_clues:\n  - id: clue_qi_fluctuation\n    location_zone: zone_market_entrance\n    discover_with: \"灵力感知或调查石牌坊\"\n    text: \"牌坊禁制最近三日已触发两次低强度警报，指向同一方向——黑风岭。\"\n\nhazards:\n  - id: hazard_talisman_alarm\n    location_zone: zone_market_entrance\n    trigger: \"在坊市内施展中品以上法术\"\n    consequence: \"青云门内门收到警报，一炷香内有筑基修士赶到。\"\n```\n\n## 世界 Tick 预览\n\n```json\n{\n  \"clock_updates\": [],\n  \"offscreen_event_hints\": [],\n  \"requires_visibility_resolution\": false\n}\n```\n\n## 在场 NPC 与私有记忆\n\n### npc_liu_qing\n\n角色卡：\n```yaml\nid: npc_liu_qing\nname: 柳青\nrole: 青云门外门弟子\nfaction: faction_azure_cloud_sect\nlocation_id: loc_azure_cloud_market\npublic_face: \"身背一柄制式铁剑，腰挂外门令牌，眼神锐利但尚欠沉稳。\"\ncore_desire: \"在下次外门考核前立功，换取筑基丹。\"\nfear: \"被师长发现自己守坊市时走神。\"\nbottom_line: \"不会为陌生人触犯门规。\"\ntraits:\n  personality_tags: [\"上进\", \"直率\", \"守规矩\", \"急于证明自己\"]\n  instinct: \"先盘问来路不明者，把门规挂嘴边。\"\n  stress_response: \"硬撑——紧张时反而更刻意摆出正式姿态。\"\n  social_approach: \"公事公办——先按门规流程走，不轻易通融。\"\n  cognitive_bias: \"权威依赖——师长的命令高于自己的判断。\"\nvoice_style:\n  pace: \"短促，偶尔带点年轻人不耐。\"\n  habits:\n    - \"先问身份来历。\"\n    - \"提到师长时语气恭敬。\"\n  forbidden_topics:\n    - \"上次考核为何没通过\"\nknown_facts: []\nfalse_beliefs: []\nsecrets:\n  - id: secret_liu_qing_failed_trial\n    text: \"柳青在去年内门选拔中因护友失误被淘汰。\"\nrelationship_hooks:\n  - target_id: pc_main\n    trust: 0.0  # updated by patch (++0): 柳青被怼后反而觉得此人直爽——至少不是心怀鬼胎的那种\n    fear: 0\n    debt: 0\nchange_switches:\n  trust:\n    - \"玩家出示青云门信物或师承凭证。\"\n    - \"玩家协助坊市治安。\"\n  threat:\n    - \"玩家在坊市内动手施法。\"\n    - \"玩家打探内门选拔细节。\"\n```\n\n高相关记忆/理解：\n```json\n{\n  \"path\": \"C:\\\\Users\\\\Huang\\\\Desktop\\\\Proj\\\\paotuan\\\\xianxia_campaign\\\\campaign\\\\npcs\\\\npc_liu_qing.memory_graph.json\",\n  \"exists\": true,\n  \"top_memories\": [\n    {\n      \"id\": \"mem_npc_liu_qing_0005\",\n      \"type\": \"episodic\",\n      \"content\": \"一个陌生修士在坊市入口盘问下毫不畏缩，反呛我坊市规矩。此人不是散修做派——但至少直来直去，不像在隐瞒什么。\",\n      \"created_turn\": 1,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 0,\n      \"importance\": 0.65,\n      \"salience\": 0.65,\n      \"emotional_valence\": 0.2,\n      \"confidence\": 0.9,\n      \"source\": \"saw\",\n      \"tier\": \"active\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"npc_liu_qing\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"observed_at\": \"第 1 日 08:25\",\n      \"location_id\": \"loc_azure_cloud_market\"\n    },\n    {\n      \"id\": \"mem_liu_0001\",\n      \"type\": \"semantic\",\n      \"content\": \"柳青知道黑风岭方向近日灵气异动，但外门弟子未获准探查。\",\n      \"created_turn\": 0,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 1,\n      \"importance\": 0.65,\n      \"salience\": 0.7,\n      \"emotional_valence\": 0.3,\n      \"confidence\": 0.8,\n      \"source\": \"heard\",\n      \"tier\": \"active\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"loc_black_wind_ridge\",\n        \"faction_azure_cloud_sect\"\n      ],\n      \"score\": 0.62\n    },\n    {\n      \"id\": \"mem_npc_liu_qing_0003\",\n      \"type\": \"episodic\",\n      \"content\": \"一个外来的修士在坊市入口向我行礼，问起黑风岭灵气异动。此人态度恭敬，不像魔修。\",\n      \"created_turn\": 1,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 0,\n      \"importance\": 0.55,\n      \"salience\": 0.55,\n      \"emotional_valence\": 0.3,\n      \"confidence\": 0.85,\n      \"source\": \"saw\",\n      \"tier\": \"active\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"npc_liu_qing\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"observed_at\": \"第 1 日 08:10\",\n      \"location_id\": \"loc_azure_cloud_market\"\n    },\n    {\n      \"id\": \"mem_npc_liu_qing_0004\",\n      \"type\": \"episodic\",\n      \"content\": \"一个外来的修士在坊市入口向我行礼，问起黑风岭灵气异动。此人态度恭敬，不像魔修。\",\n      \"created_turn\": 1,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 0,\n      \"importance\": 0.55,\n      \"salience\": 0.55,\n      \"emotional_valence\": 0.3,\n      \"confidence\": 0.85,\n      \"source\": \"saw\",\n      \"tier\": \"active\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"npc_liu_qing\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"observed_at\": \"第 1 日 08:20\",\n      \"location_id\": \"loc_azure_cloud_market\"\n    },\n    {\n      \"id\": \"mem_liu_0002\",\n      \"type\": \"semantic\",\n      \"content\": \"坊市规矩：外来修士须登记姓名和师承，不得在坊市内私斗。\",\n      \"created_turn\": 0,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 0,\n      \"importance\": 0.5,\n      \"salience\": 0.6,\n      \"emotional_valence\": 0,\n      \"confidence\": 0.95,\n      \"source\": \"saw\",\n      \"tier\": \"active\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"loc_azure_cloud_market\"\n      ],\n      \"score\": 0.52\n    }\n  ],\n  \"beliefs\": [],\n  \"plans\": [],\n  \"understandings\": [],\n  \"revision_events\": []\n}\n```\n\n## 规则约束\n\n```yaml\nid: rules_lightweight_d20\nname: 轻量 d20 仙侠规则\ndice:\n  main: \"1d20 + 修为修正 + 技能修正\"\nchecks:\n  easy: 8\n  normal: 12\n  hard: 16\n  extreme: 20\nadvantage_policy: \"有充分准备、符箓辅助或环境优势时取两次较高。\"\ndisadvantage_policy: \"受伤、灵力不足或环境恶劣时取两次较低。\"\nfailure_policy:\n  - \"失败应产生代价：灵力损耗、符箓消耗、惊动他人、受伤或关系恶化。\"\ncultivation_realms:\n  - \"炼气期 1-3 层：修正 +0\"\n  - \"炼气期 4-6 层：修正 +1\"\n  - \"炼气期 7-9 层：修正 +2\"\n  - \"筑基期：修正 +4\"\ncombat_policy:\n  - \"战斗以意图和局势为核心。\"\n  - \"法术消耗灵力，普通攻击消耗体力。\"\n```\n\n## 阵营资料\n\n```yaml\nfactions:\n  - id: faction_azure_cloud_sect\n    name: 青云门\n    type: orthodox_sect\n    public_reputation: \"正道中型宗门，管控方圆百里的坊市和灵脉。\"\n    goals:\n      - \"维持坊市秩序与税收。\"\n      - \"追查近期黑风岭灵气异动。\"\n    methods:\n      - \"外门弟子值守\"\n      - \"内门筑基执事定期巡视\"\n    secrets:\n      - id: secret_azure_cloud_investigation\n        text: \"青云门已派一名筑基执事暗中调查黑风岭，但暂未公开。\"\n\n  - id: faction_demonic_remnants\n    name: 魔修残党\n    type: demonic_cultivators\n    public_reputation: \"百年前被剿灭的噬魂宗残余，偶尔在偏远地区出没。\"\n    goals:\n      - \"获取血灵芝以炼制噬魂宗失传秘药。\"\n      - \"避免与青云门正面冲突。\"\n    methods:\n      - \"潜伏\"\n      - \"以高价收购掩人耳目\"\n    secrets:\n      - id: secret_demonic_inside_man\n        text: \"魔修残党在坊市周围设有暗哨，伪装成行脚商。\"\n\n  - id: faction_merchant_guild\n    name: 坊市商盟\n    type: merchant_association\n    public_reputation: \"安分守己的修士商人，缴纳灵石换取青云门庇护。\"\n    goals:\n      - \"赚灵石，保摊位。\"\n    secrets: []\n\n  - id: faction_loose_cultivators\n    name: 散修\n    type: unaffiliated\n    public_reputation: \"没有宗门靠山的独自修行者。\"\n    goals:\n      - \"活下来，找机缘。\"\n```\n\n## 回合后必须执行\n\n1. 对玩家行动和离屏事件做可见性判定。\n2. 只给允许知道的 NPC 写入记忆。\n3. 为重要事件抽取 NPC 主观理解。\n4. 检查新理解是否修正旧稳定理解。\n5. 输出玩家可见正文时不要泄露 GM 隐藏信息。",
+  "next_steps": [
+    "Send gm_input_markdown to the GM model or use it directly as the GM context.",
+    "After producing GM narration, run state extraction and event visibility resolution.",
+    "Write only permitted memories to each NPC memory graph.",
+    "Apply accepted state patches with a dedicated patch applier."
+  ]
+}

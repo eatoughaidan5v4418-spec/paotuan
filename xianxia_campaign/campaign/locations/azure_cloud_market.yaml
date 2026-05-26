@@ -1,0 +1,72 @@
+id: loc_azure_cloud_market
+name: 青云坊市
+type: cultivation_market
+summary: "青云山脚的修士坊市，半条街的摊位和两间铺面，来往多是炼气期修士和凡人物商。"
+
+zones:
+  - id: zone_market_entrance
+    name: "坊市入口"
+    description: "两丈高的石牌坊，刻有青云门禁制符印。柳青就在牌坊下值守。"
+    ambient_light: bright
+    ambient_noise: moderate
+    features:
+      - id: feature_talisman_gate
+        text: "石牌坊上的禁制符印会感应灵力波动，触发后青云门内门会收到传讯。"
+    initial_occupants:
+      - npc_liu_qing
+
+  - id: zone_market_stalls
+    name: "坊市主街"
+    description: "青石板路两边摆着七八个摊位，卖符箓、低阶丹药、灵草、兽骨和凡间杂货。人声起伏。"
+    ambient_light: bright
+    ambient_noise: loud
+    features:
+      - id: feature_qian_stall
+        text: "钱百味的摊位摆满黄纸符和几瓶聚气丹，摊前常有两三人流连。"
+    initial_occupants:
+      - npc_qian_baiwei
+      - pc_main
+
+  - id: zone_tea_corner
+    name: "茶摊角落"
+    description: "街尾的露天茶摊，只摆了三张矮桌。苏墨独自坐在最靠里的角落。"
+    ambient_light: dim
+    ambient_noise: moderate
+    features: []
+    initial_occupants:
+      - npc_su_mo
+
+zone_connections:
+  - from: zone_market_entrance
+    to: zone_market_stalls
+    type: open
+    distance: 20
+    line_of_sight: true
+    sound: clear
+  - from: zone_market_stalls
+    to: zone_tea_corner
+    type: open
+    distance: 30
+    line_of_sight: true
+    sound: clear
+
+sensory_details:
+  sight:
+    - "石牌坊上的禁制符印偶尔闪过淡青色微光。"
+    - "坊市尽头，黑风岭如一道暗青色剪影压在天边。"
+  sound:
+    - "讨价还价声、灵兽笼里的低鸣、远处瀑布水声。"
+  smell:
+    - "檀香、药草、烤肉、雨后湿土。"
+
+hidden_clues:
+  - id: clue_qi_fluctuation
+    location_zone: zone_market_entrance
+    discover_with: "灵力感知或调查石牌坊"
+    text: "牌坊禁制最近三日已触发两次低强度警报，指向同一方向——黑风岭。"
+
+hazards:
+  - id: hazard_talisman_alarm
+    location_zone: zone_market_entrance
+    trigger: "在坊市内施展中品以上法术"
+    consequence: "青云门内门收到警报，一炷香内有筑基修士赶到。"

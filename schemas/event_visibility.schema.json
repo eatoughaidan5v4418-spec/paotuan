@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Event Visibility",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_id", "objective_summary", "observation_views", "communication_required_for_spread"],
+  "properties": {
+    "event_id": {"type": "string"},
+    "objective_summary": {"type": "string"},
+    "observation_views": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "observer_id",
+          "can_know",
+          "visibility_path",
+          "fidelity",
+          "subjective_summary",
+          "confidence",
+          "memory_allowed",
+          "allowed_memory_scope",
+          "forbidden_memory_scope"
+        ],
+        "properties": {
+          "observer_id": {"type": "string"},
+          "can_know": {"type": "boolean"},
+          "visibility_path": {
+            "enum": [
+              "direct_visual",
+              "direct_auditory",
+              "detected_observer",
+              "told_by",
+              "overheard",
+              "inferred",
+              "public_signal",
+              "none"
+            ]
+          },
+          "fidelity": {"enum": ["full", "partial", "noisy", "none"]},
+          "subjective_summary": {"type": "string"},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "memory_allowed": {"type": "boolean"},
+          "allowed_memory_scope": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "forbidden_memory_scope": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "communication_required_for_spread": {"type": "boolean"}
+  }
+}
+

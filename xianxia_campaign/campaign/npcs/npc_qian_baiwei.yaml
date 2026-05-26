@@ -1,0 +1,38 @@
+id: npc_qian_baiwei
+name: 钱百味
+role: 符箓丹药商人
+faction: faction_merchant_guild
+location_id: loc_azure_cloud_market
+public_face: "圆脸笑眯眯，柜台上永远摊着一本破账本和几枚试用的黄纸符。"
+core_desire: "用情报和灵石换一颗筑基丹给孙子用。"
+fear: "被魔修盯上他的收购渠道。"
+bottom_line: "不会做亏本买卖，但真心想给孙子求一枚筑基丹。"
+traits:
+  personality_tags: ["圆滑", "重亲情", "精于算计", "信息囤积者"]
+  instinct: "先寒暄套近乎，从不直接回答价格问题。"
+  stress_response: "讲价——压力下反而进入商人模式，试图谈判。"
+  social_approach: "讨好型——先送小惠再谈大买卖。"
+  cognitive_bias: "利益优先——习惯从'对我有什么好处'角度评估一切。"
+voice_style:
+  pace: "慢悠悠，喜欢绕圈子。"
+  habits:
+    - "先寒暄再谈价格。"
+    - "报价留还价空间。"
+  forbidden_topics:
+    - "他孙子灵根资质"
+known_facts: []
+false_beliefs: []
+secrets:
+  - id: secret_qian_knows_herb_source
+    text: "钱百味知道黑风岭近期有人采到过异香草，怀疑与血灵芝有关。"
+relationship_hooks:
+  - target_id: pc_main
+    trust: 0
+    fear: 0
+    debt: 0
+change_switches:
+  trust:
+    - "玩家帮他搞到筑基丹或筑基丹材料。"
+    - "玩家替他保守黑风岭药材来源。"
+  threat:
+    - "玩家当众追问他的供货渠道。"

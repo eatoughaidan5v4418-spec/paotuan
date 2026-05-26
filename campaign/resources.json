@@ -1,0 +1,46 @@
+{
+  "entities": {
+    "faction_black_lantern": {
+      "type": "faction",
+      "money": 200,
+      "manpower": 8,
+      "risk_level": 3,
+      "supplies": [],
+      "cooldowns": {},
+      "reputation": -15
+    },
+    "faction_unaligned_brokers": {
+      "type": "faction",
+      "money": 50,
+      "manpower": 3,
+      "risk_level": 5,
+      "supplies": [],
+      "cooldowns": {},
+      "reputation": 0
+    },
+    "npc_mira": {
+      "type": "npc",
+      "money": 25,
+      "risk_tolerance": 7,
+      "stamina": 6,
+      "supplies": [],
+      "cooldowns": {}
+    },
+    "npc_a_sentry": {
+      "type": "npc",
+      "money": 10,
+      "risk_tolerance": 2,
+      "stamina": 8,
+      "supplies": [],
+      "cooldowns": {}
+    },
+    "npc_b_clerk": {
+      "type": "npc",
+      "money": 15,
+      "risk_tolerance": 1,
+      "stamina": 4,
+      "supplies": [],
+      "cooldowns": {}
+    }
+  }
+}

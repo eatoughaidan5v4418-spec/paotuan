@@ -1,0 +1,79 @@
+{
+  "npc_id": "npc_qian_baiwei",
+  "current_turn": 1,
+  "memory_policy_id": "npc_memory_policy_v1",
+  "memory_nodes": [
+    {
+      "id": "mem_qian_0001",
+      "type": "episodic",
+      "content": "钱百味前天从一个采药散修那里收到一批黑风岭产的异香草，比往年早了三日。",
+      "created_turn": 0,
+      "last_recalled_turn": 1,
+      "recall_count": 2,
+      "importance": 0.75,
+      "salience": 0.8,
+      "emotional_valence": 0.5,
+      "confidence": 0.85,
+      "source": "saw",
+      "tier": "core",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "loc_black_wind_ridge"
+      ],
+      "score": 0.8
+    },
+    {
+      "id": "mem_qian_0002",
+      "type": "semantic",
+      "content": "钱百味知道魔修残党最近在收年份足的血灵芝，出价极高但不问来路。",
+      "created_turn": 0,
+      "last_recalled_turn": 1,
+      "recall_count": 1,
+      "importance": 0.7,
+      "salience": 0.6,
+      "emotional_valence": -0.5,
+      "confidence": 0.6,
+      "source": "heard",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "faction_demonic_remnants"
+      ],
+      "score": 0.66
+    },
+    {
+      "id": "mem_npc_qian_baiwei_0003",
+      "type": "episodic",
+      "content": "牌坊下那个生面孔和柳青说了几句话。柳青被说得耳根发红——有趣，难得见这小子吃瘪。这人径直朝摊位区走来了。",
+      "created_turn": 1,
+      "last_recalled_turn": 1,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.5,
+      "emotional_valence": 0.3,
+      "confidence": 0.7,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "npc_qian_baiwei",
+        "loc_azure_cloud_market"
+      ],
+      "visibility_path": "direct_visual",
+      "observed_at": "第 1 日 08:25",
+      "location_id": "loc_azure_cloud_market"
+    }
+  ],
+  "interpretation_nodes": [],
+  "understanding_nodes": [],
+  "revision_events": [],
+  "relation_edges": [],
+  "beliefs": [],
+  "plans": []
+}

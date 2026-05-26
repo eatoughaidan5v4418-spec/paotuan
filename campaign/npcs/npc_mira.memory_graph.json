@@ -1,0 +1,261 @@
+{
+  "npc_id": "npc_mira",
+  "current_turn": 1,
+  "memory_policy_id": "npc_memory_policy_v1",
+  "memory_nodes": [
+    {
+      "id": "mem_mira_0003",
+      "type": "semantic",
+      "content": "米拉知道自己曾卖出黑灯会巡逻路线，如果黑灯会确认此事，她会被追杀。",
+      "created_turn": 0,
+      "last_recalled_turn": 1,
+      "recall_count": 2,
+      "importance": 0.95,
+      "salience": 0.78,
+      "emotional_valence": -2,
+      "confidence": 1.0,
+      "source": "saw",
+      "tier": "core",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "npc_mira",
+        "faction_black_lantern",
+        "secret_mira_sold_black_lantern_info"
+      ],
+      "score": 0.8479
+    },
+    {
+      "id": "mem_mira_0001",
+      "type": "episodic",
+      "content": "米拉在第 1 日傍晚听到两个水手谈起黑灯会会在 23:00 前后到旧码头。",
+      "created_turn": 0,
+      "last_recalled_turn": 1,
+      "recall_count": 1,
+      "importance": 0.72,
+      "salience": 0.82,
+      "emotional_valence": -1,
+      "confidence": 0.63,
+      "source": "heard",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "thread_black_lantern_deal",
+        "loc_old_dock",
+        "faction_black_lantern"
+      ],
+      "score": 0.685
+    },
+    {
+      "id": "mem_mira_0002",
+      "type": "semantic",
+      "content": "旧码头北侧废仓库有一扇卡住的侧门，瘦小的人可以挤进去。",
+      "created_turn": 0,
+      "last_recalled_turn": 1,
+      "recall_count": 1,
+      "importance": 0.46,
+      "salience": 0.55,
+      "emotional_valence": 0,
+      "confidence": 0.95,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "loc_old_dock",
+        "feature_warehouse_side_door"
+      ],
+      "score": 0.506
+    }
+  ],
+  "interpretation_nodes": [
+    {
+      "id": "interp_mira_0001",
+      "npc_id": "npc_mira",
+      "derived_from_event_id": "event_mira_heard_black_lantern_rumor",
+      "derived_from_memory_id": "mem_mira_0001",
+      "text": "黑灯会今晚可能真的会来旧码头；这条消息能卖钱，但也可能把我拖进危险。",
+      "appraisal": {
+        "goal_impact": "helps",
+        "threat_level": 0.72,
+        "opportunity_level": 0.66,
+        "agency": "faction",
+        "moral_judgment": "irrelevant",
+        "relationship_signal": "fear"
+      },
+      "emotion": {
+        "label": "fear",
+        "valence": -1,
+        "intensity": 0.68
+      },
+      "confidence": 0.63,
+      "importance": 0.76,
+      "related_entities": [
+        "thread_black_lantern_deal",
+        "loc_old_dock",
+        "faction_black_lantern"
+      ],
+      "possible_misunderstanding": true
+    },
+    {
+      "id": "interp_mira_0002",
+      "npc_id": "npc_mira",
+      "derived_from_event_id": "event_mira_sold_patrol_route",
+      "derived_from_memory_id": "mem_mira_0003",
+      "text": "我已经越过黑灯会的底线；如果他们发现我卖过巡逻路线，我不能指望解释有用。",
+      "appraisal": {
+        "goal_impact": "blocks",
+        "threat_level": 0.95,
+        "opportunity_level": 0.12,
+        "agency": "npc",
+        "moral_judgment": "mixed",
+        "relationship_signal": "fear"
+      },
+      "emotion": {
+        "label": "fear",
+        "valence": -2,
+        "intensity": 0.9
+      },
+      "confidence": 0.96,
+      "importance": 0.95,
+      "related_entities": [
+        "npc_mira",
+        "faction_black_lantern",
+        "secret_mira_sold_black_lantern_info"
+      ],
+      "possible_misunderstanding": false
+    }
+  ],
+  "understanding_nodes": [
+    {
+      "id": "under_mira_0001",
+      "npc_id": "npc_mira",
+      "type": "plan_rule",
+      "text": "涉及黑灯会的情报必须先换取安全保证，再换取钱。",
+      "supporting_interpretation_ids": [
+        "interp_mira_0001",
+        "interp_mira_0002"
+      ],
+      "supporting_memory_ids": [
+        "mem_mira_0001",
+        "mem_mira_0003"
+      ],
+      "contradicting_interpretation_ids": [],
+      "confidence": 0.88,
+      "stability": 0.82,
+      "importance": 0.91,
+      "tier": "core",
+      "revision_status": "active",
+      "version": 1,
+      "last_updated_turn": 1,
+      "superseded_by": null,
+      "behavior_effect": "米拉会先试探玩家是否能保护她，不会直接说出完整交易细节。"
+    },
+    {
+      "id": "under_mira_0002",
+      "npc_id": "npc_mira",
+      "type": "schema",
+      "text": "旧码头的消息通常有价值，但来源混杂，必须留一半余地。",
+      "supporting_interpretation_ids": [
+        "interp_mira_0001"
+      ],
+      "supporting_memory_ids": [
+        "mem_mira_0001",
+        "mem_mira_0002"
+      ],
+      "contradicting_interpretation_ids": [],
+      "confidence": 0.7,
+      "stability": 0.55,
+      "importance": 0.58,
+      "tier": "active",
+      "revision_status": "active",
+      "version": 1,
+      "last_updated_turn": 1,
+      "superseded_by": null,
+      "behavior_effect": "米拉会把传言包装成有价值的线索，但会提醒自己别完全押上性命。"
+    }
+  ],
+  "revision_events": [
+    {
+      "id": "rev_mira_0001",
+      "npc_id": "npc_mira",
+      "turn": 1,
+      "new_event_id": "event_mira_heard_black_lantern_rumor",
+      "target_understanding_id": "under_mira_0001",
+      "effect": "supports",
+      "evidence_strength": 0.54,
+      "confidence_delta": 0.08,
+      "stability_delta": 0.04,
+      "new_status": "active",
+      "reason": "新传言让米拉再次确认黑灯会情报有价值也有危险，因此强化了先要安全保证的行为规则。",
+      "source_interpretation_ids": [
+        "interp_mira_0001"
+      ]
+    }
+  ],
+  "relation_edges": [
+    {
+      "id": "rel_mira_knows_secret",
+      "type": "KNOWS",
+      "from": "npc_mira",
+      "to": "secret_mira_sold_black_lantern_info",
+      "memory_id": "mem_mira_0003",
+      "confidence": 1.0,
+      "valid": true
+    },
+    {
+      "id": "rel_mira_believes_deal",
+      "type": "BELIEVES",
+      "from": "npc_mira",
+      "to": "thread_black_lantern_deal",
+      "memory_id": "mem_mira_0001",
+      "confidence": 0.63,
+      "valid": true
+    },
+    {
+      "id": "rel_mira_fears_black_lantern",
+      "type": "FEARS",
+      "from": "npc_mira",
+      "to": "faction_black_lantern",
+      "memory_id": "mem_mira_0003",
+      "confidence": 0.9,
+      "valid": true
+    }
+  ],
+  "beliefs": [
+    {
+      "id": "belief_mira_deal_time",
+      "text": "黑灯会可能在 23:00 前后到旧码头交易。",
+      "truth_status": "rumor",
+      "confidence": 0.63,
+      "source_memory_ids": [
+        "mem_mira_0001"
+      ]
+    },
+    {
+      "id": "belief_mira_needs_safety",
+      "text": "如果想卖出黑灯会情报，必须先确认买家不会把她交出去。",
+      "truth_status": "personal_rule",
+      "confidence": 0.9,
+      "source_memory_ids": [
+        "mem_mira_0003"
+      ]
+    }
+  ],
+  "plans": [
+    {
+      "id": "plan_mira_test_player",
+      "text": "先试探玩家是否可靠，再决定是否透露交易地点细节。",
+      "priority": 0.76,
+      "source_memory_ids": [
+        "mem_mira_0001",
+        "mem_mira_0003"
+      ],
+      "status": "active"
+    }
+  ]
+}

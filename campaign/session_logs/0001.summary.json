@@ -1,0 +1,15 @@
+{
+  "session_id": "0001",
+  "status": "not_started",
+  "started_at_game_time": "第 1 日 20:00",
+  "ended_at_game_time": null,
+  "summary": "战役尚未正式开始。玩家位于旧码头，米拉持有关于黑灯会交易的传言。",
+  "important_events": [],
+  "state_patches": [],
+  "next_hooks": [
+    "米拉可以提供黑灯会交易的线索，但她会要求报酬或保护。",
+    "旧码头的巡夜人可能注意到玩家的行动。",
+    "若时间推进到 23:00，交易会在玩家不干预时发生。"
+  ]
+}
+

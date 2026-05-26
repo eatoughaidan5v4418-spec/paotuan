@@ -1,0 +1,73 @@
+{
+  "current_turn": 1,
+  "clocks": [
+    {
+      "id": "clock_black_lantern_deal",
+      "type": "threat_countdown",
+      "owner_id": "faction_black_lantern",
+      "title": "黑灯会旧码头交易",
+      "value": 2,
+      "max_value": 6,
+      "status": "active",
+      "visibility": "secret",
+      "location_id": "loc_old_dock",
+      "next_tick_at": "第 1 日 21:00",
+      "tick_interval": "1 小时",
+      "stakes": "如果完成，黑灯会获得未知货物，并开始追查泄密者。",
+      "on_complete": "交易完成，黑灯会转入清理线索和追查米拉的阶段。",
+      "recent_updates": [],
+      "_next_tick_at_tick": 1260
+    },
+    {
+      "id": "clock_a_patrol_route",
+      "type": "npc_schedule",
+      "owner_id": "npc_a_sentry",
+      "title": "A 的旧码头巡逻",
+      "value": 1,
+      "max_value": 4,
+      "status": "active",
+      "visibility": "private",
+      "location_id": "loc_old_dock",
+      "next_tick_at": "第 1 日 20:30",
+      "tick_interval": "30 分钟",
+      "stakes": "A 的位置会改变，可能发现玩家、线索或黑灯会外围成员。",
+      "on_complete": "A 完成本轮巡逻，回到废仓库门口短暂休息。",
+      "recent_updates": [],
+      "_next_tick_at_tick": 1230
+    },
+    {
+      "id": "clock_b_ledger_copy",
+      "type": "npc_schedule",
+      "owner_id": "npc_b_clerk",
+      "title": "B 抄写湿掉的货单",
+      "value": 0,
+      "max_value": 4,
+      "status": "active",
+      "visibility": "private",
+      "location_id": "loc_old_dock",
+      "next_tick_at": "第 1 日 20:30",
+      "tick_interval": "30 分钟",
+      "stakes": "B 可能发现货单上的异常收货人，也可能毁掉关键墨迹。",
+      "on_complete": "B 抄完货单并藏起原件。",
+      "recent_updates": [],
+      "_next_tick_at_tick": 1230
+    },
+    {
+      "id": "clock_river_tide_rises",
+      "type": "environment_process",
+      "owner_id": "loc_old_dock",
+      "title": "河潮上涨",
+      "value": 1,
+      "max_value": 4,
+      "status": "active",
+      "visibility": "public",
+      "location_id": "loc_old_dock",
+      "next_tick_at": "第 1 日 21:00",
+      "tick_interval": "1 小时",
+      "stakes": "旧栈桥更湿滑，低处脚印和封蜡碎片可能被水冲走。",
+      "on_complete": "低洼栈桥被水淹没，部分追踪线索消失。",
+      "recent_updates": [],
+      "_next_tick_at_tick": 1260
+    }
+  ]
+}

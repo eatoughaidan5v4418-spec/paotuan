@@ -1,0 +1,292 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RPG Turn State Patch",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "time_delta",
+    "location_changes",
+    "inventory_changes",
+    "relationship_changes",
+    "new_facts",
+    "contradictions",
+    "npc_memory_writes",
+    "open_threads"
+  ],
+  "properties": {
+    "time_delta": {"type": "string"},
+    "location_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entity_id", "from", "to", "reason"],
+        "properties": {
+          "entity_id": {"type": "string"},
+          "from": {"type": "string"},
+          "to": {"type": "string"},
+          "reason": {"type": "string"}
+        }
+      }
+    },
+    "inventory_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["owner_id", "item_id", "change", "evidence"],
+        "properties": {
+          "owner_id": {"type": "string"},
+          "item_id": {"type": "string"},
+          "change": {"enum": ["gain", "lose", "consume", "damage", "repair", "move", "unknown"]},
+          "evidence": {"type": "string"}
+        }
+      }
+    },
+    "player_state_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entity_id", "field", "reason"],
+        "properties": {
+          "entity_id": {"type": "string"},
+          "field": {"type": "string"},
+          "operation": {"enum": ["set", "add", "remove", "delta"]},
+          "value": {},
+          "delta": {"type": "number"},
+          "reason": {"type": "string"}
+        },
+        "anyOf": [
+          {"required": ["value"]},
+          {"required": ["delta"]}
+        ]
+      }
+    },
+    "relationship_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["a", "b", "metric", "delta", "reason"],
+        "properties": {
+          "a": {"type": "string"},
+          "b": {"type": "string"},
+          "metric": {"enum": ["trust", "hostility", "debt", "fear", "affection", "respect", "suspicion"]},
+          "delta": {"type": "number"},
+          "reason": {"type": "string"}
+        }
+      }
+    },
+    "new_facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["fact", "visibility", "source"],
+        "properties": {
+          "fact": {"type": "string"},
+          "visibility": {"enum": ["public", "private", "secret"]},
+          "source": {"type": "string"}
+        }
+      }
+    },
+    "contradictions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["old_fact_id", "new_fact", "resolution"],
+        "properties": {
+          "old_fact_id": {"type": "string"},
+          "new_fact": {"type": "string"},
+          "resolution": {"enum": ["keep_old", "replace_old", "mark_as_rumor", "coexist_until_verified"]}
+        }
+      }
+    },
+    "npc_memory_writes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["npc_id", "memory", "memory_type", "source", "visibility_path", "confidence", "emotional_valence", "salience"],
+        "properties": {
+          "npc_id": {"type": "string"},
+          "memory": {"type": "string"},
+          "memory_type": {"enum": ["episodic", "semantic", "procedural"]},
+          "source": {"enum": ["saw", "heard", "inferred", "rumor"]},
+          "visibility_path": {"enum": ["direct_visual", "direct_auditory", "detected_observer", "told_by", "overheard", "inferred", "public_signal"]},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "emotional_valence": {"type": "number", "minimum": -2, "maximum": 2},
+          "salience": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    },
+    "npc_interpretation_writes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "npc_id",
+          "derived_from_event_id",
+          "derived_from_memory_id",
+          "text",
+          "appraisal",
+          "emotion",
+          "confidence",
+          "importance",
+          "related_entities",
+          "possible_misunderstanding"
+        ],
+        "properties": {
+          "id": {"type": "string"},
+          "npc_id": {"type": "string"},
+          "derived_from_event_id": {"type": "string"},
+          "derived_from_memory_id": {"type": "string"},
+          "text": {"type": "string"},
+          "appraisal": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "goal_impact",
+              "threat_level",
+              "opportunity_level",
+              "agency",
+              "moral_judgment",
+              "relationship_signal"
+            ],
+            "properties": {
+              "goal_impact": {"enum": ["helps", "blocks", "neutral", "unclear"]},
+              "threat_level": {"type": "number", "minimum": 0, "maximum": 1},
+              "opportunity_level": {"type": "number", "minimum": 0, "maximum": 1},
+              "agency": {"enum": ["player", "npc", "unknown", "environment", "faction"]},
+              "moral_judgment": {"enum": ["good", "bad", "mixed", "irrelevant", "unknown"]},
+              "relationship_signal": {"enum": ["trust", "suspicion", "fear", "debt", "respect", "none"]}
+            }
+          },
+          "emotion": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["label", "valence", "intensity"],
+            "properties": {
+              "label": {"enum": ["fear", "anger", "relief", "curiosity", "shame", "hope", "none"]},
+              "valence": {"type": "number", "minimum": -2, "maximum": 2},
+              "intensity": {"type": "number", "minimum": 0, "maximum": 1}
+            }
+          },
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "importance": {"type": "number", "minimum": 0, "maximum": 1},
+          "related_entities": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "possible_misunderstanding": {"type": "boolean"}
+        }
+      }
+    },
+    "npc_understanding_writes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "npc_id",
+          "type",
+          "text",
+          "supporting_interpretation_ids",
+          "supporting_memory_ids",
+          "contradicting_interpretation_ids",
+          "confidence",
+          "stability",
+          "importance",
+          "tier",
+          "revision_status",
+          "version",
+          "last_updated_turn",
+          "superseded_by",
+          "behavior_effect"
+        ],
+        "properties": {
+          "id": {"type": "string"},
+          "npc_id": {"type": "string"},
+          "type": {"enum": ["belief", "attitude", "relationship_judgment", "schema", "plan_rule", "self_understanding"]},
+          "text": {"type": "string"},
+          "supporting_interpretation_ids": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "supporting_memory_ids": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "contradicting_interpretation_ids": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "stability": {"type": "number", "minimum": 0, "maximum": 1},
+          "importance": {"type": "number", "minimum": 0, "maximum": 1},
+          "tier": {"enum": ["core", "active", "dormant", "archive"]},
+          "revision_status": {"enum": ["active", "contested", "weakened", "superseded", "archived"]},
+          "version": {"type": "integer", "minimum": 1},
+          "last_updated_turn": {"type": "integer", "minimum": 0},
+          "superseded_by": {"type": ["string", "null"]},
+          "behavior_effect": {"type": "string"}
+        }
+      }
+    },
+    "npc_revision_writes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "npc_id",
+          "turn",
+          "new_event_id",
+          "target_understanding_id",
+          "effect",
+          "evidence_strength",
+          "confidence_delta",
+          "stability_delta",
+          "new_status",
+          "reason",
+          "source_interpretation_ids"
+        ],
+        "properties": {
+          "id": {"type": "string"},
+          "npc_id": {"type": "string"},
+          "turn": {"type": "integer", "minimum": 0},
+          "new_event_id": {"type": "string"},
+          "target_understanding_id": {"type": "string"},
+          "effect": {"enum": ["supports", "weakens", "contradicts", "qualifies", "reframes", "supersedes", "splits", "no_change"]},
+          "evidence_strength": {"type": "number", "minimum": 0, "maximum": 1},
+          "confidence_delta": {"type": "number", "minimum": -1, "maximum": 1},
+          "stability_delta": {"type": "number", "minimum": -1, "maximum": 1},
+          "new_status": {"enum": ["active", "contested", "weakened", "superseded", "archived"]},
+          "reason": {"type": "string"},
+          "source_interpretation_ids": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "open_threads": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["thread", "next_pressure"],
+        "properties": {
+          "thread": {"type": "string"},
+          "next_pressure": {"type": "string"}
+        }
+      }
+    }
+  }
+}

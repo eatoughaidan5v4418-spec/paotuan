@@ -1,0 +1,43 @@
+factions:
+  - id: faction_azure_cloud_sect
+    name: 青云门
+    type: orthodox_sect
+    public_reputation: "正道中型宗门，管控方圆百里的坊市和灵脉。"
+    goals:
+      - "维持坊市秩序与税收。"
+      - "追查近期黑风岭灵气异动。"
+    methods:
+      - "外门弟子值守"
+      - "内门筑基执事定期巡视"
+    secrets:
+      - id: secret_azure_cloud_investigation
+        text: "青云门已派一名筑基执事暗中调查黑风岭，但暂未公开。"
+
+  - id: faction_demonic_remnants
+    name: 魔修残党
+    type: demonic_cultivators
+    public_reputation: "百年前被剿灭的噬魂宗残余，偶尔在偏远地区出没。"
+    goals:
+      - "获取血灵芝以炼制噬魂宗失传秘药。"
+      - "避免与青云门正面冲突。"
+    methods:
+      - "潜伏"
+      - "以高价收购掩人耳目"
+    secrets:
+      - id: secret_demonic_inside_man
+        text: "魔修残党在坊市周围设有暗哨，伪装成行脚商。"
+
+  - id: faction_merchant_guild
+    name: 坊市商盟
+    type: merchant_association
+    public_reputation: "安分守己的修士商人，缴纳灵石换取青云门庇护。"
+    goals:
+      - "赚灵石，保摊位。"
+    secrets: []
+
+  - id: faction_loose_cultivators
+    name: 散修
+    type: unaffiliated
+    public_reputation: "没有宗门靠山的独自修行者。"
+    goals:
+      - "活下来，找机缘。"

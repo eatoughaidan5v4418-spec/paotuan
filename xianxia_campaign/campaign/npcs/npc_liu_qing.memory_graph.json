@@ -1,0 +1,128 @@
+{
+  "npc_id": "npc_liu_qing",
+  "current_turn": 1,
+  "memory_policy_id": "npc_memory_policy_v1",
+  "memory_nodes": [
+    {
+      "id": "mem_liu_0001",
+      "type": "semantic",
+      "content": "柳青知道黑风岭方向近日灵气异动，但外门弟子未获准探查。",
+      "created_turn": 0,
+      "last_recalled_turn": 1,
+      "recall_count": 1,
+      "importance": 0.65,
+      "salience": 0.7,
+      "emotional_valence": 0.3,
+      "confidence": 0.8,
+      "source": "heard",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "loc_black_wind_ridge",
+        "faction_azure_cloud_sect"
+      ],
+      "score": 0.62
+    },
+    {
+      "id": "mem_liu_0002",
+      "type": "semantic",
+      "content": "坊市规矩：外来修士须登记姓名和师承，不得在坊市内私斗。",
+      "created_turn": 0,
+      "last_recalled_turn": 1,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.6,
+      "emotional_valence": 0,
+      "confidence": 0.95,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "loc_azure_cloud_market"
+      ],
+      "score": 0.52
+    },
+    {
+      "id": "mem_npc_liu_qing_0003",
+      "type": "episodic",
+      "content": "一个外来的修士在坊市入口向我行礼，问起黑风岭灵气异动。此人态度恭敬，不像魔修。",
+      "created_turn": 1,
+      "last_recalled_turn": 1,
+      "recall_count": 0,
+      "importance": 0.55,
+      "salience": 0.55,
+      "emotional_valence": 0.3,
+      "confidence": 0.85,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "npc_liu_qing",
+        "loc_azure_cloud_market"
+      ],
+      "visibility_path": "direct_visual",
+      "observed_at": "第 1 日 08:10",
+      "location_id": "loc_azure_cloud_market"
+    },
+    {
+      "id": "mem_npc_liu_qing_0004",
+      "type": "episodic",
+      "content": "一个外来的修士在坊市入口向我行礼，问起黑风岭灵气异动。此人态度恭敬，不像魔修。",
+      "created_turn": 1,
+      "last_recalled_turn": 1,
+      "recall_count": 0,
+      "importance": 0.55,
+      "salience": 0.55,
+      "emotional_valence": 0.3,
+      "confidence": 0.85,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "npc_liu_qing",
+        "loc_azure_cloud_market"
+      ],
+      "visibility_path": "direct_visual",
+      "observed_at": "第 1 日 08:20",
+      "location_id": "loc_azure_cloud_market"
+    },
+    {
+      "id": "mem_npc_liu_qing_0005",
+      "type": "episodic",
+      "content": "一个陌生修士在坊市入口盘问下毫不畏缩，反呛我坊市规矩。此人不是散修做派——但至少直来直去，不像在隐瞒什么。",
+      "created_turn": 1,
+      "last_recalled_turn": 1,
+      "recall_count": 0,
+      "importance": 0.65,
+      "salience": 0.65,
+      "emotional_valence": 0.2,
+      "confidence": 0.9,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "npc_liu_qing",
+        "loc_azure_cloud_market"
+      ],
+      "visibility_path": "direct_visual",
+      "observed_at": "第 1 日 08:25",
+      "location_id": "loc_azure_cloud_market"
+    }
+  ],
+  "interpretation_nodes": [],
+  "understanding_nodes": [],
+  "revision_events": [],
+  "relation_edges": [],
+  "beliefs": [],
+  "plans": []
+}

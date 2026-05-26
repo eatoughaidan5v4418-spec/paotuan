@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Living World Tick",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "tick_id",
+    "from_turn",
+    "to_turn",
+    "from_time",
+    "to_time",
+    "elapsed_time",
+    "processed_scope",
+    "clock_updates",
+    "offscreen_events",
+    "rumors_or_signals",
+    "new_player_hooks"
+  ],
+  "properties": {
+    "tick_id": {"type": "string"},
+    "from_turn": {"type": "integer", "minimum": 0},
+    "to_turn": {"type": "integer", "minimum": 0},
+    "from_time": {"type": "string"},
+    "to_time": {"type": "string"},
+    "elapsed_time": {"type": "string"},
+    "processed_scope": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "clock_updates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "clock_id",
+          "owner_id",
+          "old_value",
+          "new_value",
+          "max_value",
+          "reason",
+          "visibility"
+        ],
+        "properties": {
+          "clock_id": {"type": "string"},
+          "owner_id": {"type": "string"},
+          "old_value": {"type": "integer", "minimum": 0},
+          "new_value": {"type": "integer", "minimum": 0},
+          "max_value": {"type": "integer", "minimum": 1},
+          "reason": {"type": "string"},
+          "visibility": {"enum": ["public", "private", "secret"]}
+        }
+      }
+    },
+    "offscreen_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "event_id",
+          "occurs_at",
+          "location_id",
+          "participants",
+          "objective_summary",
+          "cause",
+          "state_changes",
+          "memory_candidates",
+          "player_visible_now"
+        ],
+        "properties": {
+          "event_id": {"type": "string"},
+          "occurs_at": {"type": "string"},
+          "location_id": {"type": "string"},
+          "participants": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "objective_summary": {"type": "string"},
+          "cause": {"type": "string"},
+          "state_changes": {
+            "type": "array",
+            "items": {"type": "object"}
+          },
+          "memory_candidates": {
+            "type": "array",
+            "items": {"type": "object"}
+          },
+          "player_visible_now": {"type": "boolean"}
+        }
+      }
+    },
+    "rumors_or_signals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "type", "summary", "visibility_path", "potential_observers"],
+        "properties": {
+          "id": {"type": "string"},
+          "type": {"enum": ["rumor", "public_signal", "direct_message"]},
+          "summary": {"type": "string"},
+          "visibility_path": {"type": "string"},
+          "potential_observers": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "new_player_hooks": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}
+

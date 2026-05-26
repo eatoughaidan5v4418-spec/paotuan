@@ -1,0 +1,28 @@
+id: npc_b_clerk
+name: B
+role: 码头账房
+faction: faction_unaligned_brokers
+location_id: loc_old_dock
+public_face: "躲在账房小屋里清点湿掉的货单。"
+core_desire: "保住账本，不被今晚的麻烦牵连。"
+fear: "账本落到黑灯会或巡夜人手里。"
+bottom_line: "不会承认自己偷看过货单。"
+traits:
+  personality_tags: ["胆小", "细致", "守密", "规矩至上"]
+  instinct: "被问话时先推说'我只是个记账的'。"
+  stress_response: "僵住——紧张时身体不动，但脑子飞快。"
+  social_approach: "推责型——把一切归因于流程和规章制度。"
+  cognitive_bias: "选择性沉默——宁可少说，绝不冒说错的风险。"
+voice_style:
+  pace: "小声、谨慎，喜欢把责任推给流程。"
+  habits:
+    - "先确认对方是不是来查账。"
+known_facts: []
+false_beliefs: []
+secrets: []
+relationship_hooks: []
+change_switches:
+  trust:
+    - "玩家保护账本或证明不是黑灯会的人。"
+  threat:
+    - "玩家要求查看私人账本。"

@@ -1,0 +1,28 @@
+{
+  "entities": {
+    "pc_main": {
+      "conditions": [
+        {
+          "name": "qi_depleted",
+          "severity": "unknown",
+          "added_at": "强行催动中品法术"
+        }
+      ],
+      "history": [
+        "+qi_depleted: 强行催动中品法术"
+      ]
+    },
+    "npc_su_mo": {
+      "conditions": [
+        {
+          "name": "injured",
+          "severity": "moderate",
+          "added_at": "黑风岭探路被禁制所伤"
+        }
+      ],
+      "history": [
+        "+injured: 黑风岭探路被禁制所伤"
+      ]
+    }
+  }
+}

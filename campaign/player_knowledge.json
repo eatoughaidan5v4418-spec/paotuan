@@ -1,0 +1,28 @@
+{
+  "clues_discovered": [],
+  "npcs_known": [
+    {
+      "id": "npc_mira",
+      "known_as": "米拉",
+      "known_role": "消息贩子",
+      "first_met_turn": 1,
+      "last_interaction_turn": 1
+    }
+  ],
+  "locations_explored": [
+    {
+      "id": "loc_old_dock",
+      "name": "旧码头",
+      "notes": "黑灯会传言交易地"
+    }
+  ],
+  "facts_understood": [
+    {
+      "fact": "黑灯会可能在23:00于旧码头交易",
+      "confidence": "rumor",
+      "source": "米拉",
+      "learned_turn": 1
+    }
+  ],
+  "events_witnessed": []
+}

@@ -1,0 +1,23 @@
+{
+  "rumors": [
+    {
+      "id": "rumor_black_lantern_deal_time",
+      "content": "黑灯会将在第1日23:00于旧码头交易",
+      "truth_status": "unconfirmed",
+      "origin": "two_sailors",
+      "origin_location": "loc_old_dock",
+      "created_turn": 0,
+      "spread": [
+        {
+          "hearer_id": "npc_mira",
+          "heard_from": "two_sailors",
+          "heard_turn": 0,
+          "understood_as": "黑灯会23:00在旧码头有行动",
+          "confidence": 0.63,
+          "variant": false
+        }
+      ],
+      "versions": []
+    }
+  ]
+}

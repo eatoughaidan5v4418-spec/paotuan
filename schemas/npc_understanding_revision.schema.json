@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NPC Understanding Revision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["revision_events", "understanding_updates", "new_understandings"],
+  "properties": {
+    "revision_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "npc_id",
+          "turn",
+          "new_event_id",
+          "target_understanding_id",
+          "effect",
+          "evidence_strength",
+          "confidence_delta",
+          "stability_delta",
+          "new_status",
+          "reason",
+          "source_interpretation_ids"
+        ],
+        "properties": {
+          "id": {"type": "string"},
+          "npc_id": {"type": "string"},
+          "turn": {"type": "integer", "minimum": 0},
+          "new_event_id": {"type": "string"},
+          "target_understanding_id": {"type": "string"},
+          "effect": {"enum": ["supports", "weakens", "contradicts", "qualifies", "reframes", "supersedes", "splits", "no_change"]},
+          "evidence_strength": {"type": "number", "minimum": 0, "maximum": 1},
+          "confidence_delta": {"type": "number", "minimum": -1, "maximum": 1},
+          "stability_delta": {"type": "number", "minimum": -1, "maximum": 1},
+          "new_status": {"enum": ["active", "contested", "weakened", "superseded", "archived"]},
+          "reason": {"type": "string"},
+          "source_interpretation_ids": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "understanding_updates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["understanding_id", "patch"],
+        "properties": {
+          "understanding_id": {"type": "string"},
+          "patch": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+              "stability": {"type": "number", "minimum": 0, "maximum": 1},
+              "tier": {"enum": ["core", "active", "dormant", "archive"]},
+              "revision_status": {"enum": ["active", "contested", "weakened", "superseded", "archived"]},
+              "superseded_by": {"type": ["string", "null"]},
+              "behavior_effect": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "new_understandings": {
+      "type": "array",
+      "items": {"type": "object"}
+    }
+  }
+}
+

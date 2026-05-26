@@ -1,0 +1,56 @@
+{
+  "current_turn": 1,
+  "clocks": [
+    {
+      "id": "clock_mushroom_ripening",
+      "type": "threat_countdown",
+      "owner_id": "faction_demonic_remnants",
+      "title": "血灵芝成熟倒计时",
+      "value": 1,
+      "max_value": 4,
+      "status": "active",
+      "visibility": "secret",
+      "location_id": "loc_black_wind_ridge",
+      "next_tick_at": "第 1 日 午时",
+      "_next_tick_at_tick": 720,
+      "tick_interval": "1 时辰",
+      "stakes": "血灵芝逐步成熟，魔修派出的探子正在靠近黑风岭。",
+      "on_complete": "血灵芝被魔修摘走，玩家失去介入时机。",
+      "recent_updates": []
+    },
+    {
+      "id": "clock_liu_qing_patrol",
+      "type": "npc_schedule",
+      "owner_id": "npc_liu_qing",
+      "title": "柳青坊市值守",
+      "value": 0,
+      "max_value": 3,
+      "status": "active",
+      "visibility": "private",
+      "location_id": "loc_azure_cloud_market",
+      "next_tick_at": "第 1 日 巳时",
+      "_next_tick_at_tick": 600,
+      "tick_interval": "1 时辰",
+      "stakes": "柳青换岗后坊市入口警戒降低。",
+      "on_complete": "柳青换班回外门，坊市入口无人值守。",
+      "recent_updates": []
+    },
+    {
+      "id": "clock_demonic_scout_arrives",
+      "type": "threat_countdown",
+      "owner_id": "faction_demonic_remnants",
+      "title": "魔修探子接近黑风岭",
+      "value": 0,
+      "max_value": 3,
+      "status": "active",
+      "visibility": "secret",
+      "location_id": "loc_black_wind_ridge",
+      "next_tick_at": "第 1 日 午时",
+      "_next_tick_at_tick": 720,
+      "tick_interval": "1 时辰",
+      "stakes": "两名魔修探子向黑风岭行进，可能先于玩家抵达。",
+      "on_complete": "魔修探子抵达黑风岭并开始布置禁制。",
+      "recent_updates": []
+    }
+  ]
+}

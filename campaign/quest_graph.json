@@ -1,0 +1,69 @@
+{
+  "quests": [
+    {
+      "id": "thread_black_lantern_deal",
+      "title": "黑灯会的旧码头交易",
+      "status": "active",
+      "countdown_ticks": 2,
+      "countdown_max": 6,
+      "countdown_unit": "小时",
+      "failure_consequence": "交易完成，黑灯会获得未知货物，转入追查米拉阶段",
+      "clues": [
+        {
+          "id": "clue_black_wax",
+          "text": "木桩缝里的黑色封蜡碎片，带灯形压印",
+          "found": false,
+          "leads_to": [
+            "intervene_deal"
+          ]
+        },
+        {
+          "id": "clue_scout_footprints",
+          "text": "外围陌生脚印，两人，新近",
+          "found": false,
+          "leads_to": [
+            "intervene_deal",
+            "avoid_scouts"
+          ]
+        }
+      ],
+      "obstacles": [
+        {
+          "id": "obs_sentry_a",
+          "text": "巡夜人A在仓库外围巡逻",
+          "bypass": "等待巡逻空隙、引开或潜行"
+        },
+        {
+          "id": "obs_clerk_b",
+          "text": "账房B在仓库内抄货单，可能目击入侵者",
+          "bypass": "先确认身份不是黑灯会"
+        }
+      ],
+      "intervention_nodes": [
+        {
+          "id": "intervene_deal",
+          "text": "破坏或抢先交易",
+          "type": "player_action",
+          "requires": [
+            "clue_black_wax"
+          ],
+          "stops_clock": true
+        },
+        {
+          "id": "avoid_scouts",
+          "text": "绕开黑灯会外围人员",
+          "type": "player_action",
+          "requires": [
+            "clue_scout_footprints"
+          ]
+        },
+        {
+          "id": "interrogate_mira",
+          "text": "深入审问米拉关于货物和交易细节",
+          "type": "social",
+          "requires": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+id: rules_lightweight_d20
+name: 轻量 d20 仙侠规则
+dice:
+  main: "1d20 + 修为修正 + 技能修正"
+checks:
+  easy: 8
+  normal: 12
+  hard: 16
+  extreme: 20
+advantage_policy: "有充分准备、符箓辅助或环境优势时取两次较高。"
+disadvantage_policy: "受伤、灵力不足或环境恶劣时取两次较低。"
+failure_policy:
+  - "失败应产生代价：灵力损耗、符箓消耗、惊动他人、受伤或关系恶化。"
+cultivation_realms:
+  - "炼气期 1-3 层：修正 +0"
+  - "炼气期 4-6 层：修正 +1"
+  - "炼气期 7-9 层：修正 +2"
+  - "筑基期：修正 +4"
+combat_policy:
+  - "战斗以意图和局势为核心。"
+  - "法术消耗灵力，普通攻击消耗体力。"

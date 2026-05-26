@@ -1,0 +1,21 @@
+{
+  "time_delta": "无",
+  "location_changes": [],
+  "inventory_changes": [],
+  "relationship_changes": [],
+  "new_facts": [],
+  "contradictions": [],
+  "npc_memory_writes": [
+    {
+      "npc_id": "npc_old_hermit",
+      "memory": "一个陌生修士在黑风岭边缘向他问路，询问血灵芝的方向。",
+      "memory_type": "episodic",
+      "source": "saw",
+      "visibility_path": "direct_visual",
+      "confidence": 0.8,
+      "emotional_valence": 0,
+      "salience": 0.5
+    }
+  ],
+  "open_threads": []
+}

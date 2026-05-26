@@ -1,0 +1,4 @@
+{"record_type":"node","id":"loc_old_dock","node_type":"Location","name":"旧码头","created_at":"第 1 日 20:00","summary":"潮湿、破败、适合秘密交易的河港码头。"}
+{"record_type":"node","id":"npc_mira","node_type":"NPC","name":"米拉","created_at":"第 1 日 20:00","summary":"消息贩子，常在旧码头附近活动。"}
+{"record_type":"node","id":"thread_black_lantern_deal","node_type":"Quest","name":"黑灯会的旧码头交易","created_at":"第 1 日 20:00","summary":"关于黑灯会将在旧码头交易的传言。"}
+{"record_type":"edge","id":"edge_mira_believes_deal","edge_type":"BELIEVES","from":"npc_mira","to":"thread_black_lantern_deal","fact":"米拉相信黑灯会会在第 1 日 23:00 于旧码头交易。","source":"rumor","confidence":0.63,"valid_at":"第 1 日 20:00","invalid_at":null,"visibility":"private","salience":0.82}

@@ -1,0 +1,76 @@
+{
+  "quests": [
+    {
+      "id": "thread_blood_spirit_mushroom",
+      "title": "黑风岭的血灵芝",
+      "status": "active",
+      "countdown_ticks": 1,
+      "countdown_max": 4,
+      "countdown_unit": "时辰",
+      "failure_consequence": "血灵芝被魔修摘走，苏墨失去救故人的唯一机会",
+      "clues": [
+        {
+          "id": "clue_qi_fluctuation",
+          "text": "牌坊禁制多次指向黑风岭的灵力波动",
+          "found": false,
+          "leads_to": [
+            "investigate_ridge"
+          ]
+        },
+        {
+          "id": "clue_mushroom_rumor",
+          "text": "坊市流言：黑风岭产了异样灵草",
+          "found": true,
+          "leads_to": [
+            "ask_qian",
+            "ask_su_mo"
+          ]
+        }
+      ],
+      "obstacles": [
+        {
+          "id": "obs_liu_qing_gate",
+          "text": "柳青看守坊市出口，登记出入修士",
+          "bypass": "出示信物、登记或等换岗"
+        },
+        {
+          "id": "obs_demonic_scouts",
+          "text": "魔修探子已靠近黑风岭外围",
+          "bypass": "绕路或隐匿行进"
+        }
+      ],
+      "intervention_nodes": [
+        {
+          "id": "investigate_ridge",
+          "text": "前往黑风岭调查",
+          "type": "player_action",
+          "requires": [],
+          "stops_clock": false
+        },
+        {
+          "id": "ask_qian",
+          "text": "向钱百味打听黑风岭药材",
+          "type": "social",
+          "requires": [],
+          "stops_clock": false
+        },
+        {
+          "id": "ask_su_mo",
+          "text": "注意茶摊角落的灰袍散修",
+          "type": "social",
+          "requires": [],
+          "stops_clock": false
+        },
+        {
+          "id": "escort_su_mo",
+          "text": "与苏墨结伴入黑风岭采药",
+          "type": "player_action",
+          "requires": [
+            "ask_su_mo"
+          ],
+          "stops_clock": true
+        }
+      ]
+    }
+  ]
+}

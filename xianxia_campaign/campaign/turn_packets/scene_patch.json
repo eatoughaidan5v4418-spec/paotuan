@@ -1,0 +1,67 @@
+{
+  "time_delta": "5 分钟",
+  "location_changes": [
+    {
+      "entity_id": "pc_main",
+      "from": "zone_market_entrance",
+      "to": "zone_market_stalls",
+      "reason": "玩家进入坊市主街，走向摊位"
+    }
+  ],
+  "inventory_changes": [],
+  "relationship_changes": [
+    {
+      "a": "npc_liu_qing",
+      "b": "pc_main",
+      "metric": "trust",
+      "delta": 0,
+      "reason": "柳青被怼后反而觉得此人直爽——至少不是心怀鬼胎的那种"
+    }
+  ],
+  "new_facts": [
+    {
+      "fact": "玩家声称是初到此地、不了解青云界修炼体系",
+      "visibility": "private",
+      "source": "玩家与柳青对话"
+    }
+  ],
+  "contradictions": [],
+  "npc_memory_writes": [
+    {
+      "npc_id": "npc_liu_qing",
+      "memory": "一个陌生修士在坊市入口盘问下毫不畏缩，反呛我坊市规矩。此人不是散修做派——但至少直来直去，不像在隐瞒什么。",
+      "memory_type": "episodic",
+      "source": "saw",
+      "visibility_path": "direct_visual",
+      "confidence": 0.9,
+      "emotional_valence": 0.2,
+      "salience": 0.65
+    },
+    {
+      "npc_id": "npc_qian_baiwei",
+      "memory": "牌坊下那个生面孔和柳青说了几句话。柳青被说得耳根发红——有趣，难得见这小子吃瘪。这人径直朝摊位区走来了。",
+      "memory_type": "episodic",
+      "source": "saw",
+      "visibility_path": "direct_visual",
+      "confidence": 0.7,
+      "emotional_valence": 0.3,
+      "salience": 0.5
+    },
+    {
+      "npc_id": "npc_su_mo",
+      "memory": "坊市入口有个新来的修士和青云门的外门弟子说了几句。距离太远听不清内容，但那人没有被拦下——看来不是寻常散修。",
+      "memory_type": "episodic",
+      "source": "saw",
+      "visibility_path": "direct_visual",
+      "confidence": 0.5,
+      "emotional_valence": 0.1,
+      "salience": 0.4
+    }
+  ],
+  "open_threads": [
+    {
+      "thread": "玩家开始在坊市收集青云界基础信息",
+      "next_pressure": "血灵芝倒计时继续推进"
+    }
+  ]
+}

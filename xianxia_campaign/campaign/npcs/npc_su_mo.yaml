@@ -1,0 +1,39 @@
+id: npc_su_mo
+name: 苏墨
+role: 来历不明的散修
+faction: faction_loose_cultivators
+location_id: loc_azure_cloud_market
+public_face: "灰袍遮身，面容削瘦，坐在茶摊角落，面前一盏茶凉了也没喝。"
+core_desire: "找到血灵芝以炼制还魂丹，救一个被魔修功法反噬的故人。"
+fear: "被青云门或魔修残党认出真实身份。"
+bottom_line: "不让任何人知道他也会炼制高阶丹药。"
+traits:
+  personality_tags: ["隐忍", "执着", "观察型", "身负秘密"]
+  instinct: "先观察对方是否被跟踪，说话只说半截。"
+  stress_response: "撤退——感到暴露风险时优先脱离接触。"
+  social_approach: "试探型——用半句话引对方暴露意图。"
+  cognitive_bias: "过度警觉——倾向于把好奇心解读为别有用心。"
+voice_style:
+  pace: "慢，字斟句酌。"
+  habits:
+    - "先观察对方是否跟踪或被人跟踪。"
+    - "说话只说半截，等对方接话。"
+  forbidden_topics:
+    - "他的故人"
+    - "他为何不在任何宗门"
+known_facts: []
+false_beliefs: []
+secrets:
+  - id: secret_su_mo_alchemist
+    text: "苏墨曾是药王谷叛逃弟子，精通丹术但被通缉。"
+relationship_hooks:
+  - target_id: pc_main
+    trust: 0
+    fear: 0
+    debt: 0
+change_switches:
+  trust:
+    - "玩家协助他入黑风岭采药。"
+    - "玩家替他遮掩行迹。"
+  threat:
+    - "玩家向青云门或魔修出卖他的行踪。"

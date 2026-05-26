@@ -1,0 +1,3 @@
+{"id":"mem_mira_0001","owner_npc_id":"npc_mira","type":"episodic","content":"米拉在第 1 日傍晚听到两个水手谈起黑灯会会在 23:00 前后到旧码头。","observed_at":"第 1 日 18:30","location_id":"loc_old_dock","source":"heard","confidence":0.63,"salience":0.82,"emotional_valence":-1,"visibility":"private","related_entities":["thread_black_lantern_deal","loc_old_dock"],"valid_at":"第 1 日 18:30","invalid_at":null}
+{"id":"mem_mira_0002","owner_npc_id":"npc_mira","type":"semantic","content":"旧码头北侧废仓库有一扇卡住的侧门，瘦小的人可以挤进去。","observed_at":"第 1 日以前","location_id":"loc_old_dock","source":"saw","confidence":0.95,"salience":0.55,"emotional_valence":0,"visibility":"private","related_entities":["loc_old_dock"],"valid_at":"第 1 日以前","invalid_at":null}
+

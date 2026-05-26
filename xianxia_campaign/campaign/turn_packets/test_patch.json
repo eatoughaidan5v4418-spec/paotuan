@@ -1,0 +1,50 @@
+{
+  "time_delta": "10 分钟",
+  "location_changes": [],
+  "inventory_changes": [],
+  "relationship_changes": [
+    {
+      "a": "npc_liu_qing",
+      "b": "pc_main",
+      "metric": "trust",
+      "delta": 1,
+      "reason": "玩家礼貌行礼且没有隐瞒来意"
+    }
+  ],
+  "new_facts": [
+    {
+      "fact": "牌坊禁制连日多次被黑风岭方向的灵力波动触发",
+      "visibility": "private",
+      "source": "柳青透露"
+    }
+  ],
+  "contradictions": [],
+  "npc_memory_writes": [
+    {
+      "npc_id": "npc_liu_qing",
+      "memory": "一个外来的修士在坊市入口向我行礼，问起黑风岭灵气异动。此人态度恭敬，不像魔修。",
+      "memory_type": "episodic",
+      "source": "saw",
+      "visibility_path": "direct_visual",
+      "confidence": 0.85,
+      "emotional_valence": 0.3,
+      "salience": 0.55
+    },
+    {
+      "npc_id": "npc_su_mo",
+      "memory": "茶摊远处听到有人在坊市入口与柳青交谈，提到了黑风岭。此人也在关注血灵芝。",
+      "memory_type": "episodic",
+      "source": "heard",
+      "visibility_path": "overheard",
+      "confidence": 0.5,
+      "emotional_valence": 0.2,
+      "salience": 0.6
+    }
+  ],
+  "open_threads": [
+    {
+      "thread": "玩家获知牌坊禁制异常，下一步可调查黑风岭或询问钱百味",
+      "next_pressure": "血灵芝倒计时继续推进"
+    }
+  ]
+}

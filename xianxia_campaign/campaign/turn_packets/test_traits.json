@@ -1,0 +1,21 @@
+{
+  "time_delta": "无",
+  "location_changes": [],
+  "inventory_changes": [],
+  "relationship_changes": [],
+  "new_facts": [],
+  "contradictions": [],
+  "npc_memory_writes": [
+    {
+      "npc_id": "npc_drunken_swordsman",
+      "memory": "一个满身酒气的剑客在茶摊上骂骂咧咧，说黑风岭的魔修残党抢了他的买卖。",
+      "memory_type": "episodic",
+      "source": "saw",
+      "visibility_path": "direct_visual",
+      "confidence": 0.7,
+      "emotional_valence": -0.5,
+      "salience": 0.55
+    }
+  ],
+  "open_threads": []
+}

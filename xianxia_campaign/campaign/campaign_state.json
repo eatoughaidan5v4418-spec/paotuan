@@ -1,0 +1,115 @@
+{
+  "campaign_id": "xianxia_001",
+  "title": "青云坊市遗宝",
+  "current_turn": 1,
+  "current_time": "第 1 日 08:25",
+  "_time_tick": 505,
+  "current_scene": {
+    "scene_id": "scene_0001",
+    "location_id": "loc_azure_cloud_market",
+    "summary": "玩家抵达青云坊市，血灵芝的传言刚在集市散开。",
+    "present_entities": [
+      "npc_liu_qing"
+    ],
+    "active_threads": [
+      "thread_blood_spirit_mushroom"
+    ]
+  },
+  "player_characters": [
+    {
+      "id": "pc_main",
+      "name": "洛衍",
+      "location_id": "zone_market_stalls",
+      "inventory": [
+        "残破铁剑",
+        "云游观弟子令牌(裂)",
+        "引气诀残卷",
+        "下品灵石x4",
+        "止血草药x2",
+        "异香草x1"
+      ],
+      "conditions": [],
+      "realm": "炼气二层",
+      "realm_level": 2,
+      "spiritual_root": "木火双灵根",
+      "health": 8,
+      "max_health": 12,
+      "qi": 3,
+      "max_qi": 6,
+      "stats": {
+        "combat": 1,
+        "perception": 1,
+        "social": -1
+      },
+      "former_name": "洛衍",
+      "memories_of_former_self": [
+        "云游观被灭那晚的火光和惨叫声",
+        "师尊最后塞给他令牌时说的那句话——'去找青云山脉的……'后半句被爆炸淹没",
+        "黑风岭采药时闻到一股浓烈的血腥味，然后眼前一黑",
+        "自己叫洛衍，二十一岁，木火双灵根，炼气二层"
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "thread_blood_spirit_mushroom",
+      "title": "黑风岭的血灵芝",
+      "status": "active",
+      "known_to_players": true,
+      "pressure": "若无人干预，血灵芝将在第 2 日子时成熟并被摘走。"
+    }
+  ],
+  "rules": {
+    "system": "rules_lightweight_d20",
+    "dice_policy": "玩家或程序掷骰，GM 根据结果描述后果。"
+  },
+  "known_facts": [
+    {
+      "id": "fact_0001",
+      "text": "牌坊禁制连日多次被黑风岭方向的灵力波动触发",
+      "visibility": "private",
+      "source": "柳青透露",
+      "created_turn": 1,
+      "valid": true
+    },
+    {
+      "id": "fact_0002",
+      "text": "牌坊禁制连日多次被黑风岭方向的灵力波动触发",
+      "visibility": "private",
+      "source": "柳青透露",
+      "created_turn": 1,
+      "valid": true
+    },
+    {
+      "id": "fact_0003",
+      "text": "玩家声称是初到此地、不了解青云界修炼体系",
+      "visibility": "private",
+      "source": "玩家与柳青对话",
+      "created_turn": 1,
+      "valid": true
+    }
+  ],
+  "open_threads": [
+    {
+      "id": "open_thread_0001",
+      "description": "玩家获知牌坊禁制异常，下一步可调查黑风岭或询问钱百味",
+      "next_pressure": "血灵芝倒计时继续推进",
+      "created_turn": 1,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0002",
+      "description": "玩家获知牌坊禁制异常，下一步可调查黑风岭或询问钱百味",
+      "next_pressure": "血灵芝倒计时继续推进",
+      "created_turn": 1,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0003",
+      "description": "玩家开始在坊市收集青云界基础信息",
+      "next_pressure": "血灵芝倒计时继续推进",
+      "created_turn": 1,
+      "status": "active"
+    }
+  ]
+}

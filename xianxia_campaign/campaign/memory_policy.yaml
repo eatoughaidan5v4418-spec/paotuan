@@ -1,0 +1,117 @@
+id: npc_memory_policy_v1
+description: "NPC 记忆根据时间、重要程度、回忆次数、情绪强度、置信度和场景相关性分层。"
+half_life_turns: 12
+score_weights:
+  importance: 0.35
+  salience: 0.20
+  recency: 0.15
+  recall: 0.15
+  emotion: 0.10
+  confidence: 0.05
+tiers:
+  core:
+    min_score: 0.78
+    description: "身份核心、重大创伤、救命恩情、长期目标，几乎总能影响行动。"
+  active:
+    min_score: 0.48
+    description: "当前场景或近期会用到，优先放进上下文。"
+  dormant:
+    min_score: 0.22
+    description: "不主动加载，但相关实体出现时可被唤起。"
+  archive:
+    min_score: 0.0
+    description: "保留审计和深度检索，默认不主动影响行动。"
+recall_count_rules:
+  increment_when:
+    - "记忆影响 NPC 态度。"
+    - "记忆影响 NPC 行动计划。"
+    - "记忆被 NPC 在对话中提及。"
+    - "记忆被用于判断 NPC 是否知道某秘密。"
+    - "记忆解释 NPC 的帮助、撒谎、回避、背叛或交易条件。"
+  do_not_increment_when:
+    - "只是被检索出来，但没有实际影响回应或状态。"
+memory_write_rules:
+  write_when:
+    - "NPC 亲眼见到重要行动。"
+    - "NPC 听到可信或有用的传言。"
+    - "NPC 关系、目标、恐惧、利益发生变化。"
+    - "玩家救助、欺骗、威胁、背叛、交易或承诺。"
+    - "秘密被揭露、误解、证伪或传播。"
+    - "NPC 因事件形成新计划。"
+privacy_rules:
+  - "NPC 不会自动知道不在场、没人告诉他、也无法合理推断的信息。"
+  - "全局真相、玩家已知、NPC 私有认知必须分开。"
+  - "旧记忆被推翻时标记失效，不删除。"
+visibility_rules:
+  visibility_paths:
+    - "direct_visual"
+    - "direct_auditory"
+    - "detected_observer"
+    - "told_by"
+    - "overheard"
+    - "inferred"
+    - "public_signal"
+    - "none"
+  rules:
+    - "全局事件不等于 NPC 私有记忆。"
+    - "写入 NPC 记忆前必须先产生 event_visibility_view。"
+    - "memory_allowed 为 false 时不得写入该 NPC 记忆。"
+    - "另一个 NPC 的私有记忆不能被复制，只能通过通信事件传播。"
+    - "接收者只能记住收到的信息版本，不自动获得客观真相。"
+interpretation_rules:
+  extract_when:
+    - "事件影响 NPC 的目标、安全、秘密、关系、利益或计划。"
+    - "NPC 可能对同一事件产生误解、怀疑、感激、恐惧或新的判断。"
+    - "事件来自转述、谣言或模糊证据，需要保留主观置信度。"
+  dimensions:
+    - "goal_impact"
+    - "threat_level"
+    - "opportunity_level"
+    - "agency"
+    - "moral_judgment"
+    - "relationship_signal"
+understanding_rules:
+  consolidate_when:
+    - "至少两条相关事件理解支持同一模式。"
+    - "单条事件极端重要，足以改变 NPC 的长期行为规则。"
+    - "新证据反复强化或反驳旧理解。"
+  types:
+    - "belief"
+    - "attitude"
+    - "relationship_judgment"
+    - "schema"
+    - "plan_rule"
+    - "self_understanding"
+  conflict_policy:
+    - "新证据与旧理解冲突时，先降低 confidence 或 stability。"
+    - "强反证出现时生成竞争理解，不直接删除旧理解。"
+revision_rules:
+  effects:
+    - "supports"
+    - "weakens"
+    - "contradicts"
+    - "qualifies"
+    - "reframes"
+    - "supersedes"
+    - "splits"
+    - "no_change"
+  statuses:
+    - "active"
+    - "contested"
+    - "weakened"
+    - "superseded"
+    - "archived"
+  evidence_strength_factors:
+    - "relevance"
+    - "new_interpretation_confidence"
+    - "new_interpretation_importance"
+    - "source_reliability"
+  source_reliability:
+    saw: 1.0
+    heard: 0.75
+    inferred: 0.6
+    rumor: 0.4
+  rules:
+    - "旧理解不删除，只改变状态、置信度、稳定度和层级。"
+    - "高 stability 的理解被反驳时先进入 contested，而不是立刻消失。"
+    - "superseded 的理解仍可被压力、旧关系或强相关场景触发。"

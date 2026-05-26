@@ -1,0 +1,37 @@
+{
+  "npc_id": "npc_drunken_swordsman",
+  "current_turn": 1,
+  "memory_policy_id": "npc_memory_policy_v1",
+  "memory_nodes": [
+    {
+      "id": "mem_npc_drunken_swordsman_0001",
+      "type": "episodic",
+      "content": "一个满身酒气的剑客在茶摊上骂骂咧咧，说黑风岭的魔修残党抢了他的买卖。",
+      "created_turn": 1,
+      "last_recalled_turn": 1,
+      "recall_count": 0,
+      "importance": 0.55,
+      "salience": 0.55,
+      "emotional_valence": -0.5,
+      "confidence": 0.7,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "npc_drunken_swordsman",
+        "loc_azure_cloud_market"
+      ],
+      "visibility_path": "direct_visual",
+      "observed_at": "第 1 日 08:20",
+      "location_id": "loc_azure_cloud_market"
+    }
+  ],
+  "interpretation_nodes": [],
+  "understanding_nodes": [],
+  "revision_events": [],
+  "relation_edges": [],
+  "beliefs": [],
+  "plans": []
+}

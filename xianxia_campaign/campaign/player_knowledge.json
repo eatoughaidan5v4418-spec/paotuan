@@ -1,0 +1,63 @@
+{
+  "clues_discovered": [],
+  "npcs_known": [
+    {
+      "id": "npc_liu_qing",
+      "known_as": "柳青",
+      "known_role": "青云门外门弟子",
+      "first_met_turn": 1,
+      "last_interaction_turn": 1
+    }
+  ],
+  "locations_explored": [
+    {
+      "id": "loc_azure_cloud_market",
+      "name": "青云坊市",
+      "notes": "青云山脚的修士市集"
+    },
+    {
+      "id": "loc_black_wind_ridge",
+      "name": "黑风岭外围",
+      "notes": "原主在此昏迷。灵气紊乱。有血腥味。"
+    }
+  ],
+  "facts_understood": [
+    {
+      "fact": "黑风岭近日有血灵芝传闻",
+      "confidence": "rumor",
+      "source": "坊市流言",
+      "learned_turn": 1
+    },
+    {
+      "fact": "魔修残党在附近活动",
+      "confidence": "suspected",
+      "source": "坊市流言",
+      "learned_turn": 1
+    },
+    {
+      "fact": "原主洛衍是云游观末代弟子，观灭后独自流浪",
+      "confidence": "confirmed",
+      "source": "魂穿后的残留记忆",
+      "learned_turn": 1
+    },
+    {
+      "fact": "云游观被灭可能与某种'不该知道的东西'有关",
+      "confidence": "suspected",
+      "source": "师尊最后那句话的碎片",
+      "learned_turn": 1
+    },
+    {
+      "fact": "原主在黑风岭昏迷前闻到了浓烈血腥味——那是血灵芝成熟的前兆",
+      "confidence": "suspected",
+      "source": "魂穿时的残留感官记忆",
+      "learned_turn": 1
+    },
+    {
+      "fact": "原主采到的那株异香草比正常年份早了三天——黑风岭灵气异常",
+      "confidence": "confirmed",
+      "source": "物品栏中的异香草实物",
+      "learned_turn": 1
+    }
+  ],
+  "events_witnessed": []
+}

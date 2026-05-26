@@ -1,0 +1,279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NPC Memory Graph",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "npc_id",
+    "current_turn",
+    "memory_policy_id",
+    "memory_nodes",
+    "interpretation_nodes",
+    "understanding_nodes",
+    "relation_edges",
+    "beliefs",
+    "plans"
+  ],
+  "properties": {
+    "npc_id": {"type": "string"},
+    "current_turn": {"type": "integer", "minimum": 0},
+    "memory_policy_id": {"type": "string"},
+    "memory_nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "type",
+          "content",
+          "created_turn",
+          "last_recalled_turn",
+          "recall_count",
+          "importance",
+          "salience",
+          "emotional_valence",
+          "confidence",
+          "source",
+          "tier",
+          "valid",
+          "invalid_at_turn",
+          "contradicted_by",
+          "related_entities"
+        ],
+        "properties": {
+          "id": {"type": "string"},
+          "type": {"enum": ["episodic", "semantic", "procedural"]},
+          "content": {"type": "string"},
+          "created_turn": {"type": "integer", "minimum": 0},
+          "last_recalled_turn": {"type": "integer", "minimum": 0},
+          "recall_count": {"type": "integer", "minimum": 0},
+          "importance": {"type": "number", "minimum": 0, "maximum": 1},
+          "salience": {"type": "number", "minimum": 0, "maximum": 1},
+          "emotional_valence": {"type": "number", "minimum": -2, "maximum": 2},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "score": {"type": "number", "minimum": 0, "maximum": 1},
+          "source": {"enum": ["saw", "heard", "inferred", "rumor"]},
+          "tier": {"enum": ["core", "active", "dormant", "archive"]},
+          "valid": {"type": "boolean"},
+          "invalid_at_turn": {"type": ["integer", "null"], "minimum": 0},
+          "contradicted_by": {"type": ["string", "null"]},
+          "related_entities": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "visibility_path": {"enum": ["direct_visual", "direct_auditory", "detected_observer", "told_by", "overheard", "inferred", "public_signal"]},
+          "observed_at": {"type": "string"},
+          "location_id": {"type": "string"}
+        }
+      }
+    },
+    "interpretation_nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "npc_id",
+          "derived_from_event_id",
+          "derived_from_memory_id",
+          "text",
+          "appraisal",
+          "emotion",
+          "confidence",
+          "importance",
+          "related_entities",
+          "possible_misunderstanding"
+        ],
+        "properties": {
+          "id": {"type": "string"},
+          "npc_id": {"type": "string"},
+          "derived_from_event_id": {"type": "string"},
+          "derived_from_memory_id": {"type": "string"},
+          "text": {"type": "string"},
+          "appraisal": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "goal_impact",
+              "threat_level",
+              "opportunity_level",
+              "agency",
+              "moral_judgment",
+              "relationship_signal"
+            ],
+            "properties": {
+              "goal_impact": {"enum": ["helps", "blocks", "neutral", "unclear"]},
+              "threat_level": {"type": "number", "minimum": 0, "maximum": 1},
+              "opportunity_level": {"type": "number", "minimum": 0, "maximum": 1},
+              "agency": {"enum": ["player", "npc", "unknown", "environment", "faction"]},
+              "moral_judgment": {"enum": ["good", "bad", "mixed", "irrelevant", "unknown"]},
+              "relationship_signal": {"enum": ["trust", "suspicion", "fear", "debt", "respect", "none"]}
+            }
+          },
+          "emotion": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["label", "valence", "intensity"],
+            "properties": {
+              "label": {"enum": ["fear", "anger", "relief", "curiosity", "shame", "hope", "none"]},
+              "valence": {"type": "number", "minimum": -2, "maximum": 2},
+              "intensity": {"type": "number", "minimum": 0, "maximum": 1}
+            }
+          },
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "importance": {"type": "number", "minimum": 0, "maximum": 1},
+          "related_entities": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "possible_misunderstanding": {"type": "boolean"}
+        }
+      }
+    },
+    "understanding_nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "npc_id",
+          "type",
+          "text",
+          "supporting_interpretation_ids",
+          "supporting_memory_ids",
+          "contradicting_interpretation_ids",
+          "confidence",
+          "stability",
+          "importance",
+          "tier",
+          "revision_status",
+          "version",
+          "last_updated_turn",
+          "superseded_by",
+          "behavior_effect"
+        ],
+        "properties": {
+          "id": {"type": "string"},
+          "npc_id": {"type": "string"},
+          "type": {"enum": ["belief", "attitude", "relationship_judgment", "schema", "plan_rule", "self_understanding"]},
+          "text": {"type": "string"},
+          "supporting_interpretation_ids": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "supporting_memory_ids": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "contradicting_interpretation_ids": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "stability": {"type": "number", "minimum": 0, "maximum": 1},
+          "importance": {"type": "number", "minimum": 0, "maximum": 1},
+          "tier": {"enum": ["core", "active", "dormant", "archive"]},
+          "revision_status": {"enum": ["active", "contested", "weakened", "superseded", "archived"]},
+          "version": {"type": "integer", "minimum": 1},
+          "last_updated_turn": {"type": "integer", "minimum": 0},
+          "superseded_by": {"type": ["string", "null"]},
+          "behavior_effect": {"type": "string"}
+        }
+      }
+    },
+    "revision_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "npc_id",
+          "turn",
+          "new_event_id",
+          "target_understanding_id",
+          "effect",
+          "evidence_strength",
+          "confidence_delta",
+          "stability_delta",
+          "new_status",
+          "reason",
+          "source_interpretation_ids"
+        ],
+        "properties": {
+          "id": {"type": "string"},
+          "npc_id": {"type": "string"},
+          "turn": {"type": "integer", "minimum": 0},
+          "new_event_id": {"type": "string"},
+          "target_understanding_id": {"type": "string"},
+          "effect": {"enum": ["supports", "weakens", "contradicts", "qualifies", "reframes", "supersedes", "splits", "no_change"]},
+          "evidence_strength": {"type": "number", "minimum": 0, "maximum": 1},
+          "confidence_delta": {"type": "number", "minimum": -1, "maximum": 1},
+          "stability_delta": {"type": "number", "minimum": -1, "maximum": 1},
+          "new_status": {"enum": ["active", "contested", "weakened", "superseded", "archived"]},
+          "reason": {"type": "string"},
+          "source_interpretation_ids": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "relation_edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "type", "from", "to", "memory_id", "confidence", "valid"],
+        "properties": {
+          "id": {"type": "string"},
+          "type": {"type": "string"},
+          "from": {"type": "string"},
+          "to": {"type": "string"},
+          "memory_id": {"type": "string"},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "valid": {"type": "boolean"}
+        }
+      }
+    },
+    "beliefs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "text", "truth_status", "confidence", "source_memory_ids"],
+        "properties": {
+          "id": {"type": "string"},
+          "text": {"type": "string"},
+          "truth_status": {"enum": ["true", "false", "rumor", "unknown", "personal_rule"]},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "source_memory_ids": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "plans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "text", "priority", "source_memory_ids", "status"],
+        "properties": {
+          "id": {"type": "string"},
+          "text": {"type": "string"},
+          "priority": {"type": "number", "minimum": 0, "maximum": 1},
+          "source_memory_ids": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "status": {"enum": ["active", "paused", "completed", "invalid"]}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+Thumbs.db
+.env
+.env.local
+campaign/turn_packets/*.json
+campaign/turn_packets/*.md
+!campaign/turn_packets/.gitkeep
+campaign/ai_runs/*.json
+generated_campaigns/
+.playwright-cli/
+obsidian_vaults/

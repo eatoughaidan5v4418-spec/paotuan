@@ -1,0 +1,55 @@
+{
+  "campaign_id": "paotuan_demo",
+  "title": "未命名战役",
+  "current_turn": 1,
+  "current_time": "第 1 日 20:00",
+  "current_scene": {
+    "scene_id": "scene_0001",
+    "location_id": "loc_old_dock",
+    "summary": "玩家抵达旧码头，黑灯会交易的传言刚刚浮出水面。",
+    "present_entities": [
+      "pc_main",
+      "npc_mira"
+    ],
+    "active_threads": [
+      "thread_black_lantern_deal"
+    ]
+  },
+  "player_characters": [
+    {
+      "id": "pc_main",
+      "name": "玩家角色",
+      "location_id": "loc_old_dock",
+      "inventory": [],
+      "conditions": [],
+      "realm": "未感气",
+      "realm_level": 0,
+      "spiritual_root": "未测",
+      "health": 10,
+      "max_health": 10,
+      "qi": 0,
+      "max_qi": 0,
+      "stats": {
+        "combat": 0,
+        "perception": 0,
+        "social": 0
+      }
+    }
+  ],
+  "quests": [
+    {
+      "id": "thread_black_lantern_deal",
+      "title": "黑灯会的旧码头交易",
+      "status": "active",
+      "known_to_players": true,
+      "pressure": "如果无人干预，交易会在第 1 日 23:00 完成。"
+    }
+  ],
+  "rules": {
+    "system": "rules_lightweight_d20",
+    "dice_policy": "玩家或程序掷骰，GM 根据结果描述后果。"
+  },
+  "_time_tick": 1200,
+  "known_facts": [],
+  "open_threads": []
+}

@@ -1,0 +1,13 @@
+{
+  "npc_id": "npc_b_clerk",
+  "current_turn": 1,
+  "memory_policy_id": "npc_memory_policy_v1",
+  "memory_nodes": [],
+  "interpretation_nodes": [],
+  "understanding_nodes": [],
+  "revision_events": [],
+  "relation_edges": [],
+  "beliefs": [],
+  "plans": []
+}
+

@@ -1,0 +1,23 @@
+factions:
+  - id: faction_black_lantern
+    name: 黑灯会
+    type: criminal_society
+    public_reputation: "走私、放贷、失踪案都和他们若即若离。"
+    goals:
+      - "控制旧码头夜间货运。"
+      - "找出泄露巡逻路线的人。"
+    methods:
+      - "威胁"
+      - "收买"
+      - "制造替罪羊"
+    secrets:
+      - id: secret_black_lantern_cargo_unknown
+        text: "这次交易的货物尚未确定，传言彼此矛盾。"
+  - id: faction_unaligned_brokers
+    name: 无旗消息贩
+    type: loose_network
+    public_reputation: "不属于任何阵营，但什么都敢听一点，卖一点。"
+    goals:
+      - "活下去。"
+      - "让所有大人物都以为自己还有用。"
+

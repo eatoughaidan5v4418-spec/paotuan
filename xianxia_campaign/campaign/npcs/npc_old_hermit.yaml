@@ -1,0 +1,31 @@
+id: npc_old_hermit
+name: Old Hermit
+role: 待定
+faction: faction_unaligned
+location_id: loc_azure_cloud_market
+public_face: "待描述。初次出现时：一个陌生修士在黑风岭边缘向他问路，询问血灵芝的方向。"
+core_desire: "待定"
+fear: "待定"
+bottom_line: "待定"
+traits:
+  personality_tags: ["待定"]
+  instinct: "待定——根据后续事件发展补全。"
+  stress_response: "待定"
+  social_approach: "待定"
+  cognitive_bias: "待定"
+
+voice_style:
+  pace: "待定"
+  habits: []
+  forbidden_topics: []
+known_facts: []
+false_beliefs: []
+secrets: []
+relationship_hooks:
+  - target_id: pc_main
+    trust: 0
+    fear: 0
+    debt: 0
+change_switches:
+  trust: []
+  threat: []

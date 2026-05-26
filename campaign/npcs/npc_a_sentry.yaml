@@ -1,0 +1,28 @@
+id: npc_a_sentry
+name: A
+role: 旧码头巡夜人
+faction: faction_unaligned_brokers
+location_id: loc_old_dock
+public_face: "靠在旧仓库门边的巡夜人，手里提着一盏低亮度油灯。"
+core_desire: "今晚别惹出会牵连自己的麻烦。"
+fear: "被黑灯会或码头管事当成替罪羊。"
+bottom_line: "不会为了陌生人冒险作证。"
+traits:
+  personality_tags: ["懒散", "怕事", "守规矩", "明哲保身"]
+  instinct: "看到可疑情况先假装没注意，除非被点名。"
+  stress_response: "顺从——面对压力立刻配合，不反抗。"
+  social_approach: "回避型——能用一句话打发就不说两句。"
+  cognitive_bias: "消极预设——假设任何不寻常的事最终都会牵连自己。"
+voice_style:
+  pace: "慢，警惕，先问对方来意。"
+  habits:
+    - "说话时看对方手的位置。"
+known_facts: []
+false_beliefs: []
+secrets: []
+relationship_hooks: []
+change_switches:
+  trust:
+    - "玩家主动表明来意且不威胁他。"
+  threat:
+    - "玩家潜行失败或试图绕到他背后。"

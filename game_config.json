@@ -1,0 +1,26 @@
+{
+  "provider": "openai_compatible",
+  "base_url_env": "AI_BASE_URL",
+  "api_key_env": "AI_API_KEY",
+  "fallback_api_key_env": "OPENAI_API_KEY",
+  "model_env": "AI_MODEL",
+  "default_base_url": "https://api.openai.com/v1",
+  "default_model": "gpt-4.1-mini",
+  "auto_apply_patches": true,
+  "max_tool_rounds": 4,
+  "allowed_roots": [
+    "campaign",
+    "prompts",
+    "schemas"
+  ],
+  "auto_tasks": [
+    "read_runtime_protocol",
+    "prepare_turn_packet",
+    "resolve_visibility",
+    "write_private_memories",
+    "extract_interpretations",
+    "revise_understandings",
+    "apply_state_patch",
+    "append_session_log"
+  ]
+}
