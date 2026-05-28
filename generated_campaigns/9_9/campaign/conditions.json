@@ -11,9 +11,8 @@
           "severity": "normal"
         },
         {
-          "name": "晋升后遗症（轻微眩晕、感官过载）",
-          "severity": "normal",
-          "added_at": "AI state update"
+          "name": "晋升后遗症（轻微眩晕，感官过载已缓解）",
+          "severity": "normal"
         }
       ],
       "history": [
@@ -56,6 +55,11 @@
           "operation": "add",
           "condition": "晋升后遗症（轻微眩晕、感官过载）",
           "reason": "AI state update"
+        },
+        {
+          "operation": "set",
+          "condition": "['手指轻伤（裂开渗血）', '肩膀挫伤（轻度）', '晋升后遗症（轻微眩晕，感官过载已缓解）']",
+          "reason": "庇护法阵中和了部分感官过载"
         }
       ]
     }

@@ -1,25 +1,26 @@
 {
   "campaign_id": "tg001",
   "title": "廷根之夜",
-  "current_turn": 17,
-  "current_time": "第 1 日 02:30",
-  "_time_tick": 150,
+  "current_turn": 18,
+  "current_time": "第 1 日 02:40",
+  "_time_tick": 160,
   "current_scene": {
-    "location_id": "church_interior",
+    "location_id": "church_interior_confessional",
     "present_entities": [
-      "pc_player"
+      "pc_player",
+      "npc_top_hat_man"
     ],
     "active_threads": [
-      "open_thread_0040",
       "open_thread_0043",
       "open_thread_0044",
       "open_thread_0045",
       "open_thread_0046",
-      "open_thread_0047",
       "open_thread_0048",
-      "open_thread_0049"
+      "open_thread_0049",
+      "open_thread_0050",
+      "open_thread_0051"
     ],
-    "summary": "玩家抵达church_interior。"
+    "summary": "玩家抵达church_interior_confessional。"
   },
   "player_characters": [
     {
@@ -34,7 +35,7 @@
       "max_sanity": 7,
       "spirituality": 6,
       "max_spirituality": 6,
-      "location_id": "church_interior",
+      "location_id": "church_interior_confessional",
       "inventory": [
         "??",
         "??",
@@ -50,7 +51,7 @@
       "conditions": [
         "手指轻伤（裂开渗血）",
         "肩膀挫伤（轻度）",
-        "晋升后遗症（轻微眩晕、感官过载）"
+        "晋升后遗症（轻微眩晕，感官过载已缓解）"
       ],
       "stats": {
         "combat": 0,
@@ -619,7 +620,9 @@
       "description": "追踪者在维修间内搜索，尚未发现通风管道",
       "next_pressure": "瘦高个可能在1-2回合内发现通风口格栅被移动的痕迹，随后进入管道追踪。",
       "created_turn": 14,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 17,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0041",
@@ -672,7 +675,9 @@
       "description": "晋升后遗症：感官过载使玩家对光线和声响敏感，影响潜行和社交。",
       "next_pressure": "在嘈杂环境中持续暴露可能引发头痛或眩晕，降低感知和反应能力。",
       "created_turn": 15,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 17,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0048",
@@ -686,6 +691,20 @@
       "description": "警察正在封锁教堂区，已经发现了下水道井盖附近的血迹和脚印。封锁圈正在收缩，预计30分钟内将开始逐户搜查。",
       "next_pressure": "教堂虽然暂时隔绝了气息，但警察的搜查迟早会进入教堂内部。玩家需要在搜查开始前找到出路或获得庇护。",
       "created_turn": 16,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0050",
+      "description": "与戴圆顶礼帽男子的告解室会面：他准确知道你的序列和途径，正在等待你的回答。",
+      "next_pressure": "你必须在对话中做出决定：信任他并寻求帮助，还是保持警惕并随时准备撤离。警察随时可能进入教堂搜查，你的时间不多。",
+      "created_turn": 17,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0051",
+      "description": "廷根警察局已封锁教堂区外围，正在排查所有下水道出口。",
+      "next_pressure": "一旦警察完成外部封锁，很快就会进入教堂内部搜查。庇护法阵只能中和你的气息，不能让你隐形。",
+      "created_turn": 17,
       "status": "active"
     }
   ],
