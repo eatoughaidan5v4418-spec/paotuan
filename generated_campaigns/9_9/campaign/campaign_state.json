@@ -1,40 +1,40 @@
 {
   "campaign_id": "tg001",
   "title": "廷根之夜",
-  "current_turn": 11,
-  "current_time": "第 1 日 01:45",
-  "_time_tick": 105,
+  "current_turn": 14,
+  "current_time": "第 1 日 02:05",
+  "_time_tick": 125,
   "current_scene": {
-    "location_id": "police_station_back_alley",
+    "location_id": "sewer_maintenance_room",
     "present_entities": [
       "pc_player"
     ],
     "active_threads": [
-      "open_thread_0020",
-      "open_thread_0021",
-      "open_thread_0023",
-      "open_thread_0024",
-      "open_thread_0025",
-      "open_thread_0026",
-      "open_thread_0027",
-      "open_thread_0028"
+      "open_thread_0029",
+      "open_thread_0030",
+      "open_thread_0034",
+      "open_thread_0035",
+      "open_thread_0036",
+      "open_thread_0037",
+      "open_thread_0038",
+      "open_thread_0039"
     ],
-    "summary": "玩家抵达police_station_back_alley。"
+    "summary": "玩家抵达sewer_maintenance_room。"
   },
   "player_characters": [
     {
       "id": "pc_player",
       "name": "??????",
-      "sequence": 9,
-      "path": "???",
+      "sequence": 8,
+      "path": "占卜家",
       "status": "normal",
-      "health": 7,
+      "health": 6,
       "max_health": 8,
-      "sanity": 7,
+      "sanity": 5,
       "max_sanity": 7,
-      "spirituality": 4,
-      "max_spirituality": 4,
-      "location_id": "police_station_back_alley",
+      "spirituality": 6,
+      "max_spirituality": 6,
+      "location_id": "sewer_maintenance_room",
       "inventory": [
         "??",
         "??",
@@ -42,22 +42,22 @@
         "??",
         "??",
         "5??",
-        "狂乱人偶的线轴",
         "candle_stub",
         "ink_bottle_dregs",
         "charcoal_stick",
-        "rag_bandage_bloody",
-        "欢笑面具碎片"
+        "rag_bandage_bloody"
       ],
       "conditions": [
         "手指轻伤（裂开渗血）",
-        "肩膀挫伤（轻度）"
+        "肩膀挫伤（轻度）",
+        "晋升冲击（眩晕、幻觉、身体颤抖）"
       ],
       "stats": {
         "combat": 0,
         "perception": 1,
         "social": 0,
-        "occult": 1
+        "occult": 2,
+        "spirituality": 0
       },
       "traits": [
         "????",
@@ -244,6 +244,22 @@
       "source": "玩家行动",
       "created_turn": 9,
       "valid": true
+    },
+    {
+      "id": "fact_0021",
+      "text": "玩家已饮下序列8'小丑'魔药，正在晋升中",
+      "visibility": "public",
+      "source": "AI state extraction",
+      "created_turn": 13,
+      "valid": true
+    },
+    {
+      "id": "fact_0022",
+      "text": "晋升过程中非凡气息剧烈扩散，暴露位置",
+      "visibility": "public",
+      "source": "AI state extraction",
+      "created_turn": 13,
+      "valid": true
     }
   ],
   "open_threads": [
@@ -423,14 +439,18 @@
       "description": "PoliceStationInfiltration",
       "next_pressure": "换岗结束后的全楼巡逻将发现地下一层异常；瘦高个即将抵达警察局外围；封印时间继续流逝。",
       "created_turn": 8,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 11,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0021",
       "description": "PursuitBySlenderMan",
       "next_pressure": "瘦高个抵达后可能引发冲突或报警，暴露玩家位置。",
       "created_turn": 8,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 11,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0022",
@@ -446,41 +466,136 @@
       "description": "瘦高个追踪至警察局外围",
       "next_pressure": "如果瘦高个抵达警察局并发现异常，他可能触发警报或直接与你遭遇。",
       "created_turn": 9,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 11,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0024",
       "description": "渡鸦的血液占卜",
       "next_pressure": "渡鸦一旦定位成功，可能会直接潜入警察局或在外围设伏。",
       "created_turn": 9,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 11,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0025",
       "description": "证物室血迹暴露风险",
       "next_pressure": "巡逻间隙还剩约10分钟，之后警员可能发现异常并封锁出口。",
       "created_turn": 9,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 11,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0026",
       "description": "逃离警察局包围圈",
       "next_pressure": "警察将在2-3分钟内封锁警察局周边主要街道；瘦高个预计1分钟内抵达后巷；渡鸦约2分钟后抵达。若未能及时脱离，将陷入正面冲突。",
       "created_turn": 10,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 12,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0027",
       "description": "检查并处理两件非凡物品",
       "next_pressure": "封印时间每过10分钟就减少一份安全余量；若封印失效前未找到安全地点，线轴气息将暴露位置。",
       "created_turn": 10,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 12,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0028",
       "description": "处理伤口与恢复状态",
       "next_pressure": "伤口若不处理，持续失血可能导致体力下降；疼痛可能影响灵性感知的精准度。",
       "created_turn": 10,
+      "status": "dormant",
+      "archived_turn": 12,
+      "archive_reason": "superseded by newer active threads"
+    },
+    {
+      "id": "open_thread_0029",
+      "description": "玩家在废弃仓库中封印了狂乱人偶线轴，消耗1精神力。",
+      "next_pressure": "封印线轴",
+      "created_turn": 11,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0030",
+      "description": "玩家潜入警察局证物室，获取了欢笑面具碎片。",
+      "next_pressure": "获取面具碎片",
+      "created_turn": 11,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0031",
+      "description": "玩家进入下水道维修间，检查物品并尝试晋升。",
+      "next_pressure": "下水道藏身",
+      "created_turn": 11,
+      "status": "dormant",
+      "archived_turn": 13,
+      "archive_reason": "superseded by newer active threads"
+    },
+    {
+      "id": "open_thread_0032",
+      "description": "廷根警察局已发现证物室被盗，正在封锁周边区域。",
+      "next_pressure": "警察搜捕",
+      "created_turn": 11,
+      "status": "dormant",
+      "archived_turn": 13,
+      "archive_reason": "superseded by newer active threads"
+    },
+    {
+      "id": "open_thread_0033",
+      "description": "瘦高个正在沿着血迹追踪，方向大致指向警察局北侧。",
+      "next_pressure": "瘦高个追踪",
+      "created_turn": 11,
+      "status": "dormant",
+      "archived_turn": 13,
+      "archive_reason": "superseded by newer active threads"
+    },
+    {
+      "id": "open_thread_0034",
+      "description": "魔药调和出现排异，需寻找稳定容器并安抚冲突特性。",
+      "next_pressure": "若半小时内未稳定，魔药可能失效或反噬。",
+      "created_turn": 12,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0035",
+      "description": "有人从同一井口进入下水道，可能是瘦高个或其他追踪者。",
+      "next_pressure": "追踪者正沿管道搜索，预计5-10分钟内可能抵达维修间附近。",
+      "created_turn": 12,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0036",
+      "description": "下水道深处有未知生物惊动老鼠群，墙壁封印徽记闪烁。",
+      "next_pressure": "未知生物可能被魔药气息吸引，若封印徽记激活可能暂时压制，但也会暴露位置。",
+      "created_turn": 12,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0037",
+      "description": "晋升序列8'小丑'",
+      "next_pressure": "若晋升成功，玩家将获得新能力但暂时虚弱；若失败，将部分失控并吸引更多敌人。瘦高个可能在30秒内破门而入。",
+      "created_turn": 13,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0038",
+      "description": "追踪者包围网",
+      "next_pressure": "瘦高个正在评估情况，可能在1分钟内尝试破门。另一股力量（可能是渡鸦或警察）将在3-5分钟内抵达。",
+      "created_turn": 13,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0039",
+      "description": "下水道深处异常",
+      "next_pressure": "未知生物可能被吸引至维修间附近，增加新的威胁。",
+      "created_turn": 13,
       "status": "active"
     }
   ],

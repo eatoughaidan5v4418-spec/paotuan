@@ -9,6 +9,11 @@
         {
           "name": "肩膀挫伤（轻度）",
           "severity": "normal"
+        },
+        {
+          "name": "晋升冲击（眩晕、幻觉、身体颤抖）",
+          "severity": "normal",
+          "added_at": "正在晋升序列8，需抵抗失控"
         }
       ],
       "history": [
@@ -31,6 +36,16 @@
           "operation": "set",
           "condition": "['手指轻伤（裂开渗血）', '肩膀挫伤（轻度）']",
           "reason": "手指伤口在撬锁和破窗时再次裂开，新增肩膀挫伤。"
+        },
+        {
+          "operation": "set",
+          "condition": "['手指轻伤（裂开渗血）', '肩膀挫伤（轻度）']",
+          "reason": "AI state update"
+        },
+        {
+          "operation": "add",
+          "condition": "晋升冲击（眩晕、幻觉、身体颤抖）",
+          "reason": "正在晋升序列8，需抵抗失控"
         }
       ]
     }
