@@ -14,10 +14,37 @@
   "player_characters": [
     {
       "id": "pc_player",
-      "name": "玩家",
+      "name": "??????",
       "sequence": 9,
-      "path": "占卜家",
-      "status": "normal"
+      "path": "???",
+      "status": "normal",
+      "health": 8,
+      "max_health": 8,
+      "sanity": 7,
+      "max_sanity": 7,
+      "spirituality": 4,
+      "max_spirituality": 4,
+      "location_id": "zoutend_street",
+      "inventory": [
+        "??",
+        "??",
+        "????",
+        "??",
+        "??",
+        "5??"
+      ],
+      "conditions": [],
+      "stats": {
+        "combat": 0,
+        "perception": 1,
+        "social": 0,
+        "occult": 1
+      },
+      "traits": [
+        "????",
+        "????"
+      ],
+      "description": "???????????????????9????????????????????????????????"
     }
   ],
   "quests": [

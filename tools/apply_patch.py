@@ -172,8 +172,8 @@ def update_npc_profile_location(root: Path, entity_id: str, new_location: str, d
     return new_text != text
 
 
-NUMERIC_PLAYER_FIELDS = {"health", "max_health", "qi", "max_qi", "realm_level", "system_rank", "effect_points"}
-TEXT_PLAYER_FIELDS = {"name", "realm", "spiritual_root", "location_id", "description"}
+NUMERIC_PLAYER_FIELDS = {"health", "max_health", "qi", "max_qi", "realm_level", "system_rank", "effect_points", "sequence", "sanity", "max_sanity", "spirituality", "max_spirituality"}
+TEXT_PLAYER_FIELDS = {"name", "realm", "spiritual_root", "location_id", "description", "path", "status"}
 LIST_PLAYER_FIELDS = {"traits", "conditions", "special_effects", "inventory"}
 PLAYER_STATE_FIELDS = NUMERIC_PLAYER_FIELDS | TEXT_PLAYER_FIELDS | LIST_PLAYER_FIELDS | {
     "condition",
