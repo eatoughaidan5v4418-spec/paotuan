@@ -45,8 +45,10 @@ def main():
     parser = argparse.ArgumentParser(description="View quest/threat graphs.")
     parser.add_argument("--file", type=Path, default=Path("campaign/quest_graph.json"))
     sub = parser.add_subparsers(dest="command", required=True)
-    sub.add_parser("list")
-    sp = sub.add_parser("show")
+    list_p = sub.add_parser("list")
+    list_p.add_argument("--file", type=Path, default=Path("campaign/quest_graph.json"))
+    sp = show_p = sub.add_parser("show")
+    show_p.add_argument("--file", type=Path, default=Path("campaign/quest_graph.json"))
     sp.add_argument("quest_id")
 
     args = parser.parse_args()

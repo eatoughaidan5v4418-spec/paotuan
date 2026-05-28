@@ -77,16 +77,20 @@ def main():
     parser.add_argument("--file", type=Path, default=Path("campaign/conditions.json"))
     sub = parser.add_subparsers(dest="command", required=True)
 
-    sub.add_parser("list")
-    sp = sub.add_parser("add")
+    list_p = sub.add_parser("list")
+    list_p.add_argument("--file", type=Path, default=Path("campaign/conditions.json"))
+    sp = add_p = sub.add_parser("add")
+    add_p.add_argument("--file", type=Path, default=Path("campaign/conditions.json"))
     sp.add_argument("entity_id")
     sp.add_argument("condition")
     sp.add_argument("--note", default="")
-    sp = sub.add_parser("remove")
+    sp = remove_p = sub.add_parser("remove")
+    remove_p.add_argument("--file", type=Path, default=Path("campaign/conditions.json"))
     sp.add_argument("entity_id")
     sp.add_argument("condition")
     sp.add_argument("--note", default="")
-    sp = sub.add_parser("known")
+    sp = known_p = sub.add_parser("known")
+    known_p.add_argument("--file", type=Path, default=Path("campaign/conditions.json"))
 
     args = parser.parse_args()
     data = load_conditions(args.file)
@@ -94,8 +98,10 @@ def main():
     if args.command == "list":
         list_conditions(data)
     elif args.command == "add":
-        print(add_condition(data, args.entity_id, args.condition, args.note))
-        save_conditions(args.file, data)
+        msg = add_condition(data, args.entity_id, args.condition, args.note)
+        print(msg)
+        if "already has" not in msg:
+            save_conditions(args.file, data)
     elif args.command == "remove":
         print(remove_condition(data, args.entity_id, args.condition, args.note))
         save_conditions(args.file, data)
