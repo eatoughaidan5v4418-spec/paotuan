@@ -14,24 +14,24 @@
 }
 ```
 
-**player_state_changes field (?????):**
-- `health`, `max_health`, `qi`, `max_qi` ? ?????? delta
+**player_state_changes field (\u53ef\u4fee\u6539\u5b57\u6bb5):**
+- `health`, `max_health`, `qi`, `max_qi` \u2014 \u652f\u6301\u6570\u503c delta
 - `realm_level` ? ??
 - `realm`, `spiritual_root`, `name`, `location_id` ? ??
-- `system_rank` ? ?????
-- `effect_points` ? ??????
-- `special_effects` ? ???????
+- `system_rank` \u2014 \u6574\u6570\u503c
+- `effect_points` \u2014 \u6574\u6570\u503c
+- `special_effects` \u2014 \u5217\u8868\u64cd\u4f5c
 - `description` ? ??
-- `stats.xxx` ? ??? (? stats.strength)
-- `conditions` ? ????
+- `stats.xxx` \u2014 \u5d4c\u5957\u5b57\u6bb5 (\u5982 stats.strength)
+- `conditions` \u2014 \u5217\u8868\u64cd\u4f5c
 
 **player_state_changes operation (??):**
 - `set` ? ??
 - `add` ? ??/??
 - `remove` ? ??
-- `delta` ? ???? (??? delta ??)
+- `delta` \u2014 \u6570\u503c\u53d8\u5316 (\u4e0e value \u4e92\u65a5)
 
-**inventory_changes change (?????):**
+**inventory_changes change (\u53ef\u80fd\u503c):**
 - `gain` / `lose` / `consume` / `damage` / `repair` / `move`
 
 **location_changes ?? (??):**

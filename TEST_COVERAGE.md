@@ -1,129 +1,128 @@
-# Paotuan ????????
+# Paotuan \u9879\u76ee\u6d4b\u8bd5\u8986\u76d6\u62a5\u544a
 
-> ????: 2026-05-28
-> ????: 11 ?
-> ????: 37 ?
-> Git commits: 14
+> \u751f\u6210\u65f6\u95f4: 2026-05-28
+> \u5ba1\u8ba1\u8f6e\u6b21: 13 \u8f6e
+> \u6f0f\u6d1e\u4fee\u590d: 38 \u4e2a
+> Git commits: 18
 
 ---
 
-## ???????
+## \u4e00\u3001\u81ea\u52a8\u5316\u6d4b\u8bd5
 
 ### pytest (59 tests, 9 subtests)
 
-| ???? | ??? | ???? |
+| \u6d4b\u8bd5\u6587\u4ef6 | \u6d4b\u8bd5\u6570 | \u8986\u76d6\u8303\u56f4 |
 |----------|--------|----------|
-| test_architecture_hardening.py | 26 | apply_patch, run_turn, zone_validator, CLI smoke, ?? |
-| test_visibility.py | 11 | ?????, ??????? |
-| test_web_api.py | 22 | Web API ??, mock turn, worldgen, obsidian |
+| test_architecture_hardening.py | 26 | apply_patch, run_turn, zone_validator, CLI smoke |
+| test_visibility.py | 11 | \u53ef\u89c1\u6027\u9694\u79bb, \u8bb0\u5fc6\u56fe\u8c31\u5b8c\u6574\u6027 |
+| test_web_api.py | 22 | Web API, mock turn, worldgen, obsidian |
 
 ### validate_project.py
 
-???????: campaign state, world clocks, NPC profiles, memory graphs, schemas, prompts, tools, session logs, turn packets
+\u5168\u9879\u76ee\u7ed3\u6784\u6821\u9a8c: campaign state, world clocks, NPC profiles, memory graphs, schemas, prompts, tools, session logs, turn packets
 
 ---
 
-## ??CLI ????
+## \u4e8c\u3001CLI \u5de5\u5177\u6d4b\u8bd5
 
-| ?? | ?? | ?? |
+| \u5de5\u5177 | \u72b6\u6001 |
+|------|------|
+| apply_patch.py | \u901a\u8fc7 |
+| chaos_manager.py | \u901a\u8fc7 |
+| conditions_manager.py | \u901a\u8fc7 |
+| lore_manager.py | \u901a\u8fc7 |
+| memory_manager.py | \u901a\u8fc7 |
+| obsidian_vault.py | \u901a\u8fc7 |
+| player_knowledge.py | \u901a\u8fc7 |
+| player_state.py | \u901a\u8fc7 |
+| progress_tracker.py | \u901a\u8fc7 |
+| quest_viewer.py | \u901a\u8fc7 |
+| resource_manager.py | \u901a\u8fc7 |
+| run_turn.py | \u901a\u8fc7 |
+| session_summarizer.py | \u901a\u8fc7 |
+| web_game.py | \u901a\u8fc7 |
+| world_graph_query.py | \u901a\u8fc7 |
+| world_tick_manager.py | \u901a\u8fc7 |
+| zone_validator.py | \u901a\u8fc7 |
+
+---
+
+## \u4e09\u3001API \u7aef\u5230\u7aef\u6d4b\u8bd5
+
+| \u7aef\u70b9 | \u65b9\u6cd5 | \u72b6\u6001 |
 |------|------|------|
-| apply_patch.py | --dry-run, --write | ?? |
-| chaos_manager.py | show, adjust, scene-check, roll, oracle | ?? |
-| conditions_manager.py | list, add, remove, known | ?? |
-| lore_manager.py | sections, list, show, search | ?? |
-| memory_manager.py | rerank, recall (--write) | ?? |
-| obsidian_vault.py | export | ?? |
-| player_knowledge.py | list, add-clue/npc/location/fact | ?? |
-| player_state.py | (??) | ?? |
-| progress_tracker.py | list, create, advance, progress-roll | ?? |
-| quest_viewer.py | list, show | ?? |
-| resource_manager.py | list, check, consume, cooldown, tick | ?? |
-| run_turn.py | --player-action, --action-file, --elapsed-minutes, --write, --commit-world-tick | ?? |
-| session_summarizer.py | --write | ?? |
-| web_game.py | --mock (HTTP server) | ?? |
-| world_graph_query.py | summary, npc, check-isolation | ?? |
-| world_tick_manager.py | list, tick (--write) | ?? |
-| zone_validator.py | --validate, --list, --can-see, --can-hear | ?? |
+| /api/config | GET | \u901a\u8fc7 |
+| /api/campaigns | GET | \u901a\u8fc7 |
+| /api/state | GET | \u901a\u8fc7 |
+| /api/logs | GET | \u901a\u8fc7 |
+| /api/campaigns/new | POST | \u901a\u8fc7 |
+| /api/campaigns/select | POST | \u901a\u8fc7 |
+| /api/campaigns/delete | POST | \u901a\u8fc7 |
+| /api/turn | POST | \u901a\u8fc7 |
+| /api/roll | POST | \u901a\u8fc7 |
+| /api/validate | POST | \u901a\u8fc7 |
+| /api/obsidian/export | POST | \u901a\u8fc7 |
 
 ---
 
-## ??API ?????
+## \u56db\u3001\u8fb9\u7f18 case \u6d4b\u8bd5
 
-| ?? | ?? | ?? |
-|------|------|------|
-| /api/config | GET | ?? |
-| /api/campaigns | GET | ?? |
-| /api/state | GET | ?? |
-| /api/logs | GET | ?? |
-| /api/campaigns/new | POST | ?? |
-| /api/campaigns/select | POST | ?? |
-| /api/campaigns/delete | POST | ?? |
-| /api/turn | POST | ?? |
-| /api/roll | POST | ?? |
-| /api/validate | POST | ?? |
-| /api/obsidian/export | POST | ?? |
+| \u6d4b\u8bd5 | \u7ed3\u679c |
+|------|------|
+| \u65e0\u6548\u9ab0\u5b50 | 400 |
+| \u7a7a\u884c\u52a8 | 400 |
+| visibility_path=none \u8df3\u8fc7 | \u901a\u8fc7 |
+| \u65b0NPC\u81ea\u52a8\u521b\u5efa | \u901a\u8fc7 |
+| \u96f6\u65f6\u95f4 (None/0) | \u901a\u8fc7 |
+| \u91cd\u590d\u6761\u4ef6\u4e0d\u5199 | \u901a\u8fc7 |
+| slug \u8def\u5f84\u7a7f\u8d8a | \u901a\u8fc7 |
 
 ---
 
-## ???? case ??
+## \u4e94\u3001\u6570\u636e\u5b8c\u6574\u6027
 
-| ?? | ?? | ?? |
-|------|------|------|
-| ??????? | 400 | ?? |
-| ????? | 400 | ?? |
-| visibility_path="none" ???? | ???? | ?? |
-| ? NPC ???? | profile + graph | ?? |
-| ????? (None/0) | ???? | ?? |
-| ?????????? | ???? | ?? |
-| slug ???? (. / .. / ...) | ?? fallback | ?? |
-
----
-
-## ???????
-
-| ??? | ??? | ?? |
-|--------|--------|------|
-| NPC YAML profiles | 8 | ???? |
-| NPC memory graphs (schema) | 8 | ???? |
-| ???????? | 0 | ? |
-| Campaign state JSON | 2 | ?? |
-| World clocks JSON | 2 | ?? |
-| JSON Schemas | 9 | ???? |
-| Prompt templates | 13 | ???? |
-| Generated campaigns | 4 | ???? |
+| \u68c0\u67e5\u9879 | \u72b6\u6001 |
+|--------|--------|
+| NPC YAML | 8 \u5168\u90e8\u5408\u6cd5 |
+| NPC memory graphs | 8 \u5168\u90e8\u5408\u89c4 |
+| \u60ac\u6302\u5f15\u7528 | 0 |
+| JSON Schemas | 9 \u5168\u90e8\u5408\u6cd5 |
+| Prompt templates | 13 \u5168\u90e8\u5b58\u5728 |
+| Generated campaigns | 4 \u7ed3\u6784\u5b8c\u6574 |
 
 ---
 
-## ??????
+## \u516d\u3001\u5b89\u5168\u626b\u63cf
 
-| ??? | ?? |
+| \u68c0\u67e5\u9879 | \u7ed3\u679c |
 |--------|------|
-| ??? API ?? | ? |
-| .env gitignore | ?? |
-| shutil.rmtree ???? | obsidian_vault ??? (V27) |
-| XSS (web ??) | escapeHtml() ?? |
-| ???? (slug) | ??? (V27) |
+| \u786c\u7f16\u7801 API \u5bc6\u94a5 | \u65e0 |
+| .env gitignore | \u6b63\u786e |
+| shutil.rmtree \u8def\u5f84 | \u5df2\u4fee\u590d (V27) |
+| XSS | escapeHtml() |
+| \u8def\u5f84\u7a7f\u8d8a (slug) | \u5df2\u4fee\u590d (V27) |
 
 ---
 
-## ??????
+## \u4e03\u3001\u5df2\u77e5\u9650\u5236
 
-1. **PowerShell ??**: PowerShell ?????????????????????????? here-string
-2. **???? (V37)**: run_turn.py ? apply_patch.py ??????????????? time_utils.py
-3. **????**: ?? LLM ??????? API key?
-
----
-
-## ??????
-
-| ??? | ?? | ?? |
-|--------|------|------|
-| HIGH | 4 | V13, V18, V24, V27 |
-| MEDIUM | 16 | V02-V07, V11-V12, V14, V16-V17, V21-V22, V26, V33-V34, V37 |
-| LOW | 17 | V08-V10, V15, V19-V20, V23, V25, V28-V32, V35-V36 |
+1. PowerShell \u7f16\u7801: \u7ba1\u9053\u4f20\u9012\u4e2d\u6587\u53ef\u80fd\u635f\u574f
+2. \u4ee3\u7801\u91cd\u590d (V37): run_turn.py \u548c apply_patch.py \u91cd\u590d\u65f6\u95f4\u51fd\u6570
+3. \u6d4b\u8bd5\u8986\u76d6: \u7f3a\u5c11 LLM \u96c6\u6210\u6d4b\u8bd5
 
 ---
 
-## ??Git ??
+## \u516b\u3001\u6f0f\u6d1e\u7edf\u8ba1
 
-14 ? commit?????????????
+| \u4e25\u91cd\u5ea6 | \u6570\u91cf |
+|--------|------|
+| HIGH | 4 |
+| MEDIUM | 16 |
+| LOW | 18 |
+| \u603b\u8ba1 | 38 |
+
+---
+
+## \u4e5d\u3001Git \u5386\u53f2
+
+18 commits\uff0c\u5168\u90e8\u5df2\u63a8\u9001\u5230 GitHub\u3002

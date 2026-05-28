@@ -18,10 +18,11 @@ from typing import Any
 
 import yaml
 
-from time_utils import sync_campaign_time, tick_to_display, display_to_tick, parse_interval_minutes
+from time_utils import sync_campaign_time, tick_to_display
 from zone_validator import parse_zones, build_graph, find_los_path, find_sound_path
 
 
+TIME_RE = re.compile(r"第\s*(\d+)\s*日\s*(\d{1,2}):(\d{2})")
 
 
 def read_text(path: Path) -> str:
@@ -187,7 +188,7 @@ def load_recent_turn_history(root: Path, limit: int = 6) -> list[dict[str, str]]
     return list(reversed(history))
 
 
-def display_to_tick(value: str) -> int | None:
+def parse_game_time(value: str) -> int | None:
     match = TIME_RE.search(value or "")
     if not match:
         return None
@@ -197,13 +198,29 @@ def display_to_tick(value: str) -> int | None:
     return (day - 1) * 1440 + hour * 60 + minute
 
 
-def tick_to_display(total_minutes: int) -> str:
+def format_game_time(total_minutes: int) -> str:
     day = total_minutes // 1440 + 1
     minute_of_day = total_minutes % 1440
     hour = minute_of_day // 60
     minute = minute_of_day % 60
     return f"第 {day} 日 {hour:02d}:{minute:02d}"
 
+
+def parse_interval_minutes(value: str) -> int | None:
+    text = value or ""
+    hour_match = re.search(r"(\d+)\s*小时", text)
+    minute_match = re.search(r"(\d+)\s*分钟", text)
+    total = 0
+    if hour_match:
+        total += int(hour_match.group(1)) * 60
+    if minute_match:
+        total += int(minute_match.group(1))
+    if total:
+        return total
+    numeric_match = re.search(r"(\d+)", text)
+    if numeric_match:
+        return int(numeric_match.group(1))
+    return None
 
 
 def profile_path_for(root: Path, entity_id: str) -> Path:
@@ -298,7 +315,7 @@ def advance_clock_preview(
         if clock.get("status") != "active":
             continue
 
-        next_tick = display_to_tick(clock.get("next_tick_at", ""))
+        next_tick = parse_game_time(clock.get("next_tick_at", ""))
         interval = parse_interval_minutes(clock.get("tick_interval", ""))
         if next_tick is None or interval is None or interval <= 0:
             continue
@@ -315,7 +332,7 @@ def advance_clock_preview(
 
         new_value = min(max_value, old_value + tick_count)
         clock["value"] = new_value
-        clock["next_tick_at"] = tick_to_display(next_tick)
+        clock["next_tick_at"] = format_game_time(next_tick)
         if new_value >= max_value:
             clock["status"] = "complete"
 
@@ -701,9 +718,9 @@ def main() -> None:
     current_turn = int(campaign_state.get("current_turn", 1))
     turn_id = f"turn_{current_turn:04d}"
     from_time = campaign_state.get("current_time", "")
-    from_minutes = display_to_tick(from_time)
+    from_minutes = parse_game_time(from_time)
     to_minutes = None if from_minutes is None else from_minutes + args.elapsed_minutes
-    to_time = from_time if to_minutes is None else tick_to_display(to_minutes)
+    to_time = from_time if to_minutes is None else format_game_time(to_minutes)
 
     tick_reason = f"{turn_id}: player action consumed {args.elapsed_minutes} minutes"
     clocks_preview, clock_updates, event_hints = advance_clock_preview(
