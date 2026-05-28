@@ -16,6 +16,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from time_utils import sync_campaign_time, tick_to_display
 
 
@@ -228,6 +230,32 @@ def memory_graph_path_for(root: Path, entity_id: str) -> Path:
     return root / "campaign" / "npcs" / f"{entity_id}.memory_graph.json"
 
 
+def append_unique(values: list[str], value: Any) -> None:
+    text = str(value or "").strip()
+    if text and text not in values:
+        values.append(text)
+
+
+def location_initial_occupants(location_text: str) -> list[str]:
+    try:
+        data = yaml.safe_load(location_text) or {}
+    except yaml.YAMLError:
+        return []
+    occupants: list[str] = []
+    if not isinstance(data, dict):
+        return occupants
+    for zone in as_list(data.get("zones")):
+        if not isinstance(zone, dict):
+            continue
+        for entity_id in as_list(zone.get("initial_occupants")):
+            append_unique(occupants, entity_id)
+    return occupants
+
+
+def mentioned_npc_ids(player_action: str) -> list[str]:
+    return list(dict.fromkeys(re.findall(r"\bnpc_[A-Za-z0-9_]+\b", player_action or "")))
+
+
 def summarize_memory_graph(path: Path, limit: int) -> dict[str, Any]:
     if not path.exists():
         return {
@@ -328,30 +356,75 @@ def advance_clock_preview(
     return preview, updates, hints
 
 
+def quest_clock_ids(quest: dict[str, Any]) -> list[str]:
+    ids: list[str] = []
+    explicit = quest.get("clock_id")
+    if explicit:
+        append_unique(ids, explicit)
+    quest_id = str(quest.get("id") or "")
+    if quest_id.startswith("thread_"):
+        append_unique(ids, "clock_" + quest_id.removeprefix("thread_"))
+    if quest_id:
+        append_unique(ids, "clock_" + quest_id)
+    return ids
+
+
+def sync_quest_countdowns_from_clocks(
+    quest_graph: dict[str, Any],
+    world_clocks: dict[str, Any],
+) -> list[dict[str, Any]]:
+    clocks_by_id = {
+        str(clock.get("id")): clock
+        for clock in as_list(world_clocks.get("clocks"))
+        if isinstance(clock, dict) and clock.get("id")
+    }
+    updates: list[dict[str, Any]] = []
+    for quest in as_list(quest_graph.get("quests")):
+        if not isinstance(quest, dict):
+            continue
+        matched_clock = None
+        for clock_id in quest_clock_ids(quest):
+            if clock_id in clocks_by_id:
+                matched_clock = clocks_by_id[clock_id]
+                break
+        if not matched_clock:
+            continue
+        old_ticks = quest.get("countdown_ticks")
+        old_max = quest.get("countdown_max")
+        new_ticks = matched_clock.get("value")
+        new_max = matched_clock.get("max_value")
+        if old_ticks == new_ticks and old_max == new_max:
+            continue
+        quest["clock_id"] = matched_clock.get("id")
+        quest["countdown_ticks"] = new_ticks
+        quest["countdown_max"] = new_max
+        if matched_clock.get("status") == "complete" and quest.get("status") == "active":
+            quest["status"] = "failed"
+        updates.append(
+            {
+                "quest_id": quest.get("id"),
+                "clock_id": matched_clock.get("id"),
+                "old_ticks": old_ticks,
+                "new_ticks": new_ticks,
+                "old_max": old_max,
+                "new_max": new_max,
+            }
+        )
+    return updates
+
+
 def collect_context(root: Path, campaign_state: dict[str, Any], memory_limit: int, player_action: str = "") -> dict[str, Any]:
     current_scene = as_dict(campaign_state.get("current_scene"))
     location_id = current_scene.get("location_id", "")
     location_path = root / "campaign" / "locations" / f"{location_id.removeprefix('loc_')}.yaml"
     if not location_path.exists() and location_id == "loc_old_dock":
         location_path = root / "campaign" / "locations" / "old_dock.yaml"
+    location_text = read_text_if_exists(location_path)
 
     present_entities = current_scene.get("present_entities", [])
     if not isinstance(present_entities, list):
         present_entities = [present_entities]
-    present_npcs = []
-    for entity_id in present_entities:
-        profile_path = profile_path_for(root, entity_id)
-        graph_path = memory_graph_path_for(root, entity_id)
-        if not profile_path.exists() and not graph_path.exists():
-            continue
-        present_npcs.append(
-            {
-                "id": entity_id,
-                "profile_path": str(profile_path),
-                "profile_text": read_text_if_exists(profile_path),
-                "memory_graph": summarize_memory_graph(graph_path, memory_limit),
-            }
-        )
+    present_entities = [str(entity_id) for entity_id in present_entities if str(entity_id or "").strip()]
 
     world_clocks_path = root / "campaign" / "world_clocks.json"
     world_clocks = normalize_world_clocks(load_json(world_clocks_path) if world_clocks_path.exists() else {"clocks": []})
@@ -365,6 +438,45 @@ def collect_context(root: Path, campaign_state: dict[str, Any], memory_limit: in
             or clock.get("id") in current_scene.get("active_threads", [])
         )
     ]
+
+    relevant_entities: list[str] = []
+    relevance_reasons: dict[str, list[str]] = {}
+
+    def add_relevant(entity_id: Any, reason: str) -> None:
+        text = str(entity_id or "").strip()
+        if not text:
+            return
+        append_unique(relevant_entities, text)
+        relevance_reasons.setdefault(text, [])
+        if reason not in relevance_reasons[text]:
+            relevance_reasons[text].append(reason)
+
+    for entity_id in present_entities:
+        add_relevant(entity_id, "present_in_current_scene")
+    for entity_id in location_initial_occupants(location_text):
+        add_relevant(entity_id, "listed_in_location_zone")
+    for entity_id in mentioned_npc_ids(player_action):
+        add_relevant(entity_id, "mentioned_in_player_action")
+    for clock in active_clocks:
+        owner_id = str(clock.get("owner_id") or "")
+        if owner_id.startswith("npc_"):
+            add_relevant(owner_id, f"active_clock:{clock.get('id')}")
+
+    present_npcs = []
+    for entity_id in relevant_entities:
+        profile_path = profile_path_for(root, entity_id)
+        graph_path = memory_graph_path_for(root, entity_id)
+        if not profile_path.exists() and not graph_path.exists():
+            continue
+        present_npcs.append(
+            {
+                "id": entity_id,
+                "relevance_reasons": relevance_reasons.get(entity_id, []),
+                "profile_path": str(profile_path),
+                "profile_text": read_text_if_exists(profile_path),
+                "memory_graph": summarize_memory_graph(graph_path, memory_limit),
+            }
+        )
 
     resources_data = {}
     resources_path = root / "campaign" / "resources.json"
@@ -384,9 +496,10 @@ def collect_context(root: Path, campaign_state: dict[str, Any], memory_limit: in
         "location": {
             "id": location_id,
             "path": str(location_path),
-            "text": read_text_if_exists(location_path),
+            "text": location_text,
         },
         "present_entities": present_entities,
+        "relevant_entities": relevant_entities,
         "present_npcs": present_npcs,
         "active_local_clocks": active_clocks,
         "active_lore": retrieve_active_lore(root, campaign_state, player_action),
@@ -407,6 +520,11 @@ def render_gm_input(packet: dict[str, Any], root: Path) -> str:
             "\n".join(
                 [
                     f"### {npc['id']}",
+                    "",
+                    "纳入原因：",
+                    "```json",
+                    json.dumps(npc.get("relevance_reasons", []), ensure_ascii=False, indent=2),
+                    "```",
                     "",
                     "角色卡：",
                     "```yaml",
@@ -470,7 +588,7 @@ def render_gm_input(packet: dict[str, Any], root: Path) -> str:
             json.dumps(packet["world_tick_preview"], ensure_ascii=False, indent=2),
             "```",
             "",
-            "## 在场 NPC 与私有记忆",
+            "## 在场 / 本回合相关 NPC 与私有记忆",
             "",
             "\n\n".join(npc_sections) if npc_sections else "无",
             "",
@@ -538,7 +656,12 @@ def main() -> None:
     parser.add_argument(
         "--commit-world-tick",
         action="store_true",
-        help="Also write world clock preview and campaign time/turn back to disk. Use after accepting the turn setup.",
+        help="Also write world clock preview and campaign time/turn back to disk. (Default: auto when elapsed-minutes > 0)",
+    )
+    parser.add_argument(
+        "--no-commit-world-tick",
+        action="store_true",
+        help="Skip writing world clock advancement even when time passes.",
     )
     args = parser.parse_args()
 
@@ -615,10 +738,23 @@ def main() -> None:
     else:
         print(packet["gm_input_markdown"])
 
-    if args.commit_world_tick:
+    # V01 fix: auto-commit world tick when time passes (unless explicitly disabled)
+    should_commit_world_tick = (
+        args.commit_world_tick
+        or (args.elapsed_minutes > 0 and not args.no_commit_world_tick)
+    )
+    if should_commit_world_tick:
         world_clocks_committed = clocks_preview
         world_clocks_committed["current_turn"] = current_turn + 1
         save_json(clocks_path, world_clocks_committed)
+        quest_updates: list[dict[str, Any]] = []
+        quest_path = root / "campaign" / "quest_graph.json"
+        if quest_path.exists():
+            quest_graph = load_json(quest_path)
+            if isinstance(quest_graph, dict):
+                quest_updates = sync_quest_countdowns_from_clocks(quest_graph, world_clocks_committed)
+                if quest_updates:
+                    save_json(quest_path, quest_graph)
         campaign_state["current_turn"] = current_turn + 1
         if to_minutes is not None:
             campaign_state["_time_tick"] = to_minutes
@@ -626,6 +762,8 @@ def main() -> None:
         sync_campaign_time(campaign_state)
         save_json(campaign_path, campaign_state)
         print(f"Committed world tick to {clocks_path}")
+        if quest_updates:
+            print(f"Synced quest countdowns in {quest_path}")
         print(f"Committed campaign time to {campaign_path}")
 
 
