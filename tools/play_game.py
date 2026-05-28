@@ -762,6 +762,7 @@ def normalize_visibility_path(value: Any, source: str = "inferred") -> str:
         "rumour": "told_by",
         "rumor": "told_by",
         "public": "public_signal",
+        "none": "none",
     }
     text = aliases.get(text, text)
     valid = {
@@ -772,6 +773,7 @@ def normalize_visibility_path(value: Any, source: str = "inferred") -> str:
         "overheard",
         "inferred",
         "public_signal",
+        "none",
     }
     return text if text in valid else visibility_for_source(source)
 

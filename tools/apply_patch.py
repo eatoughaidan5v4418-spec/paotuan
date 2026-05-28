@@ -691,8 +691,9 @@ def memory_visibility_evidence_errors(write: dict[str, Any], index_label: str) -
     write_npc = canonical_npc_id(write.get("npc_id"))
     if ev_observer != write_npc:
         errors.append(f"{index_label} visibility_evidence observer_id must match npc_id")
-    if evidence.get("memory_allowed") is not True:
-        errors.append(f"{index_label} visibility_evidence memory_allowed must be true")
+    visibility_path = write.get("visibility_path", "")
+    if evidence.get("memory_allowed") is not True and visibility_path != "none":
+        errors.append(f"{index_label} visibility_evidence memory_allowed must be true (unless visibility_path is none)")
     if evidence.get("visibility_path") != write.get("visibility_path"):
         errors.append(f"{index_label} visibility_evidence visibility_path must match write visibility_path")
     for field in ("event_id", "subjective_summary", "allowed_memory_scope", "forbidden_memory_scope"):
@@ -1019,6 +1020,13 @@ def apply_patch(
         if not write.get("memory"):
             report["errors"].append(f"npc_memory_writes entry missing memory content: {raw_write}")
             continue
+        # V22: silently skip memory writes where visibility_path is "none"
+        if str(write.get("visibility_path", "")).strip().lower() == "none":
+            report["memories"].append(
+                f"[SKIPPED] {write['npc_id']}: visibility_path=none, memory not written"
+            )
+            continue
+
         evidence_errors = memory_visibility_evidence_errors(write, "npc_memory_writes entry")
         if evidence_errors:
             report["errors"].extend(evidence_errors)
@@ -1492,7 +1500,7 @@ def validate_patch_structure(patch: dict[str, Any]) -> list[str]:
 
     # Validate enums in npc_memory_writes
     VALID_PATHS = {"direct_visual", "direct_auditory", "detected_observer",
-                   "told_by", "overheard", "inferred", "public_signal"}
+                   "told_by", "overheard", "inferred", "public_signal", "none"}
     VALID_SOURCES = {"saw", "heard", "inferred", "rumor"}
     VALID_MEM_TYPES = {"episodic", "semantic", "procedural"}
     valid_player_ops = {"set", "add", "remove", "delta"}

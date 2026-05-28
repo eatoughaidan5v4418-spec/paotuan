@@ -75,9 +75,11 @@ def main() -> None:
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    subparsers.add_parser("list", help="List clocks.")
+    list_parser = subparsers.add_parser("list", help="List clocks.")
+    list_parser.add_argument("--file", type=Path, default=Path("campaign/world_clocks.json"), help="Path to world_clocks.json.")
 
     tick_parser = subparsers.add_parser("tick", help="Advance one clock.")
+    tick_parser.add_argument("--file", type=Path, default=Path("campaign/world_clocks.json"), help="Path to world_clocks.json.")
     tick_parser.add_argument("clock_id")
     tick_parser.add_argument("--amount", type=int, default=1)
     tick_parser.add_argument("--reason", required=True)

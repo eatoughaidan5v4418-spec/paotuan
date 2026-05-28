@@ -184,14 +184,46 @@ class VisibilityIsolationTests(unittest.TestCase):
         self.assertTrue(len(errors) > 0, "Should catch invalid visibility_path")
         self.assertTrue(any("visibility_path" in e.lower() for e in errors),
                         f"Error should mention visibility_path, got: {errors}")
+        # V22: visibility_path="none" is now a valid protocol signal meaning "skip this memory"
         patch_none = make_patch([{
             "npc_id": "npc_a", "memory": "test", "memory_type": "episodic",
             "source": "saw", "visibility_path": "none",
             "confidence": 0.9, "emotional_valence": 0, "salience": 0.5,
         }])
         errors_none = apply_patch.validate_patch_structure(patch_none)
-        self.assertTrue(any("visibility_path" in e.lower() for e in errors_none),
-                        "Should reject visibility_path=none for actual memory writes")
+        # Validation should PASS for "none" (it is a valid path), but apply should skip it
+        visibility_errors = [e for e in errors_none if "visibility_path" in e.lower()]
+        self.assertEqual(len(visibility_errors), 0,
+                         f"visibility_path=none should pass validation, got: {visibility_errors}")
+        # Verify: apply_patch should SKIP (not write) the memory with visibility_path=none
+        import tempfile, shutil
+        from pathlib import Path
+        tmpdir = Path(tempfile.mkdtemp())
+        try:
+            # Create minimal campaign structure
+            (tmpdir / "campaign").mkdir(parents=True)
+            (tmpdir / "campaign" / "npcs").mkdir(parents=True)
+            import json as _json
+            (tmpdir / "campaign" / "campaign_state.json").write_text(
+                _json.dumps({"current_turn": 1, "current_time": "? 1 ? 20:00", "campaign_id": "test"}, ensure_ascii=False),
+                encoding="utf-8")
+            (tmpdir / "campaign" / "world_clocks.json").write_text(
+                _json.dumps({"clocks": []}, ensure_ascii=False), encoding="utf-8")
+            (tmpdir / "campaign" / "resources.json").write_text(
+                _json.dumps({"entities": {}}, ensure_ascii=False), encoding="utf-8")
+            (tmpdir / "campaign" / "conditions.json").write_text(
+                _json.dumps({"entities": {}}, ensure_ascii=False), encoding="utf-8")
+            (tmpdir / "campaign" / "session_logs").mkdir(parents=True, exist_ok=True)
+            report = apply_patch.apply_patch(tmpdir, patch_none, current_turn=1, current_time="? 1 ? 20:00", session_id="test", dry_run=True)
+            skipped = [m for m in report.get("memories", []) if "SKIPPED" in str(m)]
+            self.assertTrue(len(skipped) > 0,
+                            f"Memory with visibility_path=none should be SKIPPED, report: {report}")
+            errors = [m for m in report.get("errors", []) if "visibility" in str(m).lower()]
+            self.assertEqual(len(errors), 0,
+                             f"Visibility errors should be 0 for 'none' path, got: {errors}")
+        finally:
+            shutil.rmtree(str(tmpdir), ignore_errors=True)
+
         # Also check invalid source
         patch2 = make_patch([{
             "npc_id": "npc_a", "memory": "test", "memory_type": "episodic",

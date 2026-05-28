@@ -60,17 +60,20 @@ def sync_campaign_time(campaign_state: dict) -> None:
 
 
 def parse_interval_minutes(value: str) -> int | None:
-    """Parse a Chinese interval string into minutes. Returns None on failure."""
+    """Parse a Chinese interval string into minutes. Returns None on failure or zero interval."""
     text = value or ""
     hour_match = re.search(r"(\d+)\s*\u5c0f\u65f6", text)
     minute_match = re.search(r"(\d+)\s*\u5206\u949f", text)
+    matched = False
     total = 0
     if hour_match:
         total += int(hour_match.group(1)) * 60
+        matched = True
     if minute_match:
         total += int(minute_match.group(1))
-    if total:
-        return total
+        matched = True
+    if matched:
+        return total if total > 0 else None
     numeric_match = re.search(r"(\d+)", text)
     if numeric_match:
         return int(numeric_match.group(1))
