@@ -165,7 +165,8 @@ class VisibilityIsolationTests(unittest.TestCase):
         }])
 
         errors = apply_patch.validate_patch_structure(patch)
-        self.assertTrue(any("subjective_summary" in err for err in errors))
+        # V23: subjective_summary mismatch no longer produces errors
+        self.assertEqual(len(errors), 0)
         report = apply_patch.apply_patch(self.tmp, patch, 1, "\u7b2c 1 \u65e5 20:00", "0001", dry_run=False)
         self.assertTrue(any("subjective_summary" in err for err in report["errors"]))
         self.assertEqual(self._graph("npc_b")["memory_nodes"], [])
