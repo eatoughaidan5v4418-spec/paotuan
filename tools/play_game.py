@@ -412,10 +412,14 @@ def call_chat_api(config: GameConfig, messages: list[dict[str, str]]) -> str:
 
 
 def parse_ai_json(text: str) -> dict[str, Any]:
+    # V22: sanitize control characters that break JSON parsing
+    # (e.g. unescaped newlines/tabs inside string values from LLM output)
+    import re as _re
+    sanitized = _re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", "", text)
     try:
-        data = json.loads(text)
+        data = json.loads(sanitized)
     except json.JSONDecodeError as exc:
-        raise RuntimeError(f"AI did not return valid JSON: {exc}\n{text[:1000]}") from exc
+        raise RuntimeError(f"AI did not return valid JSON: {exc}\n{sanitized[:1000]}") from exc
     if not isinstance(data, dict):
         raise RuntimeError("AI response JSON must be an object")
     return data
