@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_qian_baiwei",
-  "current_turn": 9,
+  "current_turn": 10,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -22,7 +22,7 @@
       "related_entities": [
         "loc_black_wind_ridge"
       ],
-      "score": 0.6394
+      "score": 0.6352
     },
     {
       "id": "mem_qian_0002",
@@ -43,7 +43,7 @@
       "related_entities": [
         "faction_demonic_remnants"
       ],
-      "score": 0.5475
+      "score": 0.5432
     },
     {
       "id": "mem_npc_qian_baiwei_0007",
@@ -78,7 +78,7 @@
       },
       "observed_at": "第 1 日 10:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.5
+      "score": 0.4885
     },
     {
       "id": "mem_npc_qian_baiwei_0005",
@@ -114,7 +114,67 @@
       },
       "observed_at": "第 1 日 08:55",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.445
+      "score": 0.4375
+    },
+    {
+      "id": "mem_npc_qian_baiwei_0008",
+      "type": "episodic",
+      "content": "那修士疗伤修炼完后，灵石只剩两块了，还没来我摊位。他要么在犹豫，要么在等更好的机会。我再等等，他迟早会来。",
+      "created_turn": 10,
+      "last_recalled_turn": 10,
+      "recall_count": 0,
+      "importance": 0.4,
+      "salience": 0.5,
+      "emotional_valence": 0.1,
+      "confidence": 0.85,
+      "source": "saw",
+      "tier": "dormant",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "pc_main"
+      ],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_qian_baiwei",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "那修士疗伤修炼完后，灵石只剩两块了，还没来我摊位。他要么在犹豫，要么在等更好的机会。我再等等，他迟早会来。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 11:15",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.4375
+    },
+    {
+      "id": "mem_npc_qian_baiwei_0003",
+      "type": "episodic",
+      "content": "牌坊下那个生面孔和柳青说了几句话。柳青被说得耳根发红——有趣，难得见这小子吃瘪。这人径直朝摊位区走来了。",
+      "created_turn": 1,
+      "last_recalled_turn": 1,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.5,
+      "emotional_valence": 0.3,
+      "confidence": 0.7,
+      "source": "saw",
+      "tier": "dormant",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "npc_qian_baiwei",
+        "loc_azure_cloud_market"
+      ],
+      "visibility_path": "direct_visual",
+      "observed_at": "第 1 日 08:25",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.4107
     },
     {
       "id": "mem_npc_qian_baiwei_0004",
@@ -151,32 +211,7 @@
       },
       "observed_at": "第 1 日 08:50",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.415
-    },
-    {
-      "id": "mem_npc_qian_baiwei_0003",
-      "type": "episodic",
-      "content": "牌坊下那个生面孔和柳青说了几句话。柳青被说得耳根发红——有趣，难得见这小子吃瘪。这人径直朝摊位区走来了。",
-      "created_turn": 1,
-      "last_recalled_turn": 1,
-      "recall_count": 0,
-      "importance": 0.5,
-      "salience": 0.5,
-      "emotional_valence": 0.3,
-      "confidence": 0.7,
-      "source": "saw",
-      "tier": "dormant",
-      "valid": true,
-      "invalid_at_turn": null,
-      "contradicted_by": null,
-      "related_entities": [
-        "npc_qian_baiwei",
-        "loc_azure_cloud_market"
-      ],
-      "visibility_path": "direct_visual",
-      "observed_at": "第 1 日 08:25",
-      "location_id": "loc_azure_cloud_market",
-      "score": 0.415
+      "score": 0.4084
     },
     {
       "id": "mem_npc_qian_baiwei_0006",
@@ -212,7 +247,7 @@
       },
       "observed_at": "第 1 日 09:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3486
+      "score": 0.34
     }
   ],
   "interpretation_nodes": [],

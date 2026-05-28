@@ -1,9 +1,9 @@
 {
   "campaign_id": "xianxia_001",
   "title": "青云坊市遗宝",
-  "current_turn": 10,
-  "current_time": "第 1 日 10:15",
-  "_time_tick": 615,
+  "current_turn": 11,
+  "current_time": "第 1 日 11:15",
+  "_time_tick": 675,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "loc_azure_cloud_market",
@@ -15,14 +15,14 @@
     ],
     "active_threads": [
       "thread_blood_spirit_mushroom",
-      "open_thread_0005",
-      "open_thread_0006",
       "open_thread_0007",
       "open_thread_0008",
       "open_thread_0009",
       "open_thread_0010",
       "open_thread_0011",
-      "open_thread_0012"
+      "open_thread_0012",
+      "open_thread_0013",
+      "open_thread_0014"
     ]
   },
   "player_characters": [
@@ -34,17 +34,17 @@
         "残破铁剑",
         "云游观弟子令牌(裂)",
         "引气诀残卷",
-        "下品灵石x4",
-        "止血草药x2",
+        "下品灵石x2",
+        "止血草药x1",
         "异香草x1"
       ],
       "conditions": [],
       "realm": "炼气二层",
       "realm_level": 2,
       "spiritual_root": "木火双灵根",
-      "health": 8,
+      "health": 11,
       "max_health": 12,
-      "qi": 3,
+      "qi": 5,
       "max_qi": 6,
       "stats": {
         "combat": 1,
@@ -173,14 +173,18 @@
       "description": "钱百味摆出异香草试探玩家，玩家是否会上前搭话？",
       "next_pressure": "如果玩家不回应，钱百味会在5分钟内将异香草收回，并认为玩家对药材不感兴趣，后续情报获取难度增加。",
       "created_turn": 6,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 10,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0006",
       "description": "苏墨注意到玩家，开始评估是否要主动接触。",
       "next_pressure": "如果玩家在下一回合仍未与苏墨互动，苏墨可能会认为玩家是威胁，并在玩家离开坊市后暗中跟踪。",
       "created_turn": 6,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 10,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0007",
@@ -222,6 +226,20 @@
       "description": "苏墨的观察结论",
       "next_pressure": "苏墨可能会在适当时机试探你的意图，如果你表现出对黑风岭的兴趣，他可能主动接触或避开你。",
       "created_turn": 9,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0013",
+      "description": "玩家资源匮乏，需决定是否与钱百味或苏墨交易/合作。",
+      "next_pressure": "若玩家继续等待而不主动接触，钱百味可能失去耐心不再提供优惠条件，苏墨可能独自前往黑风岭。",
+      "created_turn": 10,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0014",
+      "description": "黑风岭方向出现烟柱和血腥味，魔修可能已经开始行动。",
+      "next_pressure": "每过半个时辰，魔修摘走血灵芝的概率增加一成；若玩家在1个时辰内不前往，血灵芝可能被摘走。",
+      "created_turn": 10,
       "status": "active"
     }
   ],
