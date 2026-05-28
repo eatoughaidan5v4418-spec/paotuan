@@ -1,9 +1,9 @@
 {
   "campaign_id": "xianxia_001",
   "title": "青云坊市遗宝",
-  "current_turn": 9,
-  "current_time": "第 1 日 09:15",
-  "_time_tick": 555,
+  "current_turn": 8,
+  "current_time": "第 1 日 09:10",
+  "_time_tick": 550,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "loc_azure_cloud_market",
@@ -15,14 +15,13 @@
     ],
     "active_threads": [
       "thread_blood_spirit_mushroom",
+      "open_thread_0004",
       "open_thread_0005",
       "open_thread_0006",
       "open_thread_0007",
       "open_thread_0008",
       "open_thread_0009",
-      "open_thread_0010",
-      "open_thread_0011",
-      "open_thread_0012"
+      "open_thread_0010"
     ]
   },
   "player_characters": [
@@ -34,6 +33,7 @@
         "残破铁剑",
         "云游观弟子令牌(裂)",
         "引气诀残卷",
+        "下品灵石x4",
         "止血草药x2",
         "异香草x1"
       ],
@@ -120,9 +120,7 @@
       "description": "玩家获知牌坊禁制异常，下一步可调查黑风岭或询问钱百味",
       "next_pressure": "血灵芝倒计时继续推进",
       "created_turn": 1,
-      "status": "dormant",
-      "archived_turn": 8,
-      "archive_reason": "superseded by newer active threads"
+      "status": "active"
     },
     {
       "id": "open_thread_0002",
@@ -147,9 +145,7 @@
       "description": "血灵芝将在第2日子时成熟。当前剩余时间约9个时辰。魔修残党已开始接近黑风岭外围。玩家尚未决定行动方向。",
       "next_pressure": "每过一个时辰，魔修探子会更深入黑风岭，血灵芝被提前发现的风险增加。若玩家在午时前仍未出发，魔修可能已在岭中布下埋伏。",
       "created_turn": 5,
-      "status": "dormant",
-      "archived_turn": 8,
-      "archive_reason": "superseded by newer active threads"
+      "status": "active"
     },
     {
       "id": "open_thread_0005",
@@ -191,20 +187,6 @@
       "description": "灰袍散修的身份",
       "next_pressure": "他可能是潜在的盟友或竞争者，若不接触，可能会在关键时刻成为变数。",
       "created_turn": 7,
-      "status": "active"
-    },
-    {
-      "id": "open_thread_0011",
-      "description": "灵石消耗与突破困境",
-      "next_pressure": "若玩家在下一回合内没有补充资源或找到突破方法，血灵芝成熟窗口继续流逝，同时柳青的传讯符可能引来青云门内门修士，导致坊市管控升级。",
-      "created_turn": 8,
-      "status": "active"
-    },
-    {
-      "id": "open_thread_0012",
-      "description": "柳青的传讯符",
-      "next_pressure": "若玩家不尽快行动，青云门内门修士可能在1-2小时内抵达坊市，届时出入管控将更加严格，前往黑风岭的难度增加。",
-      "created_turn": 8,
       "status": "active"
     }
   ],
