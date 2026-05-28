@@ -1,25 +1,25 @@
 {
   "campaign_id": "tg001",
   "title": "廷根之夜",
-  "current_turn": 14,
-  "current_time": "第 1 日 02:05",
-  "_time_tick": 125,
+  "current_turn": 15,
+  "current_time": "第 1 日 02:15",
+  "_time_tick": 135,
   "current_scene": {
-    "location_id": "sewer_maintenance_room",
+    "location_id": "sewer_vent_pipe_above_maintenance_room",
     "present_entities": [
       "pc_player"
     ],
     "active_threads": [
-      "open_thread_0029",
-      "open_thread_0030",
       "open_thread_0034",
       "open_thread_0035",
-      "open_thread_0036",
       "open_thread_0037",
       "open_thread_0038",
-      "open_thread_0039"
+      "open_thread_0039",
+      "open_thread_0040",
+      "open_thread_0041",
+      "open_thread_0042"
     ],
-    "summary": "玩家抵达sewer_maintenance_room。"
+    "summary": "玩家抵达sewer_vent_pipe_above_maintenance_room。"
   },
   "player_characters": [
     {
@@ -34,7 +34,7 @@
       "max_sanity": 7,
       "spirituality": 6,
       "max_spirituality": 6,
-      "location_id": "sewer_maintenance_room",
+      "location_id": "sewer_vent_pipe_above_maintenance_room",
       "inventory": [
         "??",
         "??",
@@ -50,13 +50,13 @@
       "conditions": [
         "手指轻伤（裂开渗血）",
         "肩膀挫伤（轻度）",
-        "晋升冲击（眩晕、幻觉、身体颤抖）"
+        "晋升后遗症（轻微眩晕、感官过载）"
       ],
       "stats": {
         "combat": 0,
-        "perception": 1,
+        "perception": 2,
         "social": 0,
-        "occult": 2,
+        "occult": 3,
         "spirituality": 0
       },
       "traits": [
@@ -520,14 +520,18 @@
       "description": "玩家在废弃仓库中封印了狂乱人偶线轴，消耗1精神力。",
       "next_pressure": "封印线轴",
       "created_turn": 11,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 14,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0030",
       "description": "玩家潜入警察局证物室，获取了欢笑面具碎片。",
       "next_pressure": "获取面具碎片",
       "created_turn": 11,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 14,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0031",
@@ -575,7 +579,9 @@
       "description": "下水道深处有未知生物惊动老鼠群，墙壁封印徽记闪烁。",
       "next_pressure": "未知生物可能被魔药气息吸引，若封印徽记激活可能暂时压制，但也会暴露位置。",
       "created_turn": 12,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 14,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0037",
@@ -596,6 +602,27 @@
       "description": "下水道深处异常",
       "next_pressure": "未知生物可能被吸引至维修间附近，增加新的威胁。",
       "created_turn": 13,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0040",
+      "description": "追踪者在维修间内搜索，尚未发现通风管道",
+      "next_pressure": "瘦高个可能在1-2回合内发现通风口格栅被移动的痕迹，随后进入管道追踪。",
+      "created_turn": 14,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0041",
+      "description": "警察已发现下水道入口，正在组织地面排查",
+      "next_pressure": "警察巡逻队将在3-4回合内开始检查下水道井盖，封锁范围可能扩大。",
+      "created_turn": 14,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0042",
+      "description": "下水道深处未知生物被晋升波动惊醒",
+      "next_pressure": "该生物可能朝波动来源移动，预计4-5回合后接近玩家当前位置。",
+      "created_turn": 14,
       "status": "active"
     }
   ],

@@ -11,9 +11,9 @@
           "severity": "normal"
         },
         {
-          "name": "晋升冲击（眩晕、幻觉、身体颤抖）",
+          "name": "晋升后遗症（轻微眩晕、感官过载）",
           "severity": "normal",
-          "added_at": "正在晋升序列8，需抵抗失控"
+          "added_at": "AI state update"
         }
       ],
       "history": [
@@ -46,6 +46,16 @@
           "operation": "add",
           "condition": "晋升冲击（眩晕、幻觉、身体颤抖）",
           "reason": "正在晋升序列8，需抵抗失控"
+        },
+        {
+          "operation": "remove",
+          "condition": "晋升冲击（眩晕、幻觉、身体颤抖）",
+          "reason": "AI state update"
+        },
+        {
+          "operation": "add",
+          "condition": "晋升后遗症（轻微眩晕、感官过载）",
+          "reason": "AI state update"
         }
       ]
     }
