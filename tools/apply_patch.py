@@ -711,7 +711,10 @@ def memory_visibility_evidence_errors(write: dict[str, Any], index_label: str) -
 
 def load_memory_graph(path: Path, npc_id: str, current_turn: int) -> dict[str, Any]:
     if path.exists():
-        graph = load_json(path)
+        try:
+            graph = load_json(path)
+        except (json.JSONDecodeError, ValueError):
+            graph = None
         if not isinstance(graph, dict):
             graph = create_empty_memory_graph(npc_id, current_turn)
         return graph
