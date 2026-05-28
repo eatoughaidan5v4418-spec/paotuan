@@ -704,8 +704,8 @@ def memory_visibility_evidence_errors(write: dict[str, Any], index_label: str) -
     subjective_summary = re.sub(r"\s+", " ", str(evidence.get("subjective_summary") or "")).strip()
     if subjective_summary and subjective_summary not in memory_text and memory_text not in subjective_summary:
         # Require at least 60% word overlap instead of exact match
-        words_ss = set(subjective_summary)
-        words_mem = set(memory_text)
+        words_ss = set(subjective_summary.split())
+        words_mem = set(memory_text.split())
         overlap = len(words_ss & words_mem) / max(len(words_ss | words_mem), 1)
         if overlap < 0.3:
             errors.append(f"{index_label} memory has low overlap with visibility_evidence subjective_summary ({overlap:.2f})")
