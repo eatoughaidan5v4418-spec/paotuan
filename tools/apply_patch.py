@@ -1090,7 +1090,27 @@ def apply_patch(
             "location_id": location_id,
         }
 
-        graph.setdefault("memory_nodes", []).append(memory_node)
+        # V06 fix: dedup check before appending memory
+        existing_contents = [
+            str(m.get("content", "")) for m in graph.get("memory_nodes", [])
+            if m.get("valid") is not False
+        ]
+        is_duplicate = False
+        new_words = set(re.findall(r"[\w\u4e00-\u9fff]{2,}", memory_text.lower()))
+        if len(new_words) >= 4:  # skip dedup for very short content
+            for existing_text in existing_contents:
+                old_words = set(re.findall(r"[\w\u4e00-\u9fff]{2,}", existing_text.lower()))
+                if len(old_words) < 4:
+                    continue
+                overlap = len(new_words & old_words) / min(len(new_words), len(old_words))
+                if overlap > 0.8:
+                    is_duplicate = True
+                    report.setdefault("memories", []).append(
+                        f"[{mem_id}] {npc_id}: SKIPPED (duplicate, {overlap:.0%} overlap with existing memory)"
+                    )
+                    break
+        if not is_duplicate:
+            graph.setdefault("memory_nodes", []).append(memory_node)
         graph["current_turn"] = current_turn
 
         if not dry_run:
@@ -1401,6 +1421,18 @@ def apply_patch(
         report["threads"].append(f"[{thread_id}] {thread_action}: {description}")
     prune_active_threads(campaign, current_turn, report)
 
+    # V04 fix: track consolidation turns, flag when due
+    ensure_campaign_field(campaign, "last_consolidation_turn", 0)
+    consolidation_interval = 5
+    turns_since_consolidation = current_turn - int(campaign.get("last_consolidation_turn", 0))
+    if turns_since_consolidation >= consolidation_interval:
+        report.setdefault("consolidation", []).append(
+            f"Consolidation due: {turns_since_consolidation} turns since last consolidation "
+            f"(turn {campaign.get('last_consolidation_turn', 0)} -> {current_turn}). "
+            f"Run prompts/memory-consolidator.md and prompts/understanding-consolidator.md "
+            f"for all NPCs with new memories/interpretations."
+        )
+
     if not dry_run:
         campaign["current_turn"] = current_turn + 1
 
@@ -1590,6 +1622,7 @@ def print_report(report: dict[str, Any], dry_run: bool) -> None:
         ("interpretations", "NPC interpretations"),
         ("understandings", "NPC understandings"),
         ("revisions", "NPC revisions"),
+        ("consolidation", "Consolidation"),
         ("world_graph", "World graph"),
         ("threads", "Open threads"),
     ]:

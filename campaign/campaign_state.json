@@ -51,5 +51,6 @@
   },
   "_time_tick": 1200,
   "known_facts": [],
-  "open_threads": []
-}
+  "open_threads": [],
+  "last_consolidation_turn": 0
+}\n
