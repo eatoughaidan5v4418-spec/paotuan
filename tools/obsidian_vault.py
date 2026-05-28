@@ -61,8 +61,12 @@ def slug(value: str, fallback: str = "note") -> str:
     ascii_slug = re.sub(r"[^a-zA-Z0-9_-]+", "_", value).strip("_")
     if ascii_slug:
         return ascii_slug[:80]
-    safe = re.sub(r'[\\/:*?"<>|#^\[\]]+', "_", value).strip(" _")
-    return (safe or fallback)[:80]
+    safe = re.sub(r'[\\/:*?"<>|#^\[\].]+', "_", value).strip(" _")
+    result = (safe or fallback)[:80]
+    # V27: prevent path traversal via . or .. slugs
+    if result in (".", "..") or result.startswith("..") and len(result) > 2 and all(c == "." for c in result):
+        result = fallback
+    return result
 
 
 def yaml_scalar(value: Any) -> str:

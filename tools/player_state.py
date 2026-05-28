@@ -15,7 +15,11 @@ def main():
 
     cs_path = args.root / "campaign" / "campaign_state.json"
     cs = json.loads(cs_path.read_text(encoding="utf-8-sig"))
-    pc = cs["player_characters"][0]
+    players = cs.get("player_characters", [])
+    if not players:
+        print("??????????? /new ??????????")
+        return
+    pc = players[0]
 
     print("=== 玩家角色状态 ===")
     print(f"  姓名:     {pc.get('name', '?')}")

@@ -92,10 +92,13 @@ def main() -> None:
     parser.add_argument('--file', type=Path, default=Path('campaign/world_graph.jsonl'))
     sub = parser.add_subparsers(dest='command')
 
-    sub.add_parser('summary', help='Show record counts by type')
+    summary_p = sub.add_parser('summary', help='Show record counts by type')
+    summary_p.add_argument('--file', type=Path, default=Path('campaign/world_graph.jsonl'))
     npc_parser = sub.add_parser('npc', help='Show records for a specific NPC')
+    npc_parser.add_argument('--file', type=Path, default=Path('campaign/world_graph.jsonl'))
     npc_parser.add_argument('npc_id')
-    sub.add_parser('check-isolation', help='Audit cross-NPC memory contamination')
+    ci_p = sub.add_parser('check-isolation', help='Audit cross-NPC memory contamination')
+    ci_p.add_argument('--file', type=Path, default=Path('campaign/world_graph.jsonl'))
 
     args = parser.parse_args()
     if not args.command:
