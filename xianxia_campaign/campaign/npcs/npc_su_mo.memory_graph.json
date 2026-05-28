@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_su_mo",
-  "current_turn": 6,
+  "current_turn": 7,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -22,7 +22,7 @@
       "related_entities": [
         "loc_black_wind_ridge"
       ],
-      "score": 0.7484
+      "score": 0.7425
     },
     {
       "id": "mem_su_0002",
@@ -44,7 +44,7 @@
         "loc_black_wind_ridge",
         "faction_demonic_remnants"
       ],
-      "score": 0.6129
+      "score": 0.607
     },
     {
       "id": "mem_npc_su_mo_0007",
@@ -81,7 +81,7 @@
       },
       "observed_at": "第 1 日 08:55",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.5225
+      "score": 0.511
     },
     {
       "id": "mem_npc_su_mo_0003",
@@ -106,7 +106,7 @@
       "visibility_path": "overheard",
       "observed_at": "第 1 日 08:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4709
+      "score": 0.465
     },
     {
       "id": "mem_npc_su_mo_0004",
@@ -131,7 +131,7 @@
       "visibility_path": "overheard",
       "observed_at": "第 1 日 08:20",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4709
+      "score": 0.465
     },
     {
       "id": "mem_npc_su_mo_0006",
@@ -168,7 +168,43 @@
       },
       "observed_at": "第 1 日 08:50",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4485
+      "score": 0.4386
+    },
+    {
+      "id": "mem_npc_su_mo_0008",
+      "type": "episodic",
+      "content": "那修士在主街上站了许久，似乎在做内视——看来修为不高，连敛息都做不到。不过他在坊市内逗留这么久，又不与任何人交谈，恐怕也是在等黑风岭的消息。",
+      "created_turn": 7,
+      "last_recalled_turn": 7,
+      "recall_count": 0,
+      "importance": 0.4,
+      "salience": 0.4,
+      "emotional_valence": 0.0,
+      "confidence": 0.6,
+      "source": "saw",
+      "tier": "dormant",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "pc_main",
+        "loc_azure_cloud_market"
+      ],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_su_mo",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "那修士在主街上站了许久，似乎在做内视——看来修为不高，连敛息都做不到。不过他在坊市内逗留这么久，又不与任何人交谈，恐怕也是在等黑风岭的消息。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 09:10",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.4
     },
     {
       "id": "mem_npc_su_mo_0005",
@@ -193,7 +229,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3559
+      "score": 0.35
     }
   ],
   "interpretation_nodes": [],

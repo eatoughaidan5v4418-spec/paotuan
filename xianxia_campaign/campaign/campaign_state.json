@@ -1,9 +1,9 @@
 {
   "campaign_id": "xianxia_001",
   "title": "青云坊市遗宝",
-  "current_turn": 7,
-  "current_time": "第 1 日 08:55",
-  "_time_tick": 535,
+  "current_turn": 8,
+  "current_time": "第 1 日 09:10",
+  "_time_tick": 550,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "loc_azure_cloud_market",
@@ -17,7 +17,11 @@
       "thread_blood_spirit_mushroom",
       "open_thread_0004",
       "open_thread_0005",
-      "open_thread_0006"
+      "open_thread_0006",
+      "open_thread_0007",
+      "open_thread_0008",
+      "open_thread_0009",
+      "open_thread_0010"
     ]
   },
   "player_characters": [
@@ -92,6 +96,22 @@
       "source": "玩家与柳青对话",
       "created_turn": 1,
       "valid": true
+    },
+    {
+      "id": "fact_0004",
+      "text": "洛衍确认自身修为为炼气二层，灵力3/6，距离突破炼气三层至少需要灵力蓄满八成并配合丹药或灵物辅助",
+      "visibility": "private",
+      "source": "内视自查",
+      "created_turn": 7,
+      "valid": true
+    },
+    {
+      "id": "fact_0005",
+      "text": "坊市内有几个背着血布袋的散修从黑风岭方向返回，神色匆匆",
+      "visibility": "private",
+      "source": "亲眼所见",
+      "created_turn": 7,
+      "valid": true
     }
   ],
   "open_threads": [
@@ -107,14 +127,18 @@
       "description": "玩家获知牌坊禁制异常，下一步可调查黑风岭或询问钱百味",
       "next_pressure": "血灵芝倒计时继续推进",
       "created_turn": 1,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 7,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0003",
       "description": "玩家开始在坊市收集青云界基础信息",
       "next_pressure": "血灵芝倒计时继续推进",
       "created_turn": 1,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 7,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0004",
@@ -135,6 +159,34 @@
       "description": "苏墨注意到玩家，开始评估是否要主动接触。",
       "next_pressure": "如果玩家在下一回合仍未与苏墨互动，苏墨可能会认为玩家是威胁，并在玩家离开坊市后暗中跟踪。",
       "created_turn": 6,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0007",
+      "description": "黑风岭的血灵芝",
+      "next_pressure": "若玩家在半天内不采取行动，魔修探子将确认血灵芝位置并提前设伏。",
+      "created_turn": 7,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0008",
+      "description": "坊市内的可疑散修",
+      "next_pressure": "这些散修可能是魔修的眼线或采药人，若不调查，他们可能会在玩家之前将消息传递出去。",
+      "created_turn": 7,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0009",
+      "description": "自身修为瓶颈",
+      "next_pressure": "若拖延太久，血灵芝任务中的战斗可能因修为不足而陷入危险。",
+      "created_turn": 7,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0010",
+      "description": "灰袍散修的身份",
+      "next_pressure": "他可能是潜在的盟友或竞争者，若不接触，可能会在关键时刻成为变数。",
+      "created_turn": 7,
       "status": "active"
     }
   ],
