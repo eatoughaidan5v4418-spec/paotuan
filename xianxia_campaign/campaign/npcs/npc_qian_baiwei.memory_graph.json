@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_qian_baiwei",
-  "current_turn": 10,
+  "current_turn": 11,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -22,7 +22,42 @@
       "related_entities": [
         "loc_black_wind_ridge"
       ],
-      "score": 0.6352
+      "score": 0.6313
+    },
+    {
+      "id": "mem_npc_qian_baiwei_0009",
+      "type": "episodic",
+      "content": "那个修士终于来我摊位了，用最后两块下品灵石和一株异香草换了一枚聚气丹。异香草成色不错，是黑风岭产的——看来他确实知道那边的事情。他当场服丹冲击炼气三层，但失败了，灵力没蓄满就急着突破，真是年轻气盛。不过他灵力已经涨到九成，下次准备充分些应该能成。",
+      "created_turn": 11,
+      "last_recalled_turn": 11,
+      "recall_count": 0,
+      "importance": 0.6,
+      "salience": 0.7,
+      "emotional_valence": 0.3,
+      "confidence": 0.9,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "pc_main"
+      ],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_qian_baiwei",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "那个修士终于来我摊位了，用最后两块下品灵石和一株异香草换了一枚聚气丹。异香草成色不错，是黑风岭产的——看来他确实知道那边的事情。他当场服丹冲击炼气三层，但失败了，灵力没蓄满就急着突破，真是年轻气盛。不过他灵力已经涨到九成，下次准备充分些应该能成。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 11:25",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.56
     },
     {
       "id": "mem_qian_0002",
@@ -43,7 +78,7 @@
       "related_entities": [
         "faction_demonic_remnants"
       ],
-      "score": 0.5432
+      "score": 0.5393
     },
     {
       "id": "mem_npc_qian_baiwei_0007",
@@ -57,7 +92,7 @@
       "emotional_valence": 0.2,
       "confidence": 0.9,
       "source": "saw",
-      "tier": "active",
+      "tier": "dormant",
       "valid": true,
       "invalid_at_turn": null,
       "contradicted_by": null,
@@ -78,7 +113,7 @@
       },
       "observed_at": "第 1 日 10:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4885
+      "score": 0.4786
     },
     {
       "id": "mem_npc_qian_baiwei_0005",
@@ -114,7 +149,7 @@
       },
       "observed_at": "第 1 日 08:55",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4375
+      "score": 0.4309
     },
     {
       "id": "mem_npc_qian_baiwei_0008",
@@ -149,7 +184,7 @@
       },
       "observed_at": "第 1 日 11:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4375
+      "score": 0.426
     },
     {
       "id": "mem_npc_qian_baiwei_0003",
@@ -174,7 +209,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4107
+      "score": 0.4068
     },
     {
       "id": "mem_npc_qian_baiwei_0004",
@@ -211,7 +246,7 @@
       },
       "observed_at": "第 1 日 08:50",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4084
+      "score": 0.4025
     },
     {
       "id": "mem_npc_qian_baiwei_0006",
@@ -247,7 +282,7 @@
       },
       "observed_at": "第 1 日 09:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.34
+      "score": 0.3325
     }
   ],
   "interpretation_nodes": [],

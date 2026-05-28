@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_liu_qing",
-  "current_turn": 10,
+  "current_turn": 11,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -23,7 +23,7 @@
         "loc_black_wind_ridge",
         "faction_azure_cloud_sect"
       ],
-      "score": 0.5457
+      "score": 0.5418
     },
     {
       "id": "mem_npc_liu_qing_0005",
@@ -48,7 +48,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4982
+      "score": 0.4943
     },
     {
       "id": "mem_npc_liu_qing_0003",
@@ -73,7 +73,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4457
+      "score": 0.4418
     },
     {
       "id": "mem_npc_liu_qing_0004",
@@ -98,7 +98,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:20",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4457
+      "score": 0.4418
     },
     {
       "id": "mem_liu_0002",
@@ -119,7 +119,7 @@
       "related_entities": [
         "loc_azure_cloud_market"
       ],
-      "score": 0.4282
+      "score": 0.4243
     },
     {
       "id": "mem_npc_liu_qing_0006",
@@ -156,7 +156,7 @@
       },
       "observed_at": "第 1 日 08:50",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3534
+      "score": 0.3475
     },
     {
       "id": "mem_npc_liu_qing_0007",
@@ -192,14 +192,14 @@
       },
       "observed_at": "第 1 日 08:55",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3175
+      "score": 0.3109
     },
     {
-      "id": "mem_npc_liu_qing_0010",
+      "id": "mem_npc_liu_qing_0011",
       "type": "episodic",
-      "content": "那个新来的修士在主街上疗伤修炼了半个时辰，用了止血草药和两块灵石，但没突破。看来就是个普通的穷散修，不用再管他了。",
-      "created_turn": 10,
-      "last_recalled_turn": 10,
+      "content": "那个穷散修去钱百味的摊位买了东西，然后找了个角落修炼了一会儿，好像是想突破但没成功。没什么特别的，就是个普通的低阶散修。",
+      "created_turn": 11,
+      "last_recalled_turn": 11,
       "recall_count": 0,
       "importance": 0.2,
       "salience": 0.15,
@@ -219,13 +219,13 @@
         "memory_allowed": true,
         "visibility_path": "direct_visual",
         "event_id": "",
-        "subjective_summary": "那个新来的修士在主街上疗伤修炼了半个时辰，用了止血草药和两块灵石，但没突破。看来就是个普通的穷散修，不用再管他了。",
+        "subjective_summary": "那个穷散修去钱百味的摊位买了东西，然后找了个角落修炼了一会儿，好像是想突破但没成功。没什么特别的，就是个普通的低阶散修。",
         "allowed_memory_scope": [
           "observed_event"
         ],
         "forbidden_memory_scope": []
       },
-      "observed_at": "第 1 日 11:15",
+      "observed_at": "第 1 日 11:25",
       "location_id": "loc_azure_cloud_market",
       "score": 0.295
     },
@@ -262,7 +262,42 @@
       },
       "observed_at": "第 1 日 10:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.2935
+      "score": 0.2836
+    },
+    {
+      "id": "mem_npc_liu_qing_0010",
+      "type": "episodic",
+      "content": "那个新来的修士在主街上疗伤修炼了半个时辰，用了止血草药和两块灵石，但没突破。看来就是个普通的穷散修，不用再管他了。",
+      "created_turn": 10,
+      "last_recalled_turn": 10,
+      "recall_count": 0,
+      "importance": 0.2,
+      "salience": 0.15,
+      "emotional_valence": 0.0,
+      "confidence": 0.9,
+      "source": "saw",
+      "tier": "dormant",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "pc_main"
+      ],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_liu_qing",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "那个新来的修士在主街上疗伤修炼了半个时辰，用了止血草药和两块灵石，但没突破。看来就是个普通的穷散修，不用再管他了。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 11:15",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.2835
     },
     {
       "id": "mem_npc_liu_qing_0008",
@@ -298,7 +333,7 @@
       },
       "observed_at": "第 1 日 09:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.275
+      "score": 0.2675
     }
   ],
   "interpretation_nodes": [],

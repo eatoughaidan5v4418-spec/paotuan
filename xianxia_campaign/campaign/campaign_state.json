@@ -1,9 +1,9 @@
 {
   "campaign_id": "xianxia_001",
   "title": "青云坊市遗宝",
-  "current_turn": 11,
-  "current_time": "第 1 日 11:15",
-  "_time_tick": 675,
+  "current_turn": 12,
+  "current_time": "第 1 日 11:25",
+  "_time_tick": 685,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "loc_azure_cloud_market",
@@ -16,13 +16,13 @@
     "active_threads": [
       "thread_blood_spirit_mushroom",
       "open_thread_0007",
-      "open_thread_0008",
-      "open_thread_0009",
-      "open_thread_0010",
       "open_thread_0011",
       "open_thread_0012",
       "open_thread_0013",
-      "open_thread_0014"
+      "open_thread_0014",
+      "open_thread_0015",
+      "open_thread_0016",
+      "open_thread_0017"
     ]
   },
   "player_characters": [
@@ -34,17 +34,17 @@
         "残破铁剑",
         "云游观弟子令牌(裂)",
         "引气诀残卷",
-        "下品灵石x2",
-        "止血草药x1",
-        "异香草x1"
+        "止血草药x1"
       ],
-      "conditions": [],
+      "conditions": [
+        "经脉胀痛（灵力过载，-1健康恢复速度，持续1时辰）"
+      ],
       "realm": "炼气二层",
       "realm_level": 2,
       "spiritual_root": "木火双灵根",
       "health": 11,
       "max_health": 12,
-      "qi": 5,
+      "qi": 6,
       "max_qi": 6,
       "stats": {
         "combat": 1,
@@ -198,21 +198,27 @@
       "description": "坊市内的可疑散修",
       "next_pressure": "这些散修可能是魔修的眼线或采药人，若不调查，他们可能会在玩家之前将消息传递出去。",
       "created_turn": 7,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 11,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0009",
       "description": "自身修为瓶颈",
       "next_pressure": "若拖延太久，血灵芝任务中的战斗可能因修为不足而陷入危险。",
       "created_turn": 7,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 11,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0010",
       "description": "灰袍散修的身份",
       "next_pressure": "他可能是潜在的盟友或竞争者，若不接触，可能会在关键时刻成为变数。",
       "created_turn": 7,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 11,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0011",
@@ -240,6 +246,27 @@
       "description": "黑风岭方向出现烟柱和血腥味，魔修可能已经开始行动。",
       "next_pressure": "每过半个时辰，魔修摘走血灵芝的概率增加一成；若玩家在1个时辰内不前往，血灵芝可能被摘走。",
       "created_turn": 10,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0015",
+      "description": "突破炼气三层",
+      "next_pressure": "如果不尽快突破，以炼气二层的修为前往黑风岭将极为危险。魔修探子已有炼气四五层的实力。",
+      "created_turn": 11,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0016",
+      "description": "血灵芝成熟倒计时",
+      "next_pressure": "剩余约12时辰，但魔修已经出现在黑风岭外围，可能提前采摘未完全成熟的灵芝。",
+      "created_turn": 11,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0017",
+      "description": "苏墨的观察",
+      "next_pressure": "苏墨可能主动接触玩家，也可能在玩家前往黑风岭时尾随或抢先行动。",
+      "created_turn": 11,
       "status": "active"
     }
   ],

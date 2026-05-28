@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_su_mo",
-  "current_turn": 10,
+  "current_turn": 11,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -22,7 +22,7 @@
       "related_entities": [
         "loc_black_wind_ridge"
       ],
-      "score": 0.7282
+      "score": 0.7243
     },
     {
       "id": "mem_su_0002",
@@ -44,7 +44,43 @@
         "loc_black_wind_ridge",
         "faction_demonic_remnants"
       ],
-      "score": 0.5927
+      "score": 0.5888
+    },
+    {
+      "id": "mem_npc_su_mo_0011",
+      "type": "episodic",
+      "content": "那修士用异香草和灵石从钱百味那里换了一枚聚气丹，然后当场服下冲击炼气三层。但他失败了——灵力没蓄满就急着服丹，经脉承受不住药力。他现在灵力倒是涨到接近满值了，但瓶颈只裂了一道缝，没破。看来他确实很急，急着突破去黑风岭。",
+      "created_turn": 11,
+      "last_recalled_turn": 11,
+      "recall_count": 0,
+      "importance": 0.55,
+      "salience": 0.6,
+      "emotional_valence": 0.0,
+      "confidence": 0.8,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "pc_main",
+        "npc_qian_baiwei"
+      ],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_su_mo",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "那修士用异香草和灵石从钱百味那里换了一枚聚气丹，然后当场服下冲击炼气三层。但他失败了——灵力没蓄满就急着服丹，经脉承受不住药力。他现在灵力倒是涨到接近满值了，但瓶颈只裂了一道缝，没破。看来他确实很急，急着突破去黑风岭。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 11:25",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.5025
     },
     {
       "id": "mem_npc_su_mo_0007",
@@ -58,7 +94,7 @@
       "emotional_valence": 0.2,
       "confidence": 0.65,
       "source": "saw",
-      "tier": "active",
+      "tier": "dormant",
       "valid": true,
       "invalid_at_turn": null,
       "contradicted_by": null,
@@ -81,7 +117,7 @@
       },
       "observed_at": "第 1 日 08:55",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.485
+      "score": 0.4784
     },
     {
       "id": "mem_npc_su_mo_0003",
@@ -106,7 +142,7 @@
       "visibility_path": "overheard",
       "observed_at": "第 1 日 08:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4507
+      "score": 0.4468
     },
     {
       "id": "mem_npc_su_mo_0004",
@@ -131,7 +167,7 @@
       "visibility_path": "overheard",
       "observed_at": "第 1 日 08:20",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4507
+      "score": 0.4468
     },
     {
       "id": "mem_npc_su_mo_0009",
@@ -166,7 +202,7 @@
       },
       "observed_at": "第 1 日 10:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4485
+      "score": 0.4386
     },
     {
       "id": "mem_npc_su_mo_0006",
@@ -203,7 +239,7 @@
       },
       "observed_at": "第 1 日 08:50",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4159
+      "score": 0.41
     },
     {
       "id": "mem_npc_su_mo_0010",
@@ -238,7 +274,7 @@
       },
       "observed_at": "第 1 日 11:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.405
+      "score": 0.3935
     },
     {
       "id": "mem_npc_su_mo_0008",
@@ -274,7 +310,7 @@
       },
       "observed_at": "第 1 日 09:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.37
+      "score": 0.3625
     },
     {
       "id": "mem_npc_su_mo_0005",
@@ -299,7 +335,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3357
+      "score": 0.3318
     }
   ],
   "interpretation_nodes": [],

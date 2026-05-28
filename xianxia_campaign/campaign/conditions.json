@@ -6,10 +6,20 @@
           "name": "qi_depleted",
           "severity": "unknown",
           "added_at": "强行催动中品法术"
+        },
+        {
+          "name": "经脉胀痛（灵力过载，-1健康恢复速度，持续1时辰）",
+          "severity": "normal",
+          "added_at": "AI state update"
         }
       ],
       "history": [
-        "+qi_depleted: 强行催动中品法术"
+        "+qi_depleted: 强行催动中品法术",
+        {
+          "operation": "add",
+          "condition": "经脉胀痛（灵力过载，-1健康恢复速度，持续1时辰）",
+          "reason": "AI state update"
+        }
       ]
     },
     "npc_su_mo": {

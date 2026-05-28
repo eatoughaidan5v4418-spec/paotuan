@@ -1,0 +1,1485 @@
+{
+  "packet": {
+    "turn_id": "turn_0011",
+    "created_at": "2026-05-28T14:24:54.615494+00:00",
+    "player_action": "我去钱百味摊位，用最后两块下品灵石和异香草换取聚气丹，然后立刻服下丹药全力冲击炼气三层的瓶颈",
+    "raw_player_input": "我去钱百味摊位，用最后两块下品灵石和异香草换取聚气丹，然后立刻服下丹药全力冲击炼气三层的瓶颈",
+    "inferred_action": {
+      "raw_input": "我去钱百味摊位，用最后两块下品灵石和异香草换取聚气丹，然后立刻服下丹药全力冲击炼气三层的瓶颈",
+      "normalized_action": "我去钱百味摊位，用最后两块下品灵石和异香草换取聚气丹，然后立刻服下丹药全力冲击炼气三层的瓶颈",
+      "action_type": "移动",
+      "elapsed_minutes": 10,
+      "confidence": 0.78,
+      "reason": "movement or travel verb",
+      "explicit_minutes": null,
+      "elapsed_overridden": false
+    },
+    "elapsed_minutes": 10,
+    "campaign_before": {
+      "current_turn": 11,
+      "current_time": "第 1 日 11:15",
+      "current_scene": {
+        "scene_id": "scene_0001",
+        "location_id": "loc_azure_cloud_market",
+        "summary": "玩家抵达青云坊市，血灵芝的传言刚在集市散开。",
+        "present_entities": [
+          "npc_liu_qing",
+          "npc_qian_baiwei",
+          "npc_su_mo"
+        ],
+        "active_threads": [
+          "thread_blood_spirit_mushroom",
+          "open_thread_0007",
+          "open_thread_0008",
+          "open_thread_0009",
+          "open_thread_0010",
+          "open_thread_0011",
+          "open_thread_0012",
+          "open_thread_0013",
+          "open_thread_0014"
+        ]
+      },
+      "quests": [
+        {
+          "id": "thread_blood_spirit_mushroom",
+          "title": "黑风岭的血灵芝",
+          "status": "active",
+          "known_to_players": true,
+          "pressure": "若无人干预，血灵芝将在第 2 日子时成熟并被摘走。"
+        }
+      ],
+      "rules": {
+        "system": "rules_lightweight_d20",
+        "dice_policy": "玩家或程序掷骰，GM 根据结果描述后果。"
+      },
+      "player_characters": [
+        {
+          "id": "pc_main",
+          "name": "洛衍",
+          "location_id": "zone_market_stalls",
+          "inventory": [
+            "残破铁剑",
+            "云游观弟子令牌(裂)",
+            "引气诀残卷",
+            "下品灵石x2",
+            "止血草药x1",
+            "异香草x1"
+          ],
+          "conditions": [],
+          "realm": "炼气二层",
+          "realm_level": 2,
+          "spiritual_root": "木火双灵根",
+          "health": 11,
+          "max_health": 12,
+          "qi": 5,
+          "max_qi": 6,
+          "stats": {
+            "combat": 1,
+            "perception": 1,
+            "social": -1
+          },
+          "former_name": "洛衍",
+          "memories_of_former_self": [
+            "云游观被灭那晚的火光和惨叫声",
+            "师尊最后塞给他令牌时说的那句话——'去找青云山脉的……'后半句被爆炸淹没",
+            "黑风岭采药时闻到一股浓烈的血腥味，然后眼前一黑",
+            "自己叫洛衍，二十一岁，木火双灵根，炼气二层"
+          ]
+        }
+      ],
+      "player_resources": {
+        "faction_azure_cloud_sect": {
+          "type": "faction",
+          "money": 500,
+          "manpower": 20,
+          "risk_level": 2,
+          "supplies": [],
+          "cooldowns": {},
+          "reputation": 50
+        },
+        "faction_demonic_remnants": {
+          "type": "faction",
+          "money": 80,
+          "manpower": 5,
+          "risk_level": 8,
+          "supplies": [],
+          "cooldowns": {},
+          "reputation": -30
+        },
+        "faction_merchant_guild": {
+          "type": "faction",
+          "money": 150,
+          "manpower": 8,
+          "risk_level": 3,
+          "supplies": [],
+          "cooldowns": {},
+          "reputation": 10
+        },
+        "npc_liu_qing": {
+          "type": "npc",
+          "money": 30,
+          "risk_tolerance": 4,
+          "stamina": 8,
+          "supplies": [],
+          "cooldowns": {}
+        },
+        "npc_qian_baiwei": {
+          "type": "npc",
+          "money": 80,
+          "risk_tolerance": 3,
+          "stamina": 5,
+          "supplies": [],
+          "cooldowns": {}
+        },
+        "npc_su_mo": {
+          "type": "npc",
+          "money": 15,
+          "risk_tolerance": 8,
+          "stamina": 6,
+          "supplies": [],
+          "cooldowns": {}
+        }
+      }
+    },
+    "time_preview": {
+      "from_time": "第 1 日 11:15",
+      "to_time": "第 1 日 11:25"
+    },
+    "world_tick_preview": {
+      "clock_updates": [],
+      "offscreen_event_hints": [],
+      "requires_visibility_resolution": false
+    },
+    "context": {
+      "location": {
+        "id": "loc_azure_cloud_market",
+        "path": "C:\\Users\\Huang\\Desktop\\Proj\\paotuan\\xianxia_campaign\\campaign\\locations\\azure_cloud_market.yaml",
+        "text": "id: loc_azure_cloud_market\nname: 青云坊市\ntype: cultivation_market\nsummary: \"青云山脚的修士坊市，半条街的摊位和两间铺面，来往多是炼气期修士和凡人物商。\"\n\nzones:\n  - id: zone_market_entrance\n    name: \"坊市入口\"\n    description: \"两丈高的石牌坊，刻有青云门禁制符印。柳青就在牌坊下值守。\"\n    ambient_light: bright\n    ambient_noise: moderate\n    features:\n      - id: feature_talisman_gate\n        text: \"石牌坊上的禁制符印会感应灵力波动，触发后青云门内门会收到传讯。\"\n    initial_occupants:\n      - npc_liu_qing\n\n  - id: zone_market_stalls\n    name: \"坊市主街\"\n    description: \"青石板路两边摆着七八个摊位，卖符箓、低阶丹药、灵草、兽骨和凡间杂货。人声起伏。\"\n    ambient_light: bright\n    ambient_noise: loud\n    features:\n      - id: feature_qian_stall\n        text: \"钱百味的摊位摆满黄纸符和几瓶聚气丹，摊前常有两三人流连。\"\n    initial_occupants:\n      - npc_qian_baiwei\n      - pc_main\n\n  - id: zone_tea_corner\n    name: \"茶摊角落\"\n    description: \"街尾的露天茶摊，只摆了三张矮桌。苏墨独自坐在最靠里的角落。\"\n    ambient_light: dim\n    ambient_noise: moderate\n    features: []\n    initial_occupants:\n      - npc_su_mo\n\nzone_connections:\n  - from: zone_market_entrance\n    to: zone_market_stalls\n    type: open\n    distance: 20\n    line_of_sight: true\n    sound: clear\n  - from: zone_market_stalls\n    to: zone_tea_corner\n    type: open\n    distance: 30\n    line_of_sight: true\n    sound: clear\n\nsensory_details:\n  sight:\n    - \"石牌坊上的禁制符印偶尔闪过淡青色微光。\"\n    - \"坊市尽头，黑风岭如一道暗青色剪影压在天边。\"\n  sound:\n    - \"讨价还价声、灵兽笼里的低鸣、远处瀑布水声。\"\n  smell:\n    - \"檀香、药草、烤肉、雨后湿土。\"\n\nhidden_clues:\n  - id: clue_qi_fluctuation\n    location_zone: zone_market_entrance\n    discover_with: \"灵力感知或调查石牌坊\"\n    text: \"牌坊禁制最近三日已触发两次低强度警报，指向同一方向——黑风岭。\"\n\nhazards:\n  - id: hazard_talisman_alarm\n    location_zone: zone_market_entrance\n    trigger: \"在坊市内施展中品以上法术\"\n    consequence: \"青云门内门收到警报，一炷香内有筑基修士赶到。\"\n"
+      },
+      "present_entities": [
+        "npc_liu_qing",
+        "npc_qian_baiwei",
+        "npc_su_mo"
+      ],
+      "relevant_entities": [
+        "npc_liu_qing",
+        "npc_qian_baiwei",
+        "npc_su_mo",
+        "pc_main"
+      ],
+      "present_npcs": [
+        {
+          "id": "npc_liu_qing",
+          "relevance_reasons": [
+            "present_in_current_scene",
+            "listed_in_location_zone",
+            "active_clock:clock_liu_qing_patrol"
+          ],
+          "profile_path": "C:\\Users\\Huang\\Desktop\\Proj\\paotuan\\xianxia_campaign\\campaign\\npcs\\npc_liu_qing.yaml",
+          "profile_text": "id: npc_liu_qing\nname: 柳青\nrole: 青云门外门弟子\nfaction: faction_azure_cloud_sect\nlocation_id: loc_azure_cloud_market\npublic_face: \"身背一柄制式铁剑，腰挂外门令牌，眼神锐利但尚欠沉稳。\"\ncore_desire: \"在下次外门考核前立功，换取筑基丹。\"\nfear: \"被师长发现自己守坊市时走神。\"\nbottom_line: \"不会为陌生人触犯门规。\"\ntraits:\n  personality_tags: [\"上进\", \"直率\", \"守规矩\", \"急于证明自己\"]\n  instinct: \"先盘问来路不明者，把门规挂嘴边。\"\n  stress_response: \"硬撑——紧张时反而更刻意摆出正式姿态。\"\n  social_approach: \"公事公办——先按门规流程走，不轻易通融。\"\n  cognitive_bias: \"权威依赖——师长的命令高于自己的判断。\"\nvoice_style:\n  pace: \"短促，偶尔带点年轻人不耐。\"\n  habits:\n    - \"先问身份来历。\"\n    - \"提到师长时语气恭敬。\"\n  forbidden_topics:\n    - \"上次考核为何没通过\"\nknown_facts: []\nfalse_beliefs: []\nsecrets:\n  - id: secret_liu_qing_failed_trial\n    text: \"柳青在去年内门选拔中因护友失误被淘汰。\"\nrelationship_hooks:\n  - target_id: pc_main\n    trust: 0.0  # updated by patch (++0): 柳青被怼后反而觉得此人直爽——至少不是心怀鬼胎的那种\n    fear: 0\n    debt: 0\nchange_switches:\n  trust:\n    - \"玩家出示青云门信物或师承凭证。\"\n    - \"玩家协助坊市治安。\"\n  threat:\n    - \"玩家在坊市内动手施法。\"\n    - \"玩家打探内门选拔细节。\"\n",
+          "memory_graph": {
+            "path": "C:\\Users\\Huang\\Desktop\\Proj\\paotuan\\xianxia_campaign\\campaign\\npcs\\npc_liu_qing.memory_graph.json",
+            "exists": true,
+            "top_memories": [
+              {
+                "id": "mem_liu_0001",
+                "type": "semantic",
+                "content": "柳青知道黑风岭方向近日灵气异动，但外门弟子未获准探查。",
+                "created_turn": 0,
+                "last_recalled_turn": 1,
+                "recall_count": 1,
+                "importance": 0.65,
+                "salience": 0.7,
+                "emotional_valence": 0.3,
+                "confidence": 0.8,
+                "source": "heard",
+                "tier": "active",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "loc_black_wind_ridge",
+                  "faction_azure_cloud_sect"
+                ],
+                "score": 0.5457
+              },
+              {
+                "id": "mem_npc_liu_qing_0005",
+                "type": "episodic",
+                "content": "一个陌生修士在坊市入口盘问下毫不畏缩，反呛我坊市规矩。此人不是散修做派——但至少直来直去，不像在隐瞒什么。",
+                "created_turn": 1,
+                "last_recalled_turn": 1,
+                "recall_count": 0,
+                "importance": 0.65,
+                "salience": 0.65,
+                "emotional_valence": 0.2,
+                "confidence": 0.9,
+                "source": "saw",
+                "tier": "active",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "npc_liu_qing",
+                  "loc_azure_cloud_market"
+                ],
+                "visibility_path": "direct_visual",
+                "observed_at": "第 1 日 08:25",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.4982
+              },
+              {
+                "id": "mem_npc_liu_qing_0003",
+                "type": "episodic",
+                "content": "一个外来的修士在坊市入口向我行礼，问起黑风岭灵气异动。此人态度恭敬，不像魔修。",
+                "created_turn": 1,
+                "last_recalled_turn": 1,
+                "recall_count": 0,
+                "importance": 0.55,
+                "salience": 0.55,
+                "emotional_valence": 0.3,
+                "confidence": 0.85,
+                "source": "saw",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "npc_liu_qing",
+                  "loc_azure_cloud_market"
+                ],
+                "visibility_path": "direct_visual",
+                "observed_at": "第 1 日 08:10",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.4457
+              },
+              {
+                "id": "mem_npc_liu_qing_0004",
+                "type": "episodic",
+                "content": "一个外来的修士在坊市入口向我行礼，问起黑风岭灵气异动。此人态度恭敬，不像魔修。",
+                "created_turn": 1,
+                "last_recalled_turn": 1,
+                "recall_count": 0,
+                "importance": 0.55,
+                "salience": 0.55,
+                "emotional_valence": 0.3,
+                "confidence": 0.85,
+                "source": "saw",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "npc_liu_qing",
+                  "loc_azure_cloud_market"
+                ],
+                "visibility_path": "direct_visual",
+                "observed_at": "第 1 日 08:20",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.4457
+              },
+              {
+                "id": "mem_liu_0002",
+                "type": "semantic",
+                "content": "坊市规矩：外来修士须登记姓名和师承，不得在坊市内私斗。",
+                "created_turn": 0,
+                "last_recalled_turn": 1,
+                "recall_count": 0,
+                "importance": 0.5,
+                "salience": 0.6,
+                "emotional_valence": 0,
+                "confidence": 0.95,
+                "source": "saw",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "loc_azure_cloud_market"
+                ],
+                "score": 0.4282
+              },
+              {
+                "id": "mem_npc_liu_qing_0006",
+                "type": "episodic",
+                "content": "那修士进了主街后没再惹事，只是在钱百味摊位附近走了走。看来是来买东西的，不是来找麻烦的。",
+                "created_turn": 5,
+                "last_recalled_turn": 5,
+                "recall_count": 0,
+                "importance": 0.35,
+                "salience": 0.4,
+                "emotional_valence": 0.1,
+                "confidence": 0.8,
+                "source": "saw",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "npc_liu_qing",
+                  "pc_main",
+                  "loc_azure_cloud_market"
+                ],
+                "visibility_path": "direct_visual",
+                "visibility_evidence": {
+                  "observer_id": "npc_liu_qing",
+                  "memory_allowed": true,
+                  "visibility_path": "direct_visual",
+                  "event_id": "",
+                  "subjective_summary": "那修士进了主街后没再惹事，只是在钱百味摊位附近走了走。看来是来买东西的，不是来找麻烦的。",
+                  "allowed_memory_scope": [
+                    "observed_event"
+                  ],
+                  "forbidden_memory_scope": []
+                },
+                "observed_at": "第 1 日 08:50",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.3534
+              },
+              {
+                "id": "mem_npc_liu_qing_0007",
+                "type": "episodic",
+                "content": "那个新来的修士在主街上走了半圈，没惹事，也没买东西。看来就是普通散修来逛坊市的，不用再盯着了。",
+                "created_turn": 6,
+                "last_recalled_turn": 6,
+                "recall_count": 0,
+                "importance": 0.3,
+                "salience": 0.3,
+                "emotional_valence": 0.0,
+                "confidence": 0.8,
+                "source": "saw",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "pc_main",
+                  "loc_azure_cloud_market"
+                ],
+                "visibility_path": "direct_visual",
+                "visibility_evidence": {
+                  "observer_id": "npc_liu_qing",
+                  "memory_allowed": true,
+                  "visibility_path": "direct_visual",
+                  "event_id": "",
+                  "subjective_summary": "那个新来的修士在主街上走了半圈，没惹事，也没买东西。看来就是普通散修来逛坊市的，不用再盯着了。",
+                  "allowed_memory_scope": [
+                    "observed_event"
+                  ],
+                  "forbidden_memory_scope": []
+                },
+                "observed_at": "第 1 日 08:55",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.3175
+              },
+              {
+                "id": "mem_npc_liu_qing_0010",
+                "type": "episodic",
+                "content": "那个新来的修士在主街上疗伤修炼了半个时辰，用了止血草药和两块灵石，但没突破。看来就是个普通的穷散修，不用再管他了。",
+                "created_turn": 10,
+                "last_recalled_turn": 10,
+                "recall_count": 0,
+                "importance": 0.2,
+                "salience": 0.15,
+                "emotional_valence": 0.0,
+                "confidence": 0.9,
+                "source": "saw",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "pc_main"
+                ],
+                "visibility_path": "direct_visual",
+                "visibility_evidence": {
+                  "observer_id": "npc_liu_qing",
+                  "memory_allowed": true,
+                  "visibility_path": "direct_visual",
+                  "event_id": "",
+                  "subjective_summary": "那个新来的修士在主街上疗伤修炼了半个时辰，用了止血草药和两块灵石，但没突破。看来就是个普通的穷散修，不用再管他了。",
+                  "allowed_memory_scope": [
+                    "observed_event"
+                  ],
+                  "forbidden_memory_scope": []
+                },
+                "observed_at": "第 1 日 11:15",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.295
+              }
+            ],
+            "beliefs": [],
+            "plans": [],
+            "understandings": [],
+            "revision_events": []
+          }
+        },
+        {
+          "id": "npc_qian_baiwei",
+          "relevance_reasons": [
+            "present_in_current_scene",
+            "listed_in_location_zone"
+          ],
+          "profile_path": "C:\\Users\\Huang\\Desktop\\Proj\\paotuan\\xianxia_campaign\\campaign\\npcs\\npc_qian_baiwei.yaml",
+          "profile_text": "id: npc_qian_baiwei\nname: 钱百味\nrole: 符箓丹药商人\nfaction: faction_merchant_guild\nlocation_id: loc_azure_cloud_market\npublic_face: \"圆脸笑眯眯，柜台上永远摊着一本破账本和几枚试用的黄纸符。\"\ncore_desire: \"用情报和灵石换一颗筑基丹给孙子用。\"\nfear: \"被魔修盯上他的收购渠道。\"\nbottom_line: \"不会做亏本买卖，但真心想给孙子求一枚筑基丹。\"\ntraits:\n  personality_tags: [\"圆滑\", \"重亲情\", \"精于算计\", \"信息囤积者\"]\n  instinct: \"先寒暄套近乎，从不直接回答价格问题。\"\n  stress_response: \"讲价——压力下反而进入商人模式，试图谈判。\"\n  social_approach: \"讨好型——先送小惠再谈大买卖。\"\n  cognitive_bias: \"利益优先——习惯从'对我有什么好处'角度评估一切。\"\nvoice_style:\n  pace: \"慢悠悠，喜欢绕圈子。\"\n  habits:\n    - \"先寒暄再谈价格。\"\n    - \"报价留还价空间。\"\n  forbidden_topics:\n    - \"他孙子灵根资质\"\nknown_facts: []\nfalse_beliefs: []\nsecrets:\n  - id: secret_qian_knows_herb_source\n    text: \"钱百味知道黑风岭近期有人采到过异香草，怀疑与血灵芝有关。\"\nrelationship_hooks:\n  - target_id: pc_main\n    trust: 0\n    fear: 0\n    debt: 0\nchange_switches:\n  trust:\n    - \"玩家帮他搞到筑基丹或筑基丹材料。\"\n    - \"玩家替他保守黑风岭药材来源。\"\n  threat:\n    - \"玩家当众追问他的供货渠道。\"\n",
+          "memory_graph": {
+            "path": "C:\\Users\\Huang\\Desktop\\Proj\\paotuan\\xianxia_campaign\\campaign\\npcs\\npc_qian_baiwei.memory_graph.json",
+            "exists": true,
+            "top_memories": [
+              {
+                "id": "mem_qian_0001",
+                "type": "episodic",
+                "content": "钱百味前天从一个采药散修那里收到一批黑风岭产的异香草，比往年早了三日。",
+                "created_turn": 0,
+                "last_recalled_turn": 1,
+                "recall_count": 2,
+                "importance": 0.75,
+                "salience": 0.8,
+                "emotional_valence": 0.5,
+                "confidence": 0.85,
+                "source": "saw",
+                "tier": "active",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "loc_black_wind_ridge"
+                ],
+                "score": 0.6352
+              },
+              {
+                "id": "mem_qian_0002",
+                "type": "semantic",
+                "content": "钱百味知道魔修残党最近在收年份足的血灵芝，出价极高但不问来路。",
+                "created_turn": 0,
+                "last_recalled_turn": 1,
+                "recall_count": 1,
+                "importance": 0.7,
+                "salience": 0.6,
+                "emotional_valence": -0.5,
+                "confidence": 0.6,
+                "source": "heard",
+                "tier": "active",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "faction_demonic_remnants"
+                ],
+                "score": 0.5432
+              },
+              {
+                "id": "mem_npc_qian_baiwei_0007",
+                "type": "episodic",
+                "content": "那修士在主街上盘膝修炼了半个时辰，用了两块下品灵石冲击瓶颈，但失败了。他手上只剩两块灵石了——资源匮乏，应该会来找我交易。",
+                "created_turn": 9,
+                "last_recalled_turn": 9,
+                "recall_count": 0,
+                "importance": 0.5,
+                "salience": 0.6,
+                "emotional_valence": 0.2,
+                "confidence": 0.9,
+                "source": "saw",
+                "tier": "active",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "pc_main"
+                ],
+                "visibility_path": "direct_visual",
+                "visibility_evidence": {
+                  "observer_id": "npc_qian_baiwei",
+                  "memory_allowed": true,
+                  "visibility_path": "direct_visual",
+                  "event_id": "",
+                  "subjective_summary": "那修士在主街上盘膝修炼了半个时辰，用了两块下品灵石冲击瓶颈，但失败了。他手上只剩两块灵石了——资源匮乏，应该会来找我交易。",
+                  "allowed_memory_scope": [
+                    "observed_event"
+                  ],
+                  "forbidden_memory_scope": []
+                },
+                "observed_at": "第 1 日 10:15",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.4885
+              },
+              {
+                "id": "mem_npc_qian_baiwei_0005",
+                "type": "episodic",
+                "content": "那修士在我摊位前走了两趟都没停，但视线在我摆的异香草上多停了一瞬。他在找东西，不是来闲逛的。我把异香草摆到台面上，看他会不会上钩。",
+                "created_turn": 6,
+                "last_recalled_turn": 6,
+                "recall_count": 0,
+                "importance": 0.5,
+                "salience": 0.5,
+                "emotional_valence": 0.3,
+                "confidence": 0.7,
+                "source": "saw",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "pc_main",
+                  "loc_azure_cloud_market"
+                ],
+                "visibility_path": "direct_visual",
+                "visibility_evidence": {
+                  "observer_id": "npc_qian_baiwei",
+                  "memory_allowed": true,
+                  "visibility_path": "direct_visual",
+                  "event_id": "",
+                  "subjective_summary": "那修士在我摊位前走了两趟都没停，但视线在我摆的异香草上多停了一瞬。他在找东西，不是来闲逛的。我把异香草摆到台面上，看他会不会上钩。",
+                  "allowed_memory_scope": [
+                    "observed_event"
+                  ],
+                  "forbidden_memory_scope": []
+                },
+                "observed_at": "第 1 日 08:55",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.4375
+              },
+              {
+                "id": "mem_npc_qian_baiwei_0008",
+                "type": "episodic",
+                "content": "那修士疗伤修炼完后，灵石只剩两块了，还没来我摊位。他要么在犹豫，要么在等更好的机会。我再等等，他迟早会来。",
+                "created_turn": 10,
+                "last_recalled_turn": 10,
+                "recall_count": 0,
+                "importance": 0.4,
+                "salience": 0.5,
+                "emotional_valence": 0.1,
+                "confidence": 0.85,
+                "source": "saw",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "pc_main"
+                ],
+                "visibility_path": "direct_visual",
+                "visibility_evidence": {
+                  "observer_id": "npc_qian_baiwei",
+                  "memory_allowed": true,
+                  "visibility_path": "direct_visual",
+                  "event_id": "",
+                  "subjective_summary": "那修士疗伤修炼完后，灵石只剩两块了，还没来我摊位。他要么在犹豫，要么在等更好的机会。我再等等，他迟早会来。",
+                  "allowed_memory_scope": [
+                    "observed_event"
+                  ],
+                  "forbidden_memory_scope": []
+                },
+                "observed_at": "第 1 日 11:15",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.4375
+              },
+              {
+                "id": "mem_npc_qian_baiwei_0003",
+                "type": "episodic",
+                "content": "牌坊下那个生面孔和柳青说了几句话。柳青被说得耳根发红——有趣，难得见这小子吃瘪。这人径直朝摊位区走来了。",
+                "created_turn": 1,
+                "last_recalled_turn": 1,
+                "recall_count": 0,
+                "importance": 0.5,
+                "salience": 0.5,
+                "emotional_valence": 0.3,
+                "confidence": 0.7,
+                "source": "saw",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "npc_qian_baiwei",
+                  "loc_azure_cloud_market"
+                ],
+                "visibility_path": "direct_visual",
+                "observed_at": "第 1 日 08:25",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.4107
+              },
+              {
+                "id": "mem_npc_qian_baiwei_0004",
+                "type": "episodic",
+                "content": "牌坊下那个新来的修士走过我摊位前时放慢了脚步，但没有直接过来。他在观察——要么是在挑卖家，要么是在找什么人。",
+                "created_turn": 5,
+                "last_recalled_turn": 5,
+                "recall_count": 0,
+                "importance": 0.45,
+                "salience": 0.5,
+                "emotional_valence": 0.2,
+                "confidence": 0.7,
+                "source": "saw",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "npc_qian_baiwei",
+                  "pc_main",
+                  "loc_azure_cloud_market"
+                ],
+                "visibility_path": "direct_visual",
+                "visibility_evidence": {
+                  "observer_id": "npc_qian_baiwei",
+                  "memory_allowed": true,
+                  "visibility_path": "direct_visual",
+                  "event_id": "",
+                  "subjective_summary": "牌坊下那个新来的修士走过我摊位前时放慢了脚步，但没有直接过来。他在观察——要么是在挑卖家，要么是在找什么人。",
+                  "allowed_memory_scope": [
+                    "observed_event"
+                  ],
+                  "forbidden_memory_scope": []
+                },
+                "observed_at": "第 1 日 08:50",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.4084
+              },
+              {
+                "id": "mem_npc_qian_baiwei_0006",
+                "type": "episodic",
+                "content": "那修士在街上站了好久，闭着眼睛像是在运功。看来是个囊中羞涩的散修，在犹豫要不要来买东西。我把异香草又往台面上挪了挪，看能不能引他过来。",
+                "created_turn": 7,
+                "last_recalled_turn": 7,
+                "recall_count": 0,
+                "importance": 0.3,
+                "salience": 0.35,
+                "emotional_valence": 0.1,
+                "confidence": 0.8,
+                "source": "saw",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "pc_main",
+                  "loc_azure_cloud_market"
+                ],
+                "visibility_path": "direct_visual",
+                "visibility_evidence": {
+                  "observer_id": "npc_qian_baiwei",
+                  "memory_allowed": true,
+                  "visibility_path": "direct_visual",
+                  "event_id": "",
+                  "subjective_summary": "那修士在街上站了好久，闭着眼睛像是在运功。看来是个囊中羞涩的散修，在犹豫要不要来买东西。我把异香草又往台面上挪了挪，看能不能引他过来。",
+                  "allowed_memory_scope": [
+                    "observed_event"
+                  ],
+                  "forbidden_memory_scope": []
+                },
+                "observed_at": "第 1 日 09:10",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.34
+              }
+            ],
+            "beliefs": [],
+            "plans": [],
+            "understandings": [],
+            "revision_events": []
+          }
+        },
+        {
+          "id": "npc_su_mo",
+          "relevance_reasons": [
+            "present_in_current_scene",
+            "listed_in_location_zone"
+          ],
+          "profile_path": "C:\\Users\\Huang\\Desktop\\Proj\\paotuan\\xianxia_campaign\\campaign\\npcs\\npc_su_mo.yaml",
+          "profile_text": "id: npc_su_mo\nname: 苏墨\nrole: 来历不明的散修\nfaction: faction_loose_cultivators\nlocation_id: loc_azure_cloud_market\npublic_face: \"灰袍遮身，面容削瘦，坐在茶摊角落，面前一盏茶凉了也没喝。\"\ncore_desire: \"找到血灵芝以炼制还魂丹，救一个被魔修功法反噬的故人。\"\nfear: \"被青云门或魔修残党认出真实身份。\"\nbottom_line: \"不让任何人知道他也会炼制高阶丹药。\"\ntraits:\n  personality_tags: [\"隐忍\", \"执着\", \"观察型\", \"身负秘密\"]\n  instinct: \"先观察对方是否被跟踪，说话只说半截。\"\n  stress_response: \"撤退——感到暴露风险时优先脱离接触。\"\n  social_approach: \"试探型——用半句话引对方暴露意图。\"\n  cognitive_bias: \"过度警觉——倾向于把好奇心解读为别有用心。\"\nvoice_style:\n  pace: \"慢，字斟句酌。\"\n  habits:\n    - \"先观察对方是否跟踪或被人跟踪。\"\n    - \"说话只说半截，等对方接话。\"\n  forbidden_topics:\n    - \"他的故人\"\n    - \"他为何不在任何宗门\"\nknown_facts: []\nfalse_beliefs: []\nsecrets:\n  - id: secret_su_mo_alchemist\n    text: \"苏墨曾是药王谷叛逃弟子，精通丹术但被通缉。\"\nrelationship_hooks:\n  - target_id: pc_main\n    trust: 0\n    fear: 0\n    debt: 0\nchange_switches:\n  trust:\n    - \"玩家协助他入黑风岭采药。\"\n    - \"玩家替他遮掩行迹。\"\n  threat:\n    - \"玩家向青云门或魔修出卖他的行踪。\"\n",
+          "memory_graph": {
+            "path": "C:\\Users\\Huang\\Desktop\\Proj\\paotuan\\xianxia_campaign\\campaign\\npcs\\npc_su_mo.memory_graph.json",
+            "exists": true,
+            "top_memories": [
+              {
+                "id": "mem_su_0001",
+                "type": "episodic",
+                "content": "苏墨昨夜潜入黑风岭外围，感应到血灵芝正在成型，约两日后完全成熟。",
+                "created_turn": 0,
+                "last_recalled_turn": 1,
+                "recall_count": 1,
+                "importance": 0.9,
+                "salience": 0.85,
+                "emotional_valence": 1.5,
+                "confidence": 0.9,
+                "source": "saw",
+                "tier": "active",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "loc_black_wind_ridge"
+                ],
+                "score": 0.7282
+              },
+              {
+                "id": "mem_su_0002",
+                "type": "semantic",
+                "content": "黑风岭深处有魔修残党活动痕迹，旧禁制仍在运作。",
+                "created_turn": 0,
+                "last_recalled_turn": 1,
+                "recall_count": 1,
+                "importance": 0.72,
+                "salience": 0.65,
+                "emotional_valence": -1,
+                "confidence": 0.75,
+                "source": "inferred",
+                "tier": "active",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "loc_black_wind_ridge",
+                  "faction_demonic_remnants"
+                ],
+                "score": 0.5927
+              },
+              {
+                "id": "mem_npc_su_mo_0007",
+                "type": "episodic",
+                "content": "那修士在主街上走了一圈，步伐均匀但视线在几个特定摊位停留——不是买货的眼神，是在找线索。他注意到了钱百味的异香草，但没有立刻过去。此人目的明确，不是普通散修。",
+                "created_turn": 6,
+                "last_recalled_turn": 6,
+                "recall_count": 0,
+                "importance": 0.6,
+                "salience": 0.6,
+                "emotional_valence": 0.2,
+                "confidence": 0.65,
+                "source": "saw",
+                "tier": "active",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "pc_main",
+                  "npc_qian_baiwei",
+                  "loc_azure_cloud_market"
+                ],
+                "visibility_path": "direct_visual",
+                "visibility_evidence": {
+                  "observer_id": "npc_su_mo",
+                  "memory_allowed": true,
+                  "visibility_path": "direct_visual",
+                  "event_id": "",
+                  "subjective_summary": "那修士在主街上走了一圈，步伐均匀但视线在几个特定摊位停留——不是买货的眼神，是在找线索。他注意到了钱百味的异香草，但没有立刻过去。此人目的明确，不是普通散修。",
+                  "allowed_memory_scope": [
+                    "observed_event"
+                  ],
+                  "forbidden_memory_scope": []
+                },
+                "observed_at": "第 1 日 08:55",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.485
+              },
+              {
+                "id": "mem_npc_su_mo_0003",
+                "type": "episodic",
+                "content": "茶摊远处听到有人在坊市入口与柳青交谈，提到了黑风岭。此人也在关注血灵芝。",
+                "created_turn": 1,
+                "last_recalled_turn": 1,
+                "recall_count": 0,
+                "importance": 0.6,
+                "salience": 0.6,
+                "emotional_valence": 0.2,
+                "confidence": 0.5,
+                "source": "heard",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "npc_su_mo",
+                  "loc_azure_cloud_market"
+                ],
+                "visibility_path": "overheard",
+                "observed_at": "第 1 日 08:10",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.4507
+              },
+              {
+                "id": "mem_npc_su_mo_0004",
+                "type": "episodic",
+                "content": "茶摊远处听到有人在坊市入口与柳青交谈，提到了黑风岭。此人也在关注血灵芝。",
+                "created_turn": 1,
+                "last_recalled_turn": 1,
+                "recall_count": 0,
+                "importance": 0.6,
+                "salience": 0.6,
+                "emotional_valence": 0.2,
+                "confidence": 0.5,
+                "source": "heard",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "npc_su_mo",
+                  "loc_azure_cloud_market"
+                ],
+                "visibility_path": "overheard",
+                "observed_at": "第 1 日 08:20",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.4507
+              },
+              {
+                "id": "mem_npc_su_mo_0009",
+                "type": "episodic",
+                "content": "那修士在街边盘膝修炼，用了两块下品灵石冲击炼气三层失败。修为确实只有炼气二层，资源也有限。但他修炼完后没有离开坊市，看来还在等机会——或许也是奔着血灵芝来的。",
+                "created_turn": 9,
+                "last_recalled_turn": 9,
+                "recall_count": 0,
+                "importance": 0.5,
+                "salience": 0.5,
+                "emotional_valence": 0.0,
+                "confidence": 0.7,
+                "source": "saw",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "pc_main"
+                ],
+                "visibility_path": "direct_visual",
+                "visibility_evidence": {
+                  "observer_id": "npc_su_mo",
+                  "memory_allowed": true,
+                  "visibility_path": "direct_visual",
+                  "event_id": "",
+                  "subjective_summary": "那修士在街边盘膝修炼，用了两块下品灵石冲击炼气三层失败。修为确实只有炼气二层，资源也有限。但他修炼完后没有离开坊市，看来还在等机会——或许也是奔着血灵芝来的。",
+                  "allowed_memory_scope": [
+                    "observed_event"
+                  ],
+                  "forbidden_memory_scope": []
+                },
+                "observed_at": "第 1 日 10:15",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.4485
+              },
+              {
+                "id": "mem_npc_su_mo_0006",
+                "type": "episodic",
+                "content": "那个新来的修士从坊市入口走进主街后没有直接去钱百味摊位，也没有去别处——他在街上走了一圈，像是在熟悉环境。不像是急着赶路的。",
+                "created_turn": 5,
+                "last_recalled_turn": 5,
+                "recall_count": 0,
+                "importance": 0.5,
+                "salience": 0.5,
+                "emotional_valence": 0.1,
+                "confidence": 0.6,
+                "source": "saw",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "npc_su_mo",
+                  "pc_main",
+                  "loc_azure_cloud_market"
+                ],
+                "visibility_path": "direct_visual",
+                "visibility_evidence": {
+                  "observer_id": "npc_su_mo",
+                  "memory_allowed": true,
+                  "visibility_path": "direct_visual",
+                  "event_id": "",
+                  "subjective_summary": "那个新来的修士从坊市入口走进主街后没有直接去钱百味摊位，也没有去别处——他在街上走了一圈，像是在熟悉环境。不像是急着赶路的。",
+                  "allowed_memory_scope": [
+                    "observed_event"
+                  ],
+                  "forbidden_memory_scope": []
+                },
+                "observed_at": "第 1 日 08:50",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.4159
+              },
+              {
+                "id": "mem_npc_su_mo_0010",
+                "type": "episodic",
+                "content": "那修士疗伤修炼完，伤势恢复了不少但修为没突破。他还没离开坊市，看来确实在等黑风岭的消息。我倒要看看他下一步会找谁。",
+                "created_turn": 10,
+                "last_recalled_turn": 10,
+                "recall_count": 0,
+                "importance": 0.4,
+                "salience": 0.4,
+                "emotional_valence": 0.0,
+                "confidence": 0.7,
+                "source": "saw",
+                "tier": "dormant",
+                "valid": true,
+                "invalid_at_turn": null,
+                "contradicted_by": null,
+                "related_entities": [
+                  "pc_main"
+                ],
+                "visibility_path": "direct_visual",
+                "visibility_evidence": {
+                  "observer_id": "npc_su_mo",
+                  "memory_allowed": true,
+                  "visibility_path": "direct_visual",
+                  "event_id": "",
+                  "subjective_summary": "那修士疗伤修炼完，伤势恢复了不少但修为没突破。他还没离开坊市，看来确实在等黑风岭的消息。我倒要看看他下一步会找谁。",
+                  "allowed_memory_scope": [
+                    "observed_event"
+                  ],
+                  "forbidden_memory_scope": []
+                },
+                "observed_at": "第 1 日 11:15",
+                "location_id": "loc_azure_cloud_market",
+                "score": 0.405
+              }
+            ],
+            "beliefs": [],
+            "plans": [],
+            "understandings": [],
+            "revision_events": []
+          }
+        }
+      ],
+      "active_local_clocks": [
+        {
+          "id": "clock_liu_qing_patrol",
+          "type": "npc_schedule",
+          "owner_id": "npc_liu_qing",
+          "title": "柳青坊市值守",
+          "value": 0,
+          "max_value": 3,
+          "status": "active",
+          "visibility": "private",
+          "location_id": "loc_azure_cloud_market",
+          "next_tick_at": "第 1 日 巳时",
+          "_next_tick_at_tick": 600,
+          "tick_interval": "1 时辰",
+          "stakes": "柳青换岗后坊市入口警戒降低。",
+          "on_complete": "柳青换班回外门，坊市入口无人值守。",
+          "recent_updates": []
+        }
+      ],
+      "active_lore": [
+        {
+          "source": "campaign\\rumors.json",
+          "reason": "keyword_score=3",
+          "text": "{\n  \"rumors\": [\n    {\n      \"id\": \"rumor_blood_mushroom\",\n      \"content\": \"黑风岭近期有血灵芝出现，年分极足。\",\n      \"truth_status\": \"unconfirmed\",\n      \"origin\": \"unknown_travelers\",\n      \"origin_location\": \"loc_azure_cloud_market\",\n      \"created_turn\": 0,\n      \"spread\": [\n        {\n          \"hearer_id\": \"npc_qian_baiwei\",\n          \"heard_from\": \"street_rumor\",\n          \"heard_turn\": 0,\n          \"understood_as\": \"黑风岭有年份足的血灵芝，魔修在收\",\n          \"confidence\": 0.5,\n          \"variant\": false\n        },\n        {\n          \"hearer_id\": \"npc_liu_qing\",\n          \"heard_from\": \"street_rumor\",\n          \"heard_turn\": 0,\n          \"understood_as\": \"黑风岭灵气异常，可能有灵物出世\",\n          \"confidence\": 0.4,\n          \"variant\": true\n        }\n      ],\n      \"versions\": []\n    }\n  ]\n}"
+        },
+        {
+          "source": "campaign\\player_knowledge.json",
+          "reason": "keyword_score=2",
+          "text": "{\n  \"clues_discovered\": [],\n  \"npcs_known\": [\n    {\n      \"id\": \"npc_liu_qing\",\n      \"known_as\": \"柳青\",\n      \"known_role\": \"青云门外门弟子\",\n      \"first_met_turn\": 1,\n      \"last_interaction_turn\": 1\n    }\n  ],\n  \"locations_explored\": [\n    {\n      \"id\": \"loc_azure_cloud_market\",\n      \"name\": \"青云坊市\",\n      \"notes\": \"青云山脚的修士市集\"\n    },\n    {\n      \"id\": \"loc_black_wind_ridge\",\n      \"name\": \"黑风岭外围\",\n      \"notes\": \"原主在此昏迷。灵气紊乱。有血腥味。\"\n    }\n  ],\n  \"facts_understood\": [\n    {\n      \"fact\": \"黑风岭近日有血灵芝传闻\",\n      \"confidence\": \"rumor\",\n      \"source\": \"坊市流言\",\n      \"learned_turn\": 1\n    },\n    {\n      \"fact\": \"魔修残党在附近活动\",\n      \"confidence\": \"suspected\",\n      \"source\": \"坊市流言\",\n      \"learned_turn\": 1\n    },\n    {\n      \"fact\": \"原主洛衍是云游观末代弟子，观灭后独自流浪\",\n      \"confidence\": \"confirmed\",\n      \"source\": \"魂穿后的残留记忆\",\n      \"learned_turn\": 1\n    },\n    {\n      \"fact\": \"云游观被灭可能与某种'不该知道的东西'有关\",\n      \"confidence\": \"suspected\",\n      \"source\": \"师尊最后那句话的碎片\",\n      \"learned_turn\": 1\n    },\n    {\n      \"fact\": \"原主在黑风岭昏迷前闻到了浓烈血腥味——那是血灵芝成熟的前兆\",\n      \"confidence\": \"suspected\",\n      \"source\": \"魂穿时的残留感官记忆\",\n      \"learned_turn\": 1\n    },\n    {\n      \"fact\": \"原主采到的那株异香草比正常年份早了三天——黑风岭灵气异常\",\n      \"confidence\": \"confirmed\",\n      \"source\": \"物品栏中的异香草实物\",\n      \"learned_turn\": 1\n    }\n  ],\n  \"events_witnessed\": []\n}"
+        },
+        {
+          "source": "campaign\\quest_graph.json",
+          "reason": "keyword_score=1",
+          "text": "{\n  \"quests\": [\n    {\n      \"id\": \"thread_blood_spirit_mushroom\",\n      \"title\": \"黑风岭的血灵芝\",\n      \"status\": \"active\",\n      \"countdown_ticks\": 1,\n      \"countdown_max\": 4,\n      \"countdown_unit\": \"时辰\",\n      \"failure_consequence\": \"血灵芝被魔修摘走，苏墨失去救故人的唯一机会\",\n      \"clues\": [\n        {\n          \"id\": \"clue_qi_fluctuation\",\n          \"text\": \"牌坊禁制多次指向黑风岭的灵力波动\",\n          \"found\": false,\n          \"leads_to\": [\n            \"investigate_ridge\"\n          ]\n        },\n        {\n          \"id\": \"clue_mushroom_rumor\",\n          \"text\": \"坊市流言：黑风岭产了异样灵草\",\n          \"found\": true,\n          \"leads_to\": [\n            \"ask_qian\",\n            \"ask_su_mo\"\n          ]\n        }\n      ],\n      \"obstacles\": [\n        {\n          \"id\": \"obs_liu_qing_gate\",\n          \"text\": \"柳青看守坊市出口，登记出入修士\",\n          \"bypass\": \"出示信物、登记或等换岗\"\n        },\n        {\n          \"id\": \"obs_demonic_scouts\",\n          \"text\": \"魔修探子已靠近黑风岭外围\",\n          \"bypass\": \"绕路或隐匿行进\"\n        }\n      ],\n      \"intervention_nodes\": [\n        {\n          \"id\": \"investigate_ridge\",\n          \"text\": \"前往黑风岭调查\",\n          \"type\": \"player_action\",\n          \"requires\": [],\n          \"stops_clock\": false\n        },\n        {\n          \"id\": \"ask_qian\",\n          \"text\": \"向钱百味打听黑风岭药材\",\n          \"type\": \"social\",\n          \"requires\": [],\n          \"stops_clock\": false\n        },\n        {\n          \"id\": \"ask_su_mo\",\n          \"text\": \"注意茶摊角落的灰袍散修\",\n          \"type\": \"social\",\n          \"requires\": [],\n          \"stops_clock\": false\n        },\n        {\n          \"id\": \"escort_su_mo\",\n          \"text\": \"与苏墨结伴入黑风岭采药\",\n          \"type\": \"pla"
+        }
+      ],
+      "recent_turn_history": [
+        {
+          "turn_id": "turn_0003",
+          "player_action": "（旧记录行动文本编码损坏）",
+          "gm_summary": "你停在当前场景边缘，潮湿的空气里有旧木头、冷水和金属锈蚀混在一起的味道。近处的地面留下几道新旧交叠的痕迹，有些来自匆忙经过的人，有些像是被故意擦去。远处传来断续的低语，声音被风切碎，只剩下几个含混的词。这个地方不是静止的布景，至少有两股力量正在它背后拉扯：一个想把事情压下去，一个想在你看清之前把证据带走。\n\n你能感觉到当前场景已经被整理成可执行的本地回合包：在场 NPC、地点特征、世界时钟和任务压力都已进入判断。你现在的每个选择都会决定下一次写入谁的记忆、谁会误解你、以及哪条线索会先变得昂贵。\n这次行动没有直接触发战斗或检定，但它建立了当前回合的观察姿态：你没有贸然暴露敌意，也没有立刻交出承诺。周围 NPC 会把你归类为一个正在评估局势的人，而不是已经站队的人。这个结果让你暂时保留主动权，但也意味着对方会开始试探你。\n系统会根据你的自然语言行动自动估算耗时，并据此推进任务压力、NPC 记忆和世界变化。当前最重要的是：场景不会因为你停下观察而冻结。\n你需要在继续观察、主动交涉和抢先调查之间做选择；拖得越久，某些线索越可能变质或被他人先处理。\n可行动线索：继续询问在场 NPC，重点追问他们刚才看见或隐瞒了什么。；调查当前地点最显眼的异常痕迹，确认它是新出现还是被伪造。；花费 5-10 分钟静观其变，换取更多环境变化和离屏推进。；移动到更高或更隐蔽的位置，尝试扩大视野但承担暴露风险。\n本回合会按后端推断的耗时写入时间变化。\n正式回合中，相关 NPC 会按可见性获得独立记忆和主观理解。\n正式回合中，任务压力会随等待、移动和调查推进。",
+          "patch_summary": "时间: +5 分钟",
+          "artifact": "campaign\\ai_runs\\turn_0003.json"
+        },
+        {
+          "turn_id": "turn_0004",
+          "player_action": "（旧记录行动文本编码损坏）",
+          "gm_summary": "你停在当前场景边缘，潮湿的空气里有旧木头、冷水和金属锈蚀混在一起的味道。近处的地面留下几道新旧交叠的痕迹，有些来自匆忙经过的人，有些像是被故意擦去。远处传来断续的低语，声音被风切碎，只剩下几个含混的词。这个地方不是静止的布景，至少有两股力量正在它背后拉扯：一个想把事情压下去，一个想在你看清之前把证据带走。\n\n你能感觉到当前场景已经被整理成可执行的本地回合包：在场 NPC、地点特征、世界时钟和任务压力都已进入判断。你现在的每个选择都会决定下一次写入谁的记忆、谁会误解你、以及哪条线索会先变得昂贵。\n这次行动没有直接触发战斗或检定，但它建立了当前回合的观察姿态：你没有贸然暴露敌意，也没有立刻交出承诺。周围 NPC 会把你归类为一个正在评估局势的人，而不是已经站队的人。这个结果让你暂时保留主动权，但也意味着对方会开始试探你。\n系统会根据你的自然语言行动自动估算耗时，并据此推进任务压力、NPC 记忆和世界变化。当前最重要的是：场景不会因为你停下观察而冻结。\n你需要在继续观察、主动交涉和抢先调查之间做选择；拖得越久，某些线索越可能变质或被他人先处理。\n可行动线索：继续询问在场 NPC，重点追问他们刚才看见或隐瞒了什么。；调查当前地点最显眼的异常痕迹，确认它是新出现还是被伪造。；花费 5-10 分钟静观其变，换取更多环境变化和离屏推进。；移动到更高或更隐蔽的位置，尝试扩大视野但承担暴露风险。\n本回合会按后端推断的耗时写入时间变化。\n正式回合中，相关 NPC 会按可见性获得独立记忆和主观理解。\n正式回合中，任务压力会随等待、移动和调查推进。",
+          "patch_summary": "时间: +5 分钟",
+          "artifact": "campaign\\ai_runs\\turn_0004.json"
+        },
+        {
+          "turn_id": "turn_0007",
+          "player_action": "我查看自己的修炼状态和背包物品，评估距离突破还有多远",
+          "gm_summary": "你站在青云坊市的主街上，清晨的阳光斜斜洒在青石板路上，将摊位的布棚影子拉长。空气中混杂着檀香、药草和刚出炉的烤饼气味，讨价还价声与灵兽笼里的低鸣此起彼伏。你抬手凝神，内视己身——丹田内的灵气如同浅溪，木火双灵根的光晕缓缓流转，但灵气的总量和凝实程度都还远未达到突破的关口。炼气二层的瓶颈如一道薄而韧的膜，你能感觉到它的存在，却尚未找到刺破它的着力点。你低头检查自己的行囊：残破铁剑剑刃上的豁口又深了几分，云游观令牌上的裂纹触目惊心，引气诀残卷的纸页泛黄卷边，四块下品灵石在袋中叮当作响，两包止血草药和那株异香草安静地躺在夹层里。黑风岭的方向隐隐传来一阵山风，带着泥土和腐叶的气息，坊市尽头的天际线上，那道暗青色的山脊轮廓如同一道沉默的伤口。\n你花了一炷香的时间静心内视，对自身状态有了清晰的认识：炼气二层的根基尚算稳固，但灵力储量（3/6）和经脉通透度都不足以冲击炼气三层。按照引气诀残卷的记载，你至少需要将灵气蓄满至八成以上，并配合一味凝气丹药或灵物辅助，才有三成把握冲破瓶颈。你确认了背包里的物品：战斗装备仅有一柄残破铁剑，疗伤物资有两份止血草药，唯一有价值的灵物是那株异香草——但它并非提升修为的药材，而是用于炼制某种感知类丹药的辅料。灵石只有四块，不足以在坊市购买中品丹药。\n坊市内的人流比刚才稀疏了一两成，有几个背着药篓的散修正从黑风岭方向快步走进坊市，神色匆匆，其中一个腰间挂着沾血的布袋。他们直接拐进了坊市深处的一间铺子，没有在摊位区停留。远处黑风岭的山脊上，似乎有极淡的烟柱升起，但很快被风吹散。\n时间不等人——血灵芝的成熟窗口正在逼近，而你目前的修为和装备都不足以在黑风岭深处与魔修残党正面冲突。你需要在灵石、情报或同伴之间做出选择：是先去钱百味摊位打听消息，还是去找那个茶摊角落的灰袍散修，抑或先想办法挣些灵石补充物资？\n可行动线索：去钱百味的摊位前询问异香草的价格，试探他是否知道黑风岭的药材来源；走向街尾的茶摊，与那个独自坐着的灰袍散修搭话；在坊市内寻找临时任务或雇佣机会，赚取灵石购买丹药；仔细研究引气诀残卷，看看是否有其他突破途径\n第 1 日 09:10，约消耗15分钟\n你确认了自己的修炼状态和背包物品，对当前实力有了清醒认识。柳青注意到你只是在内视调息，对你的警惕进一步降低。钱百味则在暗中观察你，似乎对你的动向有所期待。\n血灵芝任务：成熟倒计时约1.5日，魔修探子已接近黑风岭外围。",
+          "patch_summary": "时间: ++15分钟",
+          "artifact": "campaign\\ai_runs\\turn_0007.json"
+        },
+        {
+          "turn_id": "turn_0008",
+          "player_action": "test",
+          "gm_summary": "你停在当前场景边缘，潮湿的空气里有旧木头、冷水和金属锈蚀混在一起的味道。近处的地面留下几道新旧交叠的痕迹，有些来自匆忙经过的人，有些像是被故意擦去。远处传来断续的低语，声音被风切碎，只剩下几个含混的词。这个地方不是静止的布景，至少有两股力量正在它背后拉扯：一个想把事情压下去，一个想在你看清之前把证据带走。\n\n你能感觉到当前场景已经被整理成可执行的本地回合包：在场 NPC、地点特征、世界时钟和任务压力都已进入判断。你现在的每个选择都会决定下一次写入谁的记忆、谁会误解你、以及哪条线索会先变得昂贵。\n这次行动没有直接触发战斗或检定，但它建立了当前回合的观察姿态：你没有贸然暴露敌意，也没有立刻交出承诺。周围 NPC 会把你归类为一个正在评估局势的人，而不是已经站队的人。这个结果让你暂时保留主动权，但也意味着对方会开始试探你。\n系统会根据你的自然语言行动自动估算耗时，并据此推进任务压力、NPC 记忆和世界变化。当前最重要的是：场景不会因为你停下观察而冻结。\n你需要在继续观察、主动交涉和抢先调查之间做选择；拖得越久，某些线索越可能变质或被他人先处理。\n可行动线索：继续询问在场 NPC，重点追问他们刚才看见或隐瞒了什么。；调查当前地点最显眼的异常痕迹，确认它是新出现还是被伪造。；花费 5-10 分钟静观其变，换取更多环境变化和离屏推进。；移动到更高或更隐蔽的位置，尝试扩大视野但承担暴露风险。\n本回合会按后端推断的耗时写入时间变化。\n正式回合中，相关 NPC 会按可见性获得独立记忆和主观理解。\n正式回合中，任务压力会随等待、移动和调查推进。",
+          "patch_summary": "时间: +5 分钟",
+          "artifact": "campaign\\ai_runs\\turn_0008.json"
+        },
+        {
+          "turn_id": "turn_0009",
+          "player_action": "我服用一株止血草药恢复伤势，然后用剩余两块灵石全力修炼引气诀，再次冲击炼气三层",
+          "gm_summary": "你回到主街，找了个相对僻静的角落，盘膝坐下。从腰间摸出一株止血草药，三两下嚼碎咽下——一股清凉的药力顺着喉咙滑入丹田，缓缓散入四肢百骸。你低头一看，之前与妖兽搏斗时留下的几道浅伤正以肉眼可见的速度愈合，皮肉重新合拢，只留下淡红色的痕迹。约莫半柱香的工夫，伤势已好了七七八八。你深吸一口气，从袋中取出最后两块下品灵石，一手握一块，闭上双眼，默念引气诀残卷上的口诀。灵石中的灵气如细流般涌入掌心，沿着经脉缓缓汇入丹田。你试图引导这股灵气冲击炼气三层的瓶颈——那道无形之膜在灵力的冲击下微微震颤，却坚韧如牛皮，只在表面泛起几道涟漪便再无动静。你咬紧牙关，将两块灵石中剩余的灵气全部压入经脉，丹田内的灵力翻涌如沸水，经脉传来阵阵胀痛，但那层瓶颈纹丝不动。片刻后，两块灵石化为齑粉，从指缝间簌簌落下。你睁开眼，丹田内的灵气比之前充盈了些许，从三成涨到了约五成，但距离突破仍有明显差距。坊市的人声重新涌入耳中，远处黑风岭的山脊上，似乎又升起了一缕极淡的烟。\n你消耗了一株止血草药，伤势恢复至接近满状态（生命从8恢复到11）。你用两块下品灵石修炼引气诀，成功将灵气从3/6提升至5/6，但冲击炼气三层失败——瓶颈坚固，仅凭两块下品灵石的灵气远不足以冲破。你确认了突破的难度：至少需要将灵气蓄满至6/6，并配合凝气丹药或灵物辅助，才有三成把握。两块灵石化为齑粉，你手中只剩下两块灵石。\n你修炼的这半个时辰里，坊市的人流又稀疏了几分。两个背着药篓的散修从坊市深处走出，低声交谈着什么，其中一人腰间挂着几株带土的灵草。他们经过你身边时，你闻到一股淡淡的血腥味——不是人血，更像是某种妖兽的体液。黑风岭方向的天际线上，那道极淡的烟柱比之前明显了一些，虽然风吹即散，但确实存在。远处隐约传来一声低沉的兽吼，被山风裹挟着断断续续地飘入坊市。\n血灵芝的成熟窗口正在逼近，而你刚刚确认了炼气三层的突破难度远高于预期——仅凭灵石苦修，时间成本和资源缺口都太大。你必须尽快决定：是冒险直接前往黑风岭，还是先寻求情报或合作，又或者另寻途径提升实力。魔修残党已经靠近黑风岭外围，每多等一刻，血灵芝被摘走的风险就增加一分。\n可行动线索：去钱百味的摊位前，用你剩下的两块灵石或那株异香草换取修炼资源或情报。；走向街尾的茶摊，主动与灰袍散修苏墨搭话——他看起来也在关注黑风岭。；在坊市内打听有没有临时任务或猎妖悬赏，赚取灵石购买丹药。；仔细研究引气诀残卷，看看是否有其他突破途径或隐藏的法门。\n第 1 日 09:15 → 第 1 日 10:15，+60分钟\n柳青注意到你只是普通修炼，对你进一步放松警惕。钱百味看到你灵石耗尽后神色如常，推测你资源匮乏，可能主动来交易。苏墨观察到你的修为确实不高，但见你修炼后仍留在坊市，认为你也在等黑风岭的消息。\n血灵芝成熟倒计时缩减至约1日（第2日子时成熟），魔修探子已接近黑风岭外围。",
+          "patch_summary": "时间: ++60分钟; ??: consume 止血草药; ??: consume 下品灵石",
+          "artifact": "campaign\\ai_runs\\turn_0009.json"
+        },
+        {
+          "turn_id": "turn_0010",
+          "player_action": "我用一株止血草药疗伤，然后运转引气诀回复灵力，准备继续探索",
+          "gm_summary": "你盘膝坐在主街角落的墙根下，青石板传来的凉意透过衣袍渗入肌肤。止血草药的药力已经散开，四肢百骸间暖洋洋的，之前与妖兽搏斗留下的伤口已基本愈合，只余几道淡红色的痕迹。你运转引气诀，丹田内的灵气缓缓流转，从三成补到了五成——但经脉中那股空虚感仍在提醒你，炼气三层的瓶颈依然坚固如铁。你睁开眼，指尖残留的灵石粉末被风吹散，融入坊市地面的尘土中。头顶的布棚被午前渐强的山风吹得猎猎作响，远处黑风岭的方向，那道淡青色剪影上似乎又飘起一缕若有若无的烟，像是有人在岭中点燃了湿柴。坊市里的人声比清晨稀疏了些，几个背着药篓的散修正从岭方向快步走进来，神色间带着一种说不上来的紧迫。街对面的钱百味正在招呼两个客人，但他眼角的余光一直往你这边瞟——显然你修炼时他一直在留意。茶摊角落的灰袍散修依然一动不动地坐着，面前那盏茶早已凉透，但他的目光似乎也落在你身上，在你起身的瞬间又移开了。\n你消耗了一株止血草药，生命恢复至11点（接近满值）。你用最后两块下品灵石修炼引气诀，成功将灵气从3点提升至5点，但冲击炼气三层再次失败——瓶颈纹丝不动。你确认了突破难度：至少需要将灵气蓄满至6点，并配合凝气丹药或灵物辅助，才有三成把握。两块灵石化为齑粉，你手中只剩下两块下品灵石。你疗伤和修炼共耗时约半个时辰，坊市人流进一步稀疏，黑风岭方向的烟柱比之前明显了一些，似有异常活动。\n黑风岭方向的烟柱在风中忽隐忽现，空气里隐约传来一股淡淡的焦糊味，混在坊市的药草和烤肉气味中几乎难以分辨。两个背着鼓鼓囊囊药篓的散修低声交谈着从坊市深处走出，其中一人腰间挂着一个沾血的布袋，经过你身边时，你听到他们提到'那边已经有人先到了'——声音压得很低，但风还是把半句话送到了你耳中。血灵芝的成熟窗口正在逼近，魔修残党似乎已经开始了行动。\n你的灵石几乎耗尽，修为瓶颈短期内无法靠苦修突破。黑风岭方向已有异常动静，魔修可能已经开始采摘或布防。钱百味在等你过去交易，苏墨也在暗中观察你——你必须在资源、情报和伙伴之间做出选择，而时间正在流失。\n可行动线索：去钱百味的摊位前，用你剩下的两块灵石或那株异香草换取修炼资源或情报。；走向街尾的茶摊，主动与灰袍散修苏墨搭话——他看起来也在关注黑风岭。；直接前往坊市入口，向柳青登记出坊市，独自前往黑风岭探查。；在坊市内打听有没有临时任务或猎妖悬赏，赚取灵石购买丹药。\n第 1 日 10:15 → 第 1 日 11:15，消耗约60分钟\n柳青认为你只是个普通穷散修，不再关注。钱百味确信你资源匮乏，预计你会来找他交易。苏墨确认你修为低但目标明确，仍在观望中。\n血灵芝成熟倒计时：约第2日子时成熟，魔修已接近黑风岭外围。",
+          "patch_summary": "时间: +60 分钟; ??: consume 止血草药; ??: consume 下品灵石; ????: 3?",
+          "artifact": "campaign\\ai_runs\\turn_0010.json"
+        }
+      ],
+      "rules_text": "id: rules_lightweight_d20\nname: 轻量 d20 仙侠规则\ndice:\n  main: \"1d20 + 修为修正 + 技能修正\"\nchecks:\n  easy: 8\n  normal: 12\n  hard: 16\n  extreme: 20\nadvantage_policy: \"有充分准备、符箓辅助或环境优势时取两次较高。\"\ndisadvantage_policy: \"受伤、灵力不足或环境恶劣时取两次较低。\"\nfailure_policy:\n  - \"失败应产生代价：灵力损耗、符箓消耗、惊动他人、受伤或关系恶化。\"\ncultivation_realms:\n  - \"炼气期 1-3 层：修正 +0\"\n  - \"炼气期 4-6 层：修正 +1\"\n  - \"炼气期 7-9 层：修正 +2\"\n  - \"筑基期：修正 +4\"\ncombat_policy:\n  - \"战斗以意图和局势为核心。\"\n  - \"法术消耗灵力，普通攻击消耗体力。\"\n",
+      "factions_text": "factions:\n  - id: faction_azure_cloud_sect\n    name: 青云门\n    type: orthodox_sect\n    public_reputation: \"正道中型宗门，管控方圆百里的坊市和灵脉。\"\n    goals:\n      - \"维持坊市秩序与税收。\"\n      - \"追查近期黑风岭灵气异动。\"\n    methods:\n      - \"外门弟子值守\"\n      - \"内门筑基执事定期巡视\"\n    secrets:\n      - id: secret_azure_cloud_investigation\n        text: \"青云门已派一名筑基执事暗中调查黑风岭，但暂未公开。\"\n\n  - id: faction_demonic_remnants\n    name: 魔修残党\n    type: demonic_cultivators\n    public_reputation: \"百年前被剿灭的噬魂宗残余，偶尔在偏远地区出没。\"\n    goals:\n      - \"获取血灵芝以炼制噬魂宗失传秘药。\"\n      - \"避免与青云门正面冲突。\"\n    methods:\n      - \"潜伏\"\n      - \"以高价收购掩人耳目\"\n    secrets:\n      - id: secret_demonic_inside_man\n        text: \"魔修残党在坊市周围设有暗哨，伪装成行脚商。\"\n\n  - id: faction_merchant_guild\n    name: 坊市商盟\n    type: merchant_association\n    public_reputation: \"安分守己的修士商人，缴纳灵石换取青云门庇护。\"\n    goals:\n      - \"赚灵石，保摊位。\"\n    secrets: []\n\n  - id: faction_loose_cultivators\n    name: 散修\n    type: unaffiliated\n    public_reputation: \"没有宗门靠山的独自修行者。\"\n    goals:\n      - \"活下来，找机缘。\"\n",
+      "spatial_context": {
+        "player_zone": "zone_market_entrance",
+        "zone_count": 3,
+        "zone_ids": [
+          "zone_market_entrance",
+          "zone_market_stalls",
+          "zone_tea_corner"
+        ],
+        "npc_zones": {
+          "npc_liu_qing": "zone_market_entrance",
+          "npc_qian_baiwei": "zone_market_stalls",
+          "pc_main": "zone_market_stalls",
+          "npc_su_mo": "zone_tea_corner"
+        },
+        "player_los_to_npc": {
+          "npc_liu_qing": true,
+          "npc_qian_baiwei": true,
+          "pc_main": true,
+          "npc_su_mo": true
+        },
+        "player_sound_to_npc": {
+          "npc_liu_qing": "clear",
+          "npc_qian_baiwei": "clear",
+          "pc_main": "clear",
+          "npc_su_mo": "clear"
+        }
+      },
+      "player_resources": {
+        "faction_azure_cloud_sect": {
+          "type": "faction",
+          "money": 500,
+          "manpower": 20,
+          "risk_level": 2,
+          "supplies": [],
+          "cooldowns": {},
+          "reputation": 50
+        },
+        "faction_demonic_remnants": {
+          "type": "faction",
+          "money": 80,
+          "manpower": 5,
+          "risk_level": 8,
+          "supplies": [],
+          "cooldowns": {},
+          "reputation": -30
+        },
+        "faction_merchant_guild": {
+          "type": "faction",
+          "money": 150,
+          "manpower": 8,
+          "risk_level": 3,
+          "supplies": [],
+          "cooldowns": {},
+          "reputation": 10
+        },
+        "npc_liu_qing": {
+          "type": "npc",
+          "money": 30,
+          "risk_tolerance": 4,
+          "stamina": 8,
+          "supplies": [],
+          "cooldowns": {}
+        },
+        "npc_qian_baiwei": {
+          "type": "npc",
+          "money": 80,
+          "risk_tolerance": 3,
+          "stamina": 5,
+          "supplies": [],
+          "cooldowns": {}
+        },
+        "npc_su_mo": {
+          "type": "npc",
+          "money": 15,
+          "risk_tolerance": 8,
+          "stamina": 6,
+          "supplies": [],
+          "cooldowns": {}
+        }
+      }
+    },
+    "gm_input_markdown": "# GM Turn Packet\n\n## GM System\n\n\n\n## 当前玩家行动\n\n我去钱百味摊位，用最后两块下品灵石和异香草换取聚气丹，然后立刻服下丹药全力冲击炼气三层的瓶颈\n\n## 时间\n\n- 当前回合：11\n- 当前时间：第 1 日 11:15\n- 预览推进到：第 1 日 11:25\n- 消耗分钟：10\n\n## 玩家角色\n\n```json\n[\n  {\n    \"id\": \"pc_main\",\n    \"name\": \"洛衍\",\n    \"location_id\": \"zone_market_stalls\",\n    \"inventory\": [\n      \"残破铁剑\",\n      \"云游观弟子令牌(裂)\",\n      \"引气诀残卷\",\n      \"下品灵石x2\",\n      \"止血草药x1\",\n      \"异香草x1\"\n    ],\n    \"conditions\": [],\n    \"realm\": \"炼气二层\",\n    \"realm_level\": 2,\n    \"spiritual_root\": \"木火双灵根\",\n    \"health\": 11,\n    \"max_health\": 12,\n    \"qi\": 5,\n    \"max_qi\": 6,\n    \"stats\": {\n      \"combat\": 1,\n      \"perception\": 1,\n      \"social\": -1\n    },\n    \"former_name\": \"洛衍\",\n    \"memories_of_former_self\": [\n      \"云游观被灭那晚的火光和惨叫声\",\n      \"师尊最后塞给他令牌时说的那句话——'去找青云山脉的……'后半句被爆炸淹没\",\n      \"黑风岭采药时闻到一股浓烈的血腥味，然后眼前一黑\",\n      \"自己叫洛衍，二十一岁，木火双灵根，炼气二层\"\n    ]\n  }\n]\n```\n\n## 玩家资源\n\n```json\n{\n  \"faction_azure_cloud_sect\": {\n    \"type\": \"faction\",\n    \"money\": 500,\n    \"manpower\": 20,\n    \"risk_level\": 2,\n    \"supplies\": [],\n    \"cooldowns\": {},\n    \"reputation\": 50\n  },\n  \"faction_demonic_remnants\": {\n    \"type\": \"faction\",\n    \"money\": 80,\n    \"manpower\": 5,\n    \"risk_level\": 8,\n    \"supplies\": [],\n    \"cooldowns\": {},\n    \"reputation\": -30\n  },\n  \"faction_merchant_guild\": {\n    \"type\": \"faction\",\n    \"money\": 150,\n    \"manpower\": 8,\n    \"risk_level\": 3,\n    \"supplies\": [],\n    \"cooldowns\": {},\n    \"reputation\": 10\n  },\n  \"npc_liu_qing\": {\n    \"type\": \"npc\",\n    \"money\": 30,\n    \"risk_tolerance\": 4,\n    \"stamina\": 8,\n    \"supplies\": [],\n    \"cooldowns\": {}\n  },\n  \"npc_qian_baiwei\": {\n    \"type\": \"npc\",\n    \"money\": 80,\n    \"risk_tolerance\": 3,\n    \"stamina\": 5,\n    \"supplies\": [],\n    \"cooldowns\": {}\n  },\n  \"npc_su_mo\": {\n    \"type\": \"npc\",\n    \"money\": 15,\n    \"risk_tolerance\": 8,\n    \"stamina\": 6,\n    \"supplies\": [],\n    \"cooldowns\": {}\n  }\n}\n```\n\n## 当前场景状态\n\n```json\n{\n  \"scene_id\": \"scene_0001\",\n  \"location_id\": \"loc_azure_cloud_market\",\n  \"summary\": \"玩家抵达青云坊市，血灵芝的传言刚在集市散开。\",\n  \"present_entities\": [\n    \"npc_liu_qing\",\n    \"npc_qian_baiwei\",\n    \"npc_su_mo\"\n  ],\n  \"active_threads\": [\n    \"thread_blood_spirit_mushroom\",\n    \"open_thread_0007\",\n    \"open_thread_0008\",\n    \"open_thread_0009\",\n    \"open_thread_0010\",\n    \"open_thread_0011\",\n    \"open_thread_0012\",\n    \"open_thread_0013\",\n    \"open_thread_0014\"\n  ]\n}\n```\n\n## 地点资料\n\n```yaml\nid: loc_azure_cloud_market\nname: 青云坊市\ntype: cultivation_market\nsummary: \"青云山脚的修士坊市，半条街的摊位和两间铺面，来往多是炼气期修士和凡人物商。\"\n\nzones:\n  - id: zone_market_entrance\n    name: \"坊市入口\"\n    description: \"两丈高的石牌坊，刻有青云门禁制符印。柳青就在牌坊下值守。\"\n    ambient_light: bright\n    ambient_noise: moderate\n    features:\n      - id: feature_talisman_gate\n        text: \"石牌坊上的禁制符印会感应灵力波动，触发后青云门内门会收到传讯。\"\n    initial_occupants:\n      - npc_liu_qing\n\n  - id: zone_market_stalls\n    name: \"坊市主街\"\n    description: \"青石板路两边摆着七八个摊位，卖符箓、低阶丹药、灵草、兽骨和凡间杂货。人声起伏。\"\n    ambient_light: bright\n    ambient_noise: loud\n    features:\n      - id: feature_qian_stall\n        text: \"钱百味的摊位摆满黄纸符和几瓶聚气丹，摊前常有两三人流连。\"\n    initial_occupants:\n      - npc_qian_baiwei\n      - pc_main\n\n  - id: zone_tea_corner\n    name: \"茶摊角落\"\n    description: \"街尾的露天茶摊，只摆了三张矮桌。苏墨独自坐在最靠里的角落。\"\n    ambient_light: dim\n    ambient_noise: moderate\n    features: []\n    initial_occupants:\n      - npc_su_mo\n\nzone_connections:\n  - from: zone_market_entrance\n    to: zone_market_stalls\n    type: open\n    distance: 20\n    line_of_sight: true\n    sound: clear\n  - from: zone_market_stalls\n    to: zone_tea_corner\n    type: open\n    distance: 30\n    line_of_sight: true\n    sound: clear\n\nsensory_details:\n  sight:\n    - \"石牌坊上的禁制符印偶尔闪过淡青色微光。\"\n    - \"坊市尽头，黑风岭如一道暗青色剪影压在天边。\"\n  sound:\n    - \"讨价还价声、灵兽笼里的低鸣、远处瀑布水声。\"\n  smell:\n    - \"檀香、药草、烤肉、雨后湿土。\"\n\nhidden_clues:\n  - id: clue_qi_fluctuation\n    location_zone: zone_market_entrance\n    discover_with: \"灵力感知或调查石牌坊\"\n    text: \"牌坊禁制最近三日已触发两次低强度警报，指向同一方向——黑风岭。\"\n\nhazards:\n  - id: hazard_talisman_alarm\n    location_zone: zone_market_entrance\n    trigger: \"在坊市内施展中品以上法术\"\n    consequence: \"青云门内门收到警报，一炷香内有筑基修士赶到。\"\n```\n\n## 世界 Tick 预览\n\n```json\n{\n  \"clock_updates\": [],\n  \"offscreen_event_hints\": [],\n  \"requires_visibility_resolution\": false\n}\n```\n\n## 在场 / 本回合相关 NPC 与私有记忆\n\n### npc_liu_qing\n\n纳入原因：\n```json\n[\n  \"present_in_current_scene\",\n  \"listed_in_location_zone\",\n  \"active_clock:clock_liu_qing_patrol\"\n]\n```\n\n角色卡：\n```yaml\nid: npc_liu_qing\nname: 柳青\nrole: 青云门外门弟子\nfaction: faction_azure_cloud_sect\nlocation_id: loc_azure_cloud_market\npublic_face: \"身背一柄制式铁剑，腰挂外门令牌，眼神锐利但尚欠沉稳。\"\ncore_desire: \"在下次外门考核前立功，换取筑基丹。\"\nfear: \"被师长发现自己守坊市时走神。\"\nbottom_line: \"不会为陌生人触犯门规。\"\ntraits:\n  personality_tags: [\"上进\", \"直率\", \"守规矩\", \"急于证明自己\"]\n  instinct: \"先盘问来路不明者，把门规挂嘴边。\"\n  stress_response: \"硬撑——紧张时反而更刻意摆出正式姿态。\"\n  social_approach: \"公事公办——先按门规流程走，不轻易通融。\"\n  cognitive_bias: \"权威依赖——师长的命令高于自己的判断。\"\nvoice_style:\n  pace: \"短促，偶尔带点年轻人不耐。\"\n  habits:\n    - \"先问身份来历。\"\n    - \"提到师长时语气恭敬。\"\n  forbidden_topics:\n    - \"上次考核为何没通过\"\nknown_facts: []\nfalse_beliefs: []\nsecrets:\n  - id: secret_liu_qing_failed_trial\n    text: \"柳青在去年内门选拔中因护友失误被淘汰。\"\nrelationship_hooks:\n  - target_id: pc_main\n    trust: 0.0  # updated by patch (++0): 柳青被怼后反而觉得此人直爽——至少不是心怀鬼胎的那种\n    fear: 0\n    debt: 0\nchange_switches:\n  trust:\n    - \"玩家出示青云门信物或师承凭证。\"\n    - \"玩家协助坊市治安。\"\n  threat:\n    - \"玩家在坊市内动手施法。\"\n    - \"玩家打探内门选拔细节。\"\n```\n\n高相关记忆/理解：\n```json\n{\n  \"path\": \"C:\\\\Users\\\\Huang\\\\Desktop\\\\Proj\\\\paotuan\\\\xianxia_campaign\\\\campaign\\\\npcs\\\\npc_liu_qing.memory_graph.json\",\n  \"exists\": true,\n  \"top_memories\": [\n    {\n      \"id\": \"mem_liu_0001\",\n      \"type\": \"semantic\",\n      \"content\": \"柳青知道黑风岭方向近日灵气异动，但外门弟子未获准探查。\",\n      \"created_turn\": 0,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 1,\n      \"importance\": 0.65,\n      \"salience\": 0.7,\n      \"emotional_valence\": 0.3,\n      \"confidence\": 0.8,\n      \"source\": \"heard\",\n      \"tier\": \"active\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"loc_black_wind_ridge\",\n        \"faction_azure_cloud_sect\"\n      ],\n      \"score\": 0.5457\n    },\n    {\n      \"id\": \"mem_npc_liu_qing_0005\",\n      \"type\": \"episodic\",\n      \"content\": \"一个陌生修士在坊市入口盘问下毫不畏缩，反呛我坊市规矩。此人不是散修做派——但至少直来直去，不像在隐瞒什么。\",\n      \"created_turn\": 1,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 0,\n      \"importance\": 0.65,\n      \"salience\": 0.65,\n      \"emotional_valence\": 0.2,\n      \"confidence\": 0.9,\n      \"source\": \"saw\",\n      \"tier\": \"active\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"npc_liu_qing\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"observed_at\": \"第 1 日 08:25\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.4982\n    },\n    {\n      \"id\": \"mem_npc_liu_qing_0003\",\n      \"type\": \"episodic\",\n      \"content\": \"一个外来的修士在坊市入口向我行礼，问起黑风岭灵气异动。此人态度恭敬，不像魔修。\",\n      \"created_turn\": 1,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 0,\n      \"importance\": 0.55,\n      \"salience\": 0.55,\n      \"emotional_valence\": 0.3,\n      \"confidence\": 0.85,\n      \"source\": \"saw\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"npc_liu_qing\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"observed_at\": \"第 1 日 08:10\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.4457\n    },\n    {\n      \"id\": \"mem_npc_liu_qing_0004\",\n      \"type\": \"episodic\",\n      \"content\": \"一个外来的修士在坊市入口向我行礼，问起黑风岭灵气异动。此人态度恭敬，不像魔修。\",\n      \"created_turn\": 1,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 0,\n      \"importance\": 0.55,\n      \"salience\": 0.55,\n      \"emotional_valence\": 0.3,\n      \"confidence\": 0.85,\n      \"source\": \"saw\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"npc_liu_qing\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"observed_at\": \"第 1 日 08:20\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.4457\n    },\n    {\n      \"id\": \"mem_liu_0002\",\n      \"type\": \"semantic\",\n      \"content\": \"坊市规矩：外来修士须登记姓名和师承，不得在坊市内私斗。\",\n      \"created_turn\": 0,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 0,\n      \"importance\": 0.5,\n      \"salience\": 0.6,\n      \"emotional_valence\": 0,\n      \"confidence\": 0.95,\n      \"source\": \"saw\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"loc_azure_cloud_market\"\n      ],\n      \"score\": 0.4282\n    },\n    {\n      \"id\": \"mem_npc_liu_qing_0006\",\n      \"type\": \"episodic\",\n      \"content\": \"那修士进了主街后没再惹事，只是在钱百味摊位附近走了走。看来是来买东西的，不是来找麻烦的。\",\n      \"created_turn\": 5,\n      \"last_recalled_turn\": 5,\n      \"recall_count\": 0,\n      \"importance\": 0.35,\n      \"salience\": 0.4,\n      \"emotional_valence\": 0.1,\n      \"confidence\": 0.8,\n      \"source\": \"saw\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"npc_liu_qing\",\n        \"pc_main\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"visibility_evidence\": {\n        \"observer_id\": \"npc_liu_qing\",\n        \"memory_allowed\": true,\n        \"visibility_path\": \"direct_visual\",\n        \"event_id\": \"\",\n        \"subjective_summary\": \"那修士进了主街后没再惹事，只是在钱百味摊位附近走了走。看来是来买东西的，不是来找麻烦的。\",\n        \"allowed_memory_scope\": [\n          \"observed_event\"\n        ],\n        \"forbidden_memory_scope\": []\n      },\n      \"observed_at\": \"第 1 日 08:50\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.3534\n    },\n    {\n      \"id\": \"mem_npc_liu_qing_0007\",\n      \"type\": \"episodic\",\n      \"content\": \"那个新来的修士在主街上走了半圈，没惹事，也没买东西。看来就是普通散修来逛坊市的，不用再盯着了。\",\n      \"created_turn\": 6,\n      \"last_recalled_turn\": 6,\n      \"recall_count\": 0,\n      \"importance\": 0.3,\n      \"salience\": 0.3,\n      \"emotional_valence\": 0.0,\n      \"confidence\": 0.8,\n      \"source\": \"saw\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"pc_main\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"visibility_evidence\": {\n        \"observer_id\": \"npc_liu_qing\",\n        \"memory_allowed\": true,\n        \"visibility_path\": \"direct_visual\",\n        \"event_id\": \"\",\n        \"subjective_summary\": \"那个新来的修士在主街上走了半圈，没惹事，也没买东西。看来就是普通散修来逛坊市的，不用再盯着了。\",\n        \"allowed_memory_scope\": [\n          \"observed_event\"\n        ],\n        \"forbidden_memory_scope\": []\n      },\n      \"observed_at\": \"第 1 日 08:55\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.3175\n    },\n    {\n      \"id\": \"mem_npc_liu_qing_0010\",\n      \"type\": \"episodic\",\n      \"content\": \"那个新来的修士在主街上疗伤修炼了半个时辰，用了止血草药和两块灵石，但没突破。看来就是个普通的穷散修，不用再管他了。\",\n      \"created_turn\": 10,\n      \"last_recalled_turn\": 10,\n      \"recall_count\": 0,\n      \"importance\": 0.2,\n      \"salience\": 0.15,\n      \"emotional_valence\": 0.0,\n      \"confidence\": 0.9,\n      \"source\": \"saw\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"pc_main\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"visibility_evidence\": {\n        \"observer_id\": \"npc_liu_qing\",\n        \"memory_allowed\": true,\n        \"visibility_path\": \"direct_visual\",\n        \"event_id\": \"\",\n        \"subjective_summary\": \"那个新来的修士在主街上疗伤修炼了半个时辰，用了止血草药和两块灵石，但没突破。看来就是个普通的穷散修，不用再管他了。\",\n        \"allowed_memory_scope\": [\n          \"observed_event\"\n        ],\n        \"forbidden_memory_scope\": []\n      },\n      \"observed_at\": \"第 1 日 11:15\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.295\n    }\n  ],\n  \"beliefs\": [],\n  \"plans\": [],\n  \"understandings\": [],\n  \"revision_events\": []\n}\n```\n\n### npc_qian_baiwei\n\n纳入原因：\n```json\n[\n  \"present_in_current_scene\",\n  \"listed_in_location_zone\"\n]\n```\n\n角色卡：\n```yaml\nid: npc_qian_baiwei\nname: 钱百味\nrole: 符箓丹药商人\nfaction: faction_merchant_guild\nlocation_id: loc_azure_cloud_market\npublic_face: \"圆脸笑眯眯，柜台上永远摊着一本破账本和几枚试用的黄纸符。\"\ncore_desire: \"用情报和灵石换一颗筑基丹给孙子用。\"\nfear: \"被魔修盯上他的收购渠道。\"\nbottom_line: \"不会做亏本买卖，但真心想给孙子求一枚筑基丹。\"\ntraits:\n  personality_tags: [\"圆滑\", \"重亲情\", \"精于算计\", \"信息囤积者\"]\n  instinct: \"先寒暄套近乎，从不直接回答价格问题。\"\n  stress_response: \"讲价——压力下反而进入商人模式，试图谈判。\"\n  social_approach: \"讨好型——先送小惠再谈大买卖。\"\n  cognitive_bias: \"利益优先——习惯从'对我有什么好处'角度评估一切。\"\nvoice_style:\n  pace: \"慢悠悠，喜欢绕圈子。\"\n  habits:\n    - \"先寒暄再谈价格。\"\n    - \"报价留还价空间。\"\n  forbidden_topics:\n    - \"他孙子灵根资质\"\nknown_facts: []\nfalse_beliefs: []\nsecrets:\n  - id: secret_qian_knows_herb_source\n    text: \"钱百味知道黑风岭近期有人采到过异香草，怀疑与血灵芝有关。\"\nrelationship_hooks:\n  - target_id: pc_main\n    trust: 0\n    fear: 0\n    debt: 0\nchange_switches:\n  trust:\n    - \"玩家帮他搞到筑基丹或筑基丹材料。\"\n    - \"玩家替他保守黑风岭药材来源。\"\n  threat:\n    - \"玩家当众追问他的供货渠道。\"\n```\n\n高相关记忆/理解：\n```json\n{\n  \"path\": \"C:\\\\Users\\\\Huang\\\\Desktop\\\\Proj\\\\paotuan\\\\xianxia_campaign\\\\campaign\\\\npcs\\\\npc_qian_baiwei.memory_graph.json\",\n  \"exists\": true,\n  \"top_memories\": [\n    {\n      \"id\": \"mem_qian_0001\",\n      \"type\": \"episodic\",\n      \"content\": \"钱百味前天从一个采药散修那里收到一批黑风岭产的异香草，比往年早了三日。\",\n      \"created_turn\": 0,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 2,\n      \"importance\": 0.75,\n      \"salience\": 0.8,\n      \"emotional_valence\": 0.5,\n      \"confidence\": 0.85,\n      \"source\": \"saw\",\n      \"tier\": \"active\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"loc_black_wind_ridge\"\n      ],\n      \"score\": 0.6352\n    },\n    {\n      \"id\": \"mem_qian_0002\",\n      \"type\": \"semantic\",\n      \"content\": \"钱百味知道魔修残党最近在收年份足的血灵芝，出价极高但不问来路。\",\n      \"created_turn\": 0,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 1,\n      \"importance\": 0.7,\n      \"salience\": 0.6,\n      \"emotional_valence\": -0.5,\n      \"confidence\": 0.6,\n      \"source\": \"heard\",\n      \"tier\": \"active\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"faction_demonic_remnants\"\n      ],\n      \"score\": 0.5432\n    },\n    {\n      \"id\": \"mem_npc_qian_baiwei_0007\",\n      \"type\": \"episodic\",\n      \"content\": \"那修士在主街上盘膝修炼了半个时辰，用了两块下品灵石冲击瓶颈，但失败了。他手上只剩两块灵石了——资源匮乏，应该会来找我交易。\",\n      \"created_turn\": 9,\n      \"last_recalled_turn\": 9,\n      \"recall_count\": 0,\n      \"importance\": 0.5,\n      \"salience\": 0.6,\n      \"emotional_valence\": 0.2,\n      \"confidence\": 0.9,\n      \"source\": \"saw\",\n      \"tier\": \"active\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"pc_main\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"visibility_evidence\": {\n        \"observer_id\": \"npc_qian_baiwei\",\n        \"memory_allowed\": true,\n        \"visibility_path\": \"direct_visual\",\n        \"event_id\": \"\",\n        \"subjective_summary\": \"那修士在主街上盘膝修炼了半个时辰，用了两块下品灵石冲击瓶颈，但失败了。他手上只剩两块灵石了——资源匮乏，应该会来找我交易。\",\n        \"allowed_memory_scope\": [\n          \"observed_event\"\n        ],\n        \"forbidden_memory_scope\": []\n      },\n      \"observed_at\": \"第 1 日 10:15\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.4885\n    },\n    {\n      \"id\": \"mem_npc_qian_baiwei_0005\",\n      \"type\": \"episodic\",\n      \"content\": \"那修士在我摊位前走了两趟都没停，但视线在我摆的异香草上多停了一瞬。他在找东西，不是来闲逛的。我把异香草摆到台面上，看他会不会上钩。\",\n      \"created_turn\": 6,\n      \"last_recalled_turn\": 6,\n      \"recall_count\": 0,\n      \"importance\": 0.5,\n      \"salience\": 0.5,\n      \"emotional_valence\": 0.3,\n      \"confidence\": 0.7,\n      \"source\": \"saw\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"pc_main\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"visibility_evidence\": {\n        \"observer_id\": \"npc_qian_baiwei\",\n        \"memory_allowed\": true,\n        \"visibility_path\": \"direct_visual\",\n        \"event_id\": \"\",\n        \"subjective_summary\": \"那修士在我摊位前走了两趟都没停，但视线在我摆的异香草上多停了一瞬。他在找东西，不是来闲逛的。我把异香草摆到台面上，看他会不会上钩。\",\n        \"allowed_memory_scope\": [\n          \"observed_event\"\n        ],\n        \"forbidden_memory_scope\": []\n      },\n      \"observed_at\": \"第 1 日 08:55\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.4375\n    },\n    {\n      \"id\": \"mem_npc_qian_baiwei_0008\",\n      \"type\": \"episodic\",\n      \"content\": \"那修士疗伤修炼完后，灵石只剩两块了，还没来我摊位。他要么在犹豫，要么在等更好的机会。我再等等，他迟早会来。\",\n      \"created_turn\": 10,\n      \"last_recalled_turn\": 10,\n      \"recall_count\": 0,\n      \"importance\": 0.4,\n      \"salience\": 0.5,\n      \"emotional_valence\": 0.1,\n      \"confidence\": 0.85,\n      \"source\": \"saw\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"pc_main\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"visibility_evidence\": {\n        \"observer_id\": \"npc_qian_baiwei\",\n        \"memory_allowed\": true,\n        \"visibility_path\": \"direct_visual\",\n        \"event_id\": \"\",\n        \"subjective_summary\": \"那修士疗伤修炼完后，灵石只剩两块了，还没来我摊位。他要么在犹豫，要么在等更好的机会。我再等等，他迟早会来。\",\n        \"allowed_memory_scope\": [\n          \"observed_event\"\n        ],\n        \"forbidden_memory_scope\": []\n      },\n      \"observed_at\": \"第 1 日 11:15\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.4375\n    },\n    {\n      \"id\": \"mem_npc_qian_baiwei_0003\",\n      \"type\": \"episodic\",\n      \"content\": \"牌坊下那个生面孔和柳青说了几句话。柳青被说得耳根发红——有趣，难得见这小子吃瘪。这人径直朝摊位区走来了。\",\n      \"created_turn\": 1,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 0,\n      \"importance\": 0.5,\n      \"salience\": 0.5,\n      \"emotional_valence\": 0.3,\n      \"confidence\": 0.7,\n      \"source\": \"saw\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"npc_qian_baiwei\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"observed_at\": \"第 1 日 08:25\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.4107\n    },\n    {\n      \"id\": \"mem_npc_qian_baiwei_0004\",\n      \"type\": \"episodic\",\n      \"content\": \"牌坊下那个新来的修士走过我摊位前时放慢了脚步，但没有直接过来。他在观察——要么是在挑卖家，要么是在找什么人。\",\n      \"created_turn\": 5,\n      \"last_recalled_turn\": 5,\n      \"recall_count\": 0,\n      \"importance\": 0.45,\n      \"salience\": 0.5,\n      \"emotional_valence\": 0.2,\n      \"confidence\": 0.7,\n      \"source\": \"saw\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"npc_qian_baiwei\",\n        \"pc_main\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"visibility_evidence\": {\n        \"observer_id\": \"npc_qian_baiwei\",\n        \"memory_allowed\": true,\n        \"visibility_path\": \"direct_visual\",\n        \"event_id\": \"\",\n        \"subjective_summary\": \"牌坊下那个新来的修士走过我摊位前时放慢了脚步，但没有直接过来。他在观察——要么是在挑卖家，要么是在找什么人。\",\n        \"allowed_memory_scope\": [\n          \"observed_event\"\n        ],\n        \"forbidden_memory_scope\": []\n      },\n      \"observed_at\": \"第 1 日 08:50\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.4084\n    },\n    {\n      \"id\": \"mem_npc_qian_baiwei_0006\",\n      \"type\": \"episodic\",\n      \"content\": \"那修士在街上站了好久，闭着眼睛像是在运功。看来是个囊中羞涩的散修，在犹豫要不要来买东西。我把异香草又往台面上挪了挪，看能不能引他过来。\",\n      \"created_turn\": 7,\n      \"last_recalled_turn\": 7,\n      \"recall_count\": 0,\n      \"importance\": 0.3,\n      \"salience\": 0.35,\n      \"emotional_valence\": 0.1,\n      \"confidence\": 0.8,\n      \"source\": \"saw\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"pc_main\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"visibility_evidence\": {\n        \"observer_id\": \"npc_qian_baiwei\",\n        \"memory_allowed\": true,\n        \"visibility_path\": \"direct_visual\",\n        \"event_id\": \"\",\n        \"subjective_summary\": \"那修士在街上站了好久，闭着眼睛像是在运功。看来是个囊中羞涩的散修，在犹豫要不要来买东西。我把异香草又往台面上挪了挪，看能不能引他过来。\",\n        \"allowed_memory_scope\": [\n          \"observed_event\"\n        ],\n        \"forbidden_memory_scope\": []\n      },\n      \"observed_at\": \"第 1 日 09:10\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.34\n    }\n  ],\n  \"beliefs\": [],\n  \"plans\": [],\n  \"understandings\": [],\n  \"revision_events\": []\n}\n```\n\n### npc_su_mo\n\n纳入原因：\n```json\n[\n  \"present_in_current_scene\",\n  \"listed_in_location_zone\"\n]\n```\n\n角色卡：\n```yaml\nid: npc_su_mo\nname: 苏墨\nrole: 来历不明的散修\nfaction: faction_loose_cultivators\nlocation_id: loc_azure_cloud_market\npublic_face: \"灰袍遮身，面容削瘦，坐在茶摊角落，面前一盏茶凉了也没喝。\"\ncore_desire: \"找到血灵芝以炼制还魂丹，救一个被魔修功法反噬的故人。\"\nfear: \"被青云门或魔修残党认出真实身份。\"\nbottom_line: \"不让任何人知道他也会炼制高阶丹药。\"\ntraits:\n  personality_tags: [\"隐忍\", \"执着\", \"观察型\", \"身负秘密\"]\n  instinct: \"先观察对方是否被跟踪，说话只说半截。\"\n  stress_response: \"撤退——感到暴露风险时优先脱离接触。\"\n  social_approach: \"试探型——用半句话引对方暴露意图。\"\n  cognitive_bias: \"过度警觉——倾向于把好奇心解读为别有用心。\"\nvoice_style:\n  pace: \"慢，字斟句酌。\"\n  habits:\n    - \"先观察对方是否跟踪或被人跟踪。\"\n    - \"说话只说半截，等对方接话。\"\n  forbidden_topics:\n    - \"他的故人\"\n    - \"他为何不在任何宗门\"\nknown_facts: []\nfalse_beliefs: []\nsecrets:\n  - id: secret_su_mo_alchemist\n    text: \"苏墨曾是药王谷叛逃弟子，精通丹术但被通缉。\"\nrelationship_hooks:\n  - target_id: pc_main\n    trust: 0\n    fear: 0\n    debt: 0\nchange_switches:\n  trust:\n    - \"玩家协助他入黑风岭采药。\"\n    - \"玩家替他遮掩行迹。\"\n  threat:\n    - \"玩家向青云门或魔修出卖他的行踪。\"\n```\n\n高相关记忆/理解：\n```json\n{\n  \"path\": \"C:\\\\Users\\\\Huang\\\\Desktop\\\\Proj\\\\paotuan\\\\xianxia_campaign\\\\campaign\\\\npcs\\\\npc_su_mo.memory_graph.json\",\n  \"exists\": true,\n  \"top_memories\": [\n    {\n      \"id\": \"mem_su_0001\",\n      \"type\": \"episodic\",\n      \"content\": \"苏墨昨夜潜入黑风岭外围，感应到血灵芝正在成型，约两日后完全成熟。\",\n      \"created_turn\": 0,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 1,\n      \"importance\": 0.9,\n      \"salience\": 0.85,\n      \"emotional_valence\": 1.5,\n      \"confidence\": 0.9,\n      \"source\": \"saw\",\n      \"tier\": \"active\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"loc_black_wind_ridge\"\n      ],\n      \"score\": 0.7282\n    },\n    {\n      \"id\": \"mem_su_0002\",\n      \"type\": \"semantic\",\n      \"content\": \"黑风岭深处有魔修残党活动痕迹，旧禁制仍在运作。\",\n      \"created_turn\": 0,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 1,\n      \"importance\": 0.72,\n      \"salience\": 0.65,\n      \"emotional_valence\": -1,\n      \"confidence\": 0.75,\n      \"source\": \"inferred\",\n      \"tier\": \"active\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"loc_black_wind_ridge\",\n        \"faction_demonic_remnants\"\n      ],\n      \"score\": 0.5927\n    },\n    {\n      \"id\": \"mem_npc_su_mo_0007\",\n      \"type\": \"episodic\",\n      \"content\": \"那修士在主街上走了一圈，步伐均匀但视线在几个特定摊位停留——不是买货的眼神，是在找线索。他注意到了钱百味的异香草，但没有立刻过去。此人目的明确，不是普通散修。\",\n      \"created_turn\": 6,\n      \"last_recalled_turn\": 6,\n      \"recall_count\": 0,\n      \"importance\": 0.6,\n      \"salience\": 0.6,\n      \"emotional_valence\": 0.2,\n      \"confidence\": 0.65,\n      \"source\": \"saw\",\n      \"tier\": \"active\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"pc_main\",\n        \"npc_qian_baiwei\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"visibility_evidence\": {\n        \"observer_id\": \"npc_su_mo\",\n        \"memory_allowed\": true,\n        \"visibility_path\": \"direct_visual\",\n        \"event_id\": \"\",\n        \"subjective_summary\": \"那修士在主街上走了一圈，步伐均匀但视线在几个特定摊位停留——不是买货的眼神，是在找线索。他注意到了钱百味的异香草，但没有立刻过去。此人目的明确，不是普通散修。\",\n        \"allowed_memory_scope\": [\n          \"observed_event\"\n        ],\n        \"forbidden_memory_scope\": []\n      },\n      \"observed_at\": \"第 1 日 08:55\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.485\n    },\n    {\n      \"id\": \"mem_npc_su_mo_0003\",\n      \"type\": \"episodic\",\n      \"content\": \"茶摊远处听到有人在坊市入口与柳青交谈，提到了黑风岭。此人也在关注血灵芝。\",\n      \"created_turn\": 1,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 0,\n      \"importance\": 0.6,\n      \"salience\": 0.6,\n      \"emotional_valence\": 0.2,\n      \"confidence\": 0.5,\n      \"source\": \"heard\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"npc_su_mo\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"overheard\",\n      \"observed_at\": \"第 1 日 08:10\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.4507\n    },\n    {\n      \"id\": \"mem_npc_su_mo_0004\",\n      \"type\": \"episodic\",\n      \"content\": \"茶摊远处听到有人在坊市入口与柳青交谈，提到了黑风岭。此人也在关注血灵芝。\",\n      \"created_turn\": 1,\n      \"last_recalled_turn\": 1,\n      \"recall_count\": 0,\n      \"importance\": 0.6,\n      \"salience\": 0.6,\n      \"emotional_valence\": 0.2,\n      \"confidence\": 0.5,\n      \"source\": \"heard\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"npc_su_mo\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"overheard\",\n      \"observed_at\": \"第 1 日 08:20\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.4507\n    },\n    {\n      \"id\": \"mem_npc_su_mo_0009\",\n      \"type\": \"episodic\",\n      \"content\": \"那修士在街边盘膝修炼，用了两块下品灵石冲击炼气三层失败。修为确实只有炼气二层，资源也有限。但他修炼完后没有离开坊市，看来还在等机会——或许也是奔着血灵芝来的。\",\n      \"created_turn\": 9,\n      \"last_recalled_turn\": 9,\n      \"recall_count\": 0,\n      \"importance\": 0.5,\n      \"salience\": 0.5,\n      \"emotional_valence\": 0.0,\n      \"confidence\": 0.7,\n      \"source\": \"saw\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"pc_main\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"visibility_evidence\": {\n        \"observer_id\": \"npc_su_mo\",\n        \"memory_allowed\": true,\n        \"visibility_path\": \"direct_visual\",\n        \"event_id\": \"\",\n        \"subjective_summary\": \"那修士在街边盘膝修炼，用了两块下品灵石冲击炼气三层失败。修为确实只有炼气二层，资源也有限。但他修炼完后没有离开坊市，看来还在等机会——或许也是奔着血灵芝来的。\",\n        \"allowed_memory_scope\": [\n          \"observed_event\"\n        ],\n        \"forbidden_memory_scope\": []\n      },\n      \"observed_at\": \"第 1 日 10:15\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.4485\n    },\n    {\n      \"id\": \"mem_npc_su_mo_0006\",\n      \"type\": \"episodic\",\n      \"content\": \"那个新来的修士从坊市入口走进主街后没有直接去钱百味摊位，也没有去别处——他在街上走了一圈，像是在熟悉环境。不像是急着赶路的。\",\n      \"created_turn\": 5,\n      \"last_recalled_turn\": 5,\n      \"recall_count\": 0,\n      \"importance\": 0.5,\n      \"salience\": 0.5,\n      \"emotional_valence\": 0.1,\n      \"confidence\": 0.6,\n      \"source\": \"saw\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"npc_su_mo\",\n        \"pc_main\",\n        \"loc_azure_cloud_market\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"visibility_evidence\": {\n        \"observer_id\": \"npc_su_mo\",\n        \"memory_allowed\": true,\n        \"visibility_path\": \"direct_visual\",\n        \"event_id\": \"\",\n        \"subjective_summary\": \"那个新来的修士从坊市入口走进主街后没有直接去钱百味摊位，也没有去别处——他在街上走了一圈，像是在熟悉环境。不像是急着赶路的。\",\n        \"allowed_memory_scope\": [\n          \"observed_event\"\n        ],\n        \"forbidden_memory_scope\": []\n      },\n      \"observed_at\": \"第 1 日 08:50\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.4159\n    },\n    {\n      \"id\": \"mem_npc_su_mo_0010\",\n      \"type\": \"episodic\",\n      \"content\": \"那修士疗伤修炼完，伤势恢复了不少但修为没突破。他还没离开坊市，看来确实在等黑风岭的消息。我倒要看看他下一步会找谁。\",\n      \"created_turn\": 10,\n      \"last_recalled_turn\": 10,\n      \"recall_count\": 0,\n      \"importance\": 0.4,\n      \"salience\": 0.4,\n      \"emotional_valence\": 0.0,\n      \"confidence\": 0.7,\n      \"source\": \"saw\",\n      \"tier\": \"dormant\",\n      \"valid\": true,\n      \"invalid_at_turn\": null,\n      \"contradicted_by\": null,\n      \"related_entities\": [\n        \"pc_main\"\n      ],\n      \"visibility_path\": \"direct_visual\",\n      \"visibility_evidence\": {\n        \"observer_id\": \"npc_su_mo\",\n        \"memory_allowed\": true,\n        \"visibility_path\": \"direct_visual\",\n        \"event_id\": \"\",\n        \"subjective_summary\": \"那修士疗伤修炼完，伤势恢复了不少但修为没突破。他还没离开坊市，看来确实在等黑风岭的消息。我倒要看看他下一步会找谁。\",\n        \"allowed_memory_scope\": [\n          \"observed_event\"\n        ],\n        \"forbidden_memory_scope\": []\n      },\n      \"observed_at\": \"第 1 日 11:15\",\n      \"location_id\": \"loc_azure_cloud_market\",\n      \"score\": 0.405\n    }\n  ],\n  \"beliefs\": [],\n  \"plans\": [],\n  \"understandings\": [],\n  \"revision_events\": []\n}\n```\n\n## 规则约束\n\n```yaml\nid: rules_lightweight_d20\nname: 轻量 d20 仙侠规则\ndice:\n  main: \"1d20 + 修为修正 + 技能修正\"\nchecks:\n  easy: 8\n  normal: 12\n  hard: 16\n  extreme: 20\nadvantage_policy: \"有充分准备、符箓辅助或环境优势时取两次较高。\"\ndisadvantage_policy: \"受伤、灵力不足或环境恶劣时取两次较低。\"\nfailure_policy:\n  - \"失败应产生代价：灵力损耗、符箓消耗、惊动他人、受伤或关系恶化。\"\ncultivation_realms:\n  - \"炼气期 1-3 层：修正 +0\"\n  - \"炼气期 4-6 层：修正 +1\"\n  - \"炼气期 7-9 层：修正 +2\"\n  - \"筑基期：修正 +4\"\ncombat_policy:\n  - \"战斗以意图和局势为核心。\"\n  - \"法术消耗灵力，普通攻击消耗体力。\"\n```\n\n## 阵营资料\n\n```yaml\nfactions:\n  - id: faction_azure_cloud_sect\n    name: 青云门\n    type: orthodox_sect\n    public_reputation: \"正道中型宗门，管控方圆百里的坊市和灵脉。\"\n    goals:\n      - \"维持坊市秩序与税收。\"\n      - \"追查近期黑风岭灵气异动。\"\n    methods:\n      - \"外门弟子值守\"\n      - \"内门筑基执事定期巡视\"\n    secrets:\n      - id: secret_azure_cloud_investigation\n        text: \"青云门已派一名筑基执事暗中调查黑风岭，但暂未公开。\"\n\n  - id: faction_demonic_remnants\n    name: 魔修残党\n    type: demonic_cultivators\n    public_reputation: \"百年前被剿灭的噬魂宗残余，偶尔在偏远地区出没。\"\n    goals:\n      - \"获取血灵芝以炼制噬魂宗失传秘药。\"\n      - \"避免与青云门正面冲突。\"\n    methods:\n      - \"潜伏\"\n      - \"以高价收购掩人耳目\"\n    secrets:\n      - id: secret_demonic_inside_man\n        text: \"魔修残党在坊市周围设有暗哨，伪装成行脚商。\"\n\n  - id: faction_merchant_guild\n    name: 坊市商盟\n    type: merchant_association\n    public_reputation: \"安分守己的修士商人，缴纳灵石换取青云门庇护。\"\n    goals:\n      - \"赚灵石，保摊位。\"\n    secrets: []\n\n  - id: faction_loose_cultivators\n    name: 散修\n    type: unaffiliated\n    public_reputation: \"没有宗门靠山的独自修行者。\"\n    goals:\n      - \"活下来，找机缘。\"\n```\n\n## 本回合触发的世界信息 / Lorebook\n\n```json\n[\n  {\n    \"source\": \"campaign\\\\rumors.json\",\n    \"reason\": \"keyword_score=3\",\n    \"text\": \"{\\n  \\\"rumors\\\": [\\n    {\\n      \\\"id\\\": \\\"rumor_blood_mushroom\\\",\\n      \\\"content\\\": \\\"黑风岭近期有血灵芝出现，年分极足。\\\",\\n      \\\"truth_status\\\": \\\"unconfirmed\\\",\\n      \\\"origin\\\": \\\"unknown_travelers\\\",\\n      \\\"origin_location\\\": \\\"loc_azure_cloud_market\\\",\\n      \\\"created_turn\\\": 0,\\n      \\\"spread\\\": [\\n        {\\n          \\\"hearer_id\\\": \\\"npc_qian_baiwei\\\",\\n          \\\"heard_from\\\": \\\"street_rumor\\\",\\n          \\\"heard_turn\\\": 0,\\n          \\\"understood_as\\\": \\\"黑风岭有年份足的血灵芝，魔修在收\\\",\\n          \\\"confidence\\\": 0.5,\\n          \\\"variant\\\": false\\n        },\\n        {\\n          \\\"hearer_id\\\": \\\"npc_liu_qing\\\",\\n          \\\"heard_from\\\": \\\"street_rumor\\\",\\n          \\\"heard_turn\\\": 0,\\n          \\\"understood_as\\\": \\\"黑风岭灵气异常，可能有灵物出世\\\",\\n          \\\"confidence\\\": 0.4,\\n          \\\"variant\\\": true\\n        }\\n      ],\\n      \\\"versions\\\": []\\n    }\\n  ]\\n}\"\n  },\n  {\n    \"source\": \"campaign\\\\player_knowledge.json\",\n    \"reason\": \"keyword_score=2\",\n    \"text\": \"{\\n  \\\"clues_discovered\\\": [],\\n  \\\"npcs_known\\\": [\\n    {\\n      \\\"id\\\": \\\"npc_liu_qing\\\",\\n      \\\"known_as\\\": \\\"柳青\\\",\\n      \\\"known_role\\\": \\\"青云门外门弟子\\\",\\n      \\\"first_met_turn\\\": 1,\\n      \\\"last_interaction_turn\\\": 1\\n    }\\n  ],\\n  \\\"locations_explored\\\": [\\n    {\\n      \\\"id\\\": \\\"loc_azure_cloud_market\\\",\\n      \\\"name\\\": \\\"青云坊市\\\",\\n      \\\"notes\\\": \\\"青云山脚的修士市集\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"loc_black_wind_ridge\\\",\\n      \\\"name\\\": \\\"黑风岭外围\\\",\\n      \\\"notes\\\": \\\"原主在此昏迷。灵气紊乱。有血腥味。\\\"\\n    }\\n  ],\\n  \\\"facts_understood\\\": [\\n    {\\n      \\\"fact\\\": \\\"黑风岭近日有血灵芝传闻\\\",\\n      \\\"confidence\\\": \\\"rumor\\\",\\n      \\\"source\\\": \\\"坊市流言\\\",\\n      \\\"learned_turn\\\": 1\\n    },\\n    {\\n      \\\"fact\\\": \\\"魔修残党在附近活动\\\",\\n      \\\"confidence\\\": \\\"suspected\\\",\\n      \\\"source\\\": \\\"坊市流言\\\",\\n      \\\"learned_turn\\\": 1\\n    },\\n    {\\n      \\\"fact\\\": \\\"原主洛衍是云游观末代弟子，观灭后独自流浪\\\",\\n      \\\"confidence\\\": \\\"confirmed\\\",\\n      \\\"source\\\": \\\"魂穿后的残留记忆\\\",\\n      \\\"learned_turn\\\": 1\\n    },\\n    {\\n      \\\"fact\\\": \\\"云游观被灭可能与某种'不该知道的东西'有关\\\",\\n      \\\"confidence\\\": \\\"suspected\\\",\\n      \\\"source\\\": \\\"师尊最后那句话的碎片\\\",\\n      \\\"learned_turn\\\": 1\\n    },\\n    {\\n      \\\"fact\\\": \\\"原主在黑风岭昏迷前闻到了浓烈血腥味——那是血灵芝成熟的前兆\\\",\\n      \\\"confidence\\\": \\\"suspected\\\",\\n      \\\"source\\\": \\\"魂穿时的残留感官记忆\\\",\\n      \\\"learned_turn\\\": 1\\n    },\\n    {\\n      \\\"fact\\\": \\\"原主采到的那株异香草比正常年份早了三天——黑风岭灵气异常\\\",\\n      \\\"confidence\\\": \\\"confirmed\\\",\\n      \\\"source\\\": \\\"物品栏中的异香草实物\\\",\\n      \\\"learned_turn\\\": 1\\n    }\\n  ],\\n  \\\"events_witnessed\\\": []\\n}\"\n  },\n  {\n    \"source\": \"campaign\\\\quest_graph.json\",\n    \"reason\": \"keyword_score=1\",\n    \"text\": \"{\\n  \\\"quests\\\": [\\n    {\\n      \\\"id\\\": \\\"thread_blood_spirit_mushroom\\\",\\n      \\\"title\\\": \\\"黑风岭的血灵芝\\\",\\n      \\\"status\\\": \\\"active\\\",\\n      \\\"countdown_ticks\\\": 1,\\n      \\\"countdown_max\\\": 4,\\n      \\\"countdown_unit\\\": \\\"时辰\\\",\\n      \\\"failure_consequence\\\": \\\"血灵芝被魔修摘走，苏墨失去救故人的唯一机会\\\",\\n      \\\"clues\\\": [\\n        {\\n          \\\"id\\\": \\\"clue_qi_fluctuation\\\",\\n          \\\"text\\\": \\\"牌坊禁制多次指向黑风岭的灵力波动\\\",\\n          \\\"found\\\": false,\\n          \\\"leads_to\\\": [\\n            \\\"investigate_ridge\\\"\\n          ]\\n        },\\n        {\\n          \\\"id\\\": \\\"clue_mushroom_rumor\\\",\\n          \\\"text\\\": \\\"坊市流言：黑风岭产了异样灵草\\\",\\n          \\\"found\\\": true,\\n          \\\"leads_to\\\": [\\n            \\\"ask_qian\\\",\\n            \\\"ask_su_mo\\\"\\n          ]\\n        }\\n      ],\\n      \\\"obstacles\\\": [\\n        {\\n          \\\"id\\\": \\\"obs_liu_qing_gate\\\",\\n          \\\"text\\\": \\\"柳青看守坊市出口，登记出入修士\\\",\\n          \\\"bypass\\\": \\\"出示信物、登记或等换岗\\\"\\n        },\\n        {\\n          \\\"id\\\": \\\"obs_demonic_scouts\\\",\\n          \\\"text\\\": \\\"魔修探子已靠近黑风岭外围\\\",\\n          \\\"bypass\\\": \\\"绕路或隐匿行进\\\"\\n        }\\n      ],\\n      \\\"intervention_nodes\\\": [\\n        {\\n          \\\"id\\\": \\\"investigate_ridge\\\",\\n          \\\"text\\\": \\\"前往黑风岭调查\\\",\\n          \\\"type\\\": \\\"player_action\\\",\\n          \\\"requires\\\": [],\\n          \\\"stops_clock\\\": false\\n        },\\n        {\\n          \\\"id\\\": \\\"ask_qian\\\",\\n          \\\"text\\\": \\\"向钱百味打听黑风岭药材\\\",\\n          \\\"type\\\": \\\"social\\\",\\n          \\\"requires\\\": [],\\n          \\\"stops_clock\\\": false\\n        },\\n        {\\n          \\\"id\\\": \\\"ask_su_mo\\\",\\n          \\\"text\\\": \\\"注意茶摊角落的灰袍散修\\\",\\n          \\\"type\\\": \\\"social\\\",\\n          \\\"requires\\\": [],\\n          \\\"stops_clock\\\": false\\n        },\\n        {\\n          \\\"id\\\": \\\"escort_su_mo\\\",\\n          \\\"text\\\": \\\"与苏墨结伴入黑风岭采药\\\",\\n          \\\"type\\\": \\\"pla\"\n  }\n]\n```\n\n## 最近历史对话 / Chat History\n\n```json\n[\n  {\n    \"turn_id\": \"turn_0003\",\n    \"player_action\": \"（旧记录行动文本编码损坏）\",\n    \"gm_summary\": \"你停在当前场景边缘，潮湿的空气里有旧木头、冷水和金属锈蚀混在一起的味道。近处的地面留下几道新旧交叠的痕迹，有些来自匆忙经过的人，有些像是被故意擦去。远处传来断续的低语，声音被风切碎，只剩下几个含混的词。这个地方不是静止的布景，至少有两股力量正在它背后拉扯：一个想把事情压下去，一个想在你看清之前把证据带走。\\n\\n你能感觉到当前场景已经被整理成可执行的本地回合包：在场 NPC、地点特征、世界时钟和任务压力都已进入判断。你现在的每个选择都会决定下一次写入谁的记忆、谁会误解你、以及哪条线索会先变得昂贵。\\n这次行动没有直接触发战斗或检定，但它建立了当前回合的观察姿态：你没有贸然暴露敌意，也没有立刻交出承诺。周围 NPC 会把你归类为一个正在评估局势的人，而不是已经站队的人。这个结果让你暂时保留主动权，但也意味着对方会开始试探你。\\n系统会根据你的自然语言行动自动估算耗时，并据此推进任务压力、NPC 记忆和世界变化。当前最重要的是：场景不会因为你停下观察而冻结。\\n你需要在继续观察、主动交涉和抢先调查之间做选择；拖得越久，某些线索越可能变质或被他人先处理。\\n可行动线索：继续询问在场 NPC，重点追问他们刚才看见或隐瞒了什么。；调查当前地点最显眼的异常痕迹，确认它是新出现还是被伪造。；花费 5-10 分钟静观其变，换取更多环境变化和离屏推进。；移动到更高或更隐蔽的位置，尝试扩大视野但承担暴露风险。\\n本回合会按后端推断的耗时写入时间变化。\\n正式回合中，相关 NPC 会按可见性获得独立记忆和主观理解。\\n正式回合中，任务压力会随等待、移动和调查推进。\",\n    \"patch_summary\": \"时间: +5 分钟\",\n    \"artifact\": \"campaign\\\\ai_runs\\\\turn_0003.json\"\n  },\n  {\n    \"turn_id\": \"turn_0004\",\n    \"player_action\": \"（旧记录行动文本编码损坏）\",\n    \"gm_summary\": \"你停在当前场景边缘，潮湿的空气里有旧木头、冷水和金属锈蚀混在一起的味道。近处的地面留下几道新旧交叠的痕迹，有些来自匆忙经过的人，有些像是被故意擦去。远处传来断续的低语，声音被风切碎，只剩下几个含混的词。这个地方不是静止的布景，至少有两股力量正在它背后拉扯：一个想把事情压下去，一个想在你看清之前把证据带走。\\n\\n你能感觉到当前场景已经被整理成可执行的本地回合包：在场 NPC、地点特征、世界时钟和任务压力都已进入判断。你现在的每个选择都会决定下一次写入谁的记忆、谁会误解你、以及哪条线索会先变得昂贵。\\n这次行动没有直接触发战斗或检定，但它建立了当前回合的观察姿态：你没有贸然暴露敌意，也没有立刻交出承诺。周围 NPC 会把你归类为一个正在评估局势的人，而不是已经站队的人。这个结果让你暂时保留主动权，但也意味着对方会开始试探你。\\n系统会根据你的自然语言行动自动估算耗时，并据此推进任务压力、NPC 记忆和世界变化。当前最重要的是：场景不会因为你停下观察而冻结。\\n你需要在继续观察、主动交涉和抢先调查之间做选择；拖得越久，某些线索越可能变质或被他人先处理。\\n可行动线索：继续询问在场 NPC，重点追问他们刚才看见或隐瞒了什么。；调查当前地点最显眼的异常痕迹，确认它是新出现还是被伪造。；花费 5-10 分钟静观其变，换取更多环境变化和离屏推进。；移动到更高或更隐蔽的位置，尝试扩大视野但承担暴露风险。\\n本回合会按后端推断的耗时写入时间变化。\\n正式回合中，相关 NPC 会按可见性获得独立记忆和主观理解。\\n正式回合中，任务压力会随等待、移动和调查推进。\",\n    \"patch_summary\": \"时间: +5 分钟\",\n    \"artifact\": \"campaign\\\\ai_runs\\\\turn_0004.json\"\n  },\n  {\n    \"turn_id\": \"turn_0007\",\n    \"player_action\": \"我查看自己的修炼状态和背包物品，评估距离突破还有多远\",\n    \"gm_summary\": \"你站在青云坊市的主街上，清晨的阳光斜斜洒在青石板路上，将摊位的布棚影子拉长。空气中混杂着檀香、药草和刚出炉的烤饼气味，讨价还价声与灵兽笼里的低鸣此起彼伏。你抬手凝神，内视己身——丹田内的灵气如同浅溪，木火双灵根的光晕缓缓流转，但灵气的总量和凝实程度都还远未达到突破的关口。炼气二层的瓶颈如一道薄而韧的膜，你能感觉到它的存在，却尚未找到刺破它的着力点。你低头检查自己的行囊：残破铁剑剑刃上的豁口又深了几分，云游观令牌上的裂纹触目惊心，引气诀残卷的纸页泛黄卷边，四块下品灵石在袋中叮当作响，两包止血草药和那株异香草安静地躺在夹层里。黑风岭的方向隐隐传来一阵山风，带着泥土和腐叶的气息，坊市尽头的天际线上，那道暗青色的山脊轮廓如同一道沉默的伤口。\\n你花了一炷香的时间静心内视，对自身状态有了清晰的认识：炼气二层的根基尚算稳固，但灵力储量（3/6）和经脉通透度都不足以冲击炼气三层。按照引气诀残卷的记载，你至少需要将灵气蓄满至八成以上，并配合一味凝气丹药或灵物辅助，才有三成把握冲破瓶颈。你确认了背包里的物品：战斗装备仅有一柄残破铁剑，疗伤物资有两份止血草药，唯一有价值的灵物是那株异香草——但它并非提升修为的药材，而是用于炼制某种感知类丹药的辅料。灵石只有四块，不足以在坊市购买中品丹药。\\n坊市内的人流比刚才稀疏了一两成，有几个背着药篓的散修正从黑风岭方向快步走进坊市，神色匆匆，其中一个腰间挂着沾血的布袋。他们直接拐进了坊市深处的一间铺子，没有在摊位区停留。远处黑风岭的山脊上，似乎有极淡的烟柱升起，但很快被风吹散。\\n时间不等人——血灵芝的成熟窗口正在逼近，而你目前的修为和装备都不足以在黑风岭深处与魔修残党正面冲突。你需要在灵石、情报或同伴之间做出选择：是先去钱百味摊位打听消息，还是去找那个茶摊角落的灰袍散修，抑或先想办法挣些灵石补充物资？\\n可行动线索：去钱百味的摊位前询问异香草的价格，试探他是否知道黑风岭的药材来源；走向街尾的茶摊，与那个独自坐着的灰袍散修搭话；在坊市内寻找临时任务或雇佣机会，赚取灵石购买丹药；仔细研究引气诀残卷，看看是否有其他突破途径\\n第 1 日 09:10，约消耗15分钟\\n你确认了自己的修炼状态和背包物品，对当前实力有了清醒认识。柳青注意到你只是在内视调息，对你的警惕进一步降低。钱百味则在暗中观察你，似乎对你的动向有所期待。\\n血灵芝任务：成熟倒计时约1.5日，魔修探子已接近黑风岭外围。\",\n    \"patch_summary\": \"时间: ++15分钟\",\n    \"artifact\": \"campaign\\\\ai_runs\\\\turn_0007.json\"\n  },\n  {\n    \"turn_id\": \"turn_0008\",\n    \"player_action\": \"test\",\n    \"gm_summary\": \"你停在当前场景边缘，潮湿的空气里有旧木头、冷水和金属锈蚀混在一起的味道。近处的地面留下几道新旧交叠的痕迹，有些来自匆忙经过的人，有些像是被故意擦去。远处传来断续的低语，声音被风切碎，只剩下几个含混的词。这个地方不是静止的布景，至少有两股力量正在它背后拉扯：一个想把事情压下去，一个想在你看清之前把证据带走。\\n\\n你能感觉到当前场景已经被整理成可执行的本地回合包：在场 NPC、地点特征、世界时钟和任务压力都已进入判断。你现在的每个选择都会决定下一次写入谁的记忆、谁会误解你、以及哪条线索会先变得昂贵。\\n这次行动没有直接触发战斗或检定，但它建立了当前回合的观察姿态：你没有贸然暴露敌意，也没有立刻交出承诺。周围 NPC 会把你归类为一个正在评估局势的人，而不是已经站队的人。这个结果让你暂时保留主动权，但也意味着对方会开始试探你。\\n系统会根据你的自然语言行动自动估算耗时，并据此推进任务压力、NPC 记忆和世界变化。当前最重要的是：场景不会因为你停下观察而冻结。\\n你需要在继续观察、主动交涉和抢先调查之间做选择；拖得越久，某些线索越可能变质或被他人先处理。\\n可行动线索：继续询问在场 NPC，重点追问他们刚才看见或隐瞒了什么。；调查当前地点最显眼的异常痕迹，确认它是新出现还是被伪造。；花费 5-10 分钟静观其变，换取更多环境变化和离屏推进。；移动到更高或更隐蔽的位置，尝试扩大视野但承担暴露风险。\\n本回合会按后端推断的耗时写入时间变化。\\n正式回合中，相关 NPC 会按可见性获得独立记忆和主观理解。\\n正式回合中，任务压力会随等待、移动和调查推进。\",\n    \"patch_summary\": \"时间: +5 分钟\",\n    \"artifact\": \"campaign\\\\ai_runs\\\\turn_0008.json\"\n  },\n  {\n    \"turn_id\": \"turn_0009\",\n    \"player_action\": \"我服用一株止血草药恢复伤势，然后用剩余两块灵石全力修炼引气诀，再次冲击炼气三层\",\n    \"gm_summary\": \"你回到主街，找了个相对僻静的角落，盘膝坐下。从腰间摸出一株止血草药，三两下嚼碎咽下——一股清凉的药力顺着喉咙滑入丹田，缓缓散入四肢百骸。你低头一看，之前与妖兽搏斗时留下的几道浅伤正以肉眼可见的速度愈合，皮肉重新合拢，只留下淡红色的痕迹。约莫半柱香的工夫，伤势已好了七七八八。你深吸一口气，从袋中取出最后两块下品灵石，一手握一块，闭上双眼，默念引气诀残卷上的口诀。灵石中的灵气如细流般涌入掌心，沿着经脉缓缓汇入丹田。你试图引导这股灵气冲击炼气三层的瓶颈——那道无形之膜在灵力的冲击下微微震颤，却坚韧如牛皮，只在表面泛起几道涟漪便再无动静。你咬紧牙关，将两块灵石中剩余的灵气全部压入经脉，丹田内的灵力翻涌如沸水，经脉传来阵阵胀痛，但那层瓶颈纹丝不动。片刻后，两块灵石化为齑粉，从指缝间簌簌落下。你睁开眼，丹田内的灵气比之前充盈了些许，从三成涨到了约五成，但距离突破仍有明显差距。坊市的人声重新涌入耳中，远处黑风岭的山脊上，似乎又升起了一缕极淡的烟。\\n你消耗了一株止血草药，伤势恢复至接近满状态（生命从8恢复到11）。你用两块下品灵石修炼引气诀，成功将灵气从3/6提升至5/6，但冲击炼气三层失败——瓶颈坚固，仅凭两块下品灵石的灵气远不足以冲破。你确认了突破的难度：至少需要将灵气蓄满至6/6，并配合凝气丹药或灵物辅助，才有三成把握。两块灵石化为齑粉，你手中只剩下两块灵石。\\n你修炼的这半个时辰里，坊市的人流又稀疏了几分。两个背着药篓的散修从坊市深处走出，低声交谈着什么，其中一人腰间挂着几株带土的灵草。他们经过你身边时，你闻到一股淡淡的血腥味——不是人血，更像是某种妖兽的体液。黑风岭方向的天际线上，那道极淡的烟柱比之前明显了一些，虽然风吹即散，但确实存在。远处隐约传来一声低沉的兽吼，被山风裹挟着断断续续地飘入坊市。\\n血灵芝的成熟窗口正在逼近，而你刚刚确认了炼气三层的突破难度远高于预期——仅凭灵石苦修，时间成本和资源缺口都太大。你必须尽快决定：是冒险直接前往黑风岭，还是先寻求情报或合作，又或者另寻途径提升实力。魔修残党已经靠近黑风岭外围，每多等一刻，血灵芝被摘走的风险就增加一分。\\n可行动线索：去钱百味的摊位前，用你剩下的两块灵石或那株异香草换取修炼资源或情报。；走向街尾的茶摊，主动与灰袍散修苏墨搭话——他看起来也在关注黑风岭。；在坊市内打听有没有临时任务或猎妖悬赏，赚取灵石购买丹药。；仔细研究引气诀残卷，看看是否有其他突破途径或隐藏的法门。\\n第 1 日 09:15 → 第 1 日 10:15，+60分钟\\n柳青注意到你只是普通修炼，对你进一步放松警惕。钱百味看到你灵石耗尽后神色如常，推测你资源匮乏，可能主动来交易。苏墨观察到你的修为确实不高，但见你修炼后仍留在坊市，认为你也在等黑风岭的消息。\\n血灵芝成熟倒计时缩减至约1日（第2日子时成熟），魔修探子已接近黑风岭外围。\",\n    \"patch_summary\": \"时间: ++60分钟; ??: consume 止血草药; ??: consume 下品灵石\",\n    \"artifact\": \"campaign\\\\ai_runs\\\\turn_0009.json\"\n  },\n  {\n    \"turn_id\": \"turn_0010\",\n    \"player_action\": \"我用一株止血草药疗伤，然后运转引气诀回复灵力，准备继续探索\",\n    \"gm_summary\": \"你盘膝坐在主街角落的墙根下，青石板传来的凉意透过衣袍渗入肌肤。止血草药的药力已经散开，四肢百骸间暖洋洋的，之前与妖兽搏斗留下的伤口已基本愈合，只余几道淡红色的痕迹。你运转引气诀，丹田内的灵气缓缓流转，从三成补到了五成——但经脉中那股空虚感仍在提醒你，炼气三层的瓶颈依然坚固如铁。你睁开眼，指尖残留的灵石粉末被风吹散，融入坊市地面的尘土中。头顶的布棚被午前渐强的山风吹得猎猎作响，远处黑风岭的方向，那道淡青色剪影上似乎又飘起一缕若有若无的烟，像是有人在岭中点燃了湿柴。坊市里的人声比清晨稀疏了些，几个背着药篓的散修正从岭方向快步走进来，神色间带着一种说不上来的紧迫。街对面的钱百味正在招呼两个客人，但他眼角的余光一直往你这边瞟——显然你修炼时他一直在留意。茶摊角落的灰袍散修依然一动不动地坐着，面前那盏茶早已凉透，但他的目光似乎也落在你身上，在你起身的瞬间又移开了。\\n你消耗了一株止血草药，生命恢复至11点（接近满值）。你用最后两块下品灵石修炼引气诀，成功将灵气从3点提升至5点，但冲击炼气三层再次失败——瓶颈纹丝不动。你确认了突破难度：至少需要将灵气蓄满至6点，并配合凝气丹药或灵物辅助，才有三成把握。两块灵石化为齑粉，你手中只剩下两块下品灵石。你疗伤和修炼共耗时约半个时辰，坊市人流进一步稀疏，黑风岭方向的烟柱比之前明显了一些，似有异常活动。\\n黑风岭方向的烟柱在风中忽隐忽现，空气里隐约传来一股淡淡的焦糊味，混在坊市的药草和烤肉气味中几乎难以分辨。两个背着鼓鼓囊囊药篓的散修低声交谈着从坊市深处走出，其中一人腰间挂着一个沾血的布袋，经过你身边时，你听到他们提到'那边已经有人先到了'——声音压得很低，但风还是把半句话送到了你耳中。血灵芝的成熟窗口正在逼近，魔修残党似乎已经开始了行动。\\n你的灵石几乎耗尽，修为瓶颈短期内无法靠苦修突破。黑风岭方向已有异常动静，魔修可能已经开始采摘或布防。钱百味在等你过去交易，苏墨也在暗中观察你——你必须在资源、情报和伙伴之间做出选择，而时间正在流失。\\n可行动线索：去钱百味的摊位前，用你剩下的两块灵石或那株异香草换取修炼资源或情报。；走向街尾的茶摊，主动与灰袍散修苏墨搭话——他看起来也在关注黑风岭。；直接前往坊市入口，向柳青登记出坊市，独自前往黑风岭探查。；在坊市内打听有没有临时任务或猎妖悬赏，赚取灵石购买丹药。\\n第 1 日 10:15 → 第 1 日 11:15，消耗约60分钟\\n柳青认为你只是个普通穷散修，不再关注。钱百味确信你资源匮乏，预计你会来找他交易。苏墨确认你修为低但目标明确，仍在观望中。\\n血灵芝成熟倒计时：约第2日子时成熟，魔修已接近黑风岭外围。\",\n    \"patch_summary\": \"时间: +60 分钟; ??: consume 止血草药; ??: consume 下品灵石; ????: 3?\",\n    \"artifact\": \"campaign\\\\ai_runs\\\\turn_0010.json\"\n  }\n]\n```\n\n## 回合后必须执行\n\n1. 对玩家行动和离屏事件做可见性判定。\n2. 只给允许知道的 NPC 写入记忆。\n3. 为重要事件抽取 NPC 主观理解。\n4. 检查新理解是否修正旧稳定理解。\n5. 输出玩家可见正文时不要泄露 GM 隐藏信息。",
+    "next_steps": [
+      "Resolve visibility before memory writes.",
+      "Write only permitted NPC memories.",
+      "Extract interpretations and revise understandings.",
+      "Apply accepted state patches."
+    ]
+  },
+  "ai_response": {
+    "tool_requests": [],
+    "visible_text": {
+      "scene": "你大步走向钱百味的摊位。午前的阳光斜照在青石板路上，将摊位的布棚影子拉成狭长的三角形。钱百味正低头翻着一本破旧的账本，听到脚步声抬起头来，圆脸上堆起商人特有的笑容：“这位道友，终于肯来照顾老钱的生意了？”他的目光在你腰间扫过，在你仅剩的两块灵石和那株异香草上停留了一瞬，笑意更深了几分。摊位上摆着几瓶聚气丹，淡青色的瓷瓶在阳光下泛着温润的光泽。你嗅到丹药特有的药香，混杂着周围摊位的檀香和药草味，空气里还隐隐飘来一丝来自黑风岭方向的焦糊气息。坊市的人声比清晨稀疏了许多，远处茶摊角落的灰袍散修依然一动不动地坐着，像一尊灰色的石像。",
+      "action_result": "你走到钱百味的摊位前，将最后两块下品灵石和那株异香草放在台面上，直截了当地说要换一枚聚气丹。钱百味眯起眼睛，拿起异香草凑到鼻尖嗅了嗅，又掂了掂灵石，慢悠悠地说：“异香草虽不算稀罕，但你这株成色不错，年份也足——黑风岭产的，对吧？”他故意加重了“黑风岭”三个字，意味深长地看了你一眼。最终他点头成交，从摊下摸出一个青瓷瓶递给你：“聚气丹一枚，炼气期冲击瓶颈用的，药力够猛。不过老钱提醒一句——你灵力尚未蓄满，现在就服丹冲击，恐怕经脉受不住。”你接过瓷瓶，拔开瓶塞，一股浓郁的药香扑面而来。你找了个僻静的角落盘膝坐下，将聚气丹倒入口中，丹药入口即化，一股灼热的药力如岩浆般涌入经脉，直冲丹田。你全力运转引气诀引导这股药力冲击炼气三层的瓶颈——瓶颈剧烈震颤，裂开一道细纹，但终究未能完全冲破。药力耗尽后，你丹田内的灵气从五成暴涨至九成，经脉隐隐胀痛，但修为仍停留在炼气二层。",
+      "npc_actions": [
+        "钱百味收下灵石和异香草后，慢悠悠地将它们收进摊位下的暗格里，同时压低声音说：“道友既然急着突破，想必也是要赶着去黑风岭吧？老钱多嘴一句——那边不太平，昨天有个采药的散修回来时浑身是血，说岭里已经有穿黑袍的人在巡了。”他说话时目光一直没离开你的脸，像是在观察你的反应。",
+        "柳青远远瞥了你一眼，见你只是正常交易和修炼，便收回视线继续盯着坊市入口的方向。他对你的关注度已经降到了最低，只是偶尔扫一眼确认你没有惹事。",
+        "茶摊角落的苏墨在你走向钱百味摊位时微微抬了抬眼皮，当你服丹冲击瓶颈时，他端起早已凉透的茶盏抿了一口，目光在你身上停留了数息，随后又若无其事地望向远处黑风岭的山脊。他似乎对你冲击失败的结果并不意外。"
+      ],
+      "world_motion": "黑风岭方向的天际线上，那道若有若无的烟柱比之前又清晰了几分，隐约能看出是灰色的烟，不像自然山火——更像是有人在岭中燃起篝火或炼丹炉。空气中那股焦糊味比先前浓了少许，混在坊市的药草和烤肉气味中，几乎难以分辨，但如果你仔细嗅闻，能察觉到一丝不属于草木的焦臭。坊市入口处，两个背着鼓鼓囊囊包裹的散修匆匆走进来，神色紧张，其中一个腰间挂着沾血的绷带。他们低声交谈着径直走向坊市深处，没有在摊位区停留。",
+      "tension": "你刚刚冲击炼气三层失败，虽然灵力已蓄至九成，但瓶颈只裂开一道细纹，未能真正突破。聚气丹的药力已经耗尽，短时间内无法再服第二枚。血灵芝的成熟窗口正在逼近——魔修探子已出现在黑风岭外围，而你还未能突破到炼气三层。钱百味透露的消息证实了黑风岭有危险，而茶摊角落的苏墨依然在暗中观察你。你必须在资源耗尽、时间紧迫的情况下做出选择：是带伤再次尝试突破，还是立即前往黑风岭，抑或寻求苏墨的合作。",
+      "actionable_clues": [
+        "走向茶摊角落，主动与灰袍散修苏墨搭话——他显然也在关注黑风岭，而且可能知道更多内情。",
+        "向钱百味购买更多的修炼资源或情报——他刚才主动提到了黑风岭和黑袍人，显然知道不少内幕。",
+        "前往坊市入口，向柳青登记出坊市，独自前往黑风岭探查——不能再等了。",
+        "在坊市内打听有没有其他散修愿意组队前往黑风岭——人多力量大。",
+        "再次尝试用剩余的灵气冲击瓶颈——虽然药力已过，但灵力已蓄至九成，或许有一线机会。",
+        "检查引气诀残卷，看看是否有关于炼气三层突破的详细记载或隐藏技巧。"
+      ],
+      "check": "无需检定。交易自动成功，突破自动失败（灵力未满，聚气丹药力不足以单独冲破瓶颈）。",
+      "state_summary": {
+        "time": "第 1 日 11:15 → 第 1 日 11:25（交易约5分钟，冲击瓶颈约5分钟）",
+        "memory": "钱百味记住了你用异香草和灵石换取聚气丹的细节，并确信你也在关注黑风岭。柳青确认你只是个普通散修，不再关注。苏墨观察到你的突破失败，对你的实力有了更准确的评估，但仍在观望。",
+        "quests": "血灵芝成熟倒计时：约第2日子时（剩余约12时辰）。魔修探子已出现在黑风岭外围，钱百味证实了这一点。",
+        "unresolved": [
+          "你冲击炼气三层失败，灵力已蓄至九成但瓶颈未破。",
+          "血灵芝成熟窗口正在逼近，魔修已经行动。",
+          "苏墨仍在暗中观察你，他的真实意图不明。",
+          "你手上只剩下一些基本装备，灵石和丹药均已耗尽。"
+        ]
+      }
+    },
+    "elapsed_minutes": 10,
+    "state_patch": {
+      "time_delta": "第 1 日 11:15 → 第 1 日 11:25",
+      "location_changes": [],
+      "inventory_changes": [
+        {
+          "owner_id": "pc_main",
+          "item_id": "下品灵石x2",
+          "change": "consume",
+          "evidence": "用于换取聚气丹"
+        },
+        {
+          "owner_id": "pc_main",
+          "item_id": "异香草x1",
+          "change": "consume",
+          "evidence": "用于换取聚气丹"
+        },
+        {
+          "owner_id": "pc_main",
+          "item_id": "聚气丹x1",
+          "change": "gain",
+          "evidence": "从钱百味处换取"
+        },
+        {
+          "owner_id": "pc_main",
+          "item_id": "聚气丹x1",
+          "change": "consume",
+          "evidence": "服下冲击瓶颈"
+        }
+      ],
+      "player_state_changes": [
+        {
+          "field": "qi",
+          "operation": "set",
+          "value": 6
+        },
+        {
+          "field": "max_qi",
+          "operation": "set",
+          "value": 6
+        },
+        {
+          "field": "conditions",
+          "operation": "add",
+          "value": "经脉胀痛（灵力过载，-1健康恢复速度，持续1时辰）"
+        }
+      ],
+      "relationship_changes": [],
+      "new_facts": [],
+      "contradictions": [],
+      "npc_memory_writes": [
+        {
+          "npc_id": "npc_qian_baiwei",
+          "memory": {
+            "type": "episodic",
+            "content": "那个修士终于来我摊位了，用最后两块下品灵石和一株异香草换了一枚聚气丹。异香草成色不错，是黑风岭产的——看来他确实知道那边的事情。他当场服丹冲击炼气三层，但失败了，灵力没蓄满就急着突破，真是年轻气盛。不过他灵力已经涨到九成，下次准备充分些应该能成。",
+            "importance": 0.6,
+            "salience": 0.7,
+            "emotional_valence": 0.3,
+            "confidence": 0.9,
+            "source": "saw",
+            "tier": "active",
+            "related_entities": [
+              "pc_main"
+            ],
+            "visibility_path": "direct_visual"
+          }
+        },
+        {
+          "npc_id": "npc_su_mo",
+          "memory": {
+            "type": "episodic",
+            "content": "那修士用异香草和灵石从钱百味那里换了一枚聚气丹，然后当场服下冲击炼气三层。但他失败了——灵力没蓄满就急着服丹，经脉承受不住药力。他现在灵力倒是涨到接近满值了，但瓶颈只裂了一道缝，没破。看来他确实很急，急着突破去黑风岭。",
+            "importance": 0.55,
+            "salience": 0.6,
+            "emotional_valence": 0.0,
+            "confidence": 0.8,
+            "source": "saw",
+            "tier": "active",
+            "related_entities": [
+              "pc_main",
+              "npc_qian_baiwei"
+            ],
+            "visibility_path": "direct_visual"
+          }
+        },
+        {
+          "npc_id": "npc_liu_qing",
+          "memory": {
+            "type": "episodic",
+            "content": "那个穷散修去钱百味的摊位买了东西，然后找了个角落修炼了一会儿，好像是想突破但没成功。没什么特别的，就是个普通的低阶散修。",
+            "importance": 0.2,
+            "salience": 0.15,
+            "emotional_valence": 0.0,
+            "confidence": 0.9,
+            "source": "saw",
+            "tier": "dormant",
+            "related_entities": [
+              "pc_main"
+            ],
+            "visibility_path": "direct_visual"
+          }
+        }
+      ],
+      "npc_interpretation_writes": [
+        {
+          "npc_id": "npc_qian_baiwei",
+          "interpretation": "这个修士急着突破，不惜用掉最后一块灵石和灵草。他肯定是要去黑风岭。年轻人有胆量是好事，但这样莽撞，恐怕会栽跟头。如果他活着回来，或许可以跟他做笔大买卖——他需要丹药，我需要黑风岭的情报。",
+          "related_to": "pc_main",
+          "confidence": 0.7
+        },
+        {
+          "npc_id": "npc_su_mo",
+          "interpretation": "这个修士突破失败后灵力反而更接近圆满了，说明他根基不错，只是资源匮乏。他急着突破，一定是为了黑风岭的血灵芝。他修为虽低，但木火双灵根在炼气期也算不错——或许可以做个探路的棋子。再观察一下，如果他接下来来找我，我可以试探他的底细。",
+          "related_to": "pc_main",
+          "confidence": 0.65
+        }
+      ],
+      "npc_understanding_writes": [],
+      "npc_revision_writes": [],
+      "open_threads": [
+        {
+          "thread": "突破炼气三层",
+          "description": "玩家灵力已蓄至九成，但瓶颈未破，经脉因强行冲击而胀痛。需要进一步准备才能再次尝试突破。",
+          "pressure": "如果不尽快突破，以炼气二层的修为前往黑风岭将极为危险。魔修探子已有炼气四五层的实力。"
+        },
+        {
+          "thread": "血灵芝成熟倒计时",
+          "description": "血灵芝预计在第2日子时成熟，魔修已开始行动。每拖延一个时辰，被魔修抢先摘走的概率就增加一分。",
+          "pressure": "剩余约12时辰，但魔修已经出现在黑风岭外围，可能提前采摘未完全成熟的灵芝。"
+        },
+        {
+          "thread": "苏墨的观察",
+          "description": "灰袍散修苏墨一直在暗中观察玩家，似乎对玩家的行动有浓厚兴趣。他可能成为盟友，也可能另有图谋。",
+          "pressure": "苏墨可能主动接触玩家，也可能在玩家前往黑风岭时尾随或抢先行动。"
+        }
+      ]
+    },
+    "gm_notes": []
+  },
+  "state_patch": {
+    "time_delta": "10 分钟",
+    "location_changes": [],
+    "inventory_changes": [
+      {
+        "owner_id": "pc_main",
+        "item_id": "下品灵石x2",
+        "change": "consume",
+        "evidence": "用于换取聚气丹"
+      },
+      {
+        "owner_id": "pc_main",
+        "item_id": "异香草x1",
+        "change": "consume",
+        "evidence": "用于换取聚气丹"
+      },
+      {
+        "owner_id": "pc_main",
+        "item_id": "聚气丹x1",
+        "change": "gain",
+        "evidence": "从钱百味处换取"
+      },
+      {
+        "owner_id": "pc_main",
+        "item_id": "聚气丹x1",
+        "change": "consume",
+        "evidence": "服下冲击瓶颈"
+      }
+    ],
+    "player_state_changes": [
+      {
+        "entity_id": "pc_main",
+        "field": "qi",
+        "reason": "AI state update",
+        "operation": "set",
+        "value": 6
+      },
+      {
+        "entity_id": "pc_main",
+        "field": "max_qi",
+        "reason": "AI state update",
+        "operation": "set",
+        "value": 6
+      },
+      {
+        "entity_id": "pc_main",
+        "field": "conditions",
+        "reason": "AI state update",
+        "operation": "add",
+        "value": "经脉胀痛（灵力过载，-1健康恢复速度，持续1时辰）"
+      }
+    ],
+    "relationship_changes": [],
+    "new_facts": [],
+    "contradictions": [],
+    "npc_memory_writes": [
+      {
+        "npc_id": "npc_qian_baiwei",
+        "memory": "那个修士终于来我摊位了，用最后两块下品灵石和一株异香草换了一枚聚气丹。异香草成色不错，是黑风岭产的——看来他确实知道那边的事情。他当场服丹冲击炼气三层，但失败了，灵力没蓄满就急着突破，真是年轻气盛。不过他灵力已经涨到九成，下次准备充分些应该能成。",
+        "memory_type": "episodic",
+        "source": "saw",
+        "visibility_path": "direct_visual",
+        "confidence": 0.9,
+        "emotional_valence": 0.3,
+        "salience": 0.7,
+        "importance": 0.6,
+        "related_entities": [
+          "pc_main"
+        ],
+        "visibility_evidence": {
+          "observer_id": "npc_qian_baiwei",
+          "memory_allowed": true,
+          "visibility_path": "direct_visual",
+          "event_id": "",
+          "subjective_summary": "那个修士终于来我摊位了，用最后两块下品灵石和一株异香草换了一枚聚气丹。异香草成色不错，是黑风岭产的——看来他确实知道那边的事情。他当场服丹冲击炼气三层，但失败了，灵力没蓄满就急着突破，真是年轻气盛。不过他灵力已经涨到九成，下次准备充分些应该能成。",
+          "allowed_memory_scope": [
+            "observed_event"
+          ],
+          "forbidden_memory_scope": []
+        }
+      },
+      {
+        "npc_id": "npc_su_mo",
+        "memory": "那修士用异香草和灵石从钱百味那里换了一枚聚气丹，然后当场服下冲击炼气三层。但他失败了——灵力没蓄满就急着服丹，经脉承受不住药力。他现在灵力倒是涨到接近满值了，但瓶颈只裂了一道缝，没破。看来他确实很急，急着突破去黑风岭。",
+        "memory_type": "episodic",
+        "source": "saw",
+        "visibility_path": "direct_visual",
+        "confidence": 0.8,
+        "emotional_valence": 0.0,
+        "salience": 0.6,
+        "importance": 0.55,
+        "related_entities": [
+          "pc_main",
+          "npc_qian_baiwei"
+        ],
+        "visibility_evidence": {
+          "observer_id": "npc_su_mo",
+          "memory_allowed": true,
+          "visibility_path": "direct_visual",
+          "event_id": "",
+          "subjective_summary": "那修士用异香草和灵石从钱百味那里换了一枚聚气丹，然后当场服下冲击炼气三层。但他失败了——灵力没蓄满就急着服丹，经脉承受不住药力。他现在灵力倒是涨到接近满值了，但瓶颈只裂了一道缝，没破。看来他确实很急，急着突破去黑风岭。",
+          "allowed_memory_scope": [
+            "observed_event"
+          ],
+          "forbidden_memory_scope": []
+        }
+      },
+      {
+        "npc_id": "npc_liu_qing",
+        "memory": "那个穷散修去钱百味的摊位买了东西，然后找了个角落修炼了一会儿，好像是想突破但没成功。没什么特别的，就是个普通的低阶散修。",
+        "memory_type": "episodic",
+        "source": "saw",
+        "visibility_path": "direct_visual",
+        "confidence": 0.9,
+        "emotional_valence": 0.0,
+        "salience": 0.15,
+        "importance": 0.2,
+        "related_entities": [
+          "pc_main"
+        ],
+        "visibility_evidence": {
+          "observer_id": "npc_liu_qing",
+          "memory_allowed": true,
+          "visibility_path": "direct_visual",
+          "event_id": "",
+          "subjective_summary": "那个穷散修去钱百味的摊位买了东西，然后找了个角落修炼了一会儿，好像是想突破但没成功。没什么特别的，就是个普通的低阶散修。",
+          "allowed_memory_scope": [
+            "observed_event"
+          ],
+          "forbidden_memory_scope": []
+        }
+      }
+    ],
+    "npc_interpretation_writes": [],
+    "npc_understanding_writes": [],
+    "npc_revision_writes": [],
+    "open_threads": [
+      {
+        "thread": "突破炼气三层",
+        "next_pressure": "如果不尽快突破，以炼气二层的修为前往黑风岭将极为危险。魔修探子已有炼气四五层的实力。"
+      },
+      {
+        "thread": "血灵芝成熟倒计时",
+        "next_pressure": "剩余约12时辰，但魔修已经出现在黑风岭外围，可能提前采摘未完全成熟的灵芝。"
+      },
+      {
+        "thread": "苏墨的观察",
+        "next_pressure": "苏墨可能主动接触玩家，也可能在玩家前往黑风岭时尾随或抢先行动。"
+      }
+    ]
+  },
+  "apply_report": {
+    "applied": true,
+    "report": {
+      "time": [
+        "Time advanced: 第 1 日 11:15 -> 第 1 日 11:25 (+10 min)"
+      ],
+      "locations": [],
+      "inventory": [
+        "pc_main lost 下品灵石x2",
+        "pc_main lost 异香草x1",
+        "pc_main gained 聚气丹x1",
+        "pc_main lost 聚气丹x1"
+      ],
+      "player_state": [
+        "pc_main qi: 5 -> 6 (AI state update)",
+        "pc_main max_qi: 6 -> 6 (AI state update)",
+        "pc_main conditions add: 经脉胀痛（灵力过载，-1健康恢复速度，持续1时辰） (AI state update)"
+      ],
+      "relationships": [],
+      "facts": [],
+      "contradictions": [],
+      "memories": [
+        "[mem_npc_qian_baiwei_0009] npc_qian_baiwei: 那个修士终于来我摊位了，用最后两块下品灵石和一株异香草换了一枚聚气丹。异香草成色不错，是黑风岭产的——看来他确实知道那边...",
+        "[mem_npc_su_mo_0011] npc_su_mo: 那修士用异香草和灵石从钱百味那里换了一枚聚气丹，然后当场服下冲击炼气三层。但他失败了——灵力没蓄满就急着服丹，经脉承受不...",
+        "[mem_npc_liu_qing_0011] npc_liu_qing: 那个穷散修去钱百味的摊位买了东西，然后找了个角落修炼了一会儿，好像是想突破但没成功。没什么特别的，就是个普通的低阶散修。...",
+        "[npc_liu_qing] memory tiers reranked, 11 nodes",
+        "[npc_qian_baiwei] memory tiers reranked, 9 nodes",
+        "[npc_su_mo] memory tiers reranked, 11 nodes"
+      ],
+      "interpretations": [],
+      "understandings": [],
+      "revisions": [],
+      "world_graph": [
+        "Appended mem_npc_qian_baiwei_0009 to world_graph.jsonl",
+        "Appended mem_npc_su_mo_0011 to world_graph.jsonl",
+        "Appended mem_npc_liu_qing_0011 to world_graph.jsonl"
+      ],
+      "threads": [
+        "[open_thread_0015] added: 突破炼气三层",
+        "[open_thread_0016] added: 血灵芝成熟倒计时",
+        "[open_thread_0017] added: 苏墨的观察",
+        "[open_thread_0008] dormant: 坊市内的可疑散修",
+        "[open_thread_0009] dormant: 自身修为瓶颈",
+        "[open_thread_0010] dormant: 灰袍散修的身份"
+      ],
+      "errors": [],
+      "consolidation": [
+        "Consolidation due: 11 turns since last consolidation (turn 0 -> 11). Run prompts/memory-consolidator.md and prompts/understanding-consolidator.md for all NPCs with new memories/interpretations."
+      ]
+    }
+  }
+}
