@@ -1,9 +1,9 @@
 {
   "campaign_id": "tg001",
   "title": "廷根之夜",
-  "current_turn": 18,
-  "current_time": "第 1 日 02:40",
-  "_time_tick": 160,
+  "current_turn": 19,
+  "current_time": "第 1 日 02:45",
+  "_time_tick": 165,
   "current_scene": {
     "location_id": "church_interior_confessional",
     "present_entities": [
@@ -11,14 +11,14 @@
       "npc_top_hat_man"
     ],
     "active_threads": [
-      "open_thread_0043",
-      "open_thread_0044",
-      "open_thread_0045",
-      "open_thread_0046",
       "open_thread_0048",
-      "open_thread_0049",
       "open_thread_0050",
-      "open_thread_0051"
+      "open_thread_0051",
+      "open_thread_0052",
+      "open_thread_0053",
+      "open_thread_0054",
+      "open_thread_0055",
+      "open_thread_0056"
     ],
     "summary": "玩家抵达church_interior_confessional。"
   },
@@ -647,28 +647,36 @@
       "description": "瘦高个追踪：瘦高个在通风管道内追踪玩家，预计十分钟内到达井盖出口。",
       "next_pressure": "如果玩家不处理井盖出口痕迹，瘦高个将发现出口并直接锁定教堂区后巷。",
       "created_turn": 15,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 18,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0044",
       "description": "渡鸦空中追踪：渡鸦通过占卜锁定教堂区后巷，正在从钟楼滑翔逼近。",
       "next_pressure": "渡鸦将在两分钟内抵达后巷上空，届时玩家若仍在开阔地，将暴露在其视野中。",
       "created_turn": 15,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 18,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0045",
       "description": "警察封锁下水道：警察在下水道入口设警戒线，准备下井搜索。",
       "next_pressure": "警员将在五分钟后进入下水道，可能发现通往教堂区的管道路线。",
       "created_turn": 15,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 18,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0046",
       "description": "下水道深处生物被惊动：未知生物正沿玩家残留的气息向教堂区方向移动。",
       "next_pressure": "该生物约十五分钟后抵达井盖出口，可能造成混乱或暴露玩家位置。",
       "created_turn": 15,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 18,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0047",
@@ -691,7 +699,9 @@
       "description": "警察正在封锁教堂区，已经发现了下水道井盖附近的血迹和脚印。封锁圈正在收缩，预计30分钟内将开始逐户搜查。",
       "next_pressure": "教堂虽然暂时隔绝了气息，但警察的搜查迟早会进入教堂内部。玩家需要在搜查开始前找到出路或获得庇护。",
       "created_turn": 16,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 18,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0050",
@@ -705,6 +715,41 @@
       "description": "廷根警察局已封锁教堂区外围，正在排查所有下水道出口。",
       "next_pressure": "一旦警察完成外部封锁，很快就会进入教堂内部搜查。庇护法阵只能中和你的气息，不能让你隐形。",
       "created_turn": 17,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0052",
+      "description": "司书的目的：他为什么在告解室等你？他想要什么？",
+      "next_pressure": "如果玩家不主动追问，司书可能会在下一回合提出他的条件或请求。",
+      "created_turn": 18,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0053",
+      "description": "红色皮革册子：司书推到你面前的册子内容未知。",
+      "next_pressure": "玩家如果翻开册子，可能会触发新的信息或事件；如果不翻开，司书可能会主动解释。",
+      "created_turn": 18,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0054",
+      "description": "灰色披肩老妇人的去向：她消失在祭坛侧面的小门后。",
+      "next_pressure": "老妇人可能会在不久后返回，或者她正在通知教堂内的其他人。",
+      "created_turn": 18,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0055",
+      "description": "警察逼近教堂：两名警察已在后巷发现痕迹。",
+      "next_pressure": "警察可能在下个回合进入教堂搜查，或者向周边居民询问。",
+      "created_turn": 18,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0056",
+      "description": "下水道未知生物盘踞在教堂地下排水渠。",
+      "next_pressure": "如果庇护法阵出现波动或能量减弱，该生物可能发起攻击或突破。",
+      "created_turn": 18,
       "status": "active"
     }
   ],
