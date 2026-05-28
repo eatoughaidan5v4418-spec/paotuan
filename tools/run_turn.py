@@ -730,6 +730,23 @@ def main() -> None:
         tick_reason,
     )
 
+    # V09: run chaos scene check and include in turn packet
+    chaos_info = {"enabled": False}
+    try:
+        chaos_path = root / "campaign" / "chaos_factor.json"
+        if chaos_path.exists():
+            chaos_data = load_json(chaos_path)
+            from chaos_manager import scene_check
+            result, roll = scene_check(int(chaos_data.get("chaos_level", 5)))
+            chaos_info = {
+                "enabled": True,
+                "chaos_level": chaos_data.get("chaos_level", 5),
+                "scene_check_roll": roll,
+                "scene_check_result": result,
+            }
+    except Exception:
+        pass
+
     context = collect_context(root, campaign_state, args.memory_limit, player_action)
     packet: dict[str, Any] = {
         "turn_id": turn_id,
@@ -747,6 +764,7 @@ def main() -> None:
             "from_time": from_time,
             "to_time": to_time,
         },
+        "chaos_scene_check": chaos_info,
         "world_tick_preview": {
             "clock_updates": clock_updates,
             "offscreen_event_hints": event_hints,
