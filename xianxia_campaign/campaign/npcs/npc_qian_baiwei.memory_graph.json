@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_qian_baiwei",
-  "current_turn": 7,
+  "current_turn": 9,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -22,7 +22,7 @@
       "related_entities": [
         "loc_black_wind_ridge"
       ],
-      "score": 0.6494
+      "score": 0.6394
     },
     {
       "id": "mem_qian_0002",
@@ -43,7 +43,42 @@
       "related_entities": [
         "faction_demonic_remnants"
       ],
-      "score": 0.5575
+      "score": 0.5475
+    },
+    {
+      "id": "mem_npc_qian_baiwei_0007",
+      "type": "episodic",
+      "content": "那修士在主街上盘膝修炼了半个时辰，用了两块下品灵石冲击瓶颈，但失败了。他手上只剩两块灵石了——资源匮乏，应该会来找我交易。",
+      "created_turn": 9,
+      "last_recalled_turn": 9,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.6,
+      "emotional_valence": 0.2,
+      "confidence": 0.9,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "pc_main"
+      ],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_qian_baiwei",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "那修士在主街上盘膝修炼了半个时辰，用了两块下品灵石冲击瓶颈，但失败了。他手上只剩两块灵石了——资源匮乏，应该会来找我交易。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 10:15",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.5
     },
     {
       "id": "mem_npc_qian_baiwei_0005",
@@ -79,7 +114,7 @@
       },
       "observed_at": "第 1 日 08:55",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4635
+      "score": 0.445
     },
     {
       "id": "mem_npc_qian_baiwei_0004",
@@ -116,7 +151,7 @@
       },
       "observed_at": "第 1 日 08:50",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4311
+      "score": 0.415
     },
     {
       "id": "mem_npc_qian_baiwei_0003",
@@ -141,7 +176,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.425
+      "score": 0.415
     },
     {
       "id": "mem_npc_qian_baiwei_0006",
@@ -177,7 +212,7 @@
       },
       "observed_at": "第 1 日 09:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.37
+      "score": 0.3486
     }
   ],
   "interpretation_nodes": [],

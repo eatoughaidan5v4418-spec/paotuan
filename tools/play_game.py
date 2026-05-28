@@ -1388,12 +1388,17 @@ STAT_NAME_MAP = {
     '社交': 'stats.social',
 }
 QI_FROM_TO_PAT = re.compile(
-    r'灵力(?:\u4ece|\u7531)\s*(\d+)\s*/\s*(\d+)\s*'
+    r'(?:\u7075\u529b|\u7075\u6c14|\u6cd5\u529b)(?:\u4ece|\u7531)\s*(\d+)\s*/\s*(\d+)\s*'
+    r'(?:\u63d0\u5347\u5230|\u63d0\u5347\u81f3|\u6da8\u5230|\u6da8\u81f3|\u589e\u81f3|\u589e\u52a0\u5230|\u6062\u590d\u81f3|\u6062\u590d\u5230)\s*(\d+)\s*/\s*(\d+)'
+)s*(\d+)\s*/\s*(\d+)\s*'
     r'(?:\u63d0\u5347\u5230|\u63d0\u5347\u81f3|\u6da8\u5230|\u6da8\u81f3|'
     r'\u589e\u81f3|\u589e\u52a0\u5230|\u6062\u590d\u81f3|\u6062\u590d\u5230)\s*(\d+)\s*/\s*(\d+)'
 )
 HEALTH_FROM_TO_PAT = re.compile(
-    r'\u751f\u547d(?:\u4ece|\u7531)\s*(\d+)\s*/\s*(\d+)\s*'
+    r'\u751f\u547d(?:\u4ece|\u7531)\s*(\d+)(?:\s*/\s*(\d+))?\s*'
+    r'(?:\u964d\u5230|\u964d\u81f3|\u51cf\u5c11\u5230|\u53d8\u4e3a|\u53d8\u6210|'
+    r'\u63d0\u5347\u5230|\u63d0\u5347\u81f3|\u6da8\u5230|\u6062\u590d\u81f3|\u6062\u590d\u5230)\s*(\d+)(?:\s*/\s*(\d+))?'
+)s*(\d+)\s*/\s*(\d+)\s*'
     r'(?:\u964d\u5230|\u964d\u81f3|\u51cf\u5c11\u5230|\u53d8\u4e3a|\u53d8\u6210|'
     r'\u63d0\u5347\u5230|\u63d0\u5347\u81f3|\u6da8\u5230|\u6062\u590d\u81f3|\u6062\u590d\u5230)\s*(\d+)\s*/\s*(\d+)'
 )
@@ -1457,11 +1462,14 @@ def append_inferred_state_changes_from_narrative(
     # Health extraction
     if 'health' not in existing:
         for m in HEALTH_FROM_TO_PAT.finditer(visible_text):
-            old_hp, _, new_hp, _ = int(m.group(1)), int(m.group(2)), int(m.group(3)), int(m.group(4))
-            hp_delta = new_hp - old_hp
-            if hp_delta != 0:
-                changes.append({'entity_id': player_id, 'field': 'health', 'operation': 'delta',
-                    'delta': hp_delta, 'reason': f'narrative: health {old_hp} -> {new_hp}'})
+            groups = m.groups()
+            if len(groups) >= 3 and groups[2] is not None:
+                old_hp = int(groups[0])
+                new_hp = int(groups[2])
+                hp_delta = new_hp - old_hp
+                if hp_delta != 0:
+                    changes.append({'entity_id': player_id, 'field': 'health', 'operation': 'delta',
+                        'delta': hp_delta, 'reason': f'narrative: health {old_hp} -> {new_hp}'})
             break
 
     # Realm extraction

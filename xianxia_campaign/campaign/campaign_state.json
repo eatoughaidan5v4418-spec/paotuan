@@ -1,9 +1,9 @@
 {
   "campaign_id": "xianxia_001",
   "title": "青云坊市遗宝",
-  "current_turn": 9,
-  "current_time": "第 1 日 09:15",
-  "_time_tick": 555,
+  "current_turn": 10,
+  "current_time": "第 1 日 10:15",
+  "_time_tick": 615,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "loc_azure_cloud_market",
@@ -15,13 +15,14 @@
     ],
     "active_threads": [
       "thread_blood_spirit_mushroom",
-      "open_thread_0004",
       "open_thread_0005",
       "open_thread_0006",
       "open_thread_0007",
       "open_thread_0008",
       "open_thread_0009",
-      "open_thread_0010"
+      "open_thread_0010",
+      "open_thread_0011",
+      "open_thread_0012"
     ]
   },
   "player_characters": [
@@ -112,6 +113,22 @@
       "source": "亲眼所见",
       "created_turn": 7,
       "valid": true
+    },
+    {
+      "id": "fact_0006",
+      "text": "炼气三层瓶颈坚固，需灵气蓄满至6/6并配合凝气丹药或灵物辅助才有三成突破把握",
+      "visibility": "private",
+      "source": "自身体验",
+      "created_turn": 9,
+      "valid": true
+    },
+    {
+      "id": "fact_0007",
+      "text": "两块下品灵石仅能提升约两成灵气储量，性价比极低",
+      "visibility": "private",
+      "source": "自身体验",
+      "created_turn": 9,
+      "valid": true
     }
   ],
   "open_threads": [
@@ -120,7 +137,9 @@
       "description": "玩家获知牌坊禁制异常，下一步可调查黑风岭或询问钱百味",
       "next_pressure": "血灵芝倒计时继续推进",
       "created_turn": 1,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 9,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0002",
@@ -145,7 +164,9 @@
       "description": "血灵芝将在第2日子时成熟。当前剩余时间约9个时辰。魔修残党已开始接近黑风岭外围。玩家尚未决定行动方向。",
       "next_pressure": "每过一个时辰，魔修探子会更深入黑风岭，血灵芝被提前发现的风险增加。若玩家在午时前仍未出发，魔修可能已在岭中布下埋伏。",
       "created_turn": 5,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 9,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0005",
@@ -187,6 +208,20 @@
       "description": "灰袍散修的身份",
       "next_pressure": "他可能是潜在的盟友或竞争者，若不接触，可能会在关键时刻成为变数。",
       "created_turn": 7,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0011",
+      "description": "钱百味的交易期待",
+      "next_pressure": "如果你不去找他，他可能会在下一时辰内主动搭话，但报价会更倾向于对他有利。",
+      "created_turn": 9,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0012",
+      "description": "苏墨的观察结论",
+      "next_pressure": "苏墨可能会在适当时机试探你的意图，如果你表现出对黑风岭的兴趣，他可能主动接触或避开你。",
+      "created_turn": 9,
       "status": "active"
     }
   ],
