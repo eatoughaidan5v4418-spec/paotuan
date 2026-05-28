@@ -1,25 +1,27 @@
 {
   "campaign_id": "tg001",
   "title": "廷根之夜",
-  "current_turn": 15,
-  "current_time": "第 1 日 02:15",
-  "_time_tick": 135,
+  "current_turn": 16,
+  "current_time": "第 1 日 02:25",
+  "_time_tick": 145,
   "current_scene": {
-    "location_id": "sewer_vent_pipe_above_maintenance_room",
+    "location_id": "church_district_back_alley",
     "present_entities": [
-      "pc_player"
+      "pc_player",
+      "npc_raven",
+      "npc_police_sergeant"
     ],
     "active_threads": [
-      "open_thread_0034",
-      "open_thread_0035",
-      "open_thread_0037",
-      "open_thread_0038",
-      "open_thread_0039",
       "open_thread_0040",
       "open_thread_0041",
-      "open_thread_0042"
+      "open_thread_0042",
+      "open_thread_0043",
+      "open_thread_0044",
+      "open_thread_0045",
+      "open_thread_0046",
+      "open_thread_0047"
     ],
-    "summary": "玩家抵达sewer_vent_pipe_above_maintenance_room。"
+    "summary": "玩家抵达church_district_back_alley。"
   },
   "player_characters": [
     {
@@ -34,7 +36,7 @@
       "max_sanity": 7,
       "spirituality": 6,
       "max_spirituality": 6,
-      "location_id": "sewer_vent_pipe_above_maintenance_room",
+      "location_id": "church_district_back_alley",
       "inventory": [
         "??",
         "??",
@@ -565,14 +567,18 @@
       "description": "魔药调和出现排异，需寻找稳定容器并安抚冲突特性。",
       "next_pressure": "若半小时内未稳定，魔药可能失效或反噬。",
       "created_turn": 12,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 15,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0035",
       "description": "有人从同一井口进入下水道，可能是瘦高个或其他追踪者。",
       "next_pressure": "追踪者正沿管道搜索，预计5-10分钟内可能抵达维修间附近。",
       "created_turn": 12,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 15,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0036",
@@ -588,21 +594,27 @@
       "description": "晋升序列8'小丑'",
       "next_pressure": "若晋升成功，玩家将获得新能力但暂时虚弱；若失败，将部分失控并吸引更多敌人。瘦高个可能在30秒内破门而入。",
       "created_turn": 13,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 15,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0038",
       "description": "追踪者包围网",
       "next_pressure": "瘦高个正在评估情况，可能在1分钟内尝试破门。另一股力量（可能是渡鸦或警察）将在3-5分钟内抵达。",
       "created_turn": 13,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 15,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0039",
       "description": "下水道深处异常",
       "next_pressure": "未知生物可能被吸引至维修间附近，增加新的威胁。",
       "created_turn": 13,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 15,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0040",
@@ -623,6 +635,41 @@
       "description": "下水道深处未知生物被晋升波动惊醒",
       "next_pressure": "该生物可能朝波动来源移动，预计4-5回合后接近玩家当前位置。",
       "created_turn": 14,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0043",
+      "description": "瘦高个追踪：瘦高个在通风管道内追踪玩家，预计十分钟内到达井盖出口。",
+      "next_pressure": "如果玩家不处理井盖出口痕迹，瘦高个将发现出口并直接锁定教堂区后巷。",
+      "created_turn": 15,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0044",
+      "description": "渡鸦空中追踪：渡鸦通过占卜锁定教堂区后巷，正在从钟楼滑翔逼近。",
+      "next_pressure": "渡鸦将在两分钟内抵达后巷上空，届时玩家若仍在开阔地，将暴露在其视野中。",
+      "created_turn": 15,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0045",
+      "description": "警察封锁下水道：警察在下水道入口设警戒线，准备下井搜索。",
+      "next_pressure": "警员将在五分钟后进入下水道，可能发现通往教堂区的管道路线。",
+      "created_turn": 15,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0046",
+      "description": "下水道深处生物被惊动：未知生物正沿玩家残留的气息向教堂区方向移动。",
+      "next_pressure": "该生物约十五分钟后抵达井盖出口，可能造成混乱或暴露玩家位置。",
+      "created_turn": 15,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0047",
+      "description": "晋升后遗症：感官过载使玩家对光线和声响敏感，影响潜行和社交。",
+      "next_pressure": "在嘈杂环境中持续暴露可能引发头痛或眩晕，降低感知和反应能力。",
+      "created_turn": 15,
       "status": "active"
     }
   ],
