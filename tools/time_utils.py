@@ -79,13 +79,23 @@ def parse_interval_minutes(value: str) -> int | None:
 
 def parse_time_delta(delta: str) -> int:
     """Parse a Chinese time delta string into total minutes."""
-    if not delta or delta in ("\u65e0", "none", "0"):
+    if not delta or delta in ("无", "none", "0"):
         return 0
-    total = parse_interval_minutes(delta) or 0
+    total = 0
+    day_match = re.search(r"(\d+)\s*天", delta)
+    hour_match = re.search(r"(\d+)\s*小时", delta)
+    minute_match = re.search(r"(\d+)\s*分钟", delta)
+    if day_match:
+        total += int(day_match.group(1)) * 1440
+    if hour_match:
+        total += int(hour_match.group(1)) * 60
+    if minute_match:
+        total += int(minute_match.group(1))
+    # fallback: bare number treated as minutes
     if total == 0:
-        day_match = re.search(r"(\d+)\s*\u5929", delta)
-        if day_match:
-            total += int(day_match.group(1)) * 1440
+        numeric = re.search(r"(\d+)", delta)
+        if numeric:
+            total = int(numeric.group(1))
     return total
 
 

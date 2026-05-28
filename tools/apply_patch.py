@@ -58,15 +58,7 @@ def format_game_time(total_minutes: int) -> str:
     return f"\u7b2c {day} \u65e5 {hour:02d}:{minute:02d}"
 
 
-def parse_time_delta(delta: str) -> int:
-    """Parse a Chinese time delta string into total minutes."""
-    if not delta or delta in ("\u65e0", "none", "0"):
-        return 0
 
-    total = 0
-    day_match = re.search(r"(\d+)\s*\u5929", delta)
-    hour_match = re.search(r"(\d+)\s*\u5c0f\u65f6", delta)
-    minute_match = re.search(r"(\d+)\s*\u5206\u949f", delta)
 
     if day_match:
         total += int(day_match.group(1)) * 1440
