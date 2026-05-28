@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """World lore manager. View, search, and expand world setting entries.
 
 Stored in campaign/lore/world_lore.yaml with sections, entries, and revealed flags.

@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Track and validate faction/NPC resources, cooldowns, and costs.
 
 Resources are stored in campaign/resources.json per entity.

@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """View and update quest/threat graphs.
 
 Stored in campaign/quest_graph.json.

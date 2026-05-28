@@ -1,9 +1,9 @@
 {
   "campaign_id": "paotuan_demo",
   "title": "未命名战役",
-  "current_turn": 2,
-  "current_time": "第 1 日 20:05",
-  "_time_tick": 1205,
+  "current_turn": 1,
+  "current_time": "第 1 日 20:00",
+  "_time_tick": 1200,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "loc_old_dock",

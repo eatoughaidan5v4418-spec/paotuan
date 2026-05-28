@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Progress tracks (Ironsworn-style) for quests, journeys, and conflicts.
 
 Each track has current progress and a target (e.g., 0/10).

@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Canonical game-time helpers.
 
 Internal time is stored as _time_tick (minutes since Day 1 00:00).

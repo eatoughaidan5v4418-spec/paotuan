@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Manage player-known information ledger.
 
 Tracks what the player character has discovered, who they've met,

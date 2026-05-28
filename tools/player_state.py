@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Quick player state check. GM runs this before any NPC reaction to player claims."""
 
 from __future__ import annotations

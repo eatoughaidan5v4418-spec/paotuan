@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Chaos factor manager (Mythic GME-style) + dice roller.
 
 Tools:
