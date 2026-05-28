@@ -199,9 +199,14 @@ def read_text(path: Path) -> str:
 
 
 def load_dotenv(root: Path) -> None:
-    """Load simple KEY=VALUE lines from .env files without overriding env vars."""
+    """Load simple KEY=VALUE lines from .env files without overriding env vars.
+    Checks both campaign root and project root (TOOLS_DIR.parent) so subdirectory
+    campaigns inherit the project-level .env configuration."""
+    project_root = TOOLS_DIR.parent
     for name in (".env", ".env.local"):
         path = root / name
+        if not path.exists() and project_root != root:
+            path = project_root / name
         if not path.exists():
             continue
         for raw_line in path.read_text(encoding="utf-8-sig").splitlines():
@@ -1363,6 +1368,139 @@ def append_inferred_effect_point_rewards(
     ]
 
 
+REALM_LEVEL_TO_NAME = {
+    1: '炼气一层', 2: '炼气二层', 3: '炼气三层',
+    4: '炼气四层', 5: '炼气五层', 6: '炼气六层',
+    7: '炼气七层', 8: '炼气八层', 9: '炼气九层',
+    10: '筑基初期', 11: '筑基中期', 12: '筑基后期',
+    13: '金丹初期', 14: '金丹中期', 15: '金丹后期',
+    16: '元婴初期', 17: '元婴中期', 18: '元婴后期',
+    19: '化神期', 20: '渡劫期',
+}
+REALM_NAME_TO_LEVEL = {v: k for k, v in REALM_LEVEL_TO_NAME.items()}
+CHINESE_NUM_MAP = {
+    '零': 0, '一': 1, '二': 2, '两': 2, '三': 3, '四': 4,
+    '五': 5, '六': 6, '七': 7, '八': 8, '九': 9, '十': 10,
+}
+STAT_NAME_MAP = {
+    '战力': 'stats.combat', '战斗': 'stats.combat',
+    '感知': 'stats.perception',
+    '社交': 'stats.social',
+}
+QI_FROM_TO_PAT = re.compile(
+    r'灵力(?:\u4ece|\u7531)\s*(\d+)\s*/\s*(\d+)\s*'
+    r'(?:\u63d0\u5347\u5230|\u63d0\u5347\u81f3|\u6da8\u5230|\u6da8\u81f3|'
+    r'\u589e\u81f3|\u589e\u52a0\u5230|\u6062\u590d\u81f3|\u6062\u590d\u5230)\s*(\d+)\s*/\s*(\d+)'
+)
+HEALTH_FROM_TO_PAT = re.compile(
+    r'\u751f\u547d(?:\u4ece|\u7531)\s*(\d+)\s*/\s*(\d+)\s*'
+    r'(?:\u964d\u5230|\u964d\u81f3|\u51cf\u5c11\u5230|\u53d8\u4e3a|\u53d8\u6210|'
+    r'\u63d0\u5347\u5230|\u63d0\u5347\u81f3|\u6da8\u5230|\u6062\u590d\u81f3|\u6062\u590d\u5230)\s*(\d+)\s*/\s*(\d+)'
+)
+REALM_BREAK_PAT = re.compile(
+    r'\u7a81\u7834(?:\u81f3|\u5230\u4e86|\u5230)\s*'
+    r'(\u70bc\u6c14[\u671f\u5c42]?\s*\d+|'
+    r'\u7b51\u57fa[\u671f]?\s*[\u521d\u4e2d\u540e]|'
+    r'\u91d1\u4e39[\u671f]?\s*[\u521d\u4e2d\u540e]|'
+    r'\u5143\u5a74[\u671f]?\s*[\u521d\u4e2d\u540e]|'
+    r'\u5316\u795e[\u671f]?|\u6e21\u52ab[\u671f]?)'
+)
+STAT_PLUS_PAT = re.compile(r'(\u6218\u529b|\u6218\u6597|\u611f\u77e5|\u793e\u4ea4)\s*[+\uff0b]\s*(\d+)')
+CONSUME_PAT = re.compile(
+    r'\u6d88\u8017(?:\u4e86|\u6389)?\s*(?:\u7ea6|\u5927\u6982)?\s*(\d+|[{nums}])\s*'
+    r'(?:\u5757|\u679a|\u9897|\u5f20|\u5305|\u74f6|\u682a|\u67c4|\u628a)\s*'
+    r'(\u7075\u77f3|\u7075\u7802|\u8349\u836f|\u7b26[\u7bb8\u7c59]|\u4e39\u836f|\u4e39[\u836f\u85e5])'
+    .format(nums=''.join(CHINESE_NUM_MAP.keys()))
+)
+
+def parse_chinese_number(text):
+    if not text:
+        return None
+    text = text.strip()
+    try:
+        return int(text)
+    except ValueError:
+        pass
+    if text in CHINESE_NUM_MAP:
+        return CHINESE_NUM_MAP[text]
+    return None
+
+def parse_realm_level(realm_text):
+    realm_text = realm_text.strip()
+    if realm_text in REALM_NAME_TO_LEVEL:
+        return REALM_NAME_TO_LEVEL[realm_text]
+    qi_pat = re.compile(r'\u70bc\u6c14[\u671f\u5c42]?\s*(\d+)')
+    match = qi_pat.search(realm_text)
+    if match:
+        return int(match.group(1))
+    return None
+
+def append_inferred_state_changes_from_narrative(
+    changes, inventory_changes, response, packet,
+):
+    visible_text = flatten_text((response or {}).get('visible_text'))
+    if not visible_text:
+        return changes, inventory_changes
+    player_id = first_player_id(packet)
+    existing = {str(c.get('field')) for c in changes if isinstance(c, dict) and c.get('field')}
+
+    # Qi extraction
+    if 'qi' not in existing:
+        for m in QI_FROM_TO_PAT.finditer(visible_text):
+            old_qi, old_max, new_qi, new_max = int(m.group(1)), int(m.group(2)), int(m.group(3)), int(m.group(4))
+            qi_delta = new_qi - old_qi
+            if qi_delta != 0:
+                changes.append({'entity_id': player_id, 'field': 'qi', 'operation': 'delta',
+                    'delta': qi_delta, 'reason': f'narrative: qi {old_qi}/{old_max} -> {new_qi}/{new_max}'})
+            break
+
+    # Health extraction
+    if 'health' not in existing:
+        for m in HEALTH_FROM_TO_PAT.finditer(visible_text):
+            old_hp, _, new_hp, _ = int(m.group(1)), int(m.group(2)), int(m.group(3)), int(m.group(4))
+            hp_delta = new_hp - old_hp
+            if hp_delta != 0:
+                changes.append({'entity_id': player_id, 'field': 'health', 'operation': 'delta',
+                    'delta': hp_delta, 'reason': f'narrative: health {old_hp} -> {new_hp}'})
+            break
+
+    # Realm extraction
+    if 'realm_level' not in existing and 'realm' not in existing:
+        m = REALM_BREAK_PAT.search(visible_text)
+        if m:
+            realm_name = m.group(1)
+            new_level = parse_realm_level(realm_name)
+            if new_level is not None:
+                changes.append({'entity_id': player_id, 'field': 'realm_level', 'operation': 'set',
+                    'value': new_level, 'reason': f'narrative: breakthrough to {realm_name}'})
+                changes.append({'entity_id': player_id, 'field': 'realm', 'operation': 'set',
+                    'value': realm_name, 'reason': f'narrative: breakthrough to {realm_name}'})
+                existing.update(['realm_level', 'realm'])
+
+    # Stat extraction
+    for m in STAT_PLUS_PAT.finditer(visible_text):
+        stat_name, delta = m.group(1), int(m.group(2))
+        field = STAT_NAME_MAP.get(stat_name)
+        if field and field not in existing:
+            changes.append({'entity_id': player_id, 'field': field, 'operation': 'delta',
+                'delta': delta, 'reason': f'narrative: {stat_name}+{delta}'})
+            existing.add(field)
+
+    # Inventory consumption extraction
+    existing_inv = {str(c.get('item_id','')).split('(')[0].strip().rstrip('0123456789')
+        for c in inventory_changes if isinstance(c, dict)}
+    for m in CONSUME_PAT.finditer(visible_text):
+        qty_text, item_type = m.group(1), m.group(2)
+        qty = parse_chinese_number(qty_text) or 1
+        if item_type and item_type not in existing_inv:
+            inventory_changes.append({'owner_id': player_id,
+                'item_id': f'{item_type}(-{qty})', 'change': 'consume',
+                'quantity': qty, 'evidence': f'narrative: consumed {qty} {item_type}'})
+            existing_inv.add(item_type)
+
+    return changes, inventory_changes
+
+
 def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: dict[str, Any] | None = None) -> dict[str, Any]:
     patch = dict(DEFAULT_PATCH)
     if isinstance(value, dict):
@@ -1394,6 +1532,12 @@ def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: 
     ]
     patch["player_state_changes"] = append_inferred_effect_point_rewards(
         normalize_player_state_changes(patch.get("player_state_changes")),
+        response,
+        packet,
+    )
+    patch["player_state_changes"], patch["inventory_changes"] = append_inferred_state_changes_from_narrative(
+        patch["player_state_changes"],
+        patch["inventory_changes"],
         response,
         packet,
     )
