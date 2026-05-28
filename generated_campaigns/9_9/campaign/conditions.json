@@ -3,9 +3,12 @@
     "pc_player": {
       "conditions": [
         {
-          "name": "手指轻伤",
-          "severity": "normal",
-          "added_at": "AI state update"
+          "name": "手指轻伤（裂开渗血）",
+          "severity": "normal"
+        },
+        {
+          "name": "肩膀挫伤（轻度）",
+          "severity": "normal"
         }
       ],
       "history": [
@@ -13,6 +16,21 @@
           "operation": "add",
           "condition": "手指轻伤",
           "reason": "AI state update"
+        },
+        {
+          "operation": "add",
+          "condition": "['手指伤口裂开']",
+          "reason": "AI state update"
+        },
+        {
+          "operation": "add",
+          "condition": "肩膀挫伤（轻度）",
+          "reason": "撞开铁栅栏时右肩承受冲击。"
+        },
+        {
+          "operation": "set",
+          "condition": "['手指轻伤（裂开渗血）', '肩膀挫伤（轻度）']",
+          "reason": "手指伤口在撬锁和破窗时再次裂开，新增肩膀挫伤。"
         }
       ]
     }

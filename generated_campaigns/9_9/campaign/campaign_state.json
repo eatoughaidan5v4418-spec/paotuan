@@ -1,25 +1,25 @@
 {
   "campaign_id": "tg001",
   "title": "廷根之夜",
-  "current_turn": 9,
-  "current_time": "第 1 日 01:35",
-  "_time_tick": 95,
+  "current_turn": 11,
+  "current_time": "第 1 日 01:45",
+  "_time_tick": 105,
   "current_scene": {
-    "location_id": "police_station_perimeter",
+    "location_id": "police_station_back_alley",
     "present_entities": [
       "pc_player"
     ],
     "active_threads": [
-      "open_thread_0015",
-      "open_thread_0016",
-      "open_thread_0017",
-      "open_thread_0018",
-      "open_thread_0019",
       "open_thread_0020",
       "open_thread_0021",
-      "open_thread_0022"
+      "open_thread_0023",
+      "open_thread_0024",
+      "open_thread_0025",
+      "open_thread_0026",
+      "open_thread_0027",
+      "open_thread_0028"
     ],
-    "summary": "玩家抵达police_station_perimeter。"
+    "summary": "玩家抵达police_station_back_alley。"
   },
   "player_characters": [
     {
@@ -28,13 +28,13 @@
       "sequence": 9,
       "path": "???",
       "status": "normal",
-      "health": 8,
+      "health": 7,
       "max_health": 8,
       "sanity": 7,
       "max_sanity": 7,
       "spirituality": 4,
       "max_spirituality": 4,
-      "location_id": "police_station_perimeter",
+      "location_id": "police_station_back_alley",
       "inventory": [
         "??",
         "??",
@@ -46,10 +46,12 @@
         "candle_stub",
         "ink_bottle_dregs",
         "charcoal_stick",
-        "rag_bandage_bloody"
+        "rag_bandage_bloody",
+        "欢笑面具碎片"
       ],
       "conditions": [
-        "手指轻伤"
+        "手指轻伤（裂开渗血）",
+        "肩膀挫伤（轻度）"
       ],
       "stats": {
         "combat": 0,
@@ -234,6 +236,14 @@
       "source": "pc_player灵性感知",
       "created_turn": 8,
       "valid": true
+    },
+    {
+      "id": "fact_0020",
+      "text": "玩家撬开了警察局证物室的门锁，留下了血迹痕迹。",
+      "visibility": "private",
+      "source": "玩家行动",
+      "created_turn": 9,
+      "valid": true
     }
   ],
   "open_threads": [
@@ -368,35 +378,45 @@
       "description": "瘦高个正在接近废弃仓库，预计3分钟内到达。他会发现什么？",
       "next_pressure": "如果玩家不离开，瘦高个将在3分钟内到达仓库外，可能发生冲突或追踪。",
       "created_turn": 6,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 9,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0016",
       "description": "渡鸦沿线索从7号仓库搜索过来，预计5分钟内到达。",
       "next_pressure": "渡鸦到达后，若发现玩家痕迹，将展开更系统的搜索，并可能召唤更多组织成员。",
       "created_turn": 6,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 9,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0017",
       "description": "瘦高个的追踪：瘦高个发现了通风口的痕迹和血迹，正沿着玩家路径追踪，距离约三分钟路程。若不采取反制措施，将在警察局外围遭遇。",
       "next_pressure": "若玩家在警察局外围停留超过三分钟，瘦高个将直接目击玩家；若玩家进入警察局，瘦高个可能在外围布控或通知同伙。",
       "created_turn": 7,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 10,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0018",
       "description": "警察局潜入准备：玩家已抵达警察局外围，需要制定潜入方案。证物室窗户有铁栅栏，正门有双岗，锅炉房小门是潜在入口。换岗间隙是机会窗口。",
       "next_pressure": "随着时间推移，雾气消散将增加暴露风险；换岗结束后警员注意力恢复，潜入难度上升。若超过凌晨两点未行动，警察局内部巡逻密度将增加。",
       "created_turn": 7,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 10,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0019",
       "description": "封印时间限制：狂乱人偶线轴的默然魔术封印剩余约1小时45分钟（至凌晨3:10）。若超时未处理，线轴的非凡气息将重新暴露，可能吸引更多追踪者。",
       "next_pressure": "封印失效后，收藏家和渡鸦将能重新定位线轴，距离不再受限制。同时线轴的狂乱气息可能引发警察局内非凡者的警觉。",
       "created_turn": 7,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 9,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0020",
@@ -417,6 +437,50 @@
       "description": "RavenInvestigation",
       "next_pressure": "渡鸦可能通过非凡手段定位到玩家的大致位置，并通知组织其他成员包围警察局。",
       "created_turn": 8,
+      "status": "dormant",
+      "archived_turn": 10,
+      "archive_reason": "superseded by newer active threads"
+    },
+    {
+      "id": "open_thread_0023",
+      "description": "瘦高个追踪至警察局外围",
+      "next_pressure": "如果瘦高个抵达警察局并发现异常，他可能触发警报或直接与你遭遇。",
+      "created_turn": 9,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0024",
+      "description": "渡鸦的血液占卜",
+      "next_pressure": "渡鸦一旦定位成功，可能会直接潜入警察局或在外围设伏。",
+      "created_turn": 9,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0025",
+      "description": "证物室血迹暴露风险",
+      "next_pressure": "巡逻间隙还剩约10分钟，之后警员可能发现异常并封锁出口。",
+      "created_turn": 9,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0026",
+      "description": "逃离警察局包围圈",
+      "next_pressure": "警察将在2-3分钟内封锁警察局周边主要街道；瘦高个预计1分钟内抵达后巷；渡鸦约2分钟后抵达。若未能及时脱离，将陷入正面冲突。",
+      "created_turn": 10,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0027",
+      "description": "检查并处理两件非凡物品",
+      "next_pressure": "封印时间每过10分钟就减少一份安全余量；若封印失效前未找到安全地点，线轴气息将暴露位置。",
+      "created_turn": 10,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0028",
+      "description": "处理伤口与恢复状态",
+      "next_pressure": "伤口若不处理，持续失血可能导致体力下降；疼痛可能影响灵性感知的精准度。",
+      "created_turn": 10,
       "status": "active"
     }
   ],
