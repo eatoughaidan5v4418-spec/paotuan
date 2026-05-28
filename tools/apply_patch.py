@@ -1332,6 +1332,37 @@ def apply_patch(
             append_jsonl(root / "campaign" / "world_graph.jsonl", wg_record)
         report["world_graph"].append(f"Appended {revision['id']} to world_graph.jsonl")
 
+    # 8d. V03 fix: auto-rerank all touched NPC memory graphs
+    touched_npc_ids: set[str] = set()
+    for section in ("npc_memory_writes", "npc_interpretation_writes",
+                    "npc_understanding_writes", "npc_revision_writes"):
+        for item in patch.get(section, []):
+            if isinstance(item, dict) and item.get("npc_id"):
+                touched_npc_ids.add(str(item["npc_id"]))
+    if touched_npc_ids and not dry_run:
+        from memory_manager import memory_score, tier_for_score
+        half_life = 12  # default from memory_policy.yaml
+        for npc_id in sorted(touched_npc_ids):
+            mem_path = memory_graph_path_for(root, npc_id)
+            if not mem_path.exists():
+                continue
+            try:
+                graph = load_memory_graph(mem_path, npc_id, current_turn)
+                for memory in graph.get("memory_nodes", []):
+                    score = memory_score(memory, current_turn, half_life)
+                    memory["score"] = score
+                    memory["tier"] = tier_for_score(score, bool(memory.get("pinned", False)))
+                graph["memory_nodes"] = sorted(
+                    graph["memory_nodes"],
+                    key=lambda item: item.get("score", 0),
+                    reverse=True,
+                )
+                save_json(mem_path, graph)
+                report["memories"].append(f"[{npc_id}] memory tiers reranked, {len(graph['memory_nodes'])} nodes")
+            except Exception as exc:
+                report["errors"].append(f"[{npc_id}] rerank failed: {exc}")
+        report.setdefault("memories", [])
+
     # 9. Open threads
     ensure_campaign_field(campaign, "open_threads", [])
     for thread in patch.get("open_threads", []):
