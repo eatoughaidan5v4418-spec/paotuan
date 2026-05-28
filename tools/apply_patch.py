@@ -469,21 +469,6 @@ def apply_player_state_change(
         pc[field] = int(new_value) if new_value.is_integer() else new_value
         sync_player_resource_mirror(root, str(entity_id), field, pc[field], dry_run)
         result = f"{entity_id} {field}: {old_value:g} -> {new_value:g} ({reason})"
-        # Auto-sync realm text when realm_level changes
-        if field == "realm_level" and "realm" not in {str(c.get("field")) for c in patch.get("player_state_changes", []) if isinstance(c, dict)}:
-            realm_map = {
-                1: "????", 2: "????", 3: "????",
-                4: "????", 5: "????", 6: "????",
-                7: "????", 8: "????", 9: "????",
-                10: "????", 11: "????", 12: "????",
-                13: "????", 14: "????", 15: "????",
-                16: "????", 17: "????", 18: "????",
-                19: "???", 20: "???",
-            }
-            new_realm = realm_map.get(int(new_value))
-            if new_realm:
-                pc["realm"] = new_realm
-                report.setdefault("player_state", []).append(f"{entity_id} realm auto-synced: {pc.get('realm')} -> {new_realm}")
         return result
 
     if field.startswith("stats."):
