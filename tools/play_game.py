@@ -417,9 +417,11 @@ def parse_ai_json(text: str) -> dict[str, Any]:
 
 
 def slugify(value: str, fallback: str = "ai_campaign") -> str:
-    slug = re.sub(r"[^a-zA-Z0-9_-]+", "_", value.strip().lower()).strip("_")
+    # Truncate very long inputs to avoid filesystem errors
+    value = value.strip()[:200]
+    slug = re.sub(r"[^a-zA-Z0-9_-]+", "_", value.lower()).strip("_")
     if slug:
-        return slug
+        return slug[:80]
     digest = hashlib.sha1(value.encode("utf-8")).hexdigest()[:8]
     return f"{fallback}_{digest}"
 
