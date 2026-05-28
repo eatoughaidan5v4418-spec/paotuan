@@ -1,0 +1,8 @@
+location_id: zoutend_street
+name: 佐特兰德街
+description: 廷根市一条普通街道，夜晚昏暗，煤气灯闪烁。
+connected_locations: []
+points_of_interest:
+  - 玩家公寓
+  - 街角报摊
+  - 杂货店

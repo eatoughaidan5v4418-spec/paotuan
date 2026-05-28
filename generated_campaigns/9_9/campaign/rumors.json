@@ -1,0 +1,16 @@
+[
+  {
+    "id": "rumor_01",
+    "text": "据说廷根市出现了‘午夜诗人’，在夜晚吟唱着诡异的诗歌。",
+    "source": "街头传闻",
+    "confidence": "low",
+    "visible": true
+  },
+  {
+    "id": "rumor_02",
+    "text": "警察局长最近在调查一起离奇死亡案，死者身上有奇怪的符号。",
+    "source": "报纸",
+    "confidence": "medium",
+    "visible": true
+  }
+]

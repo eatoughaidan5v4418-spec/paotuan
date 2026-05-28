@@ -1,0 +1,6 @@
+world_lore:
+  setting: 维多利亚时代蒸汽朋克世界，超凡力量隐藏于表面之下。
+  known_factions:
+    - 廷根警察局
+  notable_events:
+    - 最近出现多起离奇死亡事件

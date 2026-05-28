@@ -1,0 +1,4 @@
+{"type":"location","id":"zoutend_street","properties":{"name":"佐特兰德街","description":"廷根市一条普通街道，夜晚昏暗，煤气灯闪烁。"}}
+{"type":"npc","id":"npc_landlady","properties":{"name":"房东太太","description":"一位中年妇女，住在楼下，似乎对超凡一无所知。"}}
+{"type":"npc","id":"npc_mysterious_man","properties":{"name":"神秘男子","description":"穿着黑色风衣，戴高礼帽，在街角徘徊，似乎关注着你。"}}
+{"type":"entity","id":"pc_player","properties":{"name":"玩家","type":"player","sequence":9,"path":"占卜家"}}

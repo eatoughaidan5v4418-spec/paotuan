@@ -1,0 +1,10 @@
+{
+  "yes_no_oracle": {
+    "type": "yes_no",
+    "description": "标准是/否 oracle。"
+  },
+  "action_oracle": {
+    "type": "action",
+    "description": "动作 oracle。"
+  }
+}

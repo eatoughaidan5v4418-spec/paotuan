@@ -1,0 +1,12 @@
+{
+  "npc_id": "npc_mysterious_man",
+  "current_turn": 0,
+  "memory_policy_id": "default",
+  "memory_nodes": [],
+  "interpretation_nodes": [],
+  "understanding_nodes": [],
+  "revision_events": [],
+  "relation_edges": [],
+  "beliefs": [],
+  "plans": []
+}

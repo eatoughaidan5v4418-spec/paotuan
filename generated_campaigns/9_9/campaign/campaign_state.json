@@ -1,0 +1,41 @@
+{
+  "campaign_id": "tg001",
+  "title": "廷根之夜",
+  "current_turn": 0,
+  "current_time": "1850-01-01 00:00",
+  "_time_tick": "1 hour",
+  "current_scene": {
+    "location_id": "zoutend_street",
+    "present_entities": [
+      "npc_landlady",
+      "npc_mysterious_man"
+    ]
+  },
+  "player_characters": [
+    {
+      "id": "pc_player",
+      "name": "玩家",
+      "sequence": 9,
+      "path": "占卜家",
+      "status": "normal"
+    }
+  ],
+  "quests": [
+    {
+      "id": "quest_find_teacher",
+      "name": "寻找导师",
+      "status": "active",
+      "description": "作为新晋非凡者，你需要找到一位可靠的导师了解超凡世界。"
+    },
+    {
+      "id": "quest_avoid_attention",
+      "name": "避免被注意",
+      "status": "active",
+      "description": "隐秘组织可能已经察觉到你的序列提升，保持低调。"
+    }
+  ],
+  "rules": {
+    "sequence_advancement": "消化魔药+仪式",
+    "corruption": "每次使用非凡能力积累污染值"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "quest_find_teacher": {
+    "id": "quest_find_teacher",
+    "name": "寻找导师",
+    "description": "作为新晋非凡者，你需要找到一位可靠的导师了解超凡世界。",
+    "objectives": [
+      "找到一位序列7以上的非凡者",
+      "获得基本指导"
+    ],
+    "reward": "获得基础占卜知识，可能获得新魔药配方"
+  },
+  "quest_avoid_attention": {
+    "id": "quest_avoid_attention",
+    "name": "避免被注意",
+    "description": "隐秘组织可能已经察觉到你的序列提升，保持低调。",
+    "objectives": [
+      "不引起警察注意",
+      "不暴露非凡能力"
+    ],
+    "reward": "降低被追捕风险"
+  }
+}

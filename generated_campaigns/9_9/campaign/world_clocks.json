@@ -1,0 +1,18 @@
+[
+  {
+    "id": "clock_secret_organization",
+    "name": "隐秘组织调查",
+    "ticks": 0,
+    "max_ticks": 6,
+    "visible": false,
+    "description": "隐秘组织正在追踪新出现的非凡者，每完成一次事件增加1 tick。"
+  },
+  {
+    "id": "clock_police_investigation",
+    "name": "警察调查",
+    "ticks": 0,
+    "max_ticks": 4,
+    "visible": true,
+    "description": "廷根市警察对近期异常事件开始关注。"
+  }
+]

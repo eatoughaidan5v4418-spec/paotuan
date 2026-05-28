@@ -1,0 +1,13 @@
+{
+  "known_locations": [
+    "zoutend_street"
+  ],
+  "known_npcs": [
+    "npc_landlady"
+  ],
+  "known_quests": [
+    "quest_find_teacher"
+  ],
+  "known_factions": [],
+  "known_rumors": []
+}

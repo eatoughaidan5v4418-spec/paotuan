@@ -1,0 +1,10 @@
+[
+  {
+    "id": "track_sequence_advance",
+    "name": "序列提升进度",
+    "current": 0,
+    "max": 100,
+    "visible": true,
+    "description": "通过消化魔药和完成仪式提升。"
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "player": {
+    "money": 50,
+    "items": [
+      "旧笔记本",
+      "钢笔",
+      "蜡烛"
+    ]
+  },
+  "locations": {
+    "zoutend_street": {
+      "name": "佐特兰德街",
+      "description": "廷根市一条普通街道，夜晚昏暗，煤气灯闪烁。"
+    }
+  }
+}

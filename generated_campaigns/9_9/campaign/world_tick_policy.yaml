@@ -1,0 +1,4 @@
+world_tick_policy:
+  clock_tick_interval: 1
+  chaos_tick_interval: 3
+  event_check: true

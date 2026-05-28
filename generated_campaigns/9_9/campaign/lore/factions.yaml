@@ -1,0 +1,9 @@
+factions:
+  - id: faction_secret_order
+    name: 隐秘组织
+    description: 一个在暗中活动，关注非凡者的组织。
+    visibility: hidden
+  - id: faction_police
+    name: 廷根警察局
+    description: 负责维护城市治安。
+    visibility: visible

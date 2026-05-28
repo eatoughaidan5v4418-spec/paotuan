@@ -1,0 +1,10 @@
+rules:
+  sequence_advancement:
+    description: 通过消化魔药和完成仪式提升序列。
+    steps:
+      - 消化当前序列魔药
+      - 获得下一序列魔药配方
+      - 完成晋升仪式
+  corruption:
+    description: 每次使用非凡能力积累污染值，高污染值可能导致失控。
+    threshold: 100

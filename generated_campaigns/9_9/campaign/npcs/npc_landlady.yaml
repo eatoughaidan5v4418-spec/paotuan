@@ -1,0 +1,8 @@
+npc_id: npc_landlady
+name: 房东太太
+role: 房东
+appearance: 中年妇女，穿着朴素
+personality: 热心，爱打听
+knowledge:
+  - known_facts: ["玩家是租客", "最近城市不太平"]
+  - hidden_facts: []

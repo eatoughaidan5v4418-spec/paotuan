@@ -1,0 +1,8 @@
+npc_id: npc_mysterious_man
+name: 神秘男子
+role: 未知
+appearance: 黑色风衣，高礼帽，看不清脸
+personality: 神秘，危险
+knowledge:
+  - known_facts: ["知道玩家的存在"]
+  - hidden_facts: ["是隐秘组织成员", "正在监视玩家"]

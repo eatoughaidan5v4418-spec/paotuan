@@ -1,0 +1,4 @@
+memory_policy:
+  max_nodes: 50
+  decay_rate: 0.9
+  importance_threshold: 0.5
