@@ -19,6 +19,7 @@ import validate_project  # noqa: E402
 import web_api  # noqa: E402
 import play_game  # noqa: E402
 import zone_validator  # noqa: E402
+import run_turn  # noqa: E402
 
 
 def run_cmd(args: list[str], cwd: Path = ROOT) -> subprocess.CompletedProcess[str]:
@@ -55,6 +56,7 @@ def minimal_campaign(root: Path) -> None:
                     "max_health": 12,
                     "qi": 5,
                     "max_qi": 8,
+                    "effect_points": 500,
                     "stats": {"body": 1},
                     "conditions": [],
                 }
@@ -97,6 +99,15 @@ def valid_patch() -> dict[str, object]:
                 "memory_type": "episodic",
                 "source": "saw",
                 "visibility_path": "direct_visual",
+                "visibility_evidence": {
+                    "event_id": "event_test_visibility",
+                    "observer_id": "npc_a",
+                    "memory_allowed": True,
+                    "visibility_path": "direct_visual",
+                    "subjective_summary": "A terrifying event happened.",
+                    "allowed_memory_scope": ["event_summary"],
+                    "forbidden_memory_scope": [],
+                },
                 "confidence": 0.9,
                 "emotional_valence": -2,
                 "salience": 0.8,
@@ -157,10 +168,134 @@ class ApplyPatchHardeningTests(unittest.TestCase):
             graph = json.loads((root / "campaign" / "npcs" / "npc_a.memory_graph.json").read_text(encoding="utf-8"))
             self.assertEqual(graph["memory_nodes"][0]["emotional_valence"], -2.0)
 
+    def test_bare_npc_id_is_canonicalized_and_added_to_scene(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            minimal_campaign(root)
+            patch = valid_patch()
+            patch["npc_memory_writes"] = [
+                {
+                    "npc_id": "laochen",
+                    "memory": "老陈在巷尾和玩家交谈。",
+                    "memory_type": "episodic",
+                    "source": "saw",
+                    "visibility_path": "direct_visual",
+                    "visibility_evidence": {
+                        "event_id": "event_laochen_talk",
+                        "observer_id": "laochen",
+                        "memory_allowed": True,
+                        "visibility_path": "direct_visual",
+                        "subjective_summary": "老陈在巷尾和玩家交谈。",
+                        "allowed_memory_scope": ["conversation"],
+                        "forbidden_memory_scope": [],
+                    },
+                    "confidence": 0.9,
+                    "emotional_valence": 0,
+                    "salience": 0.7,
+                }
+            ]
+
+            normalized = play_game.normalize_patch(patch, None, None)  # type: ignore[arg-type]
+            self.assertEqual(normalized["npc_memory_writes"][0]["npc_id"], "npc_laochen")
+
+            patcher.apply_patch(root, normalized, 1, "第 1 日 20:00", "0001", dry_run=False)  # type: ignore[arg-type]
+
+            state = json.loads((root / "campaign" / "campaign_state.json").read_text(encoding="utf-8"))
+            self.assertIn("npc_laochen", state["current_scene"]["present_entities"])
+            self.assertTrue((root / "campaign" / "npcs" / "npc_laochen.memory_graph.json").exists())
+
+    def test_apply_patch_advances_turn_counter(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            minimal_campaign(root)
+            patch = valid_patch()
+            patch["npc_memory_writes"] = []
+
+            patcher.apply_patch(root, patch, 1, "第 1 日 20:00", "0001", dry_run=False)  # type: ignore[arg-type]
+
+            state = json.loads((root / "campaign" / "campaign_state.json").read_text(encoding="utf-8"))
+            self.assertEqual(state["current_turn"], 2)
+
+    def test_open_threads_update_existing_description(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            minimal_campaign(root)
+            state_path = root / "campaign" / "campaign_state.json"
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            state["open_threads"] = [
+                {
+                    "id": "open_thread_0001",
+                    "description": "老陈的阵法师招募",
+                    "next_pressure": "旧压力",
+                    "created_turn": 1,
+                    "status": "active",
+                }
+            ]
+            state["current_scene"]["active_threads"] = ["open_thread_0001"]
+            write_json(state_path, state)
+            patch = valid_patch()
+            patch["npc_memory_writes"] = []
+            patch["open_threads"] = [
+                {
+                    "thread": "老陈的阵法师招募",
+                    "next_pressure": "新压力",
+                }
+            ]
+
+            patcher.apply_patch(root, patch, 2, "第 1 日 20:00", "0001", dry_run=False)  # type: ignore[arg-type]
+
+            updated = json.loads(state_path.read_text(encoding="utf-8"))
+            active_threads = [item for item in updated["open_threads"] if item.get("status") == "active"]
+            self.assertEqual(len(active_threads), 1)
+            self.assertEqual(active_threads[0]["id"], "open_thread_0001")
+            self.assertEqual(active_threads[0]["next_pressure"], "新压力")
+            self.assertEqual(updated["current_scene"]["active_threads"], ["open_thread_0001"])
+
+    def test_open_threads_prune_old_active_items_to_current_limit(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            minimal_campaign(root)
+            state_path = root / "campaign" / "campaign_state.json"
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            state["open_threads"] = [
+                {
+                    "id": f"open_thread_{index:04d}",
+                    "description": f"old thread {index}",
+                    "next_pressure": "old pressure",
+                    "created_turn": index,
+                    "status": "active",
+                }
+                for index in range(1, 10)
+            ]
+            state["current_scene"]["active_threads"] = [
+                item["id"] for item in state["open_threads"]
+            ]
+            write_json(state_path, state)
+            patch = valid_patch()
+            patch["npc_memory_writes"] = []
+            patch["open_threads"] = [
+                {"thread": "new urgent thread", "next_pressure": "new pressure"}
+            ]
+
+            patcher.apply_patch(root, patch, 10, "第 1 日 20:00", "0001", dry_run=False)  # type: ignore[arg-type]
+
+            updated = json.loads(state_path.read_text(encoding="utf-8"))
+            active_threads = [
+                item for item in updated["open_threads"] if item.get("status") == "active"
+            ]
+            dormant_threads = [
+                item for item in updated["open_threads"] if item.get("status") == "dormant"
+            ]
+            self.assertEqual(len(active_threads), patcher.MAX_ACTIVE_THREADS)
+            self.assertEqual({item["id"] for item in dormant_threads}, {"open_thread_0001", "open_thread_0002"})
+            self.assertNotIn("open_thread_0001", updated["current_scene"]["active_threads"])
+
     def test_apply_patch_updates_player_state_for_character_card(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             minimal_campaign(root)
+            resources_path = root / "campaign" / "resources.json"
+            write_json(resources_path, {"entities": {"pc_main": {"特效值": 500}}})
             patch = valid_patch()
             patch["npc_memory_writes"] = []
             patch["player_state_changes"] = [
@@ -183,6 +318,13 @@ class ApplyPatchHardeningTests(unittest.TestCase):
                     "delta": 1,
                     "reason": "training progress",
                 },
+                {
+                    "entity_id": "pc_main",
+                    "field": "effect_points",
+                    "operation": "delta",
+                    "value": -50,
+                    "reason": "effect use",
+                },
             ]
 
             errors = patcher.validate_patch_structure(patch)  # type: ignore[arg-type]
@@ -193,10 +335,14 @@ class ApplyPatchHardeningTests(unittest.TestCase):
             pc = state["player_characters"][0]
             self.assertEqual(pc["health"], 7)
             self.assertEqual(pc["stats"]["body"], 2)
+            self.assertEqual(pc["effect_points"], 450)
             self.assertIn("injured", pc["conditions"])
+            resources = json.loads(resources_path.read_text(encoding="utf-8"))
+            self.assertEqual(resources["entities"]["pc_main"]["特效值"], 450)
 
             visible = web_api.visible_state(root)
             self.assertEqual(visible["player"]["health"], 7)
+            self.assertEqual(visible["player"]["effect_points"], 450)
             self.assertIn("injured", visible["player"]["conditions"])
 
     def test_inventory_gain_marks_starter_pack_opened(self) -> None:
@@ -220,6 +366,52 @@ class ApplyPatchHardeningTests(unittest.TestCase):
             self.assertIn("归元诀玉简", state["player_characters"][0]["inventory"])
             resources = json.loads((root / "campaign" / "resources.json").read_text(encoding="utf-8"))
             self.assertEqual(resources["pc_main"]["特殊物品"], [])
+
+    def test_currency_inventory_change_updates_resources_not_inventory(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            minimal_campaign(root)
+            resources_path = root / "campaign" / "resources.json"
+            write_json(resources_path, {"entities": {"pc_main": {"\u7075\u77f3": 50}}})
+            patch = valid_patch()
+            patch["npc_memory_writes"] = []
+            patch["inventory_changes"] = [
+                {
+                    "owner_id": "pc_main",
+                    "item_id": "\u7075\u77f3",
+                    "change": "gain",
+                    "evidence": "\u4e94\u5341\u5757\u7075\u77f3\u5b9a\u91d1",
+                }
+            ]
+
+            patcher.apply_patch(root, patch, 1, "\u7b2c 1 \u65e5 20:00", "0001", dry_run=False)  # type: ignore[arg-type]
+
+            state = json.loads((root / "campaign" / "campaign_state.json").read_text(encoding="utf-8"))
+            resources = json.loads(resources_path.read_text(encoding="utf-8"))
+            self.assertEqual(resources["entities"]["pc_main"]["\u7075\u77f3"], 100)
+            self.assertNotIn("\u7075\u77f3", state["player_characters"][0]["inventory"])
+
+    def test_player_move_to_unknown_location_creates_minimal_location_file(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            minimal_campaign(root)
+            patch = valid_patch()
+            patch["npc_memory_writes"] = []
+            patch["location_changes"] = [
+                {
+                    "entity_id": "pc_main",
+                    "from": "loc_test",
+                    "to": "qingyun_valley",
+                    "reason": "accepted a job outside town",
+                }
+            ]
+
+            patcher.apply_patch(root, patch, 1, "\u7b2c 1 \u65e5 20:00", "0001", dry_run=False)  # type: ignore[arg-type]
+
+            state = json.loads((root / "campaign" / "campaign_state.json").read_text(encoding="utf-8"))
+            self.assertEqual(state["current_scene"]["location_id"], "qingyun_valley")
+            self.assertEqual(state["current_scene"]["present_entities"], ["pc_main"])
+            self.assertTrue((root / "campaign" / "locations" / "qingyun_valley.yaml").exists())
 
     def test_normalize_patch_infers_npc_departure_and_inventory_shape(self) -> None:
         packet = {
@@ -250,6 +442,59 @@ class ApplyPatchHardeningTests(unittest.TestCase):
         self.assertEqual(normalized["location_changes"][0]["entity_id"], "npc_liu")
         self.assertEqual(normalized["location_changes"][0]["to"], "offscreen")
 
+    def test_normalize_patch_does_not_depart_npc_for_unrelated_disappearance(self) -> None:
+        packet = {
+            "campaign_before": {
+                "current_scene": {
+                    "location_id": "loc_test",
+                    "present_entities": ["pc_main", "npc_liu"],
+                },
+                "player_characters": [{"id": "pc_main"}],
+            },
+            "context": {
+                "present_npcs": [{"id": "npc_liu", "profile_text": "id: npc_liu\nname: 刘师兄\n"}],
+            },
+        }
+        response = {
+            "visible_text": {
+                "scene": "刘师兄站在你身侧。远处一只妖兽的影子一闪而过，很快消失在林中。",
+            }
+        }
+        patch = valid_patch()
+        patch["npc_memory_writes"] = []
+
+        normalized = play_game.normalize_patch(patch, response, packet)  # type: ignore[arg-type]
+
+        self.assertEqual(normalized["location_changes"], [])
+
+    def test_normalize_patch_infers_split_party_sub_locations(self) -> None:
+        packet = {
+            "player_action": "我让老陈留在谷口看守退路，不要跟进阵眼；我自己进入古阵核心观察。",
+            "campaign_before": {
+                "current_scene": {
+                    "location_id": "qingyun_valley",
+                    "present_entities": ["player_lin", "npc_laochen"],
+                },
+                "player_characters": [{"id": "player_lin"}],
+            },
+            "context": {
+                "present_npcs": [{"id": "npc_laochen", "profile_text": "id: npc_laochen\nname: 老陈\n"}],
+            },
+        }
+        response = {
+            "visible_text": {
+                "action_result": "老陈留在谷口看守工具箱，你独自进入阵眼。",
+            }
+        }
+        patch = valid_patch()
+        patch["npc_memory_writes"] = []
+
+        normalized = play_game.normalize_patch(patch, response, packet)  # type: ignore[arg-type]
+
+        by_entity = {item["entity_id"]: item["to"] for item in normalized["location_changes"]}
+        self.assertEqual(by_entity["player_lin"], "qingyun_valley_core")
+        self.assertEqual(by_entity["npc_laochen"], "qingyun_valley_entrance")
+
     def test_apply_patch_cli_invalid_json_has_no_traceback(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             bad = Path(temp) / "bad.json"
@@ -260,6 +505,49 @@ class ApplyPatchHardeningTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("not valid JSON", result.stderr + result.stdout)
             self.assertNotIn("Traceback", result.stderr + result.stdout)
+
+    def test_apply_state_patch_reports_semantic_apply_errors_as_not_applied(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            minimal_campaign(root)
+            config = play_game.GameConfig(
+                root=root,
+                base_url="",
+                api_key="",
+                model="__mock__",
+                auto_apply=True,
+                max_tool_rounds=0,
+                allowed_roots=["campaign"],
+            )
+            patch = valid_patch()
+            patch["npc_memory_writes"] = []
+            patch["npc_interpretation_writes"] = [
+                {
+                    "id": "interp_bad",
+                    "npc_id": "npc_a",
+                    "derived_from_event_id": "event_missing",
+                    "derived_from_memory_id": "mem_missing",
+                    "text": "Bad dangling interpretation.",
+                    "appraisal": {
+                        "goal_impact": "neutral",
+                        "threat_level": 0,
+                        "opportunity_level": 0,
+                        "agency": "unknown",
+                        "moral_judgment": "unknown",
+                        "relationship_signal": "none",
+                    },
+                    "emotion": {"label": "none", "valence": 0, "intensity": 0},
+                    "confidence": 0.5,
+                    "importance": 0.5,
+                    "related_entities": ["npc_a"],
+                    "possible_misunderstanding": True,
+                }
+            ]
+
+            result = play_game.apply_state_patch(config, patch)  # type: ignore[arg-type]
+
+            self.assertFalse(result["applied"])
+            self.assertTrue(result["report"]["errors"])
 
 
 class ZoneValidatorTests(unittest.TestCase):
@@ -299,6 +587,29 @@ class PlayerKnowledgeTests(unittest.TestCase):
 
 
 class CliSmokeTests(unittest.TestCase):
+    def test_run_turn_loads_clock_and_action_relevant_npcs(self) -> None:
+        state = json.loads((ROOT / "campaign" / "campaign_state.json").read_text(encoding="utf-8"))
+
+        context = run_turn.collect_context(
+            ROOT,
+            state,
+            3,
+            "我在旧码头观察 npc_a_sentry，并确认 npc_b_clerk 是否听到动静。",
+        )
+
+        npc_ids = {npc["id"] for npc in context["present_npcs"]}
+        self.assertIn("npc_mira", npc_ids)
+        self.assertIn("npc_a_sentry", npc_ids)
+        self.assertIn("npc_b_clerk", npc_ids)
+        reasons = {
+            npc["id"]: set(npc.get("relevance_reasons", []))
+            for npc in context["present_npcs"]
+        }
+        self.assertIn("mentioned_in_player_action", reasons["npc_a_sentry"])
+        self.assertTrue(
+            any(reason.startswith("active_clock:") for reason in reasons["npc_b_clerk"])
+        )
+
     def test_read_only_cli_smoke_paths(self) -> None:
         commands = [
             ["tools/world_tick_manager.py", "list"],
@@ -325,9 +636,9 @@ class CliSmokeTests(unittest.TestCase):
                 [
                     str(ROOT / "tools" / "run_turn.py"),
                     "--player-action",
-                    "我等待半小时",
+                    "我等待一小时",
                     "--elapsed-minutes",
-                    "30",
+                    "60",
                     "--commit-world-tick",
                 ],
                 cwd=root,
@@ -335,7 +646,19 @@ class CliSmokeTests(unittest.TestCase):
 
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             state = json.loads((root / "campaign" / "campaign_state.json").read_text(encoding="utf-8"))
-            self.assertEqual(state["current_time"], "第 1 日 20:30")
+            self.assertEqual(state["current_time"], "第 1 日 21:00")
+            clocks = json.loads((root / "campaign" / "world_clocks.json").read_text(encoding="utf-8"))
+            quests = json.loads((root / "campaign" / "quest_graph.json").read_text(encoding="utf-8"))
+            by_clock = {clock["id"]: clock for clock in clocks["clocks"]}
+            by_quest = {quest["id"]: quest for quest in quests["quests"]}
+            self.assertEqual(
+                by_quest["thread_black_lantern_deal"]["countdown_ticks"],
+                by_clock["clock_black_lantern_deal"]["value"],
+            )
+            self.assertEqual(
+                by_quest["thread_black_lantern_deal"]["clock_id"],
+                "clock_black_lantern_deal",
+            )
 
 
 class DocumentationTests(unittest.TestCase):

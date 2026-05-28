@@ -22,9 +22,22 @@ def make_empty_graph(npc_id, turn=1):
             "revision_events": [], "relation_edges": [], "beliefs": [], "plans": []}
 
 def make_patch(writes, time_delta="\u65e0"):
+    normalized_writes = []
+    for index, write in enumerate(writes):
+        item = dict(write)
+        item.setdefault("visibility_evidence", {
+            "event_id": f"event_test_{index + 1:04d}",
+            "observer_id": item.get("npc_id"),
+            "memory_allowed": item.get("visibility_path") != "none",
+            "visibility_path": item.get("visibility_path"),
+            "subjective_summary": item.get("memory", ""),
+            "allowed_memory_scope": ["test_scope"],
+            "forbidden_memory_scope": [],
+        })
+        normalized_writes.append(item)
     return {"time_delta": time_delta, "location_changes": [], "inventory_changes": [],
             "relationship_changes": [], "new_facts": [], "contradictions": [],
-            "npc_memory_writes": writes, "open_threads": []}
+            "npc_memory_writes": normalized_writes, "open_threads": []}
 
 def write_json(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -109,6 +122,53 @@ class VisibilityIsolationTests(unittest.TestCase):
         apply_patch.apply_patch(self.tmp, patch, 1, "\u7b2c 1 \u65e5 20:00", "0001", dry_run=False)
         m = self._graph("npc_a")["memory_nodes"][0]
         self.assertEqual(m["visibility_path"], "direct_visual")
+
+    # ----------------------------------------------------------------
+    # Test 3b: Memory writes require resolver evidence
+    # ----------------------------------------------------------------
+    def test_memory_write_without_visibility_evidence_rejected(self):
+        import apply_patch
+        patch = make_patch([{
+            "npc_id": "npc_b", "memory": "B somehow knows a hidden player action.",
+            "memory_type": "episodic", "source": "saw",
+            "visibility_path": "direct_visual",
+            "confidence": 0.9, "emotional_valence": -0.5, "salience": 0.7,
+        }])
+        patch["npc_memory_writes"][0].pop("visibility_evidence")
+
+        errors = apply_patch.validate_patch_structure(patch)
+        self.assertTrue(any("visibility_evidence" in err for err in errors))
+        report = apply_patch.apply_patch(self.tmp, patch, 1, "\u7b2c 1 \u65e5 20:00", "0001", dry_run=False)
+        self.assertTrue(any("visibility_evidence" in err for err in report["errors"]))
+        self.assertEqual(self._graph("npc_b")["memory_nodes"], [])
+
+    def test_memory_write_must_match_visibility_subjective_summary(self):
+        import apply_patch
+        patch = make_patch([{
+            "npc_id": "npc_b",
+            "memory": "B knows the player hid behind the rope pile.",
+            "memory_type": "episodic",
+            "source": "heard",
+            "visibility_path": "direct_auditory",
+            "visibility_evidence": {
+                "event_id": "event_noise_0001",
+                "observer_id": "npc_b",
+                "memory_allowed": True,
+                "visibility_path": "direct_auditory",
+                "subjective_summary": "B heard muffled footsteps outside the warehouse.",
+                "allowed_memory_scope": ["muffled_footsteps"],
+                "forbidden_memory_scope": ["player_identity", "exact_hiding_place"],
+            },
+            "confidence": 0.9,
+            "emotional_valence": -0.5,
+            "salience": 0.7,
+        }])
+
+        errors = apply_patch.validate_patch_structure(patch)
+        self.assertTrue(any("subjective_summary" in err for err in errors))
+        report = apply_patch.apply_patch(self.tmp, patch, 1, "\u7b2c 1 \u65e5 20:00", "0001", dry_run=False)
+        self.assertTrue(any("subjective_summary" in err for err in report["errors"]))
+        self.assertEqual(self._graph("npc_b")["memory_nodes"], [])
 
     # ----------------------------------------------------------------
     # Test 4: Invalid visibility_path caught by validator
@@ -298,6 +358,30 @@ class MemoryGraphIntegrityTests(unittest.TestCase):
         self.assertEqual(graph["interpretation_nodes"][0]["id"], "interp_c_0001")
         self.assertEqual(graph["understanding_nodes"][0]["id"], "under_c_0001")
         self.assertEqual(graph["revision_events"][0]["id"], "rev_c_0001")
+
+    # ----------------------------------------------------------------
+    # Test 9: Derived cognitive writes require valid provenance
+    # ----------------------------------------------------------------
+    def test_dangling_interpretation_provenance_rejected(self):
+        import apply_patch
+        patch = make_patch([])
+        patch["npc_interpretation_writes"] = [{
+            "id": "interp_c_bad",
+            "npc_id": "npc_c",
+            "derived_from_event_id": "event_missing",
+            "derived_from_memory_id": "mem_npc_c_9999",
+            "text": "This interpretation points at a memory that does not exist.",
+            "confidence": 0.8,
+            "importance": 0.5,
+        }]
+
+        report = apply_patch.apply_patch(
+            self.tmp, patch, 1, "\u7b2c 1 \u65e5 20:00", "0001", dry_run=False
+        )
+
+        graph = self._graph("npc_c")
+        self.assertEqual(graph["interpretation_nodes"], [])
+        self.assertTrue(any("derived_from_memory_id" in err for err in report["errors"]))
 
 
 if __name__ == "__main__":

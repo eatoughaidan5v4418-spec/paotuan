@@ -25,12 +25,14 @@
 
 html {
   background: var(--bg);
+  height: 100%;
 }
 
 body {
   margin: 0;
   min-width: 1120px;
-  min-height: 100vh;
+  height: 100%;
+  overflow: hidden;
   background:
     linear-gradient(90deg, rgba(217, 185, 111, 0.035), transparent 22%, transparent 78%, rgba(120, 209, 183, 0.03)),
     var(--bg);
@@ -49,14 +51,13 @@ input {
 .app-shell {
   display: grid;
   grid-template-columns: 320px minmax(560px, 1fr) 360px;
-  align-items: start;
-  min-height: 100vh;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .sidebar,
 .rightbar {
-  position: sticky;
-  top: 0;
   height: 100vh;
   max-height: 100vh;
   overflow-y: auto;
@@ -73,7 +74,9 @@ input {
 .main-stage {
   display: grid;
   grid-template-rows: auto 1fr auto;
-  min-height: 100vh;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
   background: rgba(255, 255, 255, 0.012);
 }
 
@@ -221,8 +224,6 @@ button:hover:not(:disabled) {
 }
 
 .topbar {
-  position: sticky;
-  top: 0;
   z-index: 4;
   display: flex;
   justify-content: space-between;
@@ -254,11 +255,11 @@ button:hover:not(:disabled) {
   width: min(100%, 980px);
   margin: 0 auto;
   padding: 26px 24px 34px;
-  overflow: visible;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  min-height: calc(100vh - 162px);
+  min-height: 0;
 }
 
 .gm-card,
@@ -313,8 +314,6 @@ button:hover:not(:disabled) {
   padding: 16px 24px;
   border-top: 1px solid var(--line);
   background: rgba(15, 19, 18, 0.96);
-  position: sticky;
-  bottom: 0;
   z-index: 5;
   backdrop-filter: blur(10px);
 }
@@ -477,10 +476,16 @@ button:hover:not(:disabled) {
 @media (max-width: 900px) {
   body {
     min-width: 0;
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
   }
 
   .app-shell {
     grid-template-columns: 1fr;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
   }
 
   .sidebar,
@@ -495,6 +500,16 @@ button:hover:not(:disabled) {
   .sidebar,
   .rightbar {
     border: 0;
+  }
+
+  .main-stage {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .narrative {
+    overflow: visible;
   }
 
   .topbar {

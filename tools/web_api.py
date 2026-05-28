@@ -98,11 +98,42 @@ def tracked_conditions(conditions: dict[str, Any], entity_id: str) -> list[str]:
     ]
 
 
-def normalize_quests(raw: Any) -> list[dict[str, Any]]:
+SECRET_QUEST_KEYS = {
+    "gm_notes",
+    "secret",
+    "secrets",
+    "hidden",
+    "hidden_clues",
+    "hidden_state",
+    "private_notes",
+}
+
+
+def is_player_visible_record(item: dict[str, Any]) -> bool:
+    if item.get("known_to_players") is False:
+        return False
+    if item.get("visibility") in {"secret", "private", "gm_only"}:
+        return False
+    if item.get("player_visible") is False:
+        return False
+    return True
+
+
+def public_record(item: dict[str, Any]) -> dict[str, Any]:
+    return {
+        key: value
+        for key, value in item.items()
+        if key not in SECRET_QUEST_KEYS and not str(key).startswith("_")
+    }
+
+
+def normalize_quests(raw: Any, *, player_visible_only: bool = True) -> list[dict[str, Any]]:
     quests = []
     for index, item in enumerate(as_list(raw), start=1):
         if isinstance(item, dict):
-            quests.append(item)
+            if player_visible_only and not is_player_visible_record(item):
+                continue
+            quests.append(public_record(item))
         else:
             quests.append(
                 {
@@ -120,7 +151,16 @@ def normalize_clocks(raw: Any) -> list[dict[str, Any]]:
     clocks = []
     for index, item in enumerate(as_list(data), start=1):
         if isinstance(item, dict):
-            clocks.append(item)
+            clocks.append(
+                {
+                    **item,
+                    "value": item.get("value", item.get("current", item.get("progress", 0))),
+                    "max_value": item.get("max_value", item.get("max", item.get("target", "?"))),
+                    "status": item.get("status", "active"),
+                    "visibility": item.get("visibility", "public" if item.get("visible", True) else "secret"),
+                    "stakes": item.get("stakes", item.get("description", "")),
+                }
+            )
         else:
             clocks.append(
                 {
@@ -333,6 +373,23 @@ def visible_state(root: Path) -> dict[str, Any]:
     ]))
     player_ids = {str(item.get("id")) for item in players if item.get("id")}
     quest_list = normalize_quests(state.get("quests") or quest_graph.get("quests", []))
+    player_visible_facts = [
+        fact.get("text") or fact.get("fact")
+        for fact in as_list(state.get("known_facts"))
+        if isinstance(fact, dict)
+        and fact.get("valid", True)
+        and fact.get("visibility") in {"public", "player_only", player_id}
+        and (fact.get("text") or fact.get("fact"))
+    ]
+    if player_visible_facts:
+        knowledge = {**knowledge}
+        existing_facts = as_list(knowledge.get("facts_understood"))
+        knowledge["facts_understood"] = list(dict.fromkeys([*existing_facts, *player_visible_facts]))
+    open_threads = [
+        thread
+        for thread in as_list(state.get("open_threads"))
+        if isinstance(thread, dict) and thread.get("status", "active") == "active"
+    ]
     clocks = normalize_clocks(clocks_raw)
 
     public_clocks = [
@@ -346,7 +403,7 @@ def visible_state(root: Path) -> dict[str, Any]:
             "visibility": clock.get("visibility"),
         }
         for clock in clocks
-        if clock.get("visibility") != "secret" or clock.get("status") == "active"
+        if clock.get("visibility") != "secret"
     ]
 
     return clean_visible({
@@ -374,6 +431,7 @@ def visible_state(root: Path) -> dict[str, Any]:
             "realm": player.get("realm"),
             "realm_level": player.get("realm_level"),
             "spiritual_root": player.get("spiritual_root"),
+            "location_id": player.get("location_id") or location_id,
             "description": player.get("description"),
             "system_rank": player.get("system_rank"),
             "effect_points": player.get("effect_points"),
@@ -385,6 +443,7 @@ def visible_state(root: Path) -> dict[str, Any]:
         },
         "npcs": load_public_npcs(root, present_ids, player_ids),
         "quests": quest_list,
+        "open_threads": open_threads,
         "quest_graph": {"quests": normalize_quests(quest_graph.get("quests", []))},
         "knowledge": knowledge,
         "clocks": public_clocks,

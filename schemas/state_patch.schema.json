@@ -109,13 +109,33 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["npc_id", "memory", "memory_type", "source", "visibility_path", "confidence", "emotional_valence", "salience"],
+        "required": ["npc_id", "memory", "memory_type", "source", "visibility_path", "visibility_evidence", "confidence", "emotional_valence", "salience"],
         "properties": {
           "npc_id": {"type": "string"},
           "memory": {"type": "string"},
           "memory_type": {"enum": ["episodic", "semantic", "procedural"]},
           "source": {"enum": ["saw", "heard", "inferred", "rumor"]},
           "visibility_path": {"enum": ["direct_visual", "direct_auditory", "detected_observer", "told_by", "overheard", "inferred", "public_signal"]},
+          "visibility_evidence": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["event_id", "observer_id", "memory_allowed", "visibility_path", "subjective_summary", "allowed_memory_scope", "forbidden_memory_scope"],
+            "properties": {
+              "event_id": {"type": "string"},
+              "observer_id": {"type": "string"},
+              "memory_allowed": {"type": "boolean"},
+              "visibility_path": {"enum": ["direct_visual", "direct_auditory", "detected_observer", "told_by", "overheard", "inferred", "public_signal"]},
+              "subjective_summary": {"type": "string"},
+              "allowed_memory_scope": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "forbidden_memory_scope": {
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            }
+          },
           "confidence": {"type": "number", "minimum": 0, "maximum": 1},
           "emotional_valence": {"type": "number", "minimum": -2, "maximum": 2},
           "salience": {"type": "number", "minimum": 0, "maximum": 1}

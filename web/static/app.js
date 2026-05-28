@@ -7,6 +7,16 @@ const state = {
 };
 
 const $ = (id) => document.getElementById(id);
+const CAMPAIGN_KEY = "paotuan.currentCampaign";
+
+function rememberCampaign(id) {
+  state.currentCampaign = id || "";
+  if (state.currentCampaign) {
+    localStorage.setItem(CAMPAIGN_KEY, state.currentCampaign);
+  } else {
+    localStorage.removeItem(CAMPAIGN_KEY);
+  }
+}
 
 function showToast(message, isError = false) {
   const toast = $("toast");
@@ -40,7 +50,12 @@ function card(title, body, extra = "") {
 }
 
 function scrollNarrativeToEnd() {
-  requestAnimationFrame(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }));
+  requestAnimationFrame(() => {
+    const narrative = $("narrative");
+    if (narrative) {
+      narrative.scrollTo({ top: narrative.scrollHeight, behavior: "smooth" });
+    }
+  });
 }
 
 async function api(path, options = {}) {
@@ -159,7 +174,7 @@ async function loadLogs() {
 
 function renderState(data) {
   if (!data || !data.campaign) return;
-  state.currentCampaign = data.campaign.root || state.currentCampaign;
+  rememberCampaign(data.campaign.root || state.currentCampaign);
   $("campaignTitle").textContent = `${text(data.campaign.title)} / 第 ${text(data.campaign.turn, 1)} 回合`;
   $("sceneTitle").textContent = text(data.scene?.location?.name || data.scene?.id, "当前场景");
   $("campaignMeta").textContent = `${text(data.campaign.time)} / ${text(data.scene?.summary, "暂无场景摘要")}`;
@@ -245,7 +260,7 @@ function renderMeter(label, value, maxValue, fillClass = "") {
 
 function renderState(data) {
   if (!data || !data.campaign) return;
-  state.currentCampaign = data.campaign.root || state.currentCampaign;
+  rememberCampaign(data.campaign.root || state.currentCampaign);
   $("campaignTitle").textContent = `${text(data.campaign.title)} / 第 ${text(data.campaign.turn, 1)} 回合`;
   $("sceneTitle").textContent = text(data.scene?.location?.name || data.scene?.id, "当前场景");
   $("campaignMeta").textContent = `${text(data.campaign.time)} / ${text(data.scene?.summary, "暂无场景摘要")}`;
@@ -312,7 +327,13 @@ function renderState(data) {
   ).join("") || `<p class="muted">当前场景没有可见 NPC</p>`;
 
   const quests = data.quests || [];
-  $("questPanel").innerHTML = quests.map((quest) => {
+  const openThreads = (data.open_threads || []).map((thread) => ({
+    id: thread.id,
+    title: thread.description || thread.id,
+    status: thread.status || "active",
+    pressure: thread.next_pressure,
+  }));
+  $("questPanel").innerHTML = [...quests, ...openThreads].map((quest) => {
     const extra = quest.clues ? `<div class="gm-section"><div class="muted">线索</div>${listItems(quest.clues.map((clue) => `${clue.found ? "已发现" : "未发现"} / ${clue.text}`))}</div>` : "";
     return card(quest.title || quest.id, `${text(quest.status)} / ${text(quest.pressure || quest.failure_consequence)}`, extra);
   }).join("") || `<p class="muted">暂无任务</p>`;
@@ -330,7 +351,7 @@ async function loadConfig() {
   const config = await api("/api/config");
   state.serverMock = Boolean(config.mock);
   state.mock = Boolean(config.mock);
-  state.currentCampaign = config.current_campaign || "";
+  rememberCampaign(localStorage.getItem(CAMPAIGN_KEY) || config.current_campaign || "");
   $("mockToggle").checked = state.mock;
   renderModeHint(config);
 }
@@ -344,7 +365,7 @@ async function loadCampaigns() {
     ).join("")
     : `<option value="">未找到战役</option>`;
   if (!state.campaigns.some((campaign) => campaign.id === state.currentCampaign)) {
-    state.currentCampaign = state.campaigns[0]?.id || "";
+    rememberCampaign(state.campaigns[0]?.id || "");
   }
   $("campaignSelect").value = state.currentCampaign;
   updateDeleteButton();
@@ -413,7 +434,7 @@ async function createCampaign() {
       method: "POST",
       body: JSON.stringify({ theme, mock: state.mock }),
     });
-    state.currentCampaign = result.campaign.id;
+    rememberCampaign(result.campaign.id);
     await loadCampaigns();
     renderState(result.state);
     $("narrative").innerHTML = "";
@@ -458,7 +479,7 @@ async function deleteCurrentCampaign() {
       body: JSON.stringify({ campaign: campaign.id }),
     });
     state.campaigns = result.campaigns || [];
-    state.currentCampaign = result.next_campaign || "";
+    rememberCampaign(result.next_campaign || "");
     await loadCampaigns();
     renderState(result.state);
     $("campaignSelect").value = state.currentCampaign;
@@ -503,7 +524,7 @@ function bindEvents() {
   });
   $("deleteCampaign").addEventListener("click", deleteCurrentCampaign);
   $("campaignSelect").addEventListener("change", async (event) => {
-    state.currentCampaign = event.target.value;
+    rememberCampaign(event.target.value);
     await api("/api/campaigns/select", {
       method: "POST",
       body: JSON.stringify({ campaign: state.currentCampaign }),

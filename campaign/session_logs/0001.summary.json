@@ -1,15 +1,102 @@
 {
   "session_id": "0001",
-  "status": "not_started",
-  "started_at_game_time": "第 1 日 20:00",
-  "ended_at_game_time": null,
-  "summary": "战役尚未正式开始。玩家位于旧码头，米拉持有关于黑灯会交易的传言。",
-  "important_events": [],
-  "state_patches": [],
-  "next_hooks": [
-    "米拉可以提供黑灯会交易的线索，但她会要求报酬或保护。",
-    "旧码头的巡夜人可能注意到玩家的行动。",
-    "若时间推进到 23:00，交易会在玩家不干预时发生。"
+  "generated_at": "2026-05-28T03:50:46.218339+00:00",
+  "campaign": {
+    "id": "paotuan_demo",
+    "turn": 1,
+    "time": "第 1 日 20:00"
+  },
+  "scene": {
+    "scene_id": "scene_0001",
+    "location_id": "loc_old_dock",
+    "summary": "玩家抵达旧码头，黑灯会交易的传言刚刚浮出水面。",
+    "present_entities": [
+      "pc_main",
+      "npc_mira"
+    ],
+    "active_threads": [
+      "thread_black_lantern_deal"
+    ]
+  },
+  "active_clocks": [
+    {
+      "id": "clock_black_lantern_deal",
+      "title": "黑灯会旧码头交易",
+      "value": 2,
+      "max": 6,
+      "status": "active"
+    },
+    {
+      "id": "clock_a_patrol_route",
+      "title": "A 的旧码头巡逻",
+      "value": 1,
+      "max": 4,
+      "status": "active"
+    },
+    {
+      "id": "clock_b_ledger_copy",
+      "title": "B 抄写湿掉的货单",
+      "value": 0,
+      "max": 4,
+      "status": "active"
+    },
+    {
+      "id": "clock_river_tide_rises",
+      "title": "河潮上涨",
+      "value": 1,
+      "max": 4,
+      "status": "active"
+    }
+  ],
+  "active_quests": [
+    {
+      "id": "thread_black_lantern_deal",
+      "title": "黑灯会的旧码头交易",
+      "status": "active"
+    }
+  ],
+  "npc_states": {
+    "npc_a_sentry": {
+      "memories": 1,
+      "interpretations": 1,
+      "understandings": 0,
+      "active_beliefs": []
+    },
+    "npc_b_clerk": {
+      "memories": 0,
+      "interpretations": 0,
+      "understandings": 0,
+      "active_beliefs": []
+    },
+    "npc_mira": {
+      "memories": 3,
+      "interpretations": 2,
+      "understandings": 2,
+      "active_beliefs": [
+        "涉及黑灯会的情报必须先换取安全保证，再换取钱。",
+        "旧码头的消息通常有价值，但来源混杂，必须留一半余地。"
+      ]
+    }
+  },
+  "player_characters": [
+    {
+      "id": "pc_main",
+      "name": "玩家角色",
+      "location_id": "loc_old_dock",
+      "inventory": [],
+      "conditions": [],
+      "realm": "未感气",
+      "realm_level": 0,
+      "spiritual_root": "未测",
+      "health": 10,
+      "max_health": 10,
+      "qi": 0,
+      "max_qi": 0,
+      "stats": {
+        "combat": 0,
+        "perception": 0,
+        "social": 0
+      }
+    }
   ]
 }
-

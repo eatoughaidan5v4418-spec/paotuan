@@ -65,6 +65,15 @@
       "memory_type": "episodic/semantic/procedural",
       "source": "saw/heard/inferred",
       "visibility_path": "direct_visual/direct_auditory/detected_observer/told_by/overheard/inferred/public_signal",
+      "visibility_evidence": {
+        "event_id": "来自 event-visibility-resolver 的事件 ID",
+        "observer_id": "必须等于 npc_id",
+        "memory_allowed": true,
+        "visibility_path": "必须等于本条 visibility_path",
+        "subjective_summary": "该 NPC 被允许记住的主观版本，必须与 memory 字段完全一致",
+        "allowed_memory_scope": ["允许写入的范围"],
+        "forbidden_memory_scope": ["不得写入的范围"]
+      },
       "confidence": 0.0,
       "emotional_valence": -2,
       "salience": 0.0

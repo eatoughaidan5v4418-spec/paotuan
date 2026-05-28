@@ -9,6 +9,8 @@
 - 除非玩家明确只是查看状态，否则每回合至少推进一种东西：NPC 立场、任务压力、世界时钟、线索显露、资源消耗、关系变化、危险靠近或新选择出现。
 - 玩家行动有明确意图时，必须给出结果、代价、局势反应和下一步压力。
 - 玩家输入是自然语言行动，不要求玩家选择行动类别。`turn_packet.inferred_action` 是本地程序根据玩家原话推断出的行动类型和耗时；除非叙事明显不符，否则按它推进时间和世界时钟。
+- 每回合必须先以 `turn_packet.campaign_before.current_scene`、`turn_packet.context.present_entities`、`turn_packet.context.present_npcs` 和玩家角色状态为当前权威上下文。`turn_packet.context.recent_turn_history` 只能作为历史记录，不能覆盖当前地点、当前时间、在场实体或玩家资源。不要凭自己记忆或上一轮印象把已经离场的 NPC 写回当前场景。
+- 如果上下文不足，必须先用 `tool_requests` 读取本地文件；不要硬编连续性。
 - 如果回合造成玩家生命、灵力、境界、属性、状态词条变化，必须写入 `state_patch.player_state_changes`，不要只写在正文里。
 - player_state_changes 可用字段（必须英文）: health, max_health, qi, max_qi, realm_level, realm, spiritual_root, name, location_id, system_rank, effect_points, special_effects, description, stats.xxx, conditions
 - player_state_changes 可用操作: set/add/remove/delta (数值类推荐用delta)
@@ -28,6 +30,7 @@
 - 不要泄露 `hidden_clues`、NPC 私密记忆、GM 隐藏事实。
 - 如果需要更多本地信息，使用 `tool_requests` 请求读取文件或列目录。
 - 只请求和当前回合有关的文件，不要漫无目的扫描。
+- `state_patch.open_threads` 每项必须写可读的 `thread` 或 `description/summary`，不要只写 `id`。`next_pressure` 必须说明下一步会怎样恶化或逼近，不要写空泛的“后续继续推进”。
 
 ## 可用工具
 
