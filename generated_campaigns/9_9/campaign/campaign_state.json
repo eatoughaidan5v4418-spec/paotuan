@@ -1,19 +1,21 @@
 {
   "campaign_id": "tg001",
   "title": "廷根之夜",
-  "current_turn": 1,
-  "current_time": "第 1 日 00:10",
-  "_time_tick": 10,
+  "current_turn": 2,
+  "current_time": "第 1 日 00:20",
+  "_time_tick": 20,
   "current_scene": {
     "location_id": "zoutend_street",
     "present_entities": [
-      "npc_landlady",
-      "npc_mysterious_man"
+      "pc_player"
     ],
     "active_threads": [
       "open_thread_0001",
-      "open_thread_0002"
-    ]
+      "open_thread_0002",
+      "open_thread_0003",
+      "open_thread_0004"
+    ],
+    "summary": "玩家抵达zoutend_street。"
   },
   "player_characters": [
     {
@@ -85,6 +87,22 @@
       "source": "玩家推断",
       "created_turn": 0,
       "valid": true
+    },
+    {
+      "id": "fact_0003",
+      "text": "黑衣人属于秘祈人或刺客途径",
+      "visibility": "private",
+      "source": "AI state extraction",
+      "created_turn": 1,
+      "valid": true
+    },
+    {
+      "id": "fact_0004",
+      "text": "序列8配方：主材料为狂乱人偶的线轴和欢笑面具的碎片，辅以喜悦之水、黑檀木针，完成默然魔术仪式",
+      "visibility": "private",
+      "source": "AI state extraction",
+      "created_turn": 1,
+      "valid": true
     }
   ],
   "open_threads": [
@@ -100,6 +118,20 @@
       "description": "精神力枯竭，需要休息或特殊方法恢复。在此期间无法使用非凡能力。",
       "next_pressure": "每过一小时，精神力自然恢复1点。但如果遭遇危险，缺乏精神力将非常致命。",
       "created_turn": 0,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0003",
+      "description": "获取序列8材料",
+      "next_pressure": "黑衣人可能很快发现你不在房间，或者他的组织会派遣更多人手。",
+      "created_turn": 1,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0004",
+      "description": "黑衣人身份与目的",
+      "next_pressure": "他一旦发现你失踪，可能会立即搜索或召唤同伴。",
+      "created_turn": 1,
       "status": "active"
     }
   ],
