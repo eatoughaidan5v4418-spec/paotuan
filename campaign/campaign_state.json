@@ -16,7 +16,31 @@
       "thread_black_lantern_deal"
     ]
   },
-  "player_characters": [],
+  "player_characters": [
+    {
+      "id": "pc_main",
+      "name": "???",
+      "health": 10,
+      "max_health": 10,
+      "qi": 5,
+      "max_qi": 5,
+      "realm": "????",
+      "realm_level": 1,
+      "spiritual_root": "?",
+      "location_id": "loc_old_dock",
+      "inventory": [
+        "??",
+        "??x3",
+        "??"
+      ],
+      "conditions": [],
+      "stats": {
+        "combat": 0,
+        "perception": 0,
+        "social": 0
+      }
+    }
+  ],
   "quests": [],
   "open_threads": [],
   "known_facts": [],

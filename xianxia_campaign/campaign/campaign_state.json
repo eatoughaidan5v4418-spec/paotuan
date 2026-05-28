@@ -1,9 +1,9 @@
 {
   "campaign_id": "xianxia_001",
   "title": "青云坊市遗宝",
-  "current_turn": 8,
-  "current_time": "第 1 日 09:10",
-  "_time_tick": 550,
+  "current_turn": 9,
+  "current_time": "第 1 日 09:15",
+  "_time_tick": 555,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "loc_azure_cloud_market",
