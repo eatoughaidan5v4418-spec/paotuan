@@ -1346,6 +1346,7 @@ def unresolved_from_response(response: dict[str, Any] | None) -> list[str]:
 
 
 def first_player_id(packet: dict[str, Any] | None) -> str:
+    """Return the actual player character ID from the campaign packet."""
     players = ((packet or {}).get("campaign_before") or {}).get("player_characters") or []
     if isinstance(players, list):
         for player in players:
@@ -1569,6 +1570,21 @@ def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: 
         response,
         packet,
     )
+    # V21: normalize player entity_id to match actual player
+    actual_player_id = first_player_id(packet)
+    if actual_player_id and actual_player_id != "pc_main":
+        for change in patch.get("player_state_changes", []):
+            if isinstance(change, dict) and change.get("entity_id") == "pc_main":
+                change["entity_id"] = actual_player_id
+        for change in patch.get("inventory_changes", []):
+            if isinstance(change, dict) and change.get("owner_id") == "pc_main":
+                change["owner_id"] = actual_player_id
+        for write in patch.get("npc_memory_writes", []):
+            if isinstance(write, dict):
+                for key in ("subject_id", "target_id", "observer_id"):
+                    if write.get(key) == "pc_main":
+                        write[key] = actual_player_id
+
     patch["npc_memory_writes"] = normalize_memory_writes(patch.get("npc_memory_writes"))
     patch["npc_interpretation_writes"] = normalize_interpretation_writes(patch.get("npc_interpretation_writes"))
     patch["npc_understanding_writes"] = normalize_understanding_writes(patch.get("npc_understanding_writes"))

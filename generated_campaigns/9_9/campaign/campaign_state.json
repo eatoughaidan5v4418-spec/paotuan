@@ -1,26 +1,25 @@
 {
   "campaign_id": "tg001",
   "title": "廷根之夜",
-  "current_turn": 5,
-  "current_time": "第 1 日 01:05",
-  "_time_tick": 65,
+  "current_turn": 7,
+  "current_time": "第 1 日 01:15",
+  "_time_tick": 75,
   "current_scene": {
     "location_id": "dock_warehouse_7",
     "present_entities": [
       "pc_player",
-      "npc_slender_man",
       "npc_collector",
-      "npc_goon"
+      "npc_slender_man"
     ],
     "active_threads": [
-      "open_thread_0003",
-      "open_thread_0005",
-      "open_thread_0006",
-      "open_thread_0007",
-      "open_thread_0008",
       "open_thread_0009",
       "open_thread_0010",
-      "open_thread_0011"
+      "open_thread_0011",
+      "open_thread_0012",
+      "open_thread_0013",
+      "open_thread_0014",
+      "open_thread_0015",
+      "open_thread_0016"
     ],
     "summary": "玩家抵达dock_warehouse_7。"
   },
@@ -45,7 +44,10 @@
         "??",
         "??",
         "5??",
-        "狂乱人偶的线轴"
+        "狂乱人偶的线轴",
+        "candle_stub",
+        "ink_bottle_dregs",
+        "charcoal_stick"
       ],
       "conditions": [],
       "stats": {
@@ -159,6 +161,46 @@
       "source": "AI state extraction",
       "created_turn": 3,
       "valid": true
+    },
+    {
+      "id": "fact_0011",
+      "text": "废弃仓库西北角木架上有两根蜡烛残骸",
+      "visibility": "public",
+      "source": "observed by player",
+      "created_turn": 5,
+      "valid": true
+    },
+    {
+      "id": "fact_0012",
+      "text": "墙角地砖下有一个存有残墨的墨水瓶",
+      "visibility": "public",
+      "source": "observed by player",
+      "created_turn": 5,
+      "valid": true
+    },
+    {
+      "id": "fact_0013",
+      "text": "破木箱中有一截炭笔",
+      "visibility": "public",
+      "source": "observed by player",
+      "created_turn": 5,
+      "valid": true
+    },
+    {
+      "id": "fact_0014",
+      "text": "隐秘组织成员'渡鸦'已抵达码头区入口",
+      "visibility": "hidden",
+      "source": "deduced from offscreen events",
+      "created_turn": 5,
+      "valid": true
+    },
+    {
+      "id": "fact_0015",
+      "text": "狂乱人偶的线轴被'默然魔术'仪式封印，封印持续约2小时，从第1日01:20开始计算。",
+      "visibility": "public",
+      "source": "AI state extraction",
+      "created_turn": 6,
+      "valid": true
     }
   ],
   "open_threads": [
@@ -185,7 +227,9 @@
       "description": "获取序列8材料",
       "next_pressure": "黑衣人可能很快发现你不在房间，或者他的组织会派遣更多人手。",
       "created_turn": 1,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 5,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0004",
@@ -201,28 +245,36 @@
       "description": "黑蔷薇酒吧情报探索:玩家已抵达情报据点，需要选择接触目标并获取关于序列8材料和组织的信息。",
       "next_pressure": "在场NPC可能对你产生兴趣或怀疑，长时间不行动可能引起不必要的注意。",
       "created_turn": 2,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 5,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0006",
       "description": "黑衣人失踪反应:黑衣人可能已经发现玩家不在公寓，正在追踪你的去向。",
       "next_pressure": "如果黑衣人追踪到黑蔷薇酒吧，可能会引发冲突或暴露你的行踪。时间窗口有限。",
       "created_turn": 2,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 5,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0007",
       "description": "东区7号仓库内，收藏家与瘦高个正在进行狂乱人偶线轴的交易，玩家必须在交易完成前采取行动。",
       "next_pressure": "交易即将完成，收藏家和瘦高个即将分头离开，玩家将失去直接获取线轴的最佳时机。",
       "created_turn": 3,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 6,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0008",
       "description": "寂静之影已经发现玩家离开公寓，可能通过非凡手段追踪到码头区域。",
       "next_pressure": "每过10分钟，寂静之影追兵抵达码头的概率增加10%。若玩家在码头停留超过30分钟，将有极大可能遭遇追兵。",
       "created_turn": 3,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 6,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0009",
@@ -243,6 +295,41 @@
       "description": "瘦高个和收藏家是否会追踪玩家？",
       "next_pressure": "在接下来的24小时内，玩家在非凡者聚集地活动时，有几率被认出或被人跟踪。",
       "created_turn": 4,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0012",
+      "description": "密封线轴气息",
+      "next_pressure": "当前剩余安全窗口约5-10分钟。收藏家正在接近，'渡鸦'已抵达，警察即将进入仓库区。",
+      "created_turn": 5,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0013",
+      "description": "警察巡逻队搜索",
+      "next_pressure": "警察已从码头边缘向仓库区移动，预计5分钟后抵达废弃仓库附近。",
+      "created_turn": 5,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0014",
+      "description": "隐秘组织反应",
+      "next_pressure": "'渡鸦'已抵达码头区入口，正在向仓库区移动。他擅长追踪和战斗，预计10分钟内可能发现玩家位置。",
+      "created_turn": 5,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0015",
+      "description": "瘦高个正在接近废弃仓库，预计3分钟内到达。他会发现什么？",
+      "next_pressure": "如果玩家不离开，瘦高个将在3分钟内到达仓库外，可能发生冲突或追踪。",
+      "created_turn": 6,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0016",
+      "description": "渡鸦沿线索从7号仓库搜索过来，预计5分钟内到达。",
+      "next_pressure": "渡鸦到达后，若发现玩家痕迹，将展开更系统的搜索，并可能召唤更多组织成员。",
+      "created_turn": 6,
       "status": "active"
     }
   ],
