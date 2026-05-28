@@ -14,7 +14,18 @@
       "visibility_path": "direct_visual",
       "confidence": 0.7,
       "emotional_valence": -0.5,
-      "salience": 0.55
+      "salience": 0.55,
+      "visibility_evidence": {
+        "observer_id": "npc_drunken_swordsman",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "一个满身酒气的剑客在茶摊上骂骂咧咧，说黑风岭的魔修残党抢了他的买卖。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      }
     }
   ],
   "open_threads": []

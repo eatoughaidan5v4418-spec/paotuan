@@ -35,7 +35,18 @@
       "visibility_path": "direct_visual",
       "confidence": 0.9,
       "emotional_valence": 0.2,
-      "salience": 0.65
+      "salience": 0.65,
+      "visibility_evidence": {
+        "observer_id": "npc_liu_qing",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "一个陌生修士在坊市入口盘问下毫不畏缩，反呛我坊市规矩。此人不是散修做派——但至少直来直去，不像在隐瞒什么。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      }
     },
     {
       "npc_id": "npc_qian_baiwei",
@@ -45,7 +56,18 @@
       "visibility_path": "direct_visual",
       "confidence": 0.7,
       "emotional_valence": 0.3,
-      "salience": 0.5
+      "salience": 0.5,
+      "visibility_evidence": {
+        "observer_id": "npc_qian_baiwei",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "牌坊下那个生面孔和柳青说了几句话。柳青被说得耳根发红——有趣，难得见这小子吃瘪。这人径直朝摊位区走来了。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      }
     },
     {
       "npc_id": "npc_su_mo",
@@ -55,7 +77,18 @@
       "visibility_path": "direct_visual",
       "confidence": 0.5,
       "emotional_valence": 0.1,
-      "salience": 0.4
+      "salience": 0.4,
+      "visibility_evidence": {
+        "observer_id": "npc_su_mo",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "坊市入口有个新来的修士和青云门的外门弟子说了几句。距离太远听不清内容，但那人没有被拦下——看来不是寻常散修。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      }
     }
   ],
   "open_threads": [

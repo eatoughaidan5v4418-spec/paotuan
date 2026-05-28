@@ -28,7 +28,18 @@
       "visibility_path": "direct_visual",
       "confidence": 0.85,
       "emotional_valence": 0.3,
-      "salience": 0.55
+      "salience": 0.55,
+      "visibility_evidence": {
+        "observer_id": "npc_liu_qing",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "一个外来的修士在坊市入口向我行礼，问起黑风岭灵气异动。此人态度恭敬，不像魔修。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      }
     },
     {
       "npc_id": "npc_su_mo",
@@ -38,7 +49,18 @@
       "visibility_path": "overheard",
       "confidence": 0.5,
       "emotional_valence": 0.2,
-      "salience": 0.6
+      "salience": 0.6,
+      "visibility_evidence": {
+        "observer_id": "npc_su_mo",
+        "memory_allowed": true,
+        "visibility_path": "overheard",
+        "event_id": "",
+        "subjective_summary": "茶摊远处听到有人在坊市入口与柳青交谈，提到了黑风岭。此人也在关注血灵芝。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      }
     }
   ],
   "open_threads": [
