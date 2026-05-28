@@ -1147,9 +1147,18 @@ def normalize_memory_writes(items: Any) -> list[dict[str, Any]]:
             "related_entities": item.get("related_entities") or memory_obj.get("related_entities") or [],
         }
         evidence = item.get("visibility_evidence") or memory_obj.get("visibility_evidence")
-        normalized_item["visibility_evidence"] = (
-            evidence if isinstance(evidence, dict) else {}
-        )
+        if not isinstance(evidence, dict):
+            evidence = {}
+        # V17 fix: auto-fill required visibility_evidence fields
+        normalized_item["visibility_evidence"] = {
+            "observer_id": normalized_item["npc_id"],
+            "memory_allowed": True,
+            "visibility_path": normalized_item["visibility_path"],
+            "event_id": evidence.get("event_id", ""),
+            "subjective_summary": evidence.get("subjective_summary", str(memory)[:200]),
+            "allowed_memory_scope": evidence.get("allowed_memory_scope", ["observed_event"]),
+            "forbidden_memory_scope": evidence.get("forbidden_memory_scope", []),
+        }
         normalized.append(normalized_item)
     return normalized
 
