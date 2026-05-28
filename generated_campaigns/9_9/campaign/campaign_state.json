@@ -1,26 +1,26 @@
 {
   "campaign_id": "tg001",
   "title": "廷根之夜",
-  "current_turn": 19,
-  "current_time": "第 1 日 02:45",
-  "_time_tick": 165,
+  "current_turn": 20,
+  "current_time": "第 1 日 02:50",
+  "_time_tick": 170,
   "current_scene": {
-    "location_id": "church_interior_confessional",
+    "location_id": "church_sunken_library",
     "present_entities": [
       "pc_player",
       "npc_top_hat_man"
     ],
     "active_threads": [
-      "open_thread_0048",
       "open_thread_0050",
-      "open_thread_0051",
       "open_thread_0052",
       "open_thread_0053",
       "open_thread_0054",
       "open_thread_0055",
-      "open_thread_0056"
+      "open_thread_0056",
+      "open_thread_0057",
+      "open_thread_0058"
     ],
-    "summary": "玩家抵达church_interior_confessional。"
+    "summary": "玩家抵达church_sunken_library。"
   },
   "player_characters": [
     {
@@ -35,7 +35,7 @@
       "max_sanity": 7,
       "spirituality": 6,
       "max_spirituality": 6,
-      "location_id": "church_interior_confessional",
+      "location_id": "church_sunken_library",
       "inventory": [
         "??",
         "??",
@@ -51,7 +51,8 @@
       "conditions": [
         "手指轻伤（裂开渗血）",
         "肩膀挫伤（轻度）",
-        "晋升后遗症（轻微眩晕，感官过载已缓解）"
+        "晋升后遗症（轻微眩晕，感官过载已缓解）",
+        "庇护法阵残留（灵性感知略微增强，非凡气息被压制）"
       ],
       "stats": {
         "combat": 0,
@@ -260,6 +261,22 @@
       "visibility": "public",
       "source": "AI state extraction",
       "created_turn": 13,
+      "valid": true
+    },
+    {
+      "id": "fact_0023",
+      "text": "沉眠书窖是守密人最后的避难所，位于教堂地下，由庇护法阵和符文封印保护。",
+      "visibility": "known_to_pc",
+      "source": "AI state extraction",
+      "created_turn": 19,
+      "valid": true
+    },
+    {
+      "id": "fact_0024",
+      "text": "洛瑞·汉密尔顿是守密人的司书，负责维护庇护法阵和管理沉眠书窖。",
+      "visibility": "known_to_pc",
+      "source": "AI state extraction",
+      "created_turn": 19,
       "valid": true
     }
   ],
@@ -692,7 +709,9 @@
       "description": "教堂内的戴礼帽男子和老妇人疑似非凡者，可能是庇护法阵的守护者或隐秘组织成员。他们对玩家的态度尚不明确。",
       "next_pressure": "如果玩家不主动接触，他们可能会在晨祷结束后采取行动——要么接近玩家，要么离开并报告给上级。玩家需要决定是否信任他们。",
       "created_turn": 16,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 19,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0049",
@@ -715,7 +734,9 @@
       "description": "廷根警察局已封锁教堂区外围，正在排查所有下水道出口。",
       "next_pressure": "一旦警察完成外部封锁，很快就会进入教堂内部搜查。庇护法阵只能中和你的气息，不能让你隐形。",
       "created_turn": 17,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 19,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0052",
@@ -750,6 +771,20 @@
       "description": "下水道未知生物盘踞在教堂地下排水渠。",
       "next_pressure": "如果庇护法阵出现波动或能量减弱，该生物可能发起攻击或突破。",
       "created_turn": 18,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0057",
+      "description": "从寂静之影手中取回守密人遗物，以换取洛瑞·汉密尔顿的正式指导和庇护。",
+      "next_pressure": "洛瑞·汉密尔顿将在下回合提供遗物的详细信息，然后你需要规划如何潜入寂静之影的据点。",
+      "created_turn": 19,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0058",
+      "description": "警察仍在教堂周边布控，离开沉眠书窖时需找到安全的路线。",
+      "next_pressure": "警察的搜查可能会扩大范围，或者教堂执事可能会在压力下透露更多信息，导致封锁升级。",
+      "created_turn": 19,
       "status": "active"
     }
   ],

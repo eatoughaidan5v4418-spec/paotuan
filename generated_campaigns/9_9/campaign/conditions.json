@@ -13,6 +13,11 @@
         {
           "name": "晋升后遗症（轻微眩晕，感官过载已缓解）",
           "severity": "normal"
+        },
+        {
+          "name": "庇护法阵残留（灵性感知略微增强，非凡气息被压制）",
+          "severity": "normal",
+          "added_at": "AI state update"
         }
       ],
       "history": [
@@ -60,6 +65,11 @@
           "operation": "set",
           "condition": "['手指轻伤（裂开渗血）', '肩膀挫伤（轻度）', '晋升后遗症（轻微眩晕，感官过载已缓解）']",
           "reason": "庇护法阵中和了部分感官过载"
+        },
+        {
+          "operation": "add",
+          "condition": "庇护法阵残留（灵性感知略微增强，非凡气息被压制）",
+          "reason": "AI state update"
         }
       ]
     }
