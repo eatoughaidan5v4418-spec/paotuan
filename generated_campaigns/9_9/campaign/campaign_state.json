@@ -1,14 +1,18 @@
 {
   "campaign_id": "tg001",
   "title": "廷根之夜",
-  "current_turn": 0,
-  "current_time": "1850-01-01 00:00",
-  "_time_tick": "1 hour",
+  "current_turn": 1,
+  "current_time": "第 1 日 00:10",
+  "_time_tick": 10,
   "current_scene": {
     "location_id": "zoutend_street",
     "present_entities": [
       "npc_landlady",
       "npc_mysterious_man"
+    ],
+    "active_threads": [
+      "open_thread_0001",
+      "open_thread_0002"
     ]
   },
   "player_characters": [
@@ -64,5 +68,40 @@
   "rules": {
     "sequence_advancement": "消化魔药+仪式",
     "corruption": "每次使用非凡能力积累污染值"
-  }
+  },
+  "known_facts": [
+    {
+      "id": "fact_0001",
+      "text": "神秘男子是超凡者，拥有屏蔽探测的能力",
+      "visibility": "private",
+      "source": "玩家占卜感知",
+      "created_turn": 0,
+      "valid": true
+    },
+    {
+      "id": "fact_0002",
+      "text": "神秘男子背后的组织可能已经注意到玩家",
+      "visibility": "private",
+      "source": "玩家推断",
+      "created_turn": 0,
+      "valid": true
+    }
+  ],
+  "open_threads": [
+    {
+      "id": "open_thread_0001",
+      "description": "神秘男子在楼下监视，他背后的组织可能已经注意到玩家的觉醒。下一步行动可能触发接触或冲突。",
+      "next_pressure": "如果玩家长时间不行动，神秘男子可能会采取主动措施，比如跟踪或发出信号召唤同伴。",
+      "created_turn": 0,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0002",
+      "description": "精神力枯竭，需要休息或特殊方法恢复。在此期间无法使用非凡能力。",
+      "next_pressure": "每过一小时，精神力自然恢复1点。但如果遭遇危险，缺乏精神力将非常致命。",
+      "created_turn": 0,
+      "status": "active"
+    }
+  ],
+  "last_consolidation_turn": 0
 }

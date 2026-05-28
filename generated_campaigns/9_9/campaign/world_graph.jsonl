@@ -2,3 +2,4 @@
 {"type":"npc","id":"npc_landlady","properties":{"name":"房东太太","description":"一位中年妇女，住在楼下，似乎对超凡一无所知。"}}
 {"type":"npc","id":"npc_mysterious_man","properties":{"name":"神秘男子","description":"穿着黑色风衣，戴高礼帽，在街角徘徊，似乎关注着你。"}}
 {"type":"entity","id":"pc_player","properties":{"name":"玩家","type":"player","sequence":9,"path":"占卜家"}}
+{"record_type": "node", "id": "mem_npc_mysterious_man_0001", "node_type": "Memory", "npc_id": "npc_mysterious_man", "created_at": "第 1 日 00:10", "created_turn": 0, "summary": "目标房间内传来轻微的精神力波动，有人在尝试占卜我。对方是个新手，序列不高，但已经觉醒。", "source": "inferred", "visibility": "private"}

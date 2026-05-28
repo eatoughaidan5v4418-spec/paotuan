@@ -62,7 +62,7 @@
 - `_time_tick`
 - `current_scene.location_id`
 - `current_scene.present_entities`
-- `player_characters`
+- `player_characters`????????????id, name, health, max_health, realm/realm_level(?sequence/path), spiritual_root(?path), location_id, inventory, conditions, stats, description?stats???combat, perception, social?
 - `quests`
 - `rules`
 

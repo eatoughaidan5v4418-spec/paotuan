@@ -663,6 +663,31 @@ def write_worldgen_files(target_root: Path, world: dict[str, Any], force: bool) 
     for directory in ("campaign/events", "campaign/turn_packets", "campaign/ai_runs"):
         (target_root / directory).mkdir(parents=True, exist_ok=True)
     (target_root / "campaign/turn_packets/.gitkeep").write_text("", encoding="utf-8")
+    # V19: Normalize player characters to ensure all required fields exist
+    cs_path = target_root / "campaign" / "campaign_state.json"
+    if cs_path.exists():
+        try:
+            cs = json.loads(cs_path.read_text(encoding="utf-8-sig"))
+            pcs = cs.get("player_characters", [])
+            if isinstance(pcs, list):
+                for pc in pcs:
+                    if isinstance(pc, dict):
+                        pc.setdefault("health", 10)
+                        pc.setdefault("max_health", 10)
+                        pc.setdefault("qi", 5)
+                        pc.setdefault("max_qi", 5)
+                        pc.setdefault("realm_level", pc.get("sequence", 1))
+                        pc.setdefault("realm", pc.get("path", "unknown"))
+                        pc.setdefault("spiritual_root", "none")
+                        pc.setdefault("location_id", cs.get("current_scene", {}).get("location_id", ""))
+                        pc.setdefault("inventory", [])
+                        pc.setdefault("conditions", [])
+                        pc.setdefault("stats", {"combat": 0, "perception": 0, "social": 0})
+                        pc.setdefault("description", "")
+                cs_path.write_text(json.dumps(cs, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        except Exception:
+            pass
+
 
 
 def run_worldgen(config: GameConfig, theme: str, target_root: Path, force: bool) -> dict[str, Any]:
