@@ -464,10 +464,10 @@ def api_status(root: Path) -> dict[str, Any]:
     }
 
 
-def unique_campaign_target(theme: str) -> Path:
+def unique_campaign_target(theme: str, force: bool = False) -> Path:
     slug = play_game.slugify(theme, "ai_campaign")
     base = (PROJECT_ROOT / "generated_campaigns" / slug).resolve()
-    if not base.exists():
+    if force or not base.exists():
         return base
     for index in range(2, 1000):
         candidate = (PROJECT_ROOT / "generated_campaigns" / f"{slug}_{index:03d}").resolve()
@@ -479,7 +479,7 @@ def unique_campaign_target(theme: str) -> Path:
 def create_campaign(theme: str, *, mock: bool = False, force: bool = False) -> dict[str, Any]:
     if not theme.strip():
         raise ValueError("theme is required")
-    target = unique_campaign_target(theme)
+    target = unique_campaign_target(theme, force=force)
     config = make_config(PROJECT_ROOT, mock=mock)
     world = play_game.run_worldgen(config, theme, target, force=force)
     return {
