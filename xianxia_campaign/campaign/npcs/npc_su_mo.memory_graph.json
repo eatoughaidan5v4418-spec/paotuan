@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_su_mo",
-  "current_turn": 7,
+  "current_turn": 8,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -22,7 +22,7 @@
       "related_entities": [
         "loc_black_wind_ridge"
       ],
-      "score": 0.7425
+      "score": 0.7372
     },
     {
       "id": "mem_su_0002",
@@ -44,7 +44,7 @@
         "loc_black_wind_ridge",
         "faction_demonic_remnants"
       ],
-      "score": 0.607
+      "score": 0.6017
     },
     {
       "id": "mem_npc_su_mo_0007",
@@ -81,7 +81,42 @@
       },
       "observed_at": "第 1 日 08:55",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.511
+      "score": 0.5011
+    },
+    {
+      "id": "mem_npc_su_mo_0009",
+      "type": "episodic",
+      "content": "那修士在巷子里冲击炼气三层，失败了。木火双灵根的灵光很纯粹，不是杂灵根——可惜功法粗陋，灵石品质也差。他若想短时间内突破，要么需要一枚三转聚气丹，要么需要一株年份足够的赤阳草。",
+      "created_turn": 8,
+      "last_recalled_turn": 8,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.5,
+      "emotional_valence": 0.2,
+      "confidence": 0.7,
+      "source": "saw",
+      "tier": "dormant",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "pc_main"
+      ],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_su_mo",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "那修士在巷子里冲击炼气三层，失败了。木火双灵根的灵光很纯粹，不是杂灵根——可惜功法粗陋，灵石品质也差。他若想短时间内突破，要么需要一枚三转聚气丹，要么需要一株年份足够的赤阳草。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 09:15",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.47
     },
     {
       "id": "mem_npc_su_mo_0003",
@@ -106,7 +141,7 @@
       "visibility_path": "overheard",
       "observed_at": "第 1 日 08:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.465
+      "score": 0.4597
     },
     {
       "id": "mem_npc_su_mo_0004",
@@ -131,7 +166,7 @@
       "visibility_path": "overheard",
       "observed_at": "第 1 日 08:20",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.465
+      "score": 0.4597
     },
     {
       "id": "mem_npc_su_mo_0006",
@@ -168,7 +203,7 @@
       },
       "observed_at": "第 1 日 08:50",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4386
+      "score": 0.43
     },
     {
       "id": "mem_npc_su_mo_0008",
@@ -204,7 +239,7 @@
       },
       "observed_at": "第 1 日 09:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4
+      "score": 0.3885
     },
     {
       "id": "mem_npc_su_mo_0005",
@@ -229,7 +264,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.35
+      "score": 0.3447
     }
   ],
   "interpretation_nodes": [],
