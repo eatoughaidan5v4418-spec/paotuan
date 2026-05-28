@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_su_mo",
-  "current_turn": 1,
+  "current_turn": 6,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -15,14 +15,14 @@
       "emotional_valence": 1.5,
       "confidence": 0.9,
       "source": "saw",
-      "tier": "core",
+      "tier": "active",
       "valid": true,
       "invalid_at_turn": null,
       "contradicted_by": null,
       "related_entities": [
         "loc_black_wind_ridge"
       ],
-      "score": 0.87
+      "score": 0.7484
     },
     {
       "id": "mem_su_0002",
@@ -44,7 +44,44 @@
         "loc_black_wind_ridge",
         "faction_demonic_remnants"
       ],
-      "score": 0.67
+      "score": 0.6129
+    },
+    {
+      "id": "mem_npc_su_mo_0007",
+      "type": "episodic",
+      "content": "那修士在主街上走了一圈，步伐均匀但视线在几个特定摊位停留——不是买货的眼神，是在找线索。他注意到了钱百味的异香草，但没有立刻过去。此人目的明确，不是普通散修。",
+      "created_turn": 6,
+      "last_recalled_turn": 6,
+      "recall_count": 0,
+      "importance": 0.6,
+      "salience": 0.6,
+      "emotional_valence": 0.2,
+      "confidence": 0.65,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "pc_main",
+        "npc_qian_baiwei",
+        "loc_azure_cloud_market"
+      ],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_su_mo",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "那修士在主街上走了一圈，步伐均匀但视线在几个特定摊位停留——不是买货的眼神，是在找线索。他注意到了钱百味的异香草，但没有立刻过去。此人目的明确，不是普通散修。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 08:55",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.5225
     },
     {
       "id": "mem_npc_su_mo_0003",
@@ -58,7 +95,7 @@
       "emotional_valence": 0.2,
       "confidence": 0.5,
       "source": "heard",
-      "tier": "active",
+      "tier": "dormant",
       "valid": true,
       "invalid_at_turn": null,
       "contradicted_by": null,
@@ -68,7 +105,8 @@
       ],
       "visibility_path": "overheard",
       "observed_at": "第 1 日 08:10",
-      "location_id": "loc_azure_cloud_market"
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.4709
     },
     {
       "id": "mem_npc_su_mo_0004",
@@ -82,7 +120,7 @@
       "emotional_valence": 0.2,
       "confidence": 0.5,
       "source": "heard",
-      "tier": "active",
+      "tier": "dormant",
       "valid": true,
       "invalid_at_turn": null,
       "contradicted_by": null,
@@ -92,7 +130,45 @@
       ],
       "visibility_path": "overheard",
       "observed_at": "第 1 日 08:20",
-      "location_id": "loc_azure_cloud_market"
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.4709
+    },
+    {
+      "id": "mem_npc_su_mo_0006",
+      "type": "episodic",
+      "content": "那个新来的修士从坊市入口走进主街后没有直接去钱百味摊位，也没有去别处——他在街上走了一圈，像是在熟悉环境。不像是急着赶路的。",
+      "created_turn": 5,
+      "last_recalled_turn": 5,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.5,
+      "emotional_valence": 0.1,
+      "confidence": 0.6,
+      "source": "saw",
+      "tier": "dormant",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "npc_su_mo",
+        "pc_main",
+        "loc_azure_cloud_market"
+      ],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_su_mo",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "那个新来的修士从坊市入口走进主街后没有直接去钱百味摊位，也没有去别处——他在街上走了一圈，像是在熟悉环境。不像是急着赶路的。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 08:50",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.4485
     },
     {
       "id": "mem_npc_su_mo_0005",
@@ -106,7 +182,7 @@
       "emotional_valence": 0.1,
       "confidence": 0.5,
       "source": "saw",
-      "tier": "active",
+      "tier": "dormant",
       "valid": true,
       "invalid_at_turn": null,
       "contradicted_by": null,
@@ -116,7 +192,8 @@
       ],
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:25",
-      "location_id": "loc_azure_cloud_market"
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.3559
     }
   ],
   "interpretation_nodes": [],

@@ -1,18 +1,23 @@
 {
   "campaign_id": "xianxia_001",
   "title": "青云坊市遗宝",
-  "current_turn": 1,
-  "current_time": "第 1 日 08:25",
-  "_time_tick": 505,
+  "current_turn": 7,
+  "current_time": "第 1 日 08:55",
+  "_time_tick": 535,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "loc_azure_cloud_market",
     "summary": "玩家抵达青云坊市，血灵芝的传言刚在集市散开。",
     "present_entities": [
-      "npc_liu_qing"
+      "npc_liu_qing",
+      "npc_qian_baiwei",
+      "npc_su_mo"
     ],
     "active_threads": [
-      "thread_blood_spirit_mushroom"
+      "thread_blood_spirit_mushroom",
+      "open_thread_0004",
+      "open_thread_0005",
+      "open_thread_0006"
     ]
   },
   "player_characters": [
@@ -110,6 +115,28 @@
       "next_pressure": "血灵芝倒计时继续推进",
       "created_turn": 1,
       "status": "active"
+    },
+    {
+      "id": "open_thread_0004",
+      "description": "血灵芝将在第2日子时成熟。当前剩余时间约9个时辰。魔修残党已开始接近黑风岭外围。玩家尚未决定行动方向。",
+      "next_pressure": "每过一个时辰，魔修探子会更深入黑风岭，血灵芝被提前发现的风险增加。若玩家在午时前仍未出发，魔修可能已在岭中布下埋伏。",
+      "created_turn": 5,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0005",
+      "description": "钱百味摆出异香草试探玩家，玩家是否会上前搭话？",
+      "next_pressure": "如果玩家不回应，钱百味会在5分钟内将异香草收回，并认为玩家对药材不感兴趣，后续情报获取难度增加。",
+      "created_turn": 6,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0006",
+      "description": "苏墨注意到玩家，开始评估是否要主动接触。",
+      "next_pressure": "如果玩家在下一回合仍未与苏墨互动，苏墨可能会认为玩家是威胁，并在玩家离开坊市后暗中跟踪。",
+      "created_turn": 6,
+      "status": "active"
     }
-  ]
+  ],
+  "last_consolidation_turn": 0
 }
