@@ -1314,7 +1314,8 @@ def apply_patch(
                 node["revision_status"] = new_status
 
             node["last_updated_turn"] = current_turn
-            node["version"] = int(node.get("version", 1)) + 1
+            if effect != "no_change":
+                node["version"] = int(node.get("version", 1)) + 1
 
             revision["_applied"] = True
             revision["_old_confidence"] = old_confidence
@@ -1594,6 +1595,10 @@ def validate_patch_structure(patch: dict[str, Any]) -> list[str]:
             if sf not in item:
                 errors.append(f"npc_understanding_writes[{i}] missing: {sf}")
 
+    VALID_REVISION_EFFECTS = {
+        "supports", "weakens", "contradicts", "qualifies",
+        "reframes", "supersedes", "splits", "no_change",
+    }
     for i, item in enumerate(patch.get("npc_revision_writes", [])):
         if not isinstance(item, dict):
             errors.append(f"npc_revision_writes[{i}] must be an object")
@@ -1601,6 +1606,11 @@ def validate_patch_structure(patch: dict[str, Any]) -> list[str]:
         for sf in ("id", "npc_id", "target_understanding_id", "effect", "reason"):
             if sf not in item:
                 errors.append(f"npc_revision_writes[{i}] missing: {sf}")
+        if isinstance(item, dict) and item.get("effect") not in VALID_REVISION_EFFECTS:
+            errors.append(
+                f"npc_revision_writes[{i}] invalid effect: '{item.get('effect')}'. "
+                f"Must be one of: {', '.join(sorted(VALID_REVISION_EFFECTS))}"
+            )
 
     return errors
 

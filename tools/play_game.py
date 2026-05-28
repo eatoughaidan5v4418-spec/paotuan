@@ -54,8 +54,22 @@ DEFAULT_PATCH = {
     "open_threads": [],
 }
 
+MAX_NEW_OPEN_THREADS = 5
+
 
 ACTION_PREFIX_RE = re.compile(r"^\s*\[(?P<kind>[^\]]+)\]\s*(?P<body>.*)$")
+
+
+def canonical_npc_id(value: Any) -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return ""
+    if raw.startswith(("npc_", "pc_", "player_")):
+        return raw
+    slug = re.sub(r"[^0-9A-Za-z_]+", "_", raw).strip("_").lower()
+    if not slug:
+        slug = slugify(raw, "npc").removeprefix("npc_")
+    return f"npc_{slug}"
 
 
 def strip_action_prefix(text: str) -> tuple[str, str | None]:
@@ -110,13 +124,16 @@ def infer_player_action(player_input: str, elapsed_override: int | None = None) 
         kind, confidence, reason = "休息", 0.86, "rest or recovery verb"
     elif contains_any(lowered, ("等待", "等半", "等一", "等到", "等候", "守候", "蹲守", "埋伏", "拖延")):
         kind, confidence, reason = "等待", 0.84, "waiting or holding-position verb"
-    elif contains_any(lowered, ("前往", "去", "走向", "移动", "离开", "进入", "回到", "赶往", "穿过")):
+    elif contains_any(lowered, ("调查", "搜索", "搜查", "检查", "查看", "浏览", "阅读", "翻找", "研究", "追踪", "侦查", "潜行")):
+        kind, confidence, reason = "调查", 0.82, "investigation verb"
+    elif contains_any(lowered, ("前往", "去", "走向", "走到", "移动", "离开", "进入", "回到", "赶往", "穿过")):
         kind, confidence, reason = "移动", 0.78, "movement or travel verb"
     elif contains_any(lowered, ("询问", "问", "交谈", "告诉", "说", "劝", "威胁", "谈判", "套话", "打听")):
-        kind, confidence, reason = "交谈", 0.8, "social verb"
-    elif contains_any(lowered, ("调查", "搜索", "搜查", "检查", "翻找", "研究", "追踪", "侦查", "潜行")):
-        kind, confidence, reason = "调查", 0.82, "investigation verb"
-    elif contains_any(lowered, ("观察", "看看", "环顾", "聆听", "偷听", "盯", "留意")):
+        if contains_any(lowered, ("不交谈", "不主动交谈", "不和任何人交谈", "不说话", "不主动和任何人交谈")):
+            kind, confidence, reason = "观察", 0.74, "social verb was negated by player wording"
+        else:
+            kind, confidence, reason = "交谈", 0.8, "social verb"
+    elif contains_any(lowered, ("观察", "看看", "环顾", "聆听", "偷听", "盯", "留意", "整理", "确认")):
         kind, confidence, reason = "观察", 0.78, "observation verb"
     elif contains_any(lowered, ("使用", "拿出", "打开", "喝下", "装备", "点燃")):
         kind, confidence, reason = "使用物品", 0.72, "item-use verb"
@@ -929,6 +946,11 @@ def normalize_player_state_changes(items: Any) -> list[dict[str, Any]]:
                 change["delta"] = float(item["delta"])
             except (TypeError, ValueError):
                 continue
+        elif change["operation"] == "delta" and "value" in item:
+            try:
+                change["delta"] = float(item["value"])
+            except (TypeError, ValueError):
+                continue
         if "value" in item:
             change["value"] = item["value"]
         elif "condition" in item:
@@ -959,6 +981,27 @@ def flatten_text(value: Any) -> str:
     return ""
 
 
+def display_text(value: Any) -> str:
+    if isinstance(value, str):
+        return value
+    if value is None:
+        return ""
+    if isinstance(value, (list, dict)):
+        return json.dumps(value, ensure_ascii=False)
+    return str(value)
+
+
+def sentence_containing(text: str, needle: str) -> str:
+    index = text.find(needle)
+    if index < 0:
+        return ""
+    start = max(text.rfind(mark, 0, index) for mark in ("。", "！", "？", "\n"))
+    end_candidates = [text.find(mark, index) for mark in ("。", "！", "？", "\n")]
+    end_candidates = [end for end in end_candidates if end >= 0]
+    end = min(end_candidates) if end_candidates else len(text)
+    return text[start + 1:end]
+
+
 def infer_departure_location_changes(
     response: dict[str, Any] | None,
     packet: dict[str, Any] | None,
@@ -974,7 +1017,7 @@ def infer_departure_location_changes(
     if not visible_text:
         return existing
 
-    departure_words = ("离开", "离去", "走远", "消失", "离开视线", "离开感知范围", "不在场", "远去")
+    departure_words = ("离开", "离去", "走远", "离开视线", "离开感知范围", "不在场", "远去")
     if not any(word in visible_text for word in departure_words):
         return existing
     context = ((packet.get("context") or {}).get("present_npcs") or [])
@@ -986,17 +1029,87 @@ def infer_departure_location_changes(
         if not npc_id or npc_id not in present or npc_id in already:
             continue
         name = parse_profile_name(str(npc.get("profile_text") or ""), npc_id)
-        name_index = visible_text.find(name)
-        if name_index < 0:
+        sentence = sentence_containing(visible_text, name)
+        if not sentence:
             continue
-        nearby = visible_text[max(0, name_index - 80): name_index + 160]
-        if any(word in nearby for word in departure_words):
+        subject_markers = (name, "他", "她", "其", "对方", "这名", "那名")
+        has_subject = any(marker in sentence for marker in subject_markers)
+        has_departure = any(word in sentence for word in departure_words)
+        if has_subject and has_departure:
             inferred.append({
                 "entity_id": npc_id,
                 "from": location_id,
                 "to": "offscreen",
                 "reason": f"AI narration says {name} left the active scene",
             })
+            already.add(npc_id)
+    return inferred
+
+
+def infer_split_party_location_changes(
+    response: dict[str, Any] | None,
+    packet: dict[str, Any] | None,
+    existing: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    if not packet:
+        return existing
+    campaign_before = (packet.get("campaign_before") or {})
+    scene = campaign_before.get("current_scene") or {}
+    location_id = str(scene.get("location_id") or "unknown")
+    if location_id in {"", "unknown", "offscreen"}:
+        return existing
+    text = "\n".join(
+        item for item in (
+            str(packet.get("player_action") or ""),
+            flatten_text((response or {}).get("visible_text")),
+        )
+        if item
+    )
+    if not text:
+        return existing
+
+    entrance_words = ("谷口", "入口", "原地", "退路", "后方", "外面")
+    core_words = ("阵眼", "古阵核心", "阵盘", "核心区域", "自己进入", "独自进入")
+    keep_words = ("留在", "留下", "看守", "不要跟", "别跟", "等着")
+    if not (
+        any(word in text for word in entrance_words)
+        and any(word in text for word in core_words)
+        and any(word in text for word in keep_words)
+    ):
+        return existing
+
+    inferred = list(existing)
+    already = {item.get("entity_id") for item in inferred if isinstance(item, dict)}
+    player_id = first_player_id(packet)
+    present = set(scene.get("present_entities") or [])
+    if player_id not in already:
+        inferred.append(
+            {
+                "entity_id": player_id,
+                "from": location_id,
+                "to": f"{location_id}_core",
+                "reason": "player entered the active core area while party split at the entrance",
+            }
+        )
+        already.add(player_id)
+
+    for npc in ((packet.get("context") or {}).get("present_npcs") or []):
+        if not isinstance(npc, dict):
+            continue
+        npc_id = npc.get("id")
+        if not npc_id or npc_id in already or npc_id not in present:
+            continue
+        name = parse_profile_name(str(npc.get("profile_text") or ""), str(npc_id))
+        sentence = sentence_containing(text, name) or text
+        if any(word in sentence for word in keep_words) and any(word in sentence for word in entrance_words):
+            inferred.append(
+                {
+                    "entity_id": str(npc_id),
+                    "from": location_id,
+                    "to": f"{location_id}_entrance",
+                    "reason": f"{name} stayed at the entrance while the player entered the core",
+                }
+            )
             already.add(npc_id)
     return inferred
 
@@ -1018,8 +1131,8 @@ def normalize_memory_writes(items: Any) -> list[dict[str, Any]]:
             continue
         if isinstance(memory, (dict, list)):
             memory = json.dumps(memory, ensure_ascii=False)
-        normalized.append({
-            "npc_id": item["npc_id"],
+        normalized_item = {
+            "npc_id": canonical_npc_id(item["npc_id"]),
             "memory": str(memory),
             "memory_type": memory_type,
             "source": source if source in {"saw", "heard", "inferred", "rumor"} else "inferred",
@@ -1032,7 +1145,12 @@ def normalize_memory_writes(items: Any) -> list[dict[str, Any]]:
             "salience": float(item.get("salience", memory_obj.get("salience", item.get("importance", memory_obj.get("importance", 0.5))))),
             "importance": float(item.get("importance", memory_obj.get("importance", item.get("salience", memory_obj.get("salience", 0.5))))),
             "related_entities": item.get("related_entities") or memory_obj.get("related_entities") or [],
-        })
+        }
+        evidence = item.get("visibility_evidence") or memory_obj.get("visibility_evidence")
+        normalized_item["visibility_evidence"] = (
+            evidence if isinstance(evidence, dict) else {}
+        )
+        normalized.append(normalized_item)
     return normalized
 
 
@@ -1113,17 +1231,89 @@ def normalize_open_threads(items: Any) -> list[dict[str, Any]]:
     normalized = []
     if not isinstance(items, list):
         return normalized
+    seen: set[str] = set()
     for item in items:
         if not isinstance(item, dict):
             continue
-        thread = item.get("thread") or item.get("title") or item.get("id") or item.get("note")
+        thread = item.get("thread") or item.get("description") or item.get("summary") or item.get("title") or item.get("note") or item.get("id")
+        if looks_like_thread_id(thread) and (item.get("description") or item.get("summary") or item.get("title") or item.get("note")):
+            thread = item.get("description") or item.get("summary") or item.get("title") or item.get("note")
         if not thread:
             continue
+        thread_key = re.sub(r"\s+", "", str(thread).strip().lower())
+        if thread_key in seen:
+            continue
+        seen.add(thread_key)
+        pressure = item.get("next_pressure") or item.get("pressure") or item.get("note") or item.get("summary") or item.get("description") or "后续局势继续推进。"
         normalized.append({
             "thread": thread,
-            "next_pressure": item.get("next_pressure") or item.get("pressure") or item.get("note") or "后续局势继续推进。",
+            "next_pressure": pressure,
         })
+        if len(normalized) >= MAX_NEW_OPEN_THREADS:
+            break
     return normalized
+
+
+def looks_like_thread_id(value: Any) -> bool:
+    return bool(re.fullmatch(r"(open_)?thread_\d+", str(value or "").strip()))
+
+
+def unresolved_from_response(response: dict[str, Any] | None) -> list[str]:
+    visible = response.get("visible_text") if isinstance(response, dict) else {}
+    summary = visible.get("state_summary") if isinstance(visible, dict) else {}
+    return [
+        str(item).strip()
+        for item in (summary.get("unresolved") if isinstance(summary, dict) else []) or []
+        if str(item).strip()
+    ]
+
+
+def first_player_id(packet: dict[str, Any] | None) -> str:
+    players = ((packet or {}).get("campaign_before") or {}).get("player_characters") or []
+    if isinstance(players, list):
+        for player in players:
+            if isinstance(player, dict) and player.get("id"):
+                return str(player["id"])
+    return "pc_main"
+
+
+def append_inferred_effect_point_rewards(
+    changes: list[dict[str, Any]],
+    response: dict[str, Any] | None,
+    packet: dict[str, Any] | None,
+) -> list[dict[str, Any]]:
+    visible_text = flatten_text((response or {}).get("visible_text"))
+    if not visible_text:
+        return changes
+    has_positive_effect_delta = any(
+        item.get("field") == "effect_points"
+        and item.get("operation") == "delta"
+        and float(item.get("delta", item.get("value", 0)) or 0) > 0
+        for item in changes
+        if isinstance(item, dict)
+    )
+    if has_positive_effect_delta:
+        return changes
+    reward = 0
+    patterns = (
+        r"(?:获得|增加|奖励)[^。；，\n]{0,12}?(\d+)\s*点?特效值",
+        r"特效值[^。；，\n]{0,8}?(?:获得|增加|奖励)\s*(\d+)",
+    )
+    for pattern in patterns:
+        for match in re.finditer(pattern, visible_text):
+            reward = max(reward, int(match.group(1)))
+    if reward <= 0:
+        return changes
+    return [
+        *changes,
+        {
+            "entity_id": first_player_id(packet),
+            "field": "effect_points",
+            "operation": "delta",
+            "delta": reward,
+            "reason": "inferred from visible reward text",
+        },
+    ]
 
 
 def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -1140,6 +1330,11 @@ def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: 
         packet,
         normalized_locs,
     )
+    patch["location_changes"] = infer_split_party_location_changes(
+        response,
+        packet,
+        patch["location_changes"],
+    )
     patch["relationship_changes"] = normalize_relationship_changes(patch.get("relationship_changes"))
     patch["new_facts"] = [
         {
@@ -1150,11 +1345,22 @@ def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: 
         for item in patch.get("new_facts", [])
         if isinstance(item, dict) and (item.get("fact") or item.get("text"))
     ]
-    patch["player_state_changes"] = normalize_player_state_changes(patch.get("player_state_changes"))
+    patch["player_state_changes"] = append_inferred_effect_point_rewards(
+        normalize_player_state_changes(patch.get("player_state_changes")),
+        response,
+        packet,
+    )
     patch["npc_memory_writes"] = normalize_memory_writes(patch.get("npc_memory_writes"))
     patch["npc_interpretation_writes"] = normalize_interpretation_writes(patch.get("npc_interpretation_writes"))
     patch["npc_understanding_writes"] = normalize_understanding_writes(patch.get("npc_understanding_writes"))
     patch["open_threads"] = normalize_open_threads(patch.get("open_threads"))
+    unresolved = unresolved_from_response(response)
+    for thread in patch["open_threads"]:
+        if looks_like_thread_id(thread.get("thread")) and unresolved:
+            replacement = unresolved.pop(0)
+            thread["thread"] = replacement
+            if thread.get("next_pressure") in {"后续局势继续推进。", "", None}:
+                thread["next_pressure"] = replacement
     return patch
 
 
@@ -1167,6 +1373,8 @@ def save_turn_artifacts(root: Path, packet: dict[str, Any], ai_response: dict[st
         "ai_response": ai_response,
         "state_patch": patch,
     }
+    if apply_report is not None:
+        artifact["apply_report"] = apply_report
     path = out_dir / f"{turn_id}.json"
     save_json(path, artifact)
     return path
@@ -1187,21 +1395,24 @@ def apply_state_patch(config: GameConfig, patch: dict[str, Any]) -> dict[str, An
         "0001",
         dry_run=not config.auto_apply,
     )
-    return {"applied": config.auto_apply, "report": report}
+    errors = report.get("errors", []) if isinstance(report, dict) else []
+    return {"applied": config.auto_apply and not errors, "report": report}
 
 
 def render_visible(response: dict[str, Any]) -> str:
     visible = response.get("visible_text") or {}
     if isinstance(visible, str):
         return visible
-    scene = visible.get("scene", "")
-    action_result = visible.get("action_result", "")
-    reaction = visible.get("reaction", "")
+    if not isinstance(visible, dict):
+        return display_text(response)
+    scene = display_text(visible.get("scene", ""))
+    action_result = display_text(visible.get("action_result", ""))
+    reaction = display_text(visible.get("reaction", ""))
     npc_actions = visible.get("npc_actions", [])
-    world_motion = visible.get("world_motion", "")
-    tension = visible.get("tension", "")
+    world_motion = display_text(visible.get("world_motion", ""))
+    tension = display_text(visible.get("tension", ""))
     clues = visible.get("actionable_clues", [])
-    check = visible.get("check", "无")
+    check = display_text(visible.get("check", "无"))
     state_summary = visible.get("state_summary") or {}
     lines = []
     if scene:
@@ -1213,7 +1424,7 @@ def render_visible(response: dict[str, Any]) -> str:
     if npc_actions:
         lines.append("### NPC 动作")
         for item in npc_actions:
-            lines.append(f"- {item}")
+            lines.append(f"- {display_text(item)}")
         lines.append("")
     if world_motion or tension:
         lines.append("### 局势推进")
@@ -1226,19 +1437,19 @@ def render_visible(response: dict[str, Any]) -> str:
     if clues:
         lines.append("### 可行动线索")
         for item in clues:
-            lines.append(f"- {item}")
+            lines.append(f"- {display_text(item)}")
         lines.append("")
     lines.extend(["### 需要检定", check or "无"])
     if state_summary:
         lines.extend(["", "### 状态变化"])
         for key, label in [("time", "时间"), ("memory", "记忆/态度"), ("quests", "任务")]:
             if state_summary.get(key):
-                lines.append(f"- {label}：{state_summary[key]}")
+                lines.append(f"- {label}：{display_text(state_summary[key])}")
         unresolved = state_summary.get("unresolved") or []
         if unresolved:
             lines.append("- 未解决悬念：")
             for item in unresolved:
-                lines.append(f"  - {item}")
+                lines.append(f"  - {display_text(item)}")
     return "\n".join(lines).strip()
 
 

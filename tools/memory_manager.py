@@ -52,11 +52,13 @@ def tier_for_score(score: float, pinned: bool = False) -> str:
     return "archive"
 
 
-def load_graph(path: Path) -> dict[str, Any]:
+def load_graph(path: Path | str) -> dict[str, Any]:
+    path = Path(path)
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def save_graph(path: Path, graph: dict[str, Any]) -> None:
+def save_graph(path: Path | str, graph: dict[str, Any]) -> None:
+    path = Path(path)
     path.write_text(json.dumps(graph, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
