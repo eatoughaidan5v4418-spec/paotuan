@@ -1,27 +1,25 @@
 {
   "campaign_id": "tg001",
   "title": "廷根之夜",
-  "current_turn": 16,
-  "current_time": "第 1 日 02:25",
-  "_time_tick": 145,
+  "current_turn": 17,
+  "current_time": "第 1 日 02:30",
+  "_time_tick": 150,
   "current_scene": {
-    "location_id": "church_district_back_alley",
+    "location_id": "church_interior",
     "present_entities": [
-      "pc_player",
-      "npc_raven",
-      "npc_police_sergeant"
+      "pc_player"
     ],
     "active_threads": [
       "open_thread_0040",
-      "open_thread_0041",
-      "open_thread_0042",
       "open_thread_0043",
       "open_thread_0044",
       "open_thread_0045",
       "open_thread_0046",
-      "open_thread_0047"
+      "open_thread_0047",
+      "open_thread_0048",
+      "open_thread_0049"
     ],
-    "summary": "玩家抵达church_district_back_alley。"
+    "summary": "玩家抵达church_interior。"
   },
   "player_characters": [
     {
@@ -36,7 +34,7 @@
       "max_sanity": 7,
       "spirituality": 6,
       "max_spirituality": 6,
-      "location_id": "church_district_back_alley",
+      "location_id": "church_interior",
       "inventory": [
         "??",
         "??",
@@ -628,14 +626,18 @@
       "description": "警察已发现下水道入口，正在组织地面排查",
       "next_pressure": "警察巡逻队将在3-4回合内开始检查下水道井盖，封锁范围可能扩大。",
       "created_turn": 14,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 16,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0042",
       "description": "下水道深处未知生物被晋升波动惊醒",
       "next_pressure": "该生物可能朝波动来源移动，预计4-5回合后接近玩家当前位置。",
       "created_turn": 14,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 16,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0043",
@@ -670,6 +672,20 @@
       "description": "晋升后遗症：感官过载使玩家对光线和声响敏感，影响潜行和社交。",
       "next_pressure": "在嘈杂环境中持续暴露可能引发头痛或眩晕，降低感知和反应能力。",
       "created_turn": 15,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0048",
+      "description": "教堂内的戴礼帽男子和老妇人疑似非凡者，可能是庇护法阵的守护者或隐秘组织成员。他们对玩家的态度尚不明确。",
+      "next_pressure": "如果玩家不主动接触，他们可能会在晨祷结束后采取行动——要么接近玩家，要么离开并报告给上级。玩家需要决定是否信任他们。",
+      "created_turn": 16,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0049",
+      "description": "警察正在封锁教堂区，已经发现了下水道井盖附近的血迹和脚印。封锁圈正在收缩，预计30分钟内将开始逐户搜查。",
+      "next_pressure": "教堂虽然暂时隔绝了气息，但警察的搜查迟早会进入教堂内部。玩家需要在搜查开始前找到出路或获得庇护。",
+      "created_turn": 16,
       "status": "active"
     }
   ],
