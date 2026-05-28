@@ -1227,6 +1227,40 @@ def normalize_understanding_writes(items: Any) -> list[dict[str, Any]]:
     return normalized
 
 
+def normalize_revision_writes(items: Any) -> list[dict[str, Any]]:
+    """Normalize npc_revision_writes from AI response, dropping non-dict items."""
+    normalized = []
+    if not isinstance(items, list):
+        return normalized
+    VALID_EFFECTS = {
+        "supports", "weakens", "contradicts", "qualifies",
+        "reframes", "supersedes", "splits", "no_change",
+    }
+    for index, item in enumerate(items, start=1):
+        if not isinstance(item, dict) or not item.get("npc_id"):
+            continue
+        npc_id = item["npc_id"]
+        effect = item.get("effect", "no_change")
+        if effect not in VALID_EFFECTS:
+            effect = "no_change"
+        normalized.append({
+            "id": item.get("id") or f"rev_{npc_id}_{index:04d}",
+            "npc_id": npc_id,
+            "turn": int(item.get("turn", 1)),
+            "new_event_id": item.get("new_event_id", ""),
+            "target_understanding_id": item.get("target_understanding_id", ""),
+            "effect": effect,
+            "evidence_strength": float(item.get("evidence_strength", 0.5)),
+            "confidence_delta": float(item.get("confidence_delta", 0.0)),
+            "stability_delta": float(item.get("stability_delta", 0.0)),
+            "new_status": item.get("new_status"),
+            "reason": str(item.get("reason", "")),
+            "source_interpretation_ids": item.get("source_interpretation_ids", []),
+            "new_understanding_id": item.get("new_understanding_id"),
+        })
+    return normalized
+
+
 def normalize_open_threads(items: Any) -> list[dict[str, Any]]:
     normalized = []
     if not isinstance(items, list):
@@ -1353,6 +1387,7 @@ def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: 
     patch["npc_memory_writes"] = normalize_memory_writes(patch.get("npc_memory_writes"))
     patch["npc_interpretation_writes"] = normalize_interpretation_writes(patch.get("npc_interpretation_writes"))
     patch["npc_understanding_writes"] = normalize_understanding_writes(patch.get("npc_understanding_writes"))
+    patch["npc_revision_writes"] = normalize_revision_writes(patch.get("npc_revision_writes"))
     patch["open_threads"] = normalize_open_threads(patch.get("open_threads"))
     unresolved = unresolved_from_response(response)
     for thread in patch["open_threads"]:
