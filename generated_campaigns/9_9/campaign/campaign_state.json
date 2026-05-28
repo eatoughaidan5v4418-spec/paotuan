@@ -1,21 +1,25 @@
 {
   "campaign_id": "tg001",
   "title": "廷根之夜",
-  "current_turn": 2,
-  "current_time": "第 1 日 00:20",
-  "_time_tick": 20,
+  "current_turn": 3,
+  "current_time": "第 1 日 00:50",
+  "_time_tick": 50,
   "current_scene": {
-    "location_id": "zoutend_street",
+    "location_id": "black_rose_bar",
     "present_entities": [
-      "pc_player"
+      "pc_player",
+      "npc_bartender",
+      "npc_tarot_reader"
     ],
     "active_threads": [
       "open_thread_0001",
       "open_thread_0002",
       "open_thread_0003",
-      "open_thread_0004"
+      "open_thread_0004",
+      "open_thread_0005",
+      "open_thread_0006"
     ],
-    "summary": "玩家抵达zoutend_street。"
+    "summary": "玩家抵达black_rose_bar。"
   },
   "player_characters": [
     {
@@ -30,7 +34,7 @@
       "max_sanity": 7,
       "spirituality": 4,
       "max_spirituality": 4,
-      "location_id": "zoutend_street",
+      "location_id": "black_rose_bar",
       "inventory": [
         "??",
         "??",
@@ -103,6 +107,22 @@
       "source": "AI state extraction",
       "created_turn": 1,
       "valid": true
+    },
+    {
+      "id": "fact_0005",
+      "text": "黑蔷薇酒吧是廷根市地下非凡者的聚集地，位于东区暗巷",
+      "visibility": "private",
+      "source": "玩家探索",
+      "created_turn": 2,
+      "valid": true
+    },
+    {
+      "id": "fact_0006",
+      "text": "酒吧内有三位值得注意的人物:独眼酒保、塔罗牌师、神秘女士",
+      "visibility": "private",
+      "source": "玩家观察",
+      "created_turn": 2,
+      "valid": true
     }
   ],
   "open_threads": [
@@ -132,6 +152,20 @@
       "description": "黑衣人身份与目的",
       "next_pressure": "他一旦发现你失踪，可能会立即搜索或召唤同伴。",
       "created_turn": 1,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0005",
+      "description": "黑蔷薇酒吧情报探索:玩家已抵达情报据点，需要选择接触目标并获取关于序列8材料和组织的信息。",
+      "next_pressure": "在场NPC可能对你产生兴趣或怀疑，长时间不行动可能引起不必要的注意。",
+      "created_turn": 2,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0006",
+      "description": "黑衣人失踪反应:黑衣人可能已经发现玩家不在公寓，正在追踪你的去向。",
+      "next_pressure": "如果黑衣人追踪到黑蔷薇酒吧，可能会引发冲突或暴露你的行踪。时间窗口有限。",
+      "created_turn": 2,
       "status": "active"
     }
   ],

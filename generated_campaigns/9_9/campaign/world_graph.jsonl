@@ -4,3 +4,5 @@
 {"type":"entity","id":"pc_player","properties":{"name":"玩家","type":"player","sequence":9,"path":"占卜家"}}
 {"record_type": "node", "id": "mem_npc_mysterious_man_0001", "node_type": "Memory", "npc_id": "npc_mysterious_man", "created_at": "第 1 日 00:10", "created_turn": 0, "summary": "目标房间内传来轻微的精神力波动，有人在尝试占卜我。对方是个新手，序列不高，但已经觉醒。", "source": "inferred", "visibility": "private"}
 {"record_type": "node", "id": "mem_npc_mysterious_man_0002", "node_type": "Memory", "npc_id": "npc_mysterious_man", "created_at": "第 1 日 00:20", "created_turn": 1, "summary": "我在佐特兰德街监视目标公寓时，似乎感觉到有微弱的灵性波动从街角方向传来，但很轻微，可能是路过的野猫或醉汉。我没有发现目标离开房间。", "source": "inferred", "visibility": "private"}
+{"record_type": "node", "id": "mem_npc_bartender_0001", "node_type": "Memory", "npc_id": "npc_bartender", "created_at": "第 1 日 00:50", "created_turn": 2, "summary": "一个陌生年轻人进入酒吧，看起来像是新晋非凡者，穿着普通，神情警惕但缺乏经验。", "source": "inferred", "visibility": "private"}
+{"record_type": "node", "id": "mem_npc_tarot_reader_0001", "node_type": "Memory", "npc_id": "npc_tarot_reader", "created_at": "第 1 日 00:50", "created_turn": 2, "summary": "一个带有占卜家途径灵性波动的年轻人进入酒吧，可能同行或猎物。", "source": "inferred", "visibility": "private"}
