@@ -1,27 +1,25 @@
 {
   "campaign_id": "tg001",
   "title": "廷根之夜",
-  "current_turn": 7,
-  "current_time": "第 1 日 01:15",
-  "_time_tick": 75,
+  "current_turn": 9,
+  "current_time": "第 1 日 01:35",
+  "_time_tick": 95,
   "current_scene": {
-    "location_id": "dock_warehouse_7",
+    "location_id": "police_station_perimeter",
     "present_entities": [
-      "pc_player",
-      "npc_collector",
-      "npc_slender_man"
+      "pc_player"
     ],
     "active_threads": [
-      "open_thread_0009",
-      "open_thread_0010",
-      "open_thread_0011",
-      "open_thread_0012",
-      "open_thread_0013",
-      "open_thread_0014",
       "open_thread_0015",
-      "open_thread_0016"
+      "open_thread_0016",
+      "open_thread_0017",
+      "open_thread_0018",
+      "open_thread_0019",
+      "open_thread_0020",
+      "open_thread_0021",
+      "open_thread_0022"
     ],
-    "summary": "玩家抵达dock_warehouse_7。"
+    "summary": "玩家抵达police_station_perimeter。"
   },
   "player_characters": [
     {
@@ -36,7 +34,7 @@
       "max_sanity": 7,
       "spirituality": 4,
       "max_spirituality": 4,
-      "location_id": "dock_warehouse_7",
+      "location_id": "police_station_perimeter",
       "inventory": [
         "??",
         "??",
@@ -47,9 +45,12 @@
         "狂乱人偶的线轴",
         "candle_stub",
         "ink_bottle_dregs",
-        "charcoal_stick"
+        "charcoal_stick",
+        "rag_bandage_bloody"
       ],
-      "conditions": [],
+      "conditions": [
+        "手指轻伤"
+      ],
       "stats": {
         "combat": 0,
         "perception": 1,
@@ -201,6 +202,38 @@
       "source": "AI state extraction",
       "created_turn": 6,
       "valid": true
+    },
+    {
+      "id": "fact_0016",
+      "text": "警察局证物室窗户有铁栅栏，正门有双岗，侧门有锅炉房入口",
+      "visibility": "player_known",
+      "source": "AI state extraction",
+      "created_turn": 7,
+      "valid": true
+    },
+    {
+      "id": "fact_0017",
+      "text": "雾气正在消散，能见度上升至约八米",
+      "visibility": "player_known",
+      "source": "AI state extraction",
+      "created_turn": 7,
+      "valid": true
+    },
+    {
+      "id": "fact_0018",
+      "text": "瘦高个正在追踪玩家，距离约三分钟路程",
+      "visibility": "player_known",
+      "source": "AI state extraction",
+      "created_turn": 7,
+      "valid": true
+    },
+    {
+      "id": "fact_0019",
+      "text": "证物室锁芯有防撬挡板，但锁孔磨损导致挡板反应略有延迟，可能利用两根别针同时操作开锁。",
+      "visibility": "player_known",
+      "source": "pc_player灵性感知",
+      "created_turn": 8,
+      "valid": true
     }
   ],
   "open_threads": [
@@ -281,42 +314,54 @@
       "description": "狂乱人偶的线轴到手，但如何安全携带、掩盖非凡气息？",
       "next_pressure": "每过30分钟（游戏内时间），有10%概率被附近非凡者感知到线轴的存在。若玩家在公共场合长时间停留，概率增加。",
       "created_turn": 4,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 7,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0010",
       "description": "码头枪声和烟雾是否引起警察或非凡势力注意？",
       "next_pressure": "巡逻警察将在15分钟（游戏内时间）后到达7号仓库附近。若玩家仍留在码头区，有几率被盘问。",
       "created_turn": 4,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 7,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0011",
       "description": "瘦高个和收藏家是否会追踪玩家？",
       "next_pressure": "在接下来的24小时内，玩家在非凡者聚集地活动时，有几率被认出或被人跟踪。",
       "created_turn": 4,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 7,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0012",
       "description": "密封线轴气息",
       "next_pressure": "当前剩余安全窗口约5-10分钟。收藏家正在接近，'渡鸦'已抵达，警察即将进入仓库区。",
       "created_turn": 5,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 8,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0013",
       "description": "警察巡逻队搜索",
       "next_pressure": "警察已从码头边缘向仓库区移动，预计5分钟后抵达废弃仓库附近。",
       "created_turn": 5,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 8,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0014",
       "description": "隐秘组织反应",
       "next_pressure": "'渡鸦'已抵达码头区入口，正在向仓库区移动。他擅长追踪和战斗，预计10分钟内可能发现玩家位置。",
       "created_turn": 5,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 8,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0015",
@@ -330,6 +375,48 @@
       "description": "渡鸦沿线索从7号仓库搜索过来，预计5分钟内到达。",
       "next_pressure": "渡鸦到达后，若发现玩家痕迹，将展开更系统的搜索，并可能召唤更多组织成员。",
       "created_turn": 6,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0017",
+      "description": "瘦高个的追踪：瘦高个发现了通风口的痕迹和血迹，正沿着玩家路径追踪，距离约三分钟路程。若不采取反制措施，将在警察局外围遭遇。",
+      "next_pressure": "若玩家在警察局外围停留超过三分钟，瘦高个将直接目击玩家；若玩家进入警察局，瘦高个可能在外围布控或通知同伙。",
+      "created_turn": 7,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0018",
+      "description": "警察局潜入准备：玩家已抵达警察局外围，需要制定潜入方案。证物室窗户有铁栅栏，正门有双岗，锅炉房小门是潜在入口。换岗间隙是机会窗口。",
+      "next_pressure": "随着时间推移，雾气消散将增加暴露风险；换岗结束后警员注意力恢复，潜入难度上升。若超过凌晨两点未行动，警察局内部巡逻密度将增加。",
+      "created_turn": 7,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0019",
+      "description": "封印时间限制：狂乱人偶线轴的默然魔术封印剩余约1小时45分钟（至凌晨3:10）。若超时未处理，线轴的非凡气息将重新暴露，可能吸引更多追踪者。",
+      "next_pressure": "封印失效后，收藏家和渡鸦将能重新定位线轴，距离不再受限制。同时线轴的狂乱气息可能引发警察局内非凡者的警觉。",
+      "created_turn": 7,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0020",
+      "description": "PoliceStationInfiltration",
+      "next_pressure": "换岗结束后的全楼巡逻将发现地下一层异常；瘦高个即将抵达警察局外围；封印时间继续流逝。",
+      "created_turn": 8,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0021",
+      "description": "PursuitBySlenderMan",
+      "next_pressure": "瘦高个抵达后可能引发冲突或报警，暴露玩家位置。",
+      "created_turn": 8,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0022",
+      "description": "RavenInvestigation",
+      "next_pressure": "渡鸦可能通过非凡手段定位到玩家的大致位置，并通知组织其他成员包围警察局。",
+      "created_turn": 8,
       "status": "active"
     }
   ],

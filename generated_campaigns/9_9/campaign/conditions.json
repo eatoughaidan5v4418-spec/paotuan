@@ -1,1 +1,20 @@
-[]
+{
+  "entities": {
+    "pc_player": {
+      "conditions": [
+        {
+          "name": "手指轻伤",
+          "severity": "normal",
+          "added_at": "AI state update"
+        }
+      ],
+      "history": [
+        {
+          "operation": "add",
+          "condition": "手指轻伤",
+          "reason": "AI state update"
+        }
+      ]
+    }
+  }
+}
