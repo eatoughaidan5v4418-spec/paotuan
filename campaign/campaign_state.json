@@ -1,13 +1,13 @@
 {
   "campaign_id": "paotuan_demo",
-  "title": "?????",
+  "title": "未命名战役",
   "current_turn": 1,
-  "current_time": "? 1 ? 20:00",
+  "current_time": "第 1 日 20:00",
   "_time_tick": 1200,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "loc_old_dock",
-    "summary": "???????????????????????",
+    "summary": "玩家抵达旧码头，黑灯会交易的传言刚刚浮出水面。",
     "present_entities": [
       "pc_main",
       "npc_mira"
