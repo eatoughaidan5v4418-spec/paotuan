@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_liu_qing",
-  "current_turn": 11,
+  "current_turn": 12,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -23,7 +23,7 @@
         "loc_black_wind_ridge",
         "faction_azure_cloud_sect"
       ],
-      "score": 0.5418
+      "score": 0.5383
     },
     {
       "id": "mem_npc_liu_qing_0005",
@@ -48,7 +48,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4943
+      "score": 0.4908
     },
     {
       "id": "mem_npc_liu_qing_0003",
@@ -73,7 +73,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4418
+      "score": 0.4383
     },
     {
       "id": "mem_npc_liu_qing_0004",
@@ -98,7 +98,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:20",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4418
+      "score": 0.4383
     },
     {
       "id": "mem_liu_0002",
@@ -119,7 +119,7 @@
       "related_entities": [
         "loc_azure_cloud_market"
       ],
-      "score": 0.4243
+      "score": 0.4208
     },
     {
       "id": "mem_npc_liu_qing_0006",
@@ -156,7 +156,7 @@
       },
       "observed_at": "第 1 日 08:50",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3475
+      "score": 0.3422
     },
     {
       "id": "mem_npc_liu_qing_0007",
@@ -192,7 +192,40 @@
       },
       "observed_at": "第 1 日 08:55",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3109
+      "score": 0.305
+    },
+    {
+      "id": "mem_npc_liu_qing_0012",
+      "type": "episodic",
+      "content": "那个穷散修在主街角落突破了，从灵力波动看是炼气三层。没什么大不了的，坊市里哪天没人突破。",
+      "created_turn": 12,
+      "last_recalled_turn": 12,
+      "recall_count": 0,
+      "importance": 0.2,
+      "salience": 0.15,
+      "emotional_valence": 0.0,
+      "confidence": 0.9,
+      "source": "saw",
+      "tier": "dormant",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_liu_qing",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "那个穷散修在主街角落突破了，从灵力波动看是炼气三层。没什么大不了的，坊市里哪天没人突破。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 11:35",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.295
     },
     {
       "id": "mem_npc_liu_qing_0011",
@@ -227,7 +260,7 @@
       },
       "observed_at": "第 1 日 11:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.295
+      "score": 0.2835
     },
     {
       "id": "mem_npc_liu_qing_0009",
@@ -262,7 +295,7 @@
       },
       "observed_at": "第 1 日 10:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.2836
+      "score": 0.275
     },
     {
       "id": "mem_npc_liu_qing_0010",
@@ -297,7 +330,7 @@
       },
       "observed_at": "第 1 日 11:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.2835
+      "score": 0.2736
     },
     {
       "id": "mem_npc_liu_qing_0008",
@@ -333,7 +366,7 @@
       },
       "observed_at": "第 1 日 09:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.2675
+      "score": 0.2609
     }
   ],
   "interpretation_nodes": [],

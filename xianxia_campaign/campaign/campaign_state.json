@@ -1,9 +1,9 @@
 {
   "campaign_id": "xianxia_001",
   "title": "青云坊市遗宝",
-  "current_turn": 12,
-  "current_time": "第 1 日 11:25",
-  "_time_tick": 685,
+  "current_turn": 13,
+  "current_time": "第 1 日 11:35",
+  "_time_tick": 695,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "loc_azure_cloud_market",
@@ -15,14 +15,14 @@
     ],
     "active_threads": [
       "thread_blood_spirit_mushroom",
-      "open_thread_0007",
       "open_thread_0011",
       "open_thread_0012",
       "open_thread_0013",
       "open_thread_0014",
       "open_thread_0015",
       "open_thread_0016",
-      "open_thread_0017"
+      "open_thread_0017",
+      "open_thread_0018"
     ]
   },
   "player_characters": [
@@ -47,8 +47,8 @@
       "qi": 6,
       "max_qi": 6,
       "stats": {
-        "combat": 1,
-        "perception": 1,
+        "combat": 2,
+        "perception": 2,
         "social": -1
       },
       "former_name": "洛衍",
@@ -191,7 +191,9 @@
       "description": "黑风岭的血灵芝",
       "next_pressure": "若玩家在半天内不采取行动，魔修探子将确认血灵芝位置并提前设伏。",
       "created_turn": 7,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 12,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0008",
@@ -267,6 +269,13 @@
       "description": "苏墨的观察",
       "next_pressure": "苏墨可能主动接触玩家，也可能在玩家前往黑风岭时尾随或抢先行动。",
       "created_turn": 11,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0018",
+      "description": "玩家突破后经脉受伤，需要在恢复伤势、找苏墨合作、打听钱百味消息、或立即前往黑风岭之间做出选择。",
+      "next_pressure": "每拖延一刻钟，黑风岭的局势就可能恶化一分——魔修可能已经找到了血灵芝的确切位置，或者青云门的暗哨也会介入。",
+      "created_turn": 12,
       "status": "active"
     }
   ],

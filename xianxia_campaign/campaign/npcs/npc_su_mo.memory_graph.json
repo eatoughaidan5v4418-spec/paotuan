@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_su_mo",
-  "current_turn": 11,
+  "current_turn": 12,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -22,7 +22,7 @@
       "related_entities": [
         "loc_black_wind_ridge"
       ],
-      "score": 0.7243
+      "score": 0.7208
     },
     {
       "id": "mem_su_0002",
@@ -44,7 +44,40 @@
         "loc_black_wind_ridge",
         "faction_demonic_remnants"
       ],
-      "score": 0.5888
+      "score": 0.5853
+    },
+    {
+      "id": "mem_npc_su_mo_0012",
+      "type": "episodic",
+      "content": "那修士竟然突破了！用木火双灵根交替循环的法门——这种运功路线不是普通散修能知道的，他手上的引气诀残卷来历不简单。他经脉受了伤，但突破后感知应该提升了不少，恐怕已经注意到我在观察他了。",
+      "created_turn": 12,
+      "last_recalled_turn": 12,
+      "recall_count": 0,
+      "importance": 0.65,
+      "salience": 0.7,
+      "emotional_valence": 0.3,
+      "confidence": 0.9,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_su_mo",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "那修士竟然突破了！用木火双灵根交替循环的法门——这种运功路线不是普通散修能知道的，他手上的引气诀残卷来历不简单。他经脉受了伤，但突破后感知应该提升了不少，恐怕已经注意到我在观察他了。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 11:35",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.5775
     },
     {
       "id": "mem_npc_su_mo_0011",
@@ -80,7 +113,7 @@
       },
       "observed_at": "第 1 日 11:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.5025
+      "score": 0.491
     },
     {
       "id": "mem_npc_su_mo_0007",
@@ -117,7 +150,7 @@
       },
       "observed_at": "第 1 日 08:55",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4784
+      "score": 0.4725
     },
     {
       "id": "mem_npc_su_mo_0003",
@@ -142,7 +175,7 @@
       "visibility_path": "overheard",
       "observed_at": "第 1 日 08:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4468
+      "score": 0.4433
     },
     {
       "id": "mem_npc_su_mo_0004",
@@ -167,7 +200,7 @@
       "visibility_path": "overheard",
       "observed_at": "第 1 日 08:20",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4468
+      "score": 0.4433
     },
     {
       "id": "mem_npc_su_mo_0009",
@@ -202,7 +235,7 @@
       },
       "observed_at": "第 1 日 10:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4386
+      "score": 0.43
     },
     {
       "id": "mem_npc_su_mo_0006",
@@ -239,7 +272,7 @@
       },
       "observed_at": "第 1 日 08:50",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.41
+      "score": 0.4047
     },
     {
       "id": "mem_npc_su_mo_0010",
@@ -274,7 +307,7 @@
       },
       "observed_at": "第 1 日 11:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3935
+      "score": 0.3836
     },
     {
       "id": "mem_npc_su_mo_0008",
@@ -310,7 +343,7 @@
       },
       "observed_at": "第 1 日 09:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3625
+      "score": 0.3559
     },
     {
       "id": "mem_npc_su_mo_0005",
@@ -335,7 +368,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3318
+      "score": 0.3283
     }
   ],
   "interpretation_nodes": [],

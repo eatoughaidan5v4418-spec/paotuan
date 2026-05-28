@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_qian_baiwei",
-  "current_turn": 11,
+  "current_turn": 12,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -22,7 +22,40 @@
       "related_entities": [
         "loc_black_wind_ridge"
       ],
-      "score": 0.6313
+      "score": 0.6277
+    },
+    {
+      "id": "mem_npc_qian_baiwei_0010",
+      "type": "episodic",
+      "content": "那修士突破到炼气三层了！用的是木火双灵根交替循环的法门——看来他手里的引气诀残卷确实有独到之处。这小子潜力不错，但经脉受了伤，估计会来找我买疗伤药。",
+      "created_turn": 12,
+      "last_recalled_turn": 12,
+      "recall_count": 0,
+      "importance": 0.6,
+      "salience": 0.7,
+      "emotional_valence": 0.4,
+      "confidence": 0.95,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_qian_baiwei",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "那修士突破到炼气三层了！用的是木火双灵根交替循环的法门——看来他手里的引气诀残卷确实有独到之处。这小子潜力不错，但经脉受了伤，估计会来找我买疗伤药。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 11:35",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.5675
     },
     {
       "id": "mem_npc_qian_baiwei_0009",
@@ -57,7 +90,7 @@
       },
       "observed_at": "第 1 日 11:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.56
+      "score": 0.5485
     },
     {
       "id": "mem_qian_0002",
@@ -78,7 +111,7 @@
       "related_entities": [
         "faction_demonic_remnants"
       ],
-      "score": 0.5393
+      "score": 0.5358
     },
     {
       "id": "mem_npc_qian_baiwei_0007",
@@ -113,7 +146,7 @@
       },
       "observed_at": "第 1 日 10:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4786
+      "score": 0.47
     },
     {
       "id": "mem_npc_qian_baiwei_0005",
@@ -149,7 +182,7 @@
       },
       "observed_at": "第 1 日 08:55",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4309
+      "score": 0.425
     },
     {
       "id": "mem_npc_qian_baiwei_0008",
@@ -184,7 +217,7 @@
       },
       "observed_at": "第 1 日 11:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.426
+      "score": 0.4161
     },
     {
       "id": "mem_npc_qian_baiwei_0003",
@@ -209,7 +242,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4068
+      "score": 0.4033
     },
     {
       "id": "mem_npc_qian_baiwei_0004",
@@ -246,7 +279,7 @@
       },
       "observed_at": "第 1 日 08:50",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4025
+      "score": 0.3972
     },
     {
       "id": "mem_npc_qian_baiwei_0006",
@@ -282,7 +315,7 @@
       },
       "observed_at": "第 1 日 09:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3325
+      "score": 0.3259
     }
   ],
   "interpretation_nodes": [],
