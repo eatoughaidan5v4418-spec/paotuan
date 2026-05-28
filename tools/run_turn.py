@@ -19,6 +19,7 @@ from typing import Any
 import yaml
 
 from time_utils import sync_campaign_time, tick_to_display
+from zone_validator import parse_zones, build_graph, find_los_path, find_sound_path
 
 
 TIME_RE = re.compile(r"第\s*(\d+)\s*日\s*(\d{1,2}):(\d{2})")
@@ -421,6 +422,41 @@ def collect_context(root: Path, campaign_state: dict[str, Any], memory_limit: in
         location_path = root / "campaign" / "locations" / "old_dock.yaml"
     location_text = read_text_if_exists(location_path)
 
+    # V05 fix: parse spatial zones and compute visibility between entities
+    spatial_context = {}
+    if location_text.strip():
+        try:
+            zones, connections, _ = parse_zones(location_text)
+            if zones and connections:
+                graph = build_graph(connections)
+                zone_ids = [str(z.get("id")) for z in zones if z.get("id")]
+                # Determine player zone (first zone or from campaign state)
+                player_zone = current_scene.get("player_zone", zone_ids[0] if zone_ids else None)
+                # Find which NPCs in which zones can see/hear each other
+                npc_zones = {}
+                for zone in zones:
+                    for occ in zone.get("initial_occupants", []):
+                        npc_zones[str(occ)] = str(zone.get("id"))
+                spatial_context = {
+                    "player_zone": player_zone,
+                    "zone_count": len(zones),
+                    "zone_ids": zone_ids,
+                    "npc_zones": npc_zones,
+                }
+                # Per-NPC visibility from player zone
+                if player_zone:
+                    los_map = {}
+                    sound_map = {}
+                    for npc_id, npc_zone in npc_zones.items():
+                        los = find_los_path(player_zone, npc_zone, zones, connections)
+                        sound = find_sound_path(player_zone, npc_zone, zones, connections)
+                        los_map[npc_id] = los.get("ok", False)
+                        sound_map[npc_id] = sound.get("sound", "blocked") if sound.get("ok") else "blocked"
+                    spatial_context["player_los_to_npc"] = los_map
+                    spatial_context["player_sound_to_npc"] = sound_map
+        except Exception:
+            spatial_context = {"error": "zone parsing failed"}
+
     present_entities = current_scene.get("present_entities", [])
     if not isinstance(present_entities, list):
         present_entities = [present_entities]
@@ -506,6 +542,7 @@ def collect_context(root: Path, campaign_state: dict[str, Any], memory_limit: in
         "recent_turn_history": load_recent_turn_history(root),
         "rules_text": read_text_if_exists(root / "campaign" / "lore" / "rules.yaml"),
         "factions_text": read_text_if_exists(root / "campaign" / "lore" / "factions.yaml"),
+        "spatial_context": spatial_context,
         "player_resources": resources_data,
     }
 
