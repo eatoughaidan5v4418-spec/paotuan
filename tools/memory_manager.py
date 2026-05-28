@@ -89,10 +89,17 @@ def recall(path: Path, memory_ids: list[str], current_turn: int, write: bool) ->
     graph["current_turn"] = current_turn
     wanted = set(memory_ids)
 
+    found = 0
     for memory in graph.get("memory_nodes", []):
         if memory.get("id") in wanted:
             memory["recall_count"] = int(memory.get("recall_count", 0)) + 1
             memory["last_recalled_turn"] = current_turn
+            found += 1
+
+    missing = wanted - {m.get("id") for m in graph.get("memory_nodes", [])}
+    if missing:
+        print(f"Warning: {len(missing)} memory ID(s) not found: {', '.join(sorted(missing))}")
+    print(f"Recalled {found}/{len(wanted)} memories")
 
     if write:
         save_graph(path, graph)
