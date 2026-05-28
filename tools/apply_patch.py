@@ -310,6 +310,141 @@ def apply_resource_change(
     return f"{entity_id} resources.{field}: {old_value} -> {new_value} ({reason})"
 
 
+def sync_player_resource_mirror(root: Path, entity_id: str, field: str, value: Any, dry_run: bool) -> None:
+    mirror_fields = {
+        "effect_points": "\u7279\u6548\u503c",
+    }
+    resource_field = mirror_fields.get(field)
+    if not resource_field:
+        return
+    resources_path, resources = load_resource_state(root)
+    record = resource_entity(resources, entity_id)
+    if record is None:
+        record = {}
+        if isinstance(resources.get("entities"), dict):
+            resources["entities"][entity_id] = record
+        else:
+            resources["entities"] = {entity_id: record}
+    for stale_key in ("???",):
+        if stale_key in record and stale_key != resource_field:
+            del record[stale_key]
+    record[resource_field] = value
+    if not dry_run:
+        save_json(resources_path, resources)
+
+
+CURRENCY_ITEM_FIELDS = {
+    "\u7075\u77f3",
+}
+
+MAX_ACTIVE_THREADS = 8
+
+
+def parse_quantity_from_text(*values: Any) -> float:
+    text = " ".join(str(value or "") for value in values)
+    match = re.search(r"(\d+(?:\.\d+)?)", text)
+    if match:
+        return float(match.group(1))
+    chinese_digits = {
+        "\u96f6": 0,
+        "\u4e00": 1,
+        "\u4e8c": 2,
+        "\u4e24": 2,
+        "\u4e09": 3,
+        "\u56db": 4,
+        "\u4e94": 5,
+        "\u516d": 6,
+        "\u4e03": 7,
+        "\u516b": 8,
+        "\u4e5d": 9,
+    }
+    if "\u767e" in text:
+        prefix = text.split("\u767e", 1)[0][-1:]
+        suffix = text.split("\u767e", 1)[1][:2]
+        total = chinese_digits.get(prefix, 1) * 100
+        if "\u5341" in suffix:
+            total += 10
+        return float(total)
+    if "\u5341" in text:
+        before, after = text.split("\u5341", 1)
+        tens = chinese_digits.get(before[-1:], 1)
+        ones = chinese_digits.get(after[:1], 0)
+        return float(tens * 10 + ones)
+    for char, number in chinese_digits.items():
+        if char in text:
+            return float(number)
+    return 1.0
+
+
+def ensure_minimal_location_file(root: Path, location_id: str, reason: str, dry_run: bool) -> None:
+    if not location_id or location_id in {"unknown", "offscreen"}:
+        return
+    loc_path = root / "campaign" / "locations" / f"{location_id.removeprefix('loc_')}.yaml"
+    if loc_path.exists():
+        return
+    text = "\n".join(
+        [
+            f"id: {location_id}",
+            f"name: {location_id}",
+            "type: auto_created",
+            f"summary: \"Auto-created after movement: {str(reason).replace(chr(34), chr(39))[:80]}\"",
+            "description: |",
+            f"  Auto-created location placeholder for {location_id}.",
+            "zones: []",
+            "exits: []",
+            "",
+        ]
+    )
+    if not dry_run:
+        loc_path.parent.mkdir(parents=True, exist_ok=True)
+        loc_path.write_text(text, encoding="utf-8")
+
+
+def thread_sort_turn(thread: dict[str, Any]) -> int:
+    for field in ("updated_turn", "created_turn"):
+        try:
+            value = thread.get(field)
+            if value is not None:
+                return int(value)
+        except (TypeError, ValueError):
+            continue
+    return 0
+
+
+def prune_active_threads(campaign: dict[str, Any], current_turn: int, report: dict[str, list[str]]) -> None:
+    threads = campaign.get("open_threads")
+    if not isinstance(threads, list):
+        return
+    active = [
+        item
+        for item in threads
+        if isinstance(item, dict) and item.get("status", "active") == "active"
+    ]
+    if len(active) <= MAX_ACTIVE_THREADS:
+        return
+    keep_ids = {
+        str(item.get("id"))
+        for item in sorted(active, key=thread_sort_turn, reverse=True)[:MAX_ACTIVE_THREADS]
+    }
+    archived_ids: set[str] = set()
+    for thread in active:
+        thread_id = str(thread.get("id"))
+        if thread_id in keep_ids:
+            continue
+        thread["status"] = "dormant"
+        thread["archived_turn"] = current_turn
+        thread["archive_reason"] = "superseded by newer active threads"
+        archived_ids.add(thread_id)
+        report["threads"].append(f"[{thread_id}] dormant: {thread.get('description', '')}")
+    scene = campaign.get("current_scene")
+    if isinstance(scene, dict) and isinstance(scene.get("active_threads"), list):
+        scene["active_threads"] = [
+            thread_id
+            for thread_id in scene["active_threads"]
+            if str(thread_id) not in archived_ids
+        ]
+
+
 def apply_player_state_change(
     root: Path,
     campaign: dict[str, Any],
@@ -324,19 +459,23 @@ def apply_player_state_change(
     field = str(change.get("field", "")).strip()
     reason = str(change.get("reason") or "AI state update")
     operation = str(change.get("operation") or "set")
-    has_delta = "delta" in change
+    has_delta = "delta" in change or (operation == "delta" and "value" in change)
+    delta_value = change.get("delta", change.get("value"))
     value = change.get("value")
 
     if field in NUMERIC_PLAYER_FIELDS:
         old_value = float(pc.get(field) or 0)
-        new_value = old_value + float(change["delta"]) if has_delta else float(value)
+        new_value = old_value + float(delta_value) if has_delta else float(value)
         if field in {"health", "qi"}:
             max_field = f"max_{field}"
             max_value = pc.get(max_field)
             if max_value is not None:
                 new_value = min(new_value, float(max_value))
             new_value = max(0.0, new_value)
+        elif field == "effect_points":
+            new_value = max(0.0, new_value)
         pc[field] = int(new_value) if new_value.is_integer() else new_value
+        sync_player_resource_mirror(root, str(entity_id), field, pc[field], dry_run)
         return f"{entity_id} {field}: {old_value:g} -> {new_value:g} ({reason})"
 
     if field.startswith("stats."):
@@ -345,7 +484,7 @@ def apply_player_state_change(
             return f"{entity_id}: empty stats field"
         stats = pc.setdefault("stats", {})
         old_value = float(stats.get(stat) or 0)
-        new_value = old_value + float(change["delta"]) if has_delta else float(value)
+        new_value = old_value + float(delta_value) if has_delta else float(value)
         stats[stat] = int(new_value) if new_value.is_integer() else new_value
         return f"{entity_id} stats.{stat}: {old_value:g} -> {new_value:g} ({reason})"
 
@@ -384,8 +523,11 @@ def apply_player_state_change(
 
     if field in {"system_rank", "effect_points"}:
         old_value = float(pc.get(field) or 0)
-        new_value = old_value + float(change["delta"]) if has_delta else float(value)
+        new_value = old_value + float(delta_value) if has_delta else float(value)
+        if field == "effect_points":
+            new_value = max(0.0, new_value)
         pc[field] = int(new_value) if new_value.is_integer() else new_value
+        sync_player_resource_mirror(root, str(entity_id), field, pc[field], dry_run)
         return f"{entity_id} {field}: {old_value:g} -> {new_value:g} ({reason})"
 
     if field == "special_effects":
@@ -416,9 +558,31 @@ def memory_graph_path_for(root: Path, npc_id: str) -> Path:
     return root / "campaign" / "npcs" / f"{npc_id}.memory_graph.json"
 
 
+def canonical_npc_id(value: Any) -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return ""
+    if raw.startswith(("npc_", "pc_", "player_")):
+        return raw
+    slug = re.sub(r"[^0-9A-Za-z_]+", "_", raw).strip("_").lower()
+    if not slug:
+        slug = "unknown"
+    return f"npc_{slug}"
+
+
 
 def profile_path_for(root: Path, npc_id: str) -> Path:
     return root / "campaign" / "npcs" / f"{npc_id}.yaml"
+
+
+def read_profile_location(profile_path: Path) -> str:
+    if not profile_path.exists():
+        return ""
+    for line in read_text(profile_path).splitlines():
+        stripped = line.strip()
+        if stripped.startswith(("location_id:", "location:")):
+            return stripped.split(":", 1)[1].strip().strip('"').strip("'")
+    return ""
 
 
 def create_minimal_npc_profile(
@@ -500,6 +664,7 @@ def normalize_memory_write(write: dict[str, Any]) -> dict[str, Any]:
     content = str(content or "").strip()
 
     normalized = dict(write)
+    normalized["npc_id"] = canonical_npc_id(write.get("npc_id"))
     normalized["memory"] = content
     normalized["memory_type"] = (
         write.get("memory_type")
@@ -514,6 +679,7 @@ def normalize_memory_write(write: dict[str, Any]) -> dict[str, Any]:
         "source",
         "tier",
         "visibility_path",
+        "visibility_evidence",
         "location_id",
         "related_entities",
     ):
@@ -522,6 +688,33 @@ def normalize_memory_write(write: dict[str, Any]) -> dict[str, Any]:
             if value not in (None, "", []):
                 normalized[key] = value
     return normalized
+
+
+def memory_visibility_evidence_errors(write: dict[str, Any], index_label: str) -> list[str]:
+    errors: list[str] = []
+    evidence = write.get("visibility_evidence")
+    if not isinstance(evidence, dict):
+        return [f"{index_label} missing visibility_evidence"]
+    ev_observer = canonical_npc_id(evidence.get("observer_id"))
+    write_npc = canonical_npc_id(write.get("npc_id"))
+    if ev_observer != write_npc:
+        errors.append(f"{index_label} visibility_evidence observer_id must match npc_id")
+    if evidence.get("memory_allowed") is not True:
+        errors.append(f"{index_label} visibility_evidence memory_allowed must be true")
+    if evidence.get("visibility_path") != write.get("visibility_path"):
+        errors.append(f"{index_label} visibility_evidence visibility_path must match write visibility_path")
+    for field in ("event_id", "subjective_summary", "allowed_memory_scope", "forbidden_memory_scope"):
+        if field not in evidence:
+            errors.append(f"{index_label} visibility_evidence missing: {field}")
+    memory_text = re.sub(r"\s+", " ", str(write.get("memory") or "")).strip()
+    subjective_summary = re.sub(r"\s+", " ", str(evidence.get("subjective_summary") or "")).strip()
+    if subjective_summary and memory_text != subjective_summary:
+        errors.append(f"{index_label} memory must exactly match visibility_evidence subjective_summary")
+    if not isinstance(evidence.get("allowed_memory_scope"), list):
+        errors.append(f"{index_label} visibility_evidence allowed_memory_scope must be a list")
+    if not isinstance(evidence.get("forbidden_memory_scope"), list):
+        errors.append(f"{index_label} visibility_evidence forbidden_memory_scope must be a list")
+    return errors
 
 
 def load_memory_graph(path: Path, npc_id: str, current_turn: int) -> dict[str, Any]:
@@ -607,16 +800,24 @@ def apply_patch(
         entity_id = loc_change["entity_id"]
         new_location = loc_change["to"]
         old_location = loc_change.get("from", "?")
+        ensure_minimal_location_file(
+            root,
+            new_location,
+            loc_change.get("reason", "location change"),
+            dry_run,
+        )
 
         changed = False
+        is_player_entity = False
         # Update in player_characters
         for pc in campaign.get("player_characters", []):
             if pc.get("id") == entity_id:
+                is_player_entity = True
                 pc["location_id"] = new_location
                 changed = True
                 # When a player character moves, update the current scene location
                 current_scene = campaign.setdefault("current_scene", {})
-                if old_location != new_location and str(entity_id).startswith("player"):
+                if old_location != new_location:
                     current_scene["location_id"] = new_location
                     current_scene["present_entities"] = [entity_id]
                     current_scene["summary"] = f"玩家抵达{new_location}。"
@@ -628,7 +829,7 @@ def apply_patch(
         # Update in current_scene if present_entities contain this entity (non-player entities)
         current_scene = campaign.get("current_scene", {})
         present = current_scene.get("present_entities", [])
-        if entity_id in present and not str(entity_id).startswith("player"):
+        if entity_id in present and not is_player_entity:
             if old_location != new_location:
                 # Remove from present if moving away from current scene
                 current_scene["present_entities"] = [e for e in present if e != entity_id]
@@ -656,6 +857,28 @@ def apply_patch(
         item_id = inv["item_id"]
         change_type = inv["change"]
         found = False
+        if item_id in CURRENCY_ITEM_FIELDS and change_type in {"gain", "lose", "consume"}:
+            amount = parse_quantity_from_text(
+                inv.get("quantity"),
+                inv.get("amount"),
+                inv.get("evidence"),
+                item_id,
+            )
+            delta = -amount if change_type in {"lose", "consume"} else amount
+            report["inventory"].append(
+                apply_resource_change(
+                    root,
+                    owner_id,
+                    item_id,
+                    amount,
+                    "delta",
+                    inv.get("evidence", "currency change"),
+                    True,
+                    delta,
+                    dry_run,
+                )
+            )
+            continue
 
         for pc in campaign.get("player_characters", []):
             if pc.get("id") == owner_id:
@@ -801,6 +1024,10 @@ def apply_patch(
         if not write.get("memory"):
             report["errors"].append(f"npc_memory_writes entry missing memory content: {raw_write}")
             continue
+        evidence_errors = memory_visibility_evidence_errors(write, "npc_memory_writes entry")
+        if evidence_errors:
+            report["errors"].extend(evidence_errors)
+            continue
 
         npc_id = write["npc_id"]
         mem_path = memory_graph_path_for(root, npc_id)
@@ -813,11 +1040,23 @@ def apply_patch(
 
         # Auto-create minimal NPC profile for ad-hoc / dynamically generated NPCs
         profile_path = profile_path_for(root, npc_id)
+        profile_location = read_profile_location(profile_path)
         if not profile_path.exists():
             create_minimal_npc_profile(root, npc_id, location_id, write["memory"])
+            profile_location = location_id
             report["memories"].append(
                 f"[NEW NPC PROFILE] {npc_id}: auto-created minimal profile"
             )
+        if (
+            isinstance(scene, dict)
+            and location_id not in ("", "unknown")
+            and profile_location == location_id
+            and str(write.get("visibility_path", "")).strip().lower() not in ("", "none")
+        ):
+            present = scene.setdefault("present_entities", [])
+            if isinstance(present, list) and npc_id not in present:
+                present.append(npc_id)
+                report["locations"].append(f"{npc_id} added to current scene from memory visibility")
 
         # Determine importance from salience and emotional_valence
         salience_val = clamp_float(write.get("salience"), 0.5)
@@ -846,6 +1085,7 @@ def apply_patch(
             "contradicted_by": None,
             "related_entities": write.get("related_entities", [npc_id, location_id]),
             "visibility_path": write.get("visibility_path", ""),
+            "visibility_evidence": write.get("visibility_evidence", {}),
             "observed_at": observed_at,
             "location_id": location_id,
         }
@@ -883,6 +1123,13 @@ def apply_patch(
         mem_path = memory_graph_path_for(root, npc_id)
         graph = load_memory_graph(mem_path, npc_id, current_turn)
         graph.setdefault("interpretation_nodes", [])
+        memory_ids = {item.get("id") for item in graph.get("memory_nodes", [])}
+        source_memory_id = interpretation.get("derived_from_memory_id")
+        if source_memory_id not in memory_ids:
+            report["errors"].append(
+                f"{interpretation['id']}: derived_from_memory_id not found for {npc_id}: {source_memory_id}"
+            )
+            continue
 
         existing = {
             item.get("id"): index
@@ -924,6 +1171,22 @@ def apply_patch(
         mem_path = memory_graph_path_for(root, npc_id)
         graph = load_memory_graph(mem_path, npc_id, current_turn)
         graph.setdefault("understanding_nodes", [])
+        memory_ids = {item.get("id") for item in graph.get("memory_nodes", [])}
+        interpretation_ids = {item.get("id") for item in graph.get("interpretation_nodes", [])}
+        missing_memories = [
+            item for item in understanding.get("supporting_memory_ids", []) if item not in memory_ids
+        ]
+        missing_interpretations = [
+            item
+            for item in understanding.get("supporting_interpretation_ids", [])
+            if item not in interpretation_ids
+        ]
+        if missing_memories or missing_interpretations:
+            report["errors"].append(
+                f"{understanding['id']}: missing provenance for {npc_id}: "
+                f"memories={missing_memories}, interpretations={missing_interpretations}"
+            )
+            continue
 
         existing = {
             item.get("id"): index
@@ -965,6 +1228,20 @@ def apply_patch(
         mem_path = memory_graph_path_for(root, npc_id)
         graph = load_memory_graph(mem_path, npc_id, current_turn)
         graph.setdefault("revision_events", [])
+        understanding_ids = {item.get("id") for item in graph.get("understanding_nodes", [])}
+        interpretation_ids = {item.get("id") for item in graph.get("interpretation_nodes", [])}
+        target_understanding_id = revision.get("target_understanding_id")
+        missing_source_interpretations = [
+            item
+            for item in revision.get("source_interpretation_ids", [])
+            if item not in interpretation_ids
+        ]
+        if target_understanding_id not in understanding_ids or missing_source_interpretations:
+            report["errors"].append(
+                f"{revision['id']}: missing revision provenance for {npc_id}: "
+                f"target={target_understanding_id}, source_interpretations={missing_source_interpretations}"
+            )
+            continue
 
         existing = {
             item.get("id"): index
@@ -978,6 +1255,59 @@ def apply_patch(
             action = "appended"
 
         graph["current_turn"] = current_turn
+
+        # V02 fix: apply revision effect to the target understanding node
+        effect = revision.get("effect", "no_change")
+        evidence_strength = float(revision.get("evidence_strength", 0.0))
+        new_status = revision.get("new_status")
+
+        for idx, node in enumerate(graph.get("understanding_nodes", [])):
+            if node.get("id") != target_understanding_id:
+                continue
+            old_confidence = float(node.get("confidence", 0.5))
+            old_stability = float(node.get("stability", 0.5))
+
+            if effect == "supports":
+                node["confidence"] = round(min(1.0, old_confidence + evidence_strength * (1 - old_confidence) * 0.6), 4)
+                node["stability"] = round(min(1.0, old_stability + evidence_strength * 0.2), 4)
+            elif effect == "weakens":
+                node["confidence"] = round(max(0.0, old_confidence - evidence_strength * (1 - old_stability * 0.5)), 4)
+                node["stability"] = round(max(0.0, old_stability - evidence_strength * 0.2), 4)
+                if new_status:
+                    node["revision_status"] = new_status
+            elif effect == "contradicts":
+                node["confidence"] = round(max(0.0, old_confidence - evidence_strength * (1 - old_stability * 0.3)), 4)
+                node["stability"] = round(max(0.0, old_stability - evidence_strength * 0.3), 4)
+                node["revision_status"] = "contested"
+            elif effect in ("qualifies", "reframes"):
+                node["revision_status"] = "contested"
+                if revision.get("reason"):
+                    node.setdefault("qualifying_notes", []).append(revision["reason"][:200])
+            elif effect == "supersedes":
+                node["revision_status"] = "superseded"
+                node["superseded_by"] = revision.get("new_understanding_id")
+            elif effect == "splits":
+                node["revision_status"] = "superseded"
+            # no_change: nothing
+
+            if new_status and effect not in ("contradicts",):
+                node["revision_status"] = new_status
+
+            node["last_updated_turn"] = current_turn
+            node["version"] = int(node.get("version", 1)) + 1
+
+            revision["_applied"] = True
+            revision["_old_confidence"] = old_confidence
+            revision["_new_confidence"] = node["confidence"]
+            revision["_old_stability"] = old_stability
+            revision["_new_stability"] = node["stability"]
+            break
+        else:
+            # understanding node referenced but not in graph's understanding_nodes
+            report.setdefault("errors", []).append(
+                f"{revision['id']}: target understanding {target_understanding_id} not found in understanding_nodes for {npc_id}"
+            )
+
         if not dry_run:
             save_json(mem_path, graph)
 
@@ -1005,15 +1335,43 @@ def apply_patch(
     # 9. Open threads
     ensure_campaign_field(campaign, "open_threads", [])
     for thread in patch.get("open_threads", []):
-        thread_id = f"open_thread_{len(campaign['open_threads']) + 1:04d}"
-        campaign["open_threads"].append({
-            "id": thread_id,
-            "description": thread["thread"],
-            "next_pressure": thread["next_pressure"],
-            "created_turn": current_turn,
-            "status": "active",
-        })
-        report["threads"].append(f"[{thread_id}] {thread['thread']}")
+        description = str(thread["thread"]).strip()
+        next_pressure = str(thread["next_pressure"]).strip()
+        existing_thread = next(
+            (
+                item
+                for item in reversed(campaign["open_threads"])
+                if isinstance(item, dict)
+                and item.get("status", "active") == "active"
+                and str(item.get("description", "")).strip() == description
+            ),
+            None,
+        )
+        if existing_thread:
+            thread_id = str(existing_thread.get("id"))
+            existing_thread["next_pressure"] = next_pressure
+            existing_thread["updated_turn"] = current_turn
+            thread_action = "updated"
+        else:
+            thread_id = f"open_thread_{len(campaign['open_threads']) + 1:04d}"
+            campaign["open_threads"].append({
+                "id": thread_id,
+                "description": description,
+                "next_pressure": next_pressure,
+                "created_turn": current_turn,
+                "status": "active",
+            })
+            thread_action = "added"
+        scene = campaign.get("current_scene")
+        if isinstance(scene, dict):
+            scene.setdefault("active_threads", [])
+            if isinstance(scene["active_threads"], list) and thread_id not in scene["active_threads"]:
+                scene["active_threads"].append(thread_id)
+        report["threads"].append(f"[{thread_id}] {thread_action}: {description}")
+    prune_active_threads(campaign, current_turn, report)
+
+    if not dry_run:
+        campaign["current_turn"] = current_turn + 1
 
     # Write campaign_state.json
     if not dry_run:
@@ -1027,6 +1385,7 @@ def apply_patch(
         entry = (
             f"\n## Patch applied at {timestamp}\n\n"
             f"- Turn: {current_turn}\n"
+            f"- Next turn: {current_turn + 1}\n"
             f"- Time delta: {delta_str}\n"
             f"- Player state changes: {len(patch.get('player_state_changes', []))}\n"
             f"- NPC memories written: {len(npc_writes)}\n"
@@ -1113,6 +1472,7 @@ def validate_patch_structure(patch: dict[str, Any]) -> list[str]:
         mt = write.get("memory_type", "")
         if mt and mt not in VALID_MEM_TYPES:
             errors.append(f"npc_memory_writes[{i}] invalid memory_type: {mt}")
+        errors.extend(memory_visibility_evidence_errors(write, f"npc_memory_writes[{i}]"))
 
     # Validate npc_memory_writes have required sub-fields
     for i, write in enumerate(patch.get("npc_memory_writes", [])):
@@ -1124,6 +1484,7 @@ def validate_patch_structure(patch: dict[str, Any]) -> list[str]:
             "memory_type",
             "source",
             "visibility_path",
+            "visibility_evidence",
             "confidence",
             "emotional_valence",
             "salience",
