@@ -1,9 +1,9 @@
 {
   "campaign_id": "paotuan_demo",
   "title": "未命名战役",
-  "current_turn": 19,
-  "current_time": "第 1 日 22:36",
-  "_time_tick": 1356,
+  "current_turn": 20,
+  "current_time": "第 1 日 22:41",
+  "_time_tick": 1361,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "zone_dock_shadow",
@@ -13,14 +13,14 @@
     ],
     "active_threads": [
       "thread_black_lantern_deal",
-      "open_thread_0037",
-      "open_thread_0039",
       "open_thread_0040",
-      "open_thread_0041",
-      "open_thread_0042",
       "open_thread_0043",
       "open_thread_0044",
-      "open_thread_0045"
+      "open_thread_0045",
+      "open_thread_0046",
+      "open_thread_0047",
+      "open_thread_0048",
+      "open_thread_0049"
     ]
   },
   "player_characters": [
@@ -40,11 +40,11 @@
       ],
       "conditions": [],
       "stats": {
-        "combat": 5,
+        "combat": 6,
         "perception": 4,
         "social": 2
       },
-      "effect_points": 6,
+      "effect_points": 8,
       "system_rank": 3
     }
   ],
@@ -379,7 +379,9 @@
       "description": "水下潜伏者",
       "next_pressure": "如果水下潜伏者是黑灯会先遣人员，他可能已经游到对岸或绕到其他位置，向黑灯会主力发出信号。你的暴露可能加速交易提前。",
       "created_turn": 15,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 19,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0038",
@@ -395,7 +397,9 @@
       "description": "thread_black_lantern_deal",
       "next_pressure": "黑灯会预计23:00抵达，但可能提前；账房B随时可能前往栈桥或迎接黑灯会；巡夜人A即将开始新一轮巡逻。",
       "created_turn": 16,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 19,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0040",
@@ -409,14 +413,18 @@
       "description": "栈桥末端水面下潜伏的未知人物或生物",
       "next_pressure": "潜伏者已察觉玩家，可能主动攻击或发出信号",
       "created_turn": 17,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 19,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0042",
       "description": "账房B离开仓库后去向不明",
       "next_pressure": "账房B可能已与黑灯会会合，或正在栈桥附近暗中观察",
       "created_turn": 17,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 19,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0043",
@@ -437,6 +445,34 @@
       "description": "黑灯会主力已经抵达旧码头区域，交易倒计时已达6/6，交易随时可能在任何地点完成。",
       "next_pressure": "如果玩家在5分钟内无法找到交易现场并采取干预行动，交易将完成，黑灯会将转入清理线索和追查米拉的阶段。",
       "created_turn": 18,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0046",
+      "description": "废弃货船交易即将开始，玩家需决定如何干预或观察。",
+      "next_pressure": "黑灯会人员正在向货船集结，交易随时开始，一旦完成则货物和证据消失。",
+      "created_turn": 19,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0047",
+      "description": "账房B持有的油布包裹内容不明，可能包含交易路线或货物清单。",
+      "next_pressure": "账房B即将与巡夜人A汇合，包裹可能被转移或销毁。",
+      "created_turn": 19,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0048",
+      "description": "巡夜人A带来的高大武装人员身份不明，可能是黑灯会的打手或接头人。",
+      "next_pressure": "该人员正在接近栈桥，可能对玩家构成直接威胁。",
+      "created_turn": 19,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0049",
+      "description": "水下潜伏者已撤退至货船，可能已在船下或船上待命，构成水下威胁。",
+      "next_pressure": "潜伏者可能已上船，正在准备接应交易或布置防御。",
+      "created_turn": 19,
       "status": "active"
     }
   ],

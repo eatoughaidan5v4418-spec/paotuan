@@ -43,8 +43,8 @@
       "cooldowns": {}
     },
     "pc_main": {
-      "特效值": 3,
-      "effect_points": 3
+      "特效值": 8,
+      "effect_points": 8
     }
   }
 }
