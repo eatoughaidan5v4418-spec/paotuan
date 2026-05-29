@@ -427,6 +427,13 @@ def collect_context(root: Path, campaign_state: dict[str, Any], memory_limit: in
     if location_text.strip():
         try:
             zones, connections, _ = parse_zones(location_text)
+            # V39: if zone file has no zones, fall back to parent location
+            if (not zones or not connections) and not location_id.startswith('loc_'):
+                parent_path = root / "campaign" / "locations" / "old_dock.yaml"
+                if parent_path.exists() and parent_path != location_path:
+                    fallback_text = read_text_if_exists(parent_path)
+                    if fallback_text.strip():
+                        zones, connections, _ = parse_zones(fallback_text)
             if zones and connections:
                 graph = build_graph(connections)
                 zone_ids = [str(z.get("id")) for z in zones if z.get("id")]
