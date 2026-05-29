@@ -1436,11 +1436,30 @@ def apply_patch(
     consolidation_interval = 5
     turns_since_consolidation = current_turn - int(campaign.get("last_consolidation_turn", 0))
     if turns_since_consolidation >= consolidation_interval:
+        # V32: auto-trigger lightweight consolidation (rerank NPC memories)
+        touched_npc_ids = set()
+        for item in patch.get('npc_memory_writes', []) + patch.get('npc_interpretation_writes', []) + patch.get('npc_understanding_writes', []):
+            if isinstance(item, dict) and item.get('npc_id'):
+                touched_npc_ids.add(item['npc_id'])
+        # Also check recently touched NPCs from report
+        consolidated = 0
+        for npc_id in touched_npc_ids:
+            mem_path = root / 'campaign' / 'npcs' / f'{npc_id}.memory_graph.json'
+            if mem_path.exists():
+                try:
+                    from memory_manager import rerank_memory_graph, load_memory_graph, save_memory_graph
+                    graph = load_memory_graph(mem_path)
+                    graph = rerank_memory_graph(graph)
+                    graph['last_rerank_turn'] = current_turn
+                    if not dry_run:
+                        save_memory_graph(mem_path, graph)
+                    consolidated += 1
+                except Exception:
+                    pass
+        campaign['last_consolidation_turn'] = current_turn
         report.setdefault("consolidation", []).append(
-            f"Consolidation due: {turns_since_consolidation} turns since last consolidation "
-            f"(turn {campaign.get('last_consolidation_turn', 0)} -> {current_turn}). "
-            f"Run prompts/memory-consolidator.md and prompts/understanding-consolidator.md "
-            f"for all NPCs with new memories/interpretations."
+            f"Auto-consolidation: {consolidated} NPC(s) reranked at turn {current_turn} "
+            f"({turns_since_consolidation} turns since last)"
         )
 
     if not dry_run:
