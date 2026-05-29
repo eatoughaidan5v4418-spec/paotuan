@@ -1,102 +1,83 @@
 {
   "session_id": "0001",
-  "generated_at": "2026-05-28T03:50:46.218339+00:00",
+  "generated_at": "2026-05-29T05:38:20.433686+00:00",
   "campaign": {
     "id": "paotuan_demo",
-    "turn": 1,
-    "time": "第 1 日 20:00"
+    "turn": 20,
+    "time": "第 1 日 22:41"
   },
   "scene": {
     "scene_id": "scene_0001",
-    "location_id": "loc_old_dock",
-    "summary": "玩家抵达旧码头，黑灯会交易的传言刚刚浮出水面。",
+    "location_id": "zone_dock_shadow",
+    "summary": "玩家抵达zone_dock_shadow。",
     "present_entities": [
-      "pc_main",
-      "npc_mira"
+      "pc_main"
     ],
     "active_threads": [
-      "thread_black_lantern_deal"
+      "thread_black_lantern_deal",
+      "open_thread_0040",
+      "open_thread_0043",
+      "open_thread_0044",
+      "open_thread_0045",
+      "open_thread_0046",
+      "open_thread_0047",
+      "open_thread_0048",
+      "open_thread_0049"
     ]
   },
-  "active_clocks": [
-    {
-      "id": "clock_black_lantern_deal",
-      "title": "黑灯会旧码头交易",
-      "value": 2,
-      "max": 6,
-      "status": "active"
-    },
-    {
-      "id": "clock_a_patrol_route",
-      "title": "A 的旧码头巡逻",
-      "value": 1,
-      "max": 4,
-      "status": "active"
-    },
-    {
-      "id": "clock_b_ledger_copy",
-      "title": "B 抄写湿掉的货单",
-      "value": 0,
-      "max": 4,
-      "status": "active"
-    },
-    {
-      "id": "clock_river_tide_rises",
-      "title": "河潮上涨",
-      "value": 1,
-      "max": 4,
-      "status": "active"
-    }
-  ],
-  "active_quests": [
-    {
-      "id": "thread_black_lantern_deal",
-      "title": "黑灯会的旧码头交易",
-      "status": "active"
-    }
-  ],
+  "active_clocks": [],
+  "active_quests": [],
   "npc_states": {
     "npc_a_sentry": {
-      "memories": 1,
-      "interpretations": 1,
-      "understandings": 0,
-      "active_beliefs": []
+      "memories": 11,
+      "interpretations": 2,
+      "understandings": 1,
+      "active_beliefs": [
+        "巡夜人A对当前局势的理解：今晚码头比往常安静，仓库的灯光是唯一异常。他决定在门外等候，确认账房B的状态。"
+      ]
     },
     "npc_b_clerk": {
-      "memories": 0,
-      "interpretations": 0,
-      "understandings": 0,
-      "active_beliefs": []
+      "memories": 6,
+      "interpretations": 1,
+      "understandings": 1,
+      "active_beliefs": [
+        "账房B对当前局势的理解：货单异常需要上报，但巡夜人A在门外让他不便行动。他尚未意识到仓库内还有第三个人。"
+      ]
     },
     "npc_mira": {
-      "memories": 3,
-      "interpretations": 2,
-      "understandings": 2,
+      "memories": 14,
+      "interpretations": 4,
+      "understandings": 3,
       "active_beliefs": [
         "涉及黑灯会的情报必须先换取安全保证，再换取钱。",
-        "旧码头的消息通常有价值，但来源混杂，必须留一半余地。"
+        "旧码头的消息通常有价值，但来源混杂，必须留一半余地。",
+        "米拉对当前局势的理解：玩家潜入仓库的时间过长，巡夜人A已靠近，风险正在上升。她需要在暴露前决定是继续等待还是撤离。"
       ]
     }
   },
   "player_characters": [
     {
       "id": "pc_main",
-      "name": "玩家角色",
-      "location_id": "loc_old_dock",
-      "inventory": [],
+      "name": "???",
+      "health": 12,
+      "max_health": 12,
+      "qi": 7,
+      "max_qi": 7,
+      "realm": "炼气三层",
+      "realm_level": 3,
+      "spiritual_root": "?",
+      "location_id": "zone_dock_shadow",
+      "inventory": [
+        "clue_full_note"
+      ],
       "conditions": [],
-      "realm": "未感气",
-      "realm_level": 0,
-      "spiritual_root": "未测",
-      "health": 10,
-      "max_health": 10,
-      "qi": 0,
-      "max_qi": 0,
       "stats": {
-        "combat": 0,
-        "perception": 0,
-        "social": 0
-      }
+        "combat": 6,
+        "perception": 4,
+        "social": 2
+      },
+      "effect_points": 8,
+      "system_rank": 3
     }
   ]
 }
