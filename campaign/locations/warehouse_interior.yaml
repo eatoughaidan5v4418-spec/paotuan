@@ -1,0 +1,8 @@
+id: warehouse_interior
+name: warehouse_interior
+type: auto_created
+summary: "Auto-created after movement: 侧身挤入仓库侧门"
+description: |
+  Auto-created location placeholder for warehouse_interior.
+zones: []
+exits: []

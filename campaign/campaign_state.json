@@ -1,13 +1,13 @@
 {
   "campaign_id": "paotuan_demo",
   "title": "未命名战役",
-  "current_turn": 9,
-  "current_time": "第 1 日 21:10",
-  "_time_tick": 1270,
+  "current_turn": 10,
+  "current_time": "第 1 日 21:15",
+  "_time_tick": 1275,
   "current_scene": {
     "scene_id": "scene_0001",
-    "location_id": "warehouse_east_alley",
-    "summary": "玩家抵达warehouse_east_alley。",
+    "location_id": "warehouse_interior",
+    "summary": "玩家抵达warehouse_interior。",
     "present_entities": [
       "pc_main"
     ],
@@ -17,10 +17,10 @@
       "open_thread_0014",
       "open_thread_0015",
       "open_thread_0016",
-      "open_thread_0017",
       "open_thread_0018",
       "open_thread_0019",
-      "open_thread_0020"
+      "open_thread_0020",
+      "open_thread_0021"
     ]
   },
   "player_characters": [
@@ -34,7 +34,7 @@
       "realm": "炼气二层",
       "realm_level": 2,
       "spiritual_root": "?",
-      "location_id": "warehouse_east_alley",
+      "location_id": "warehouse_interior",
       "inventory": [
         "??",
         "??x3",
@@ -44,10 +44,10 @@
       "conditions": [],
       "stats": {
         "combat": 0,
-        "perception": 0,
+        "perception": 1,
         "social": 0
       },
-      "effect_points": 3,
+      "effect_points": 5,
       "system_rank": 1
     }
   ],
@@ -194,7 +194,9 @@
       "description": "巡夜人A对玩家和米拉的疑心增加，可能主动盘问。",
       "next_pressure": "A已完成休息并开始新一轮巡逻，目前背对玩家但随时可能转身。如果玩家不主动应对，A可能在下一回合直接走向阴影区盘问。",
       "created_turn": 6,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 9,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0018",
@@ -215,6 +217,13 @@
       "description": "账房B发现货单异常，可能通知黑灯会或自行调查，玩家需在B采取行动前获取货单信息或控制局面。",
       "next_pressure": "如果玩家不立即行动，账房B可能在10-20分钟内完成核查并做出决定——要么通知黑灯会，要么修改货单，要么离开仓库去栈桥查看。",
       "created_turn": 8,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0021",
+      "description": "潜入仓库内部，观察账房B的货单异常",
+      "next_pressure": "账房B可能在1-2分钟内做出决定（修改/通知/销毁），巡夜人A将在30秒内经过仓库正面，可能透过窗户看到玩家或账房B的异常动作。",
+      "created_turn": 9,
       "status": "active"
     }
   ],
@@ -345,6 +354,22 @@
       "visibility": "private",
       "source": "AI state extraction",
       "created_turn": 8,
+      "valid": true
+    },
+    {
+      "id": "fact_0017",
+      "text": "账房B在抄写货单时发现了一个数字异常，正在犹豫是否修改。",
+      "visibility": "public",
+      "source": "AI state extraction",
+      "created_turn": 9,
+      "valid": true
+    },
+    {
+      "id": "fact_0018",
+      "text": "玩家已潜入仓库内部，位于木箱和缆绳卷的阴影中，距离账房B的桌子约两丈。",
+      "visibility": "public",
+      "source": "AI state extraction",
+      "created_turn": 9,
       "valid": true
     }
   ],
