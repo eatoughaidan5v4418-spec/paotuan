@@ -1436,24 +1436,24 @@ def apply_patch(
     consolidation_interval = 5
     turns_since_consolidation = current_turn - int(campaign.get("last_consolidation_turn", 0))
     if turns_since_consolidation >= consolidation_interval:
-        # V32: auto-trigger lightweight consolidation (rerank NPC memories)
-        touched_npc_ids = set()
-        for item in patch.get('npc_memory_writes', []) + patch.get('npc_interpretation_writes', []) + patch.get('npc_understanding_writes', []):
-            if isinstance(item, dict) and item.get('npc_id'):
-                touched_npc_ids.add(item['npc_id'])
-        # Also check recently touched NPCs from report
+        # V32: auto-trigger lightweight consolidation (rerank all NPC memories)
         consolidated = 0
-        for npc_id in touched_npc_ids:
-            mem_path = root / 'campaign' / 'npcs' / f'{npc_id}.memory_graph.json'
-            if mem_path.exists():
+        npc_dir = root / 'campaign' / 'npcs'
+        if npc_dir.exists():
+            try:
+                from tools.memory_manager import rerank_memory_graph, load_memory_graph, save_memory_graph
+            except ImportError:
+                from memory_manager import rerank_memory_graph, load_memory_graph, save_memory_graph
+            for mem_path in sorted(npc_dir.glob('*.memory_graph.json')):
                 try:
-                    from memory_manager import rerank_memory_graph, load_memory_graph, save_memory_graph
                     graph = load_memory_graph(mem_path)
-                    graph = rerank_memory_graph(graph)
-                    graph['last_rerank_turn'] = current_turn
-                    if not dry_run:
-                        save_memory_graph(mem_path, graph)
-                    consolidated += 1
+                    last_rerank = graph.get('last_rerank_turn', 0)
+                    if current_turn - last_rerank >= consolidation_interval and graph.get('memory_nodes'):
+                        graph = rerank_memory_graph(graph)
+                        graph['last_rerank_turn'] = current_turn
+                        if not dry_run:
+                            save_memory_graph(mem_path, graph)
+                        consolidated += 1
                 except Exception:
                     pass
         campaign['last_consolidation_turn'] = current_turn

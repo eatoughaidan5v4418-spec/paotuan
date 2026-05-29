@@ -2,7 +2,7 @@ id: npc_b_clerk
 name: B
 role: 码头账房
 faction: faction_unaligned_brokers
-location_id: loc_old_dock
+location_id: offscreen
 public_face: "躲在账房小屋里清点湿掉的货单。"
 core_desire: "保住账本，不被今晚的麻烦牵连。"
 fear: "账本落到黑灯会或巡夜人手里。"
