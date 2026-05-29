@@ -709,7 +709,10 @@ def run_worldgen(config: GameConfig, theme: str, target_root: Path, force: bool)
     if config.model == "__mock__":
         world = fallback_worldgen(theme)
     else:
-        prompt = read_text(config.root / "prompts" / "worldgen-runner.md")
+        prompt_path = config.root / "prompts" / "worldgen-runner.md"
+        if not prompt_path.exists():
+            prompt_path = PROJECT_ROOT / "prompts" / "worldgen-runner.md"
+        prompt = read_text(prompt_path)
         raw = call_chat_api(
             config,
             [
