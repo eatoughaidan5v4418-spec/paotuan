@@ -1,0 +1,8 @@
+id: wrecked_cargo_boat_east
+name: wrecked_cargo_boat_east
+type: auto_created
+summary: "Auto-created after movement: 被火折子惊动，解绳后向废弃货船撤退"
+description: |
+  Auto-created location placeholder for wrecked_cargo_boat_east.
+zones: []
+exits: []

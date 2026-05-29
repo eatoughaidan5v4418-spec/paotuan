@@ -1,9 +1,9 @@
 {
   "campaign_id": "paotuan_demo",
   "title": "未命名战役",
-  "current_turn": 18,
-  "current_time": "第 1 日 22:31",
-  "_time_tick": 1351,
+  "current_turn": 19,
+  "current_time": "第 1 日 22:36",
+  "_time_tick": 1356,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "zone_dock_shadow",
@@ -13,14 +13,14 @@
     ],
     "active_threads": [
       "thread_black_lantern_deal",
-      "open_thread_0032",
-      "open_thread_0033",
       "open_thread_0037",
-      "open_thread_0038",
       "open_thread_0039",
       "open_thread_0040",
       "open_thread_0041",
-      "open_thread_0042"
+      "open_thread_0042",
+      "open_thread_0043",
+      "open_thread_0044",
+      "open_thread_0045"
     ]
   },
   "player_characters": [
@@ -41,10 +41,10 @@
       "conditions": [],
       "stats": {
         "combat": 5,
-        "perception": 3,
+        "perception": 4,
         "social": 2
       },
-      "effect_points": 3,
+      "effect_points": 6,
       "system_rank": 3
     }
   ],
@@ -334,14 +334,18 @@
       "description": "账房B的下一步行动：他可能在巡夜人A休息结束后，一同前往栈桥核查货单。",
       "next_pressure": "巡夜人A大约10分钟后开始新一轮巡逻，账房B可能在那时或之后决定行动。如果他在巡逻开始前没有行动，可能选择通知黑灯会。",
       "created_turn": 14,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 18,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0033",
       "description": "黑灯会军火交易：货物实为军火，米拉弟弟失踪可能与此有关。",
       "next_pressure": "黑灯会的人已在路上约35分钟，预计1.5小时内抵达。前哨可能提前到达。",
       "created_turn": 14,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 18,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0034",
@@ -382,7 +386,9 @@
       "description": "账房B的警觉",
       "next_pressure": "如果账房B成功通知黑灯会，黑灯会可能提前抵达或改变交易地点，你的时间窗口将急剧缩短。",
       "created_turn": 15,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 18,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0039",
@@ -410,6 +416,27 @@
       "description": "账房B离开仓库后去向不明",
       "next_pressure": "账房B可能已与黑灯会会合，或正在栈桥附近暗中观察",
       "created_turn": 17,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0043",
+      "description": "水下潜伏者被你惊动后向废弃货船撤退，那里可能是黑灯会的备用接头点或货物藏匿处。",
+      "next_pressure": "如果玩家不尽快追踪或观察废弃货船，潜伏者可能完成交接或销毁证据，交易可能在那艘船上完成。",
+      "created_turn": 18,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0044",
+      "description": "账房B和巡夜人A都进入了高度警戒状态，账房B停在栈桥入口等待指示，巡夜人A已经发出暗号联络黑灯会。",
+      "next_pressure": "如果玩家不立即采取行动，账房B和巡夜人A可能会合后直接前往废弃货船或栈桥末端，封锁玩家的退路并完成交易。",
+      "created_turn": 18,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0045",
+      "description": "黑灯会主力已经抵达旧码头区域，交易倒计时已达6/6，交易随时可能在任何地点完成。",
+      "next_pressure": "如果玩家在5分钟内无法找到交易现场并采取干预行动，交易将完成，黑灯会将转入清理线索和追查米拉的阶段。",
+      "created_turn": 18,
       "status": "active"
     }
   ],
@@ -620,6 +647,30 @@
       "visibility": "public",
       "source": "AI state extraction",
       "created_turn": 16,
+      "valid": true
+    },
+    {
+      "id": "fact_0027",
+      "text": "水下潜伏者被你惊动后向废弃货船方向撤退，那里可能是黑灯会的备用接头点或货物藏匿处。",
+      "visibility": "public",
+      "source": "player_action",
+      "created_turn": 18,
+      "valid": true
+    },
+    {
+      "id": "fact_0028",
+      "text": "账房B跑到栈桥入口后停下，正在等待巡夜人A的进一步指示或黑灯会主力的信号。",
+      "visibility": "public",
+      "source": "AI state extraction",
+      "created_turn": 18,
+      "valid": true
+    },
+    {
+      "id": "fact_0029",
+      "text": "巡夜人A已经用口哨发出暗号联络黑灯会的人，整个码头区域处于高度警戒状态。",
+      "visibility": "public",
+      "source": "AI state extraction",
+      "created_turn": 18,
       "valid": true
     }
   ],

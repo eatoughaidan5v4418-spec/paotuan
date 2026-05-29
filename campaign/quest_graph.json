@@ -3,8 +3,8 @@
     {
       "id": "thread_black_lantern_deal",
       "title": "黑灯会的旧码头交易",
-      "status": "active",
-      "countdown_ticks": 2,
+      "status": "failed",
+      "countdown_ticks": 6,
       "countdown_max": 6,
       "countdown_unit": "小时",
       "failure_consequence": "交易完成，黑灯会获得未知货物，转入追查米拉阶段",
@@ -63,7 +63,8 @@
           "type": "social",
           "requires": []
         }
-      ]
+      ],
+      "clock_id": "clock_black_lantern_deal"
     }
   ]
 }

@@ -2001,17 +2001,41 @@ def run_ai_turn(config: GameConfig, player_action: str, elapsed_minutes: int | N
                                     clock["next_tick_at"] = update.get("next_tick_at", clock.get("next_tick_at", ""))
                                     clock["status"] = "complete" if update.get("new_value", 0) >= clock.get("max_value", 1) else "active"
                         wc_path.write_text(json.dumps(wc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-                        # V36: sync quest countdowns with updated world clocks
+                        # V36: sync quest countdowns with updated world clocks (inline, no fragile import)
                         try:
-                            from run_turn import sync_quest_countdowns_from_clocks, load_json as rt_load
                             qg_path = config.root / "campaign" / "quest_graph.json"
                             if qg_path.exists():
-                                qg = rt_load(qg_path)
+                                qg = json.loads(qg_path.read_text(encoding="utf-8-sig"))
                                 if isinstance(qg, dict):
-                                    quest_updates = sync_quest_countdowns_from_clocks(qg, wc)
-                                    if quest_updates:
-                                        import json as _json
-                                        qg_path.write_text(_json.dumps(qg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                                    clocks_by_id = {str(c.get("id")): c for c in wc.get("clocks", []) if isinstance(c, dict) and c.get("id")}
+                                    changed = False
+                                    for quest in qg.get("quests", []):
+                                        if not isinstance(quest, dict):
+                                            continue
+                                        matched = None
+                                        # Try explicit clock_id, then infer from quest id
+                                        cid = quest.get("clock_id")
+                                        if cid and cid in clocks_by_id:
+                                            matched = clocks_by_id[cid]
+                                        if not matched:
+                                            qid = str(quest.get("id", ""))
+                                            for suffix in ("clock_" + qid, "clock_" + qid.removeprefix("thread_")):
+                                                if suffix in clocks_by_id:
+                                                    matched = clocks_by_id[suffix]
+                                                    quest["clock_id"] = suffix
+                                                    break
+                                        if not matched:
+                                            continue
+                                        old_ticks = quest.get("countdown_ticks")
+                                        new_val = matched.get("value")
+                                        new_max = matched.get("max_value")
+                                        quest["countdown_ticks"] = new_val
+                                        quest["countdown_max"] = new_max
+                                        if matched.get("status") == "complete" and quest.get("status") == "active":
+                                            quest["status"] = "failed"
+                                        changed = True
+                                    if changed:
+                                        qg_path.write_text(json.dumps(qg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
                         except Exception:
                             pass
             except Exception:
