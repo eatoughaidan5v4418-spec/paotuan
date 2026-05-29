@@ -693,6 +693,17 @@ def write_worldgen_files(target_root: Path, world: dict[str, Any], force: bool) 
                         pc.setdefault("health", 10)
                         pc.setdefault("max_health", 10)
                         pc.setdefault("qi", 5)
+                        # V40: enforce character balance constraints
+                        stats = pc.setdefault("stats", {})
+                        for s in ("combat", "perception", "social"):
+                            val = stats.get(s, 0)
+                            if isinstance(val, (int, float)):
+                                stats[s] = max(-1, min(2, int(val)))
+                        # Clamp health to 8-12 range
+                        hp = pc.get("health", 10)
+                        if isinstance(hp, (int, float)) and hp > 12:
+                            pc["health"] = 10
+                            pc["max_health"] = 10
                         pc.setdefault("max_qi", 5)
                         pc.setdefault("realm_level", pc.get("sequence", 1))
                         pc.setdefault("realm", pc.get("path", "unknown"))
