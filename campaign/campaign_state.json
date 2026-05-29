@@ -1,9 +1,9 @@
 {
   "campaign_id": "paotuan_demo",
   "title": "未命名战役",
-  "current_turn": 13,
-  "current_time": "第 1 日 21:35",
-  "_time_tick": 1295,
+  "current_turn": 15,
+  "current_time": "第 1 日 21:50",
+  "_time_tick": 1310,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "zone_dock_shadow",
@@ -13,43 +13,39 @@
     ],
     "active_threads": [
       "thread_black_lantern_deal",
-      "open_thread_0022",
-      "open_thread_0023",
-      "open_thread_0024",
-      "open_thread_0025",
-      "open_thread_0026",
-      "open_thread_0027",
       "open_thread_0028",
-      "open_thread_0029"
+      "open_thread_0030",
+      "open_thread_0031",
+      "open_thread_0032",
+      "open_thread_0033",
+      "open_thread_0034",
+      "open_thread_0035",
+      "open_thread_0036"
     ]
   },
   "player_characters": [
     {
       "id": "pc_main",
       "name": "???",
-      "health": 11,
-      "max_health": 11,
-      "qi": 6,
-      "max_qi": 6,
-      "realm": "炼气二层",
-      "realm_level": 2,
+      "health": 12,
+      "max_health": 12,
+      "qi": 7,
+      "max_qi": 7,
+      "realm": "炼气三层",
+      "realm_level": 3,
       "spiritual_root": "?",
       "location_id": "zone_dock_shadow",
       "inventory": [
-        "??",
-        "??x3",
-        "??",
-        "clue_black_wax",
-        "clue_partial_note"
+        "clue_full_note"
       ],
       "conditions": [],
       "stats": {
-        "combat": 1,
+        "combat": 3,
         "perception": 2,
         "social": 1
       },
-      "effect_points": 12,
-      "system_rank": 1
+      "effect_points": 2,
+      "system_rank": 3
     }
   ],
   "quests": [],
@@ -248,42 +244,54 @@
       "description": "账房B怀中的货单——直接证据但尚未到手。",
       "next_pressure": "账房B可能将货单销毁或转移给黑灯会接头人，若巡夜人A进入仓库，货单可能被查收。",
       "created_turn": 10,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 14,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0023",
       "description": "纸条内容'铜器实为——'——暗示货物真实性质。",
       "next_pressure": "如果账房B回到桌前，他可能发现纸条被移动过，从而意识到有人潜入。",
       "created_turn": 10,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 13,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0024",
       "description": "巡夜人A即将到达侧门外——玩家面临暴露风险。",
       "next_pressure": "巡夜人A可能直接推门查看，或者与账房B交谈，封锁玩家退路。",
       "created_turn": 10,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 13,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0025",
       "description": "纸条的内容是什么？‘铜器实为——’后面的字是什么？这个线索指向什么货物或事件？",
       "next_pressure": "账房B和巡夜人A都在附近，玩家无法立即阅读纸条。如果玩家不尽快离开仓库，暴露风险将急剧上升。",
       "created_turn": 11,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 14,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0026",
       "description": "如何安全离开仓库并与米拉会合？",
       "next_pressure": "巡夜人A随时可能敲门或直接推门进入仓库。账房B也可能决定打开侧门查看外面情况。米拉在外望风，但她的耐心正在耗尽。",
       "created_turn": 11,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 14,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0027",
       "description": "账房B怀里的货单上写了什么异常？",
       "next_pressure": "账房B计划将货单上报给上级，如果他在玩家离开前完成上报，玩家将失去获取该情报的机会，且黑灯会可能提前警觉。",
       "created_turn": 11,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 14,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0028",
@@ -297,6 +305,57 @@
       "description": "账房B的下一步行动",
       "next_pressure": "账房B可能在10-20分钟内做出决定，若他选择通知黑灯会，将加速交易进程。",
       "created_turn": 12,
+      "status": "dormant",
+      "archived_turn": 14,
+      "archive_reason": "superseded by newer active threads"
+    },
+    {
+      "id": "open_thread_0030",
+      "description": "黑灯会的军火来源何处？他们背后是否有更大的势力？",
+      "next_pressure": "如果不在交易前查清来源，交易完成后军火流向将无法追踪。",
+      "created_turn": 13,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0031",
+      "description": "米拉的弟弟失踪与军火交易有关，他是否还活着？是否被关押在某个地方？",
+      "next_pressure": "随着交易时间逼近，如果米拉弟弟还活着并被关押，他可能被转移或灭口。",
+      "created_turn": 13,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0032",
+      "description": "账房B的下一步行动：他可能在巡夜人A休息结束后，一同前往栈桥核查货单。",
+      "next_pressure": "巡夜人A大约10分钟后开始新一轮巡逻，账房B可能在那时或之后决定行动。如果他在巡逻开始前没有行动，可能选择通知黑灯会。",
+      "created_turn": 14,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0033",
+      "description": "黑灯会军火交易：货物实为军火，米拉弟弟失踪可能与此有关。",
+      "next_pressure": "黑灯会的人已在路上约35分钟，预计1.5小时内抵达。前哨可能提前到达。",
+      "created_turn": 14,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0034",
+      "description": "米拉对黑灯会内部流程的了解：她似乎知道账房B不会单独行动等细节。",
+      "next_pressure": "米拉可能隐瞒了她与黑灯会的某些联系或经历。可以进一步追问。",
+      "created_turn": 14,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0035",
+      "description": "巡夜人A的巡逻节奏：他已完成本轮，正在休息，约10分钟后开始下一轮。",
+      "next_pressure": "10分钟后巡夜人A开始新一轮巡逻，届时仓库和主码头区域将再次被覆盖。",
+      "created_turn": 14,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0036",
+      "description": "河潮上涨：水位已淹没低洼处，栈桥末端木板已没入水中。",
+      "next_pressure": "河潮上涨可能淹没栈桥上的脚印和证据，也可能影响在栈桥设伏或行动的安全性。",
+      "created_turn": 14,
       "status": "active"
     }
   ],
@@ -483,6 +542,14 @@
       "visibility": "public",
       "source": "AI state extraction",
       "created_turn": 12,
+      "valid": true
+    },
+    {
+      "id": "fact_0024",
+      "text": "黑灯会的交易货物实际上是军火，而非铜器。纸条上写有'铜器实为——军火'。",
+      "visibility": "known_to_player",
+      "source": "AI state extraction",
+      "created_turn": 13,
       "valid": true
     }
   ],

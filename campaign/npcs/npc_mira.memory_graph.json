@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_mira",
-  "current_turn": 11,
+  "current_turn": 14,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -24,7 +24,7 @@
         "faction_black_lantern",
         "secret_mira_sold_black_lantern_info"
       ],
-      "score": 0.7798
+      "score": 0.7699
     },
     {
       "id": "mem_npc_mira_0006",
@@ -62,7 +62,7 @@
       },
       "observed_at": "第 1 日 20:25",
       "location_id": "loc_old_dock",
-      "score": 0.7175
+      "score": 0.7058
     },
     {
       "id": "mem_npc_mira_0007",
@@ -101,7 +101,7 @@
       },
       "observed_at": "第 1 日 20:35",
       "location_id": "loc_old_dock",
-      "score": 0.6827
+      "score": 0.6698
     },
     {
       "id": "mem_mira_0001",
@@ -124,7 +124,7 @@
         "loc_old_dock",
         "faction_black_lantern"
       ],
-      "score": 0.6168
+      "score": 0.607
     },
     {
       "id": "mem_npc_mira_0005",
@@ -163,7 +163,7 @@
       },
       "observed_at": "第 1 日 20:15",
       "location_id": "loc_old_dock",
-      "score": 0.5832
+      "score": 0.5725
     },
     {
       "id": "mem_npc_mira_0008",
@@ -201,7 +201,95 @@
       },
       "observed_at": "第 1 日 20:45",
       "location_id": "zone_dock_entrance",
-      "score": 0.54
+      "score": 0.5257
+    },
+    {
+      "id": "mem_npc_mira_0013",
+      "type": "episodic",
+      "content": "玩家询问账房B发现货单异常后的行动，我告诉他账房B会去栈桥核查，但可能带人同行。玩家提议去栈桥设伏。",
+      "created_turn": 14,
+      "last_recalled_turn": 14,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.5,
+      "emotional_valence": 0.0,
+      "confidence": 0.6,
+      "source": "inferred",
+      "tier": "dormant",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [],
+      "visibility_path": "inferred",
+      "visibility_evidence": {
+        "observer_id": "npc_mira",
+        "memory_allowed": true,
+        "visibility_path": "inferred",
+        "event_id": "",
+        "subjective_summary": "玩家询问账房B发现货单异常后的行动，我告诉他账房B会去栈桥核查，但可能带人同行。玩家提议去栈桥设伏。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 21:50",
+      "location_id": "zone_dock_shadow",
+      "score": 0.455
+    },
+    {
+      "id": "mem_npc_mira_0012",
+      "type": "episodic",
+      "content": "玩家递给我一张纸条，上面写着'铜器实为——军火'。这意味着黑灯会走私的是武器，而不是普通货物。我弟弟如果真的是因为撞见这个才失踪的……",
+      "created_turn": 13,
+      "last_recalled_turn": 13,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.5,
+      "emotional_valence": 0.0,
+      "confidence": 0.6,
+      "source": "inferred",
+      "tier": "dormant",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [],
+      "visibility_path": "inferred",
+      "visibility_evidence": {
+        "observer_id": "npc_mira",
+        "memory_allowed": true,
+        "visibility_path": "inferred",
+        "event_id": "",
+        "subjective_summary": "玩家递给我一张纸条，上面写着'铜器实为——军火'。这意味着黑灯会走私的是武器，而不是普通货物。我弟弟如果真的是因为撞见这个才失踪的……",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 21:40",
+      "location_id": "zone_dock_shadow",
+      "score": 0.4435
+    },
+    {
+      "id": "mem_mira_0002",
+      "type": "semantic",
+      "content": "旧码头北侧废仓库有一扇卡住的侧门，瘦小的人可以挤进去。",
+      "created_turn": 0,
+      "last_recalled_turn": 1,
+      "recall_count": 1,
+      "importance": 0.46,
+      "salience": 0.55,
+      "emotional_valence": 0,
+      "confidence": 0.95,
+      "source": "saw",
+      "tier": "dormant",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "loc_old_dock",
+        "feature_warehouse_side_door"
+      ],
+      "score": 0.428
     },
     {
       "id": "mem_npc_mira_0011",
@@ -234,29 +322,7 @@
       },
       "observed_at": "第 1 日 21:30",
       "location_id": "warehouse_interior",
-      "score": 0.455
-    },
-    {
-      "id": "mem_mira_0002",
-      "type": "semantic",
-      "content": "旧码头北侧废仓库有一扇卡住的侧门，瘦小的人可以挤进去。",
-      "created_turn": 0,
-      "last_recalled_turn": 1,
-      "recall_count": 1,
-      "importance": 0.46,
-      "salience": 0.55,
-      "emotional_valence": 0,
-      "confidence": 0.95,
-      "source": "saw",
-      "tier": "dormant",
-      "valid": true,
-      "invalid_at_turn": null,
-      "contradicted_by": null,
-      "related_entities": [
-        "loc_old_dock",
-        "feature_warehouse_side_door"
-      ],
-      "score": 0.4378
+      "score": 0.425
     },
     {
       "id": "mem_npc_mira_0010",
@@ -289,7 +355,7 @@
       },
       "observed_at": "第 1 日 21:00",
       "location_id": "zone_dock_entrance",
-      "score": 0.4175
+      "score": 0.3997
     },
     {
       "id": "mem_npc_mira_0009",
@@ -322,7 +388,7 @@
       },
       "observed_at": "第 1 日 20:55",
       "location_id": "zone_dock_entrance",
-      "score": 0.4109
+      "score": 0.395
     },
     {
       "id": "mem_npc_mira_0004",
@@ -358,7 +424,7 @@
       },
       "observed_at": "第 1 日 20:05",
       "location_id": "loc_old_dock",
-      "score": 0.3668
+      "score": 0.357
     }
   ],
   "interpretation_nodes": [

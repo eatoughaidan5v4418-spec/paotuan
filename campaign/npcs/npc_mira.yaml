@@ -32,7 +32,7 @@ secrets:
     text: "米拉曾把黑灯会巡逻路线卖给陌生人。"
 relationship_hooks:
   - target_id: pc_main
-    trust: 0
+    trust: 8.0  # updated by patch (++8): 玩家分享了关键纸条信息，米拉对玩家的信任进一步加深
     fear: 0
     debt: 0
 change_switches:
