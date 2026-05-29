@@ -1,0 +1,8 @@
+id: zone_dock_entrance
+name: zone_dock_entrance
+type: auto_created
+summary: "Auto-created after movement: 玩家移动到最南端第三个栈桥，该栈桥属于码头入口区域的延伸，暂归入zone_dock_entrance"
+description: |
+  Auto-created location placeholder for zone_dock_entrance.
+zones: []
+exits: []

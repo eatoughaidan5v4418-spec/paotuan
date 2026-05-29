@@ -1398,6 +1398,7 @@ def append_inferred_effect_point_rewards(
     ]
 
 
+# REALM_LEVEL_TO_NAME moved to auto-progression section above
 REALM_LEVEL_TO_NAME = {
     1: '炼气一层', 2: '炼气二层', 3: '炼气三层',
     4: '炼气四层', 5: '炼气五层', 6: '炼气六层',
@@ -1534,6 +1535,72 @@ def append_inferred_state_changes_from_narrative(
     return changes, inventory_changes
 
 
+
+# === Auto-progression: ensure effect_points is initialized and check level-ups ===
+
+
+def ensure_effect_points_initialized(campaign_state: dict[str, Any]) -> dict[str, Any]:
+    for pc in campaign_state.get('player_characters', []):
+        if 'effect_points' not in pc:
+            pc['effect_points'] = 0
+        if 'system_rank' not in pc:
+            pc['system_rank'] = 1
+    return campaign_state
+
+
+
+def auto_award_effect_points(patch: dict[str, Any], campaign_state: dict[str, Any]) -> list[dict[str, Any]]:
+    auto_changes = []
+    events = 0
+    # Count significant events
+    events += len(patch.get('new_facts', []))
+    events += len([m for m in patch.get('npc_memory_writes', []) if isinstance(m, dict)])
+    events += len([t for t in patch.get('open_threads', []) if isinstance(t, dict)])
+    if events >= 2:
+        award = min(events // 2, 3)
+        player_id = 'pc_main'
+        for pc in campaign_state.get('player_characters', []):
+            player_id = pc.get('id', 'pc_main')
+            break
+        auto_changes.append({
+            'entity_id': player_id,
+            'field': 'effect_points',
+            'operation': 'delta',
+            'delta': award,
+            'reason': f'auto: {events} significant events in this turn'
+        })
+    return auto_changes
+
+def auto_level_player(campaign_state: dict[str, Any]) -> list[dict[str, Any]]:
+    auto_changes = []
+    for pc in campaign_state.get('player_characters', []):
+        effect = int(pc.get('effect_points', 0) or 0)
+        level = int(pc.get('realm_level', 1) or 1)
+        threshold = level * 5 + 5
+        while effect >= threshold and level < 20:
+            old_level = level
+            level += 1
+            pc['realm_level'] = level
+            pc['effect_points'] = effect - threshold
+            # Auto-sync realm text
+            if level in REALM_LEVEL_TO_NAME:
+                pc['realm'] = REALM_LEVEL_TO_NAME[level]
+            # Auto-gain health and qi
+            pc['max_health'] = int(pc.get('max_health', 10) or 10) + 1
+            pc['health'] = min(int(pc.get('health', 10) or 10) + 1, pc['max_health'])
+            pc['max_qi'] = int(pc.get('max_qi', 5) or 5) + 1
+            pc['qi'] = min(int(pc.get('qi', 5) or 5) + 1, pc['max_qi'])
+            auto_changes.append({
+                'entity_id': pc.get('id', 'pc_main'),
+                'field': 'realm_level',
+                'operation': 'set',
+                'value': level,
+                'reason': f'auto-level: {old_level} -> {level} (effect_points threshold {threshold} reached)'
+            })
+            effect = int(pc.get('effect_points', 0) or 0)
+            threshold = level * 5 + 5
+    return auto_changes
+
 def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: dict[str, Any] | None = None) -> dict[str, Any]:
     patch = dict(DEFAULT_PATCH)
     if isinstance(value, dict):
@@ -1568,6 +1635,25 @@ def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: 
         response,
         packet,
     )
+    # V24: auto-award effect_points based on turn events
+    try:
+        campaign_path2 = PROJECT_ROOT / "campaign" / "campaign_state.json"
+        if campaign_path2.exists():
+            cs2 = json.loads(campaign_path2.read_text(encoding="utf-8-sig"))
+            auto_ep = auto_award_effect_points(patch, cs2)
+            if auto_ep:
+                patch["player_state_changes"] = list(patch.get("player_state_changes", [])) + auto_ep
+    except Exception:
+        pass
+    # V24: ensure effect_points initialized in campaign state
+    campaign_path = PROJECT_ROOT / "campaign" / "campaign_state.json"
+    if campaign_path.exists():
+        try:
+            cs = json.loads(campaign_path.read_text(encoding="utf-8-sig"))
+            cs = ensure_effect_points_initialized(cs)
+            campaign_path.write_text(json.dumps(cs, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        except Exception:
+            pass
     patch["player_state_changes"], patch["inventory_changes"] = append_inferred_state_changes_from_narrative(
         patch["player_state_changes"],
         patch["inventory_changes"],
@@ -1758,6 +1844,18 @@ def run_ai_turn(config: GameConfig, player_action: str, elapsed_minutes: int | N
     patch = normalize_patch(response.get("state_patch"), response, packet)
     try:
         apply_report = apply_state_patch(config, patch)
+        # V24: auto-check progression after state patch is applied
+        if apply_report.get("applied", False):
+            try:
+                cs_path = config.root / "campaign" / "campaign_state.json"
+                cs = json.loads(cs_path.read_text(encoding="utf-8-sig"))
+                cs = ensure_effect_points_initialized(cs)
+                auto_changes = auto_level_player(cs)
+                if auto_changes:
+                    cs_path.write_text(json.dumps(cs, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                    apply_report["auto_level_changes"] = auto_changes
+            except Exception:
+                pass
     except Exception as exc:
         apply_report = {
             "applied": False,

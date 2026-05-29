@@ -1,38 +1,40 @@
 {
   "campaign_id": "paotuan_demo",
   "title": "未命名战役",
-  "current_turn": 3,
-  "current_time": "第 1 日 20:15",
-  "_time_tick": 1215,
+  "current_turn": 8,
+  "current_time": "第 1 日 21:00",
+  "_time_tick": 1260,
   "current_scene": {
     "scene_id": "scene_0001",
-    "location_id": "loc_old_dock",
-    "summary": "玩家抵达旧码头，黑灯会交易的传言刚刚浮出水面。",
+    "location_id": "zone_dock_entrance",
+    "summary": "玩家抵达zone_dock_entrance。",
     "present_entities": [
-      "pc_main",
-      "npc_mira",
-      "npc_a_sentry"
+      "pc_main"
     ],
     "active_threads": [
       "thread_black_lantern_deal",
-      "open_thread_0001",
-      "open_thread_0002",
-      "open_thread_0003",
-      "open_thread_0004"
+      "open_thread_0010",
+      "open_thread_0013",
+      "open_thread_0014",
+      "open_thread_0015",
+      "open_thread_0016",
+      "open_thread_0017",
+      "open_thread_0018",
+      "open_thread_0019"
     ]
   },
   "player_characters": [
     {
       "id": "pc_main",
       "name": "???",
-      "health": 10,
-      "max_health": 10,
-      "qi": 5,
-      "max_qi": 5,
-      "realm": "????",
-      "realm_level": 1,
+      "health": 11,
+      "max_health": 11,
+      "qi": 6,
+      "max_qi": 6,
+      "realm": "炼气二层",
+      "realm_level": 2,
       "spiritual_root": "?",
-      "location_id": "loc_old_dock",
+      "location_id": "zone_dock_entrance",
       "inventory": [
         "??",
         "??x3",
@@ -44,7 +46,9 @@
         "combat": 0,
         "perception": 0,
         "social": 0
-      }
+      },
+      "effect_points": 2,
+      "system_rank": 1
     }
   ],
   "quests": [],
@@ -54,27 +58,154 @@
       "description": "黑灯会预计在23:00于旧码头交易，玩家需要决定是否介入、何时介入以及如何获取更多情报。当前距交易还有约3小时，但线索和NPC态度正在随时间变化。",
       "next_pressure": "如果玩家继续观望而不采取行动，巡夜人A可能完成巡逻并回到仓库门口，账房B可能抄完货单并销毁关键证据，河潮可能冲走木桩缝隙里的封蜡碎片。",
       "created_turn": 1,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 4,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0002",
       "description": "封蜡碎片来源确认",
       "next_pressure": "如果河潮继续上涨，碎片可能被水浸泡导致压印模糊。米拉已经起疑，她可能会主动追问或采取行动。",
       "created_turn": 2,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 5,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0003",
       "description": "米拉的信任与提防",
       "next_pressure": "如果玩家不回应米拉的试探，她可能会认为玩家不可靠，从而减少透露的信息或主动离开。",
       "created_turn": 2,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 5,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0004",
       "description": "巡夜人A的接近",
       "next_pressure": "如果玩家在A抵达主码头前没有采取掩护行动，可能会被直接询问或被迫解释行为。",
       "created_turn": 2,
+      "status": "dormant",
+      "archived_turn": 5,
+      "archive_reason": "superseded by newer active threads"
+    },
+    {
+      "id": "open_thread_0005",
+      "description": "米拉的反应：她认出了封蜡标记，并要求转移到隐蔽处谈话。她愿意提供多少信息取决于你对安全的承诺。",
+      "next_pressure": "巡夜人A正在接近，你们必须在10-20秒内决定位置。一旦巡夜人进入听觉范围，米拉将彻底闭嘴或逃跑。",
+      "created_turn": 3,
+      "status": "dormant",
+      "archived_turn": 6,
+      "archive_reason": "superseded by newer active threads"
+    },
+    {
+      "id": "open_thread_0006",
+      "description": "巡夜人A的怀疑：他注意到你和米拉的异常互动，正在加速接近主码头。他的计划是确认你们在做什么，但不会主动冲突——除非你们试图逃跑或袭击他。",
+      "next_pressure": "A将在15秒内到达主码头边缘，届时你们将不得不面对他的询问或选择回避。",
+      "created_turn": 3,
+      "status": "dormant",
+      "archived_turn": 6,
+      "archive_reason": "superseded by newer active threads"
+    },
+    {
+      "id": "open_thread_0007",
+      "description": "哑巴渡与第三个栈桥",
+      "next_pressure": "距离黑灯会可能提前清场的时间不到2小时，如果玩家不尽快踩点，黑灯会的人可能会先到并占据有利位置。",
+      "created_turn": 4,
+      "status": "dormant",
+      "archived_turn": 6,
+      "archive_reason": "superseded by newer active threads"
+    },
+    {
+      "id": "open_thread_0008",
+      "description": "账房B与货单",
+      "next_pressure": "如果B完成抄写并藏起原件，货单上的关键信息可能永久丢失。巡夜人A在入口处停留的时间越长，B越可能探头查看。",
+      "created_turn": 4,
+      "status": "dormant",
+      "archived_turn": 6,
+      "archive_reason": "superseded by newer active threads"
+    },
+    {
+      "id": "open_thread_0009",
+      "description": "巡夜人A的疑心",
+      "next_pressure": "如果A在入口处再站30秒没有新动作，他可能会转身离开——或者直接朝阴影走来。玩家的下一步行动将决定他的反应。",
+      "created_turn": 4,
+      "status": "dormant",
+      "archived_turn": 6,
+      "archive_reason": "superseded by newer active threads"
+    },
+    {
+      "id": "open_thread_0010",
+      "description": "米拉的去留：她是否还在主码头阴影处等待，还是已经撤离？",
+      "next_pressure": "如果玩家不在10分钟内返回，米拉大概率会撤离，届时将失去她的情报和可能的协助。",
+      "created_turn": 5,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0011",
+      "description": "账房B的异常停顿：他在货单上发现了什么？",
+      "next_pressure": "如果B完成抄写并决定上报或销毁货单，关于货物的直接线索可能永久消失。",
+      "created_turn": 5,
+      "status": "dormant",
+      "archived_turn": 7,
+      "archive_reason": "superseded by newer active threads"
+    },
+    {
+      "id": "open_thread_0012",
+      "description": "栈桥的物理状态：潮水上涨将淹没最远端，影响靠岸和行动",
+      "next_pressure": "大约30分钟后，栈桥最远端将被淹没，届时靠岸点可能转移至栈桥中段，影响伏击或观察计划。",
+      "created_turn": 5,
+      "status": "dormant",
+      "archived_turn": 7,
+      "archive_reason": "superseded by newer active threads"
+    },
+    {
+      "id": "open_thread_0013",
+      "description": "thread_black_lantern_deal",
+      "next_pressure": "距离21:00不到5分钟，交易倒计时将推进到3/6。账房B即将完成货单抄写，可能发现异常收货人并采取行动。巡夜人A已完成休息，开始新一轮巡逻，封锁了主码头入口通道。",
+      "created_turn": 6,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0014",
+      "description": "米拉的真实目的不明，她似乎知道很多内情但有所保留。",
+      "next_pressure": "米拉正在失去耐心，如果玩家不能给出明确计划或取得她的信任，她可能自行撤离。",
+      "created_turn": 6,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0015",
+      "description": "账房B即将完成货单抄写，可能发现异常收货人名字。",
+      "next_pressure": "B的抄写工作接近完成（3/4→4/4），完成后他可能通知某人或销毁证据。",
+      "created_turn": 6,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0016",
+      "description": "河潮即将满值，低洼处的脚印和细小物证将被完全淹没。",
+      "next_pressure": "河潮已接近满值（4/4），下一回合将完全淹没低洼区域，所有未收集的痕迹将永久消失。",
+      "created_turn": 6,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0017",
+      "description": "巡夜人A对玩家和米拉的疑心增加，可能主动盘问。",
+      "next_pressure": "A已完成休息并开始新一轮巡逻，目前背对玩家但随时可能转身。如果玩家不主动应对，A可能在下一回合直接走向阴影区盘问。",
+      "created_turn": 6,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0018",
+      "description": "米拉的弟弟三个月前在旧码头失踪，疑似与黑灯会有关。米拉希望查明真相。",
+      "next_pressure": "如果玩家在今晚的交易事件中无法取得进展，米拉可能会选择独自冒险，导致玩家失去合作者。",
+      "created_turn": 7,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0019",
+      "description": "账房B正在抄写货单，可能已经发现了‘哑巴渡’的名字。他是否会通知黑灯会？",
+      "next_pressure": "账房B的抄写工作将在约10-15分钟后完成（时钟值2/4→4/4），届时他要么销毁货单，要么通知黑灯会。",
+      "created_turn": 7,
       "status": "active"
     }
   ],
@@ -117,6 +248,86 @@
       "visibility": "player_knows",
       "source": "player_action",
       "created_turn": 2,
+      "valid": true
+    },
+    {
+      "id": "fact_0006",
+      "text": "玩家在第1日20:25向米拉展示了黑灯会封蜡碎片，米拉认出标记并要求离开主码头区域谈话。",
+      "visibility": "private",
+      "source": "AI state extraction",
+      "created_turn": 3,
+      "valid": true
+    },
+    {
+      "id": "fact_0007",
+      "text": "接货人叫‘哑巴渡’，是从上游来的水路中间人，将在最南端的第三个栈桥靠岸。",
+      "visibility": "public",
+      "source": "npc_mira",
+      "created_turn": 4,
+      "valid": true
+    },
+    {
+      "id": "fact_0008",
+      "text": "黑灯会习惯在约定时间前提前到场清场。",
+      "visibility": "public",
+      "source": "npc_mira",
+      "created_turn": 4,
+      "valid": true
+    },
+    {
+      "id": "fact_0009",
+      "text": "交易货物不确定，传言包括走私药材、账本或旧军火。",
+      "visibility": "public",
+      "source": "npc_mira",
+      "created_turn": 4,
+      "valid": true
+    },
+    {
+      "id": "fact_0010",
+      "text": "最南端第三个栈桥狭窄、破损，潮水上涨中，远端接近水面，不适合长时间停留或多人行动。",
+      "visibility": "player",
+      "source": "AI state extraction",
+      "created_turn": 5,
+      "valid": true
+    },
+    {
+      "id": "fact_0011",
+      "text": "栈桥入口附近有一堆废弃渔网和木桶残骸，可作为隐蔽观察点，视野覆盖栈桥全段。",
+      "visibility": "player",
+      "source": "AI state extraction",
+      "created_turn": 5,
+      "valid": true
+    },
+    {
+      "id": "fact_0012",
+      "text": "第三条栈桥入口处有新鲜刮痕，方向指向主码头",
+      "visibility": "player",
+      "source": "AI state extraction",
+      "created_turn": 6,
+      "valid": true
+    },
+    {
+      "id": "fact_0013",
+      "text": "第三条栈桥末端支柱有新鲜缆绳摩擦痕迹，麻纤维嵌在木缝中",
+      "visibility": "player",
+      "source": "AI state extraction",
+      "created_turn": 6,
+      "valid": true
+    },
+    {
+      "id": "fact_0014",
+      "text": "河潮已接近满值（4/4），低洼处痕迹被淹没",
+      "visibility": "global",
+      "source": "AI state extraction",
+      "created_turn": 6,
+      "valid": true
+    },
+    {
+      "id": "fact_0015",
+      "text": "米拉的弟弟三个月前在旧码头附近与黑灯会人员接触后失踪，米拉认为他不是意外溺亡，而是被黑灯会带走或杀害。",
+      "visibility": "public",
+      "source": "AI state extraction",
+      "created_turn": 7,
       "valid": true
     }
   ],

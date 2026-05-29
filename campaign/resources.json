@@ -41,6 +41,9 @@
       "stamina": 4,
       "supplies": [],
       "cooldowns": {}
+    },
+    "pc_main": {
+      "特效值": 12
     }
   }
 }
