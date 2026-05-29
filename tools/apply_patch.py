@@ -712,7 +712,7 @@ def memory_visibility_evidence_errors(write: dict[str, Any], index_label: str) -
     return errors
 
 
-def load_memory_graph(path: Path, npc_id: str, current_turn: int) -> dict[str, Any]:
+def load_graph(path: Path, npc_id: str, current_turn: int) -> dict[str, Any]:
     if path.exists():
         try:
             graph = load_json(path)
@@ -1036,7 +1036,7 @@ def apply_patch(
 
         npc_id = write["npc_id"]
         mem_path = memory_graph_path_for(root, npc_id)
-        graph = load_memory_graph(mem_path, npc_id, current_turn)
+        graph = load_graph(mem_path, npc_id, current_turn)
 
         mem_id = next_memory_id(npc_id, graph)
         observed_at = campaign.get("current_time", current_time)
@@ -1146,7 +1146,7 @@ def apply_patch(
     for interpretation in patch.get("npc_interpretation_writes", []):
         npc_id = interpretation["npc_id"]
         mem_path = memory_graph_path_for(root, npc_id)
-        graph = load_memory_graph(mem_path, npc_id, current_turn)
+        graph = load_graph(mem_path, npc_id, current_turn)
         graph.setdefault("interpretation_nodes", [])
         memory_ids = {item.get("id") for item in graph.get("memory_nodes", [])}
         # V29: also check memory IDs being written in the same patch
@@ -1198,7 +1198,7 @@ def apply_patch(
     for understanding in patch.get("npc_understanding_writes", []):
         npc_id = understanding["npc_id"]
         mem_path = memory_graph_path_for(root, npc_id)
-        graph = load_memory_graph(mem_path, npc_id, current_turn)
+        graph = load_graph(mem_path, npc_id, current_turn)
         graph.setdefault("understanding_nodes", [])
         memory_ids = {item.get("id") for item in graph.get("memory_nodes", [])}
         interpretation_ids = {item.get("id") for item in graph.get("interpretation_nodes", [])}
@@ -1255,7 +1255,7 @@ def apply_patch(
     for revision in patch.get("npc_revision_writes", []):
         npc_id = revision["npc_id"]
         mem_path = memory_graph_path_for(root, npc_id)
-        graph = load_memory_graph(mem_path, npc_id, current_turn)
+        graph = load_graph(mem_path, npc_id, current_turn)
         graph.setdefault("revision_events", [])
         understanding_ids = {item.get("id") for item in graph.get("understanding_nodes", [])}
         interpretation_ids = {item.get("id") for item in graph.get("interpretation_nodes", [])}
@@ -1377,7 +1377,7 @@ def apply_patch(
             if not mem_path.exists():
                 continue
             try:
-                graph = load_memory_graph(mem_path, npc_id, current_turn)
+                graph = load_graph(mem_path, npc_id, current_turn)
                 for memory in graph.get("memory_nodes", []):
                     score = memory_score(memory, current_turn, half_life)
                     memory["score"] = score
@@ -1441,18 +1441,18 @@ def apply_patch(
         npc_dir = root / 'campaign' / 'npcs'
         if npc_dir.exists():
             try:
-                from tools.memory_manager import rerank_memory_graph, load_memory_graph, save_memory_graph
+                from tools.memory_manager import rerank, load_graph, save_graph
             except ImportError:
-                from memory_manager import rerank_memory_graph, load_memory_graph, save_memory_graph
+                from memory_manager import rerank, load_graph, save_graph
             for mem_path in sorted(npc_dir.glob('*.memory_graph.json')):
                 try:
-                    graph = load_memory_graph(mem_path)
+                    graph = load_graph(mem_path)
                     last_rerank = graph.get('last_rerank_turn', 0)
                     if current_turn - last_rerank >= consolidation_interval and graph.get('memory_nodes'):
-                        graph = rerank_memory_graph(graph)
+                        graph = rerank(graph)
                         graph['last_rerank_turn'] = current_turn
                         if not dry_run:
-                            save_memory_graph(mem_path, graph)
+                            save_graph(mem_path, graph)
                         consolidated += 1
                 except Exception:
                     pass
