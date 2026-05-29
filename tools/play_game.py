@@ -1571,28 +1571,95 @@ def auto_award_effect_points(patch: dict[str, Any], campaign_state: dict[str, An
         })
     return auto_changes
 
+
+def auto_grow_stats(patch: dict[str, Any], campaign_state: dict[str, Any]) -> list[dict[str, Any]]:
+    auto_changes = []
+    # Determine which stat to grow based on event types
+    facts_count = len(patch.get('new_facts', []))
+    mem_count = len([m for m in patch.get('npc_memory_writes', []) if isinstance(m, dict)])
+    thread_count = len([t for t in patch.get('open_threads', []) if isinstance(t, dict)])
+    total_events = facts_count + mem_count + thread_count
+    if total_events < 3:
+        return auto_changes
+    player_id = 'pc_main'
+    for pc in campaign_state.get('player_characters', []):
+        player_id = pc.get('id', 'pc_main')
+        stats = pc.get('stats', {})
+        # Bias: more facts = perception, more NPC writes = social, more threads = combat
+        if facts_count >= 3 and stats.get('perception', 0) < 10:
+            auto_changes.append({
+                'entity_id': player_id,
+                'field': 'stats.perception',
+                'operation': 'delta',
+                'delta': 1,
+                'reason': f'auto: {facts_count} discoveries this turn'
+            })
+        elif mem_count >= 3 and stats.get('social', 0) < 10:
+            auto_changes.append({
+                'entity_id': player_id,
+                'field': 'stats.social',
+                'operation': 'delta',
+                'delta': 1,
+                'reason': f'auto: {mem_count} NPC interactions this turn'
+            })
+        elif thread_count >= 2 and stats.get('combat', 0) < 10:
+            auto_changes.append({
+                'entity_id': player_id,
+                'field': 'stats.combat',
+                'operation': 'delta',
+                'delta': 1,
+                'reason': f'auto: {thread_count} escalating tensions this turn'
+            })
+        break
+    return auto_changes
+
 def auto_level_player(campaign_state: dict[str, Any]) -> list[dict[str, Any]]:
     auto_changes = []
     for pc in campaign_state.get('player_characters', []):
         effect = int(pc.get('effect_points', 0) or 0)
-        level = int(pc.get('realm_level', 1) or 1)
+        # Worldview-agnostic: use realm_level for cultivation, system_rank for cyberpunk/sci-fi, fallback to generic level
+        level_field = None
+        for field in ('realm_level', 'system_rank', 'level'):
+            if field in pc and pc[field] is not None:
+                level_field = field
+                break
+        if level_field is None:
+            level_field = 'realm_level'
+            pc[level_field] = 1
+        level = int(pc.get(level_field, 1) or 1)
+        max_level = 20
         threshold = level * 5 + 5
-        while effect >= threshold and level < 20:
+        while effect >= threshold and level < max_level:
             old_level = level
             level += 1
-            pc['realm_level'] = level
+            pc[level_field] = level
+            # Also sync alternative field
+            if level_field == 'realm_level':
+                pc['system_rank'] = level
+            elif level_field == 'system_rank':
+                pc['realm_level'] = level
             pc['effect_points'] = effect - threshold
-            # Auto-sync realm text
-            if level in REALM_LEVEL_TO_NAME:
+            # Auto-sync realm/rank text
+            if level_field == 'realm_level' and level in REALM_LEVEL_TO_NAME:
                 pc['realm'] = REALM_LEVEL_TO_NAME[level]
-            # Auto-gain health and qi
-            pc['max_health'] = int(pc.get('max_health', 10) or 10) + 1
-            pc['health'] = min(int(pc.get('health', 10) or 10) + 1, pc['max_health'])
-            pc['max_qi'] = int(pc.get('max_qi', 5) or 5) + 1
-            pc['qi'] = min(int(pc.get('qi', 5) or 5) + 1, pc['max_qi'])
+            elif level_field == 'system_rank':
+                pc['realm'] = f'Rank {level}'
+            # Auto-gain health (worldview-agnostic)
+            max_hp = int(pc.get('max_health', 10) or 10)
+            pc['max_health'] = max_hp + 1
+            pc['health'] = min(int(pc.get('health', max_hp) or max_hp) + 1, pc['max_health'])
+            # Auto-gain qi/mana/energy if present
+            for energy_field in ('max_qi', 'max_mana', 'max_energy', 'max_sanity'):
+                if energy_field in pc and pc[energy_field] is not None:
+                    max_val = int(pc.get(energy_field, 5) or 5)
+                    pc[energy_field] = max_val + 1
+                    short_field = energy_field.replace('max_', '')
+                    cur = int(pc.get(short_field, max_val) or max_val)
+                    pc[short_field] = min(cur + 1, pc[energy_field])
+                    break
             auto_changes.append({
                 'entity_id': pc.get('id', 'pc_main'),
-                'field': 'realm_level',
+                'field': level_field,
                 'operation': 'set',
                 'value': level,
                 'reason': f'auto-level: {old_level} -> {level} (effect_points threshold {threshold} reached)'
@@ -1643,6 +1710,9 @@ def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: 
             auto_ep = auto_award_effect_points(patch, cs2)
             if auto_ep:
                 patch["player_state_changes"] = list(patch.get("player_state_changes", [])) + auto_ep
+            auto_stats = auto_grow_stats(patch, cs2)
+            if auto_stats:
+                patch["player_state_changes"] = list(patch.get("player_state_changes", [])) + auto_stats
     except Exception:
         pass
     # V24: ensure effect_points initialized in campaign state
