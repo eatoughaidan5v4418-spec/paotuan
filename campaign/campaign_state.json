@@ -1,9 +1,9 @@
 {
   "campaign_id": "paotuan_demo",
   "title": "未命名战役",
-  "current_turn": 10,
-  "current_time": "第 1 日 21:15",
-  "_time_tick": 1275,
+  "current_turn": 11,
+  "current_time": "第 1 日 21:20",
+  "_time_tick": 1280,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "warehouse_interior",
@@ -14,13 +14,13 @@
     "active_threads": [
       "thread_black_lantern_deal",
       "open_thread_0013",
-      "open_thread_0014",
-      "open_thread_0015",
-      "open_thread_0016",
       "open_thread_0018",
       "open_thread_0019",
       "open_thread_0020",
-      "open_thread_0021"
+      "open_thread_0021",
+      "open_thread_0022",
+      "open_thread_0023",
+      "open_thread_0024"
     ]
   },
   "player_characters": [
@@ -45,9 +45,9 @@
       "stats": {
         "combat": 0,
         "perception": 1,
-        "social": 0
+        "social": 1
       },
-      "effect_points": 5,
+      "effect_points": 8,
       "system_rank": 1
     }
   ],
@@ -173,21 +173,27 @@
       "description": "米拉的真实目的不明，她似乎知道很多内情但有所保留。",
       "next_pressure": "米拉正在失去耐心，如果玩家不能给出明确计划或取得她的信任，她可能自行撤离。",
       "created_turn": 6,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 10,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0015",
       "description": "账房B即将完成货单抄写，可能发现异常收货人名字。",
       "next_pressure": "B的抄写工作接近完成（3/4→4/4），完成后他可能通知某人或销毁证据。",
       "created_turn": 6,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 10,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0016",
       "description": "河潮即将满值，低洼处的脚印和细小物证将被完全淹没。",
       "next_pressure": "河潮已接近满值（4/4），下一回合将完全淹没低洼区域，所有未收集的痕迹将永久消失。",
       "created_turn": 6,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 10,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0017",
@@ -224,6 +230,27 @@
       "description": "潜入仓库内部，观察账房B的货单异常",
       "next_pressure": "账房B可能在1-2分钟内做出决定（修改/通知/销毁），巡夜人A将在30秒内经过仓库正面，可能透过窗户看到玩家或账房B的异常动作。",
       "created_turn": 9,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0022",
+      "description": "账房B怀中的货单——直接证据但尚未到手。",
+      "next_pressure": "账房B可能将货单销毁或转移给黑灯会接头人，若巡夜人A进入仓库，货单可能被查收。",
+      "created_turn": 10,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0023",
+      "description": "纸条内容'铜器实为——'——暗示货物真实性质。",
+      "next_pressure": "如果账房B回到桌前，他可能发现纸条被移动过，从而意识到有人潜入。",
+      "created_turn": 10,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0024",
+      "description": "巡夜人A即将到达侧门外——玩家面临暴露风险。",
+      "next_pressure": "巡夜人A可能直接推门查看，或者与账房B交谈，封锁玩家退路。",
+      "created_turn": 10,
       "status": "active"
     }
   ],
@@ -370,6 +397,14 @@
       "visibility": "public",
       "source": "AI state extraction",
       "created_turn": 9,
+      "valid": true
+    },
+    {
+      "id": "fact_0019",
+      "text": "账房B已将关键货单藏入怀中，纸条'铜器实为——'被压在墨水瓶下。",
+      "visibility": "player_knows",
+      "source": "AI state extraction",
+      "created_turn": 10,
       "valid": true
     }
   ],
