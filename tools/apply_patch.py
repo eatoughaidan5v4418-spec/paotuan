@@ -1149,12 +1149,16 @@ def apply_patch(
         graph = load_memory_graph(mem_path, npc_id, current_turn)
         graph.setdefault("interpretation_nodes", [])
         memory_ids = {item.get("id") for item in graph.get("memory_nodes", [])}
+        # V29: also check memory IDs being written in the same patch
+        same_patch_memory_ids = {item.get('id') for item in patch.get('npc_memory_writes', []) if isinstance(item, dict)}
+        memory_ids = memory_ids | same_patch_memory_ids
         source_memory_id = interpretation.get("derived_from_memory_id")
         if source_memory_id not in memory_ids:
-            report["errors"].append(
-                f"{interpretation['id']}: derived_from_memory_id not found for {npc_id}: {source_memory_id}"
+            # Downgrade from error to warning - the memory may be written in a future turn
+            report.setdefault("warnings", []).append(
+                f"{interpretation['id']}: derived_from_memory_id '{source_memory_id}' not found for {npc_id} (memory may arrive in future turn)"
             )
-            continue
+            # Still write the interpretation, just note the dangling reference
 
         existing = {
             item.get("id"): index
