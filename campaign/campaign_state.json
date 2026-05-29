@@ -1,9 +1,9 @@
 {
   "campaign_id": "paotuan_demo",
   "title": "未命名战役",
-  "current_turn": 16,
-  "current_time": "第 1 日 21:51",
-  "_time_tick": 1311,
+  "current_turn": 17,
+  "current_time": "第 1 日 22:21",
+  "_time_tick": 1341,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "zone_dock_shadow",
@@ -13,14 +13,14 @@
     ],
     "active_threads": [
       "thread_black_lantern_deal",
-      "open_thread_0030",
       "open_thread_0032",
       "open_thread_0033",
       "open_thread_0034",
       "open_thread_0035",
       "open_thread_0036",
       "open_thread_0037",
-      "open_thread_0038"
+      "open_thread_0038",
+      "open_thread_0039"
     ]
   },
   "player_characters": [
@@ -41,10 +41,10 @@
       "conditions": [],
       "stats": {
         "combat": 3,
-        "perception": 2,
+        "perception": 3,
         "social": 2
       },
-      "effect_points": 4,
+      "effect_points": 5,
       "system_rank": 3
     }
   ],
@@ -316,7 +316,9 @@
       "description": "黑灯会的军火来源何处？他们背后是否有更大的势力？",
       "next_pressure": "如果不在交易前查清来源，交易完成后军火流向将无法追踪。",
       "created_turn": 13,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 16,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0031",
@@ -374,6 +376,13 @@
       "description": "账房B的警觉",
       "next_pressure": "如果账房B成功通知黑灯会，黑灯会可能提前抵达或改变交易地点，你的时间窗口将急剧缩短。",
       "created_turn": 15,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0039",
+      "description": "thread_black_lantern_deal",
+      "next_pressure": "黑灯会预计23:00抵达，但可能提前；账房B随时可能前往栈桥或迎接黑灯会；巡夜人A即将开始新一轮巡逻。",
+      "created_turn": 16,
       "status": "active"
     }
   ],
@@ -569,8 +578,24 @@
       "source": "AI state extraction",
       "created_turn": 13,
       "valid": true
+    },
+    {
+      "id": "fact_0025",
+      "text": "账房B完成抄写后返回仓库查看地图，警觉度提升。",
+      "visibility": "public",
+      "source": "AI state extraction",
+      "created_turn": 16,
+      "valid": true
+    },
+    {
+      "id": "fact_0026",
+      "text": "水下绳索为黑灯会藏物所用，可能连接水下货物或设备。",
+      "visibility": "public",
+      "source": "AI state extraction",
+      "created_turn": 16,
+      "valid": true
     }
   ],
   "rules": {},
-  "last_consolidation_turn": 0
+  "last_consolidation_turn": 16
 }
