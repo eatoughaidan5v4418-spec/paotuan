@@ -384,7 +384,15 @@ def visible_state(root: Path) -> dict[str, Any]:
     if player_visible_facts:
         knowledge = {**knowledge}
         existing_facts = as_list(knowledge.get("facts_understood"))
-        knowledge["facts_understood"] = list(dict.fromkeys([*existing_facts, *player_visible_facts]))
+        # V31: fix dedup - dict.fromkeys fails on unhashable dict values
+        seen = set()
+        deduped = []
+        for item in [*existing_facts, *player_visible_facts]:
+            key = json.dumps(item, ensure_ascii=False, sort_keys=True) if isinstance(item, dict) else item
+            if key not in seen:
+                seen.add(key)
+                deduped.append(item)
+        knowledge["facts_understood"] = deduped
     open_threads = [
         thread
         for thread in as_list(state.get("open_threads"))
