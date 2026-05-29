@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_a_sentry",
-  "current_turn": 1,
+  "current_turn": 2,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -24,7 +24,81 @@
         "loc_old_dock",
         "feature_rope_piles"
       ],
-      "score": 0.617
+      "score": 0.619
+    },
+    {
+      "id": "mem_npc_a_sentry_0003",
+      "type": "episodic",
+      "content": "我绕回仓库正面时，余光扫到主码头那边有个人蹲在木桩旁边，好像在检查什么。我没看清具体动作，但那个人影比之前更靠近水边了。",
+      "created_turn": 2,
+      "last_recalled_turn": 2,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.6,
+      "emotional_valence": -1.0,
+      "confidence": 0.7,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "pc_main",
+        "loc_old_dock"
+      ],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_a_sentry",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "看到主码头有人蹲下检查木桩，但没看清具体动作。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": [
+          "detail_of_object"
+        ]
+      },
+      "observed_at": "第 1 日 20:15",
+      "location_id": "loc_old_dock",
+      "score": 0.53
+    },
+    {
+      "id": "mem_npc_a_sentry_0002",
+      "type": "episodic",
+      "content": "我转向仓库侧边时，注意到主码头那个人还在原地，好像在检查木板缝隙。他没跟上来，但也没离开。",
+      "created_turn": 1,
+      "last_recalled_turn": 1,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.6,
+      "emotional_valence": -1.0,
+      "confidence": 0.8,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [
+        "pc_main",
+        "loc_old_dock"
+      ],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_a_sentry",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "我转向仓库侧边时，注意到主码头那个人还在原地，好像在检查木板缝隙。他没跟上来，但也没离开。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 20:05",
+      "location_id": "loc_old_dock",
+      "score": 0.5235
     }
   ],
   "interpretation_nodes": [
@@ -54,6 +128,30 @@
         "loc_old_dock",
         "feature_rope_piles"
       ],
+      "possible_misunderstanding": true
+    },
+    {
+      "id": "interp_npc_a_sentry_0002",
+      "npc_id": "npc_a_sentry",
+      "derived_from_event_id": "event_current_turn",
+      "derived_from_memory_id": "mem_a_0001",
+      "text": "那个人在检查码头，可能是来捞东西的，也可能是在等什么人。不像是巡夜人的同伙。",
+      "appraisal": {
+        "goal_impact": "unclear",
+        "threat_level": 0.3,
+        "opportunity_level": 0.3,
+        "agency": "unknown",
+        "moral_judgment": "unknown",
+        "relationship_signal": "none"
+      },
+      "emotion": {
+        "label": "none",
+        "valence": 0,
+        "intensity": 0
+      },
+      "confidence": 0.55,
+      "importance": 0.45,
+      "related_entities": [],
       "possible_misunderstanding": true
     }
   ],

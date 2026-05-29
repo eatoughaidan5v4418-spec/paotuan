@@ -1,19 +1,24 @@
 {
   "campaign_id": "paotuan_demo",
   "title": "未命名战役",
-  "current_turn": 1,
-  "current_time": "第 1 日 20:00",
-  "_time_tick": 1200,
+  "current_turn": 3,
+  "current_time": "第 1 日 20:15",
+  "_time_tick": 1215,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "loc_old_dock",
     "summary": "玩家抵达旧码头，黑灯会交易的传言刚刚浮出水面。",
     "present_entities": [
       "pc_main",
-      "npc_mira"
+      "npc_mira",
+      "npc_a_sentry"
     ],
     "active_threads": [
-      "thread_black_lantern_deal"
+      "thread_black_lantern_deal",
+      "open_thread_0001",
+      "open_thread_0002",
+      "open_thread_0003",
+      "open_thread_0004"
     ]
   },
   "player_characters": [
@@ -31,7 +36,8 @@
       "inventory": [
         "??",
         "??x3",
-        "??"
+        "??",
+        "clue_black_wax"
       ],
       "conditions": [],
       "stats": {
@@ -42,8 +48,78 @@
     }
   ],
   "quests": [],
-  "open_threads": [],
-  "known_facts": [],
+  "open_threads": [
+    {
+      "id": "open_thread_0001",
+      "description": "黑灯会预计在23:00于旧码头交易，玩家需要决定是否介入、何时介入以及如何获取更多情报。当前距交易还有约3小时，但线索和NPC态度正在随时间变化。",
+      "next_pressure": "如果玩家继续观望而不采取行动，巡夜人A可能完成巡逻并回到仓库门口，账房B可能抄完货单并销毁关键证据，河潮可能冲走木桩缝隙里的封蜡碎片。",
+      "created_turn": 1,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0002",
+      "description": "封蜡碎片来源确认",
+      "next_pressure": "如果河潮继续上涨，碎片可能被水浸泡导致压印模糊。米拉已经起疑，她可能会主动追问或采取行动。",
+      "created_turn": 2,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0003",
+      "description": "米拉的信任与提防",
+      "next_pressure": "如果玩家不回应米拉的试探，她可能会认为玩家不可靠，从而减少透露的信息或主动离开。",
+      "created_turn": 2,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0004",
+      "description": "巡夜人A的接近",
+      "next_pressure": "如果玩家在A抵达主码头前没有采取掩护行动，可能会被直接询问或被迫解释行为。",
+      "created_turn": 2,
+      "status": "active"
+    }
+  ],
+  "known_facts": [
+    {
+      "id": "fact_0001",
+      "text": "主码头缆绳堆后面发现拖曳印，不是自然形成。",
+      "visibility": "private",
+      "source": "AI state extraction",
+      "created_turn": 1,
+      "valid": true
+    },
+    {
+      "id": "fact_0002",
+      "text": "废仓库窗户在20:05前后有灯光闪动，内部有人活动。",
+      "visibility": "private",
+      "source": "AI state extraction",
+      "created_turn": 1,
+      "valid": true
+    },
+    {
+      "id": "fact_0003",
+      "text": "主码头边缘木桩缝隙里卡有深色物体，距离较远无法确认。",
+      "visibility": "private",
+      "source": "AI state extraction",
+      "created_turn": 1,
+      "valid": true
+    },
+    {
+      "id": "fact_0004",
+      "text": "巡夜人A的巡逻规律：每约2分钟出现一次背对主码头的窗口。",
+      "visibility": "private",
+      "source": "AI state extraction",
+      "created_turn": 1,
+      "valid": true
+    },
+    {
+      "id": "fact_0005",
+      "text": "玩家在主码头木桩缝隙中找到黑色封蜡碎片，带有灯形压印。",
+      "visibility": "player_knows",
+      "source": "player_action",
+      "created_turn": 2,
+      "valid": true
+    }
+  ],
   "rules": {},
   "last_consolidation_turn": 0
 }

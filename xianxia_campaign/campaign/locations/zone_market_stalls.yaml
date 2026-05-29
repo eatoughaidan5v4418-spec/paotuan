@@ -1,0 +1,8 @@
+id: zone_market_stalls
+name: zone_market_stalls
+type: auto_created
+summary: "Auto-created after movement: 接到传讯后离开入口，前往坊市深处汇报"
+description: |
+  Auto-created location placeholder for zone_market_stalls.
+zones: []
+exits: []

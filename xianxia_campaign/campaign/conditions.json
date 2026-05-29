@@ -19,6 +19,11 @@
           "operation": "add",
           "condition": "经脉胀痛（灵力过载，-1健康恢复速度，持续1时辰）",
           "reason": "AI state update"
+        },
+        {
+          "operation": "add",
+          "condition": "经脉胀痛（灵力过载，-1健康恢复速度，持续1时辰）",
+          "reason": "AI state update"
         }
       ]
     },

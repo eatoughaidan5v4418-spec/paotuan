@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_su_mo",
-  "current_turn": 12,
+  "current_turn": 13,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -22,7 +22,7 @@
       "related_entities": [
         "loc_black_wind_ridge"
       ],
-      "score": 0.7208
+      "score": 0.7175
     },
     {
       "id": "mem_su_0002",
@@ -44,7 +44,7 @@
         "loc_black_wind_ridge",
         "faction_demonic_remnants"
       ],
-      "score": 0.5853
+      "score": 0.582
     },
     {
       "id": "mem_npc_su_mo_0012",
@@ -77,7 +77,40 @@
       },
       "observed_at": "第 1 日 11:35",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.5775
+      "score": 0.566
+    },
+    {
+      "id": "mem_npc_su_mo_0013",
+      "type": "episodic",
+      "content": "那修士调息了一个时辰，经脉伤势没怎么恢复，灵力也只恢复到四成左右。看来他突破时伤得不轻，短期内战力有限。黑风岭方向的烟越来越浓了——不能再等了，我得尽快行动。",
+      "created_turn": 13,
+      "last_recalled_turn": 13,
+      "recall_count": 0,
+      "importance": 0.6,
+      "salience": 0.7,
+      "emotional_valence": -0.2,
+      "confidence": 0.9,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_su_mo",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "那修士调息了一个时辰，经脉伤势没怎么恢复，灵力也只恢复到四成左右。看来他突破时伤得不轻，短期内战力有限。黑风岭方向的烟越来越浓了——不能再等了，我得尽快行动。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 12:35",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.555
     },
     {
       "id": "mem_npc_su_mo_0011",
@@ -113,7 +146,7 @@
       },
       "observed_at": "第 1 日 11:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.491
+      "score": 0.4811
     },
     {
       "id": "mem_npc_su_mo_0007",
@@ -150,7 +183,7 @@
       },
       "observed_at": "第 1 日 08:55",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4725
+      "score": 0.4672
     },
     {
       "id": "mem_npc_su_mo_0003",
@@ -175,7 +208,7 @@
       "visibility_path": "overheard",
       "observed_at": "第 1 日 08:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4433
+      "score": 0.44
     },
     {
       "id": "mem_npc_su_mo_0004",
@@ -200,7 +233,7 @@
       "visibility_path": "overheard",
       "observed_at": "第 1 日 08:20",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4433
+      "score": 0.44
     },
     {
       "id": "mem_npc_su_mo_0009",
@@ -235,7 +268,7 @@
       },
       "observed_at": "第 1 日 10:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.43
+      "score": 0.4225
     },
     {
       "id": "mem_npc_su_mo_0006",
@@ -272,7 +305,7 @@
       },
       "observed_at": "第 1 日 08:50",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4047
+      "score": 0.4
     },
     {
       "id": "mem_npc_su_mo_0010",
@@ -307,7 +340,7 @@
       },
       "observed_at": "第 1 日 11:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3836
+      "score": 0.375
     },
     {
       "id": "mem_npc_su_mo_0008",
@@ -343,7 +376,7 @@
       },
       "observed_at": "第 1 日 09:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3559
+      "score": 0.35
     },
     {
       "id": "mem_npc_su_mo_0005",
@@ -368,7 +401,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3283
+      "score": 0.325
     }
   ],
   "interpretation_nodes": [],

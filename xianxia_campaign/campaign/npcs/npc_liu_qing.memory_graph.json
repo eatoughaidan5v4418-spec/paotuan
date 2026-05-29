@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_liu_qing",
-  "current_turn": 12,
+  "current_turn": 13,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -23,7 +23,40 @@
         "loc_black_wind_ridge",
         "faction_azure_cloud_sect"
       ],
-      "score": 0.5383
+      "score": 0.535
+    },
+    {
+      "id": "mem_npc_liu_qing_0013",
+      "type": "episodic",
+      "content": "我收到传讯后离开坊市入口，去坊市深处的铺子找外门执事汇报——黑风岭方向有灵气异动，需要向上通报。那个外来的修士还在主街上修炼，我没来得及管他。",
+      "created_turn": 13,
+      "last_recalled_turn": 13,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.6,
+      "emotional_valence": 0.3,
+      "confidence": 0.9,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_liu_qing",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "我收到传讯后离开坊市入口，去坊市深处的铺子找外门执事汇报——黑风岭方向有灵气异动，需要向上通报。那个外来的修士还在主街上修炼，我没来得及管他。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 12:35",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.505
     },
     {
       "id": "mem_npc_liu_qing_0005",
@@ -48,7 +81,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4908
+      "score": 0.4875
     },
     {
       "id": "mem_npc_liu_qing_0003",
@@ -73,7 +106,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4383
+      "score": 0.435
     },
     {
       "id": "mem_npc_liu_qing_0004",
@@ -98,7 +131,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:20",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4383
+      "score": 0.435
     },
     {
       "id": "mem_liu_0002",
@@ -119,7 +152,7 @@
       "related_entities": [
         "loc_azure_cloud_market"
       ],
-      "score": 0.4208
+      "score": 0.4175
     },
     {
       "id": "mem_npc_liu_qing_0006",
@@ -156,7 +189,7 @@
       },
       "observed_at": "第 1 日 08:50",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3422
+      "score": 0.3375
     },
     {
       "id": "mem_npc_liu_qing_0007",
@@ -192,7 +225,7 @@
       },
       "observed_at": "第 1 日 08:55",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.305
+      "score": 0.2997
     },
     {
       "id": "mem_npc_liu_qing_0012",
@@ -225,7 +258,7 @@
       },
       "observed_at": "第 1 日 11:35",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.295
+      "score": 0.2835
     },
     {
       "id": "mem_npc_liu_qing_0011",
@@ -260,7 +293,7 @@
       },
       "observed_at": "第 1 日 11:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.2835
+      "score": 0.2736
     },
     {
       "id": "mem_npc_liu_qing_0009",
@@ -295,7 +328,7 @@
       },
       "observed_at": "第 1 日 10:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.275
+      "score": 0.2675
     },
     {
       "id": "mem_npc_liu_qing_0010",
@@ -330,7 +363,7 @@
       },
       "observed_at": "第 1 日 11:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.2736
+      "score": 0.265
     },
     {
       "id": "mem_npc_liu_qing_0008",
@@ -366,7 +399,7 @@
       },
       "observed_at": "第 1 日 09:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.2609
+      "score": 0.255
     }
   ],
   "interpretation_nodes": [],

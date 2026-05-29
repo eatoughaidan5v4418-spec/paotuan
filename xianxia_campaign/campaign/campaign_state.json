@@ -1,28 +1,28 @@
 {
   "campaign_id": "xianxia_001",
   "title": "青云坊市遗宝",
-  "current_turn": 13,
-  "current_time": "第 1 日 11:35",
-  "_time_tick": 695,
+  "current_turn": 14,
+  "current_time": "第 1 日 12:35",
+  "_time_tick": 755,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "loc_azure_cloud_market",
     "summary": "玩家抵达青云坊市，血灵芝的传言刚在集市散开。",
     "present_entities": [
-      "npc_liu_qing",
       "npc_qian_baiwei",
-      "npc_su_mo"
+      "npc_su_mo",
+      "npc_liu_qing"
     ],
     "active_threads": [
       "thread_blood_spirit_mushroom",
-      "open_thread_0011",
-      "open_thread_0012",
       "open_thread_0013",
       "open_thread_0014",
       "open_thread_0015",
       "open_thread_0016",
       "open_thread_0017",
-      "open_thread_0018"
+      "open_thread_0018",
+      "open_thread_0019",
+      "open_thread_0020"
     ]
   },
   "player_characters": [
@@ -44,8 +44,8 @@
       "spiritual_root": "木火双灵根",
       "health": 11,
       "max_health": 12,
-      "qi": 6,
-      "max_qi": 6,
+      "qi": 4,
+      "max_qi": 8,
       "stats": {
         "combat": 2,
         "perception": 2,
@@ -227,14 +227,18 @@
       "description": "钱百味的交易期待",
       "next_pressure": "如果你不去找他，他可能会在下一时辰内主动搭话，但报价会更倾向于对他有利。",
       "created_turn": 9,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 13,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0012",
       "description": "苏墨的观察结论",
       "next_pressure": "苏墨可能会在适当时机试探你的意图，如果你表现出对黑风岭的兴趣，他可能主动接触或避开你。",
       "created_turn": 9,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 13,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0013",
@@ -276,6 +280,20 @@
       "description": "玩家突破后经脉受伤，需要在恢复伤势、找苏墨合作、打听钱百味消息、或立即前往黑风岭之间做出选择。",
       "next_pressure": "每拖延一刻钟，黑风岭的局势就可能恶化一分——魔修可能已经找到了血灵芝的确切位置，或者青云门的暗哨也会介入。",
       "created_turn": 12,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0019",
+      "description": "柳青突然离开坊市入口，去向不明——可能是接到青云门的新指令，也可能只是正常换岗，但时机可疑。",
+      "next_pressure": "柳青可能会在不久后带回一个青云门的筑基执事，届时坊市的警戒级别会提升，再想自由出入就难了。",
+      "created_turn": 13,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0020",
+      "description": "苏墨观察到你的伤势恢复缓慢，已经流露出打算独自行动的信号——如果你再不主动找他，他可能会在你恢复之前离开坊市。",
+      "next_pressure": "如果苏墨独自出发，你将失去一个了解黑风岭内情并且战力不弱的潜在同伴。",
+      "created_turn": 13,
       "status": "active"
     }
   ],

@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_qian_baiwei",
-  "current_turn": 12,
+  "current_turn": 13,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -22,7 +22,7 @@
       "related_entities": [
         "loc_black_wind_ridge"
       ],
-      "score": 0.6277
+      "score": 0.6244
     },
     {
       "id": "mem_npc_qian_baiwei_0010",
@@ -55,7 +55,7 @@
       },
       "observed_at": "第 1 日 11:35",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.5675
+      "score": 0.556
     },
     {
       "id": "mem_npc_qian_baiwei_0009",
@@ -90,7 +90,7 @@
       },
       "observed_at": "第 1 日 11:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.5485
+      "score": 0.5386
     },
     {
       "id": "mem_qian_0002",
@@ -111,7 +111,40 @@
       "related_entities": [
         "faction_demonic_remnants"
       ],
-      "score": 0.5358
+      "score": 0.5325
+    },
+    {
+      "id": "mem_npc_qian_baiwei_0011",
+      "type": "episodic",
+      "content": "那修士突破到炼气三层后一直在调息，但经脉伤势似乎没怎么好转——他修炼了一个时辰，灵力只恢复了一点，脸色还是不太好。看来他短期内恢复不了战力，估计还会来找我买疗伤药。",
+      "created_turn": 13,
+      "last_recalled_turn": 13,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.6,
+      "emotional_valence": 0.2,
+      "confidence": 0.9,
+      "source": "saw",
+      "tier": "active",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [],
+      "visibility_path": "direct_visual",
+      "visibility_evidence": {
+        "observer_id": "npc_qian_baiwei",
+        "memory_allowed": true,
+        "visibility_path": "direct_visual",
+        "event_id": "",
+        "subjective_summary": "那修士突破到炼气三层后一直在调息，但经脉伤势似乎没怎么好转——他修炼了一个时辰，灵力只恢复了一点，脸色还是不太好。看来他短期内恢复不了战力，估计还会来找我买疗伤药。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 12:35",
+      "location_id": "loc_azure_cloud_market",
+      "score": 0.5
     },
     {
       "id": "mem_npc_qian_baiwei_0007",
@@ -146,7 +179,7 @@
       },
       "observed_at": "第 1 日 10:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.47
+      "score": 0.4625
     },
     {
       "id": "mem_npc_qian_baiwei_0005",
@@ -182,7 +215,7 @@
       },
       "observed_at": "第 1 日 08:55",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.425
+      "score": 0.4197
     },
     {
       "id": "mem_npc_qian_baiwei_0008",
@@ -217,7 +250,7 @@
       },
       "observed_at": "第 1 日 11:15",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4161
+      "score": 0.4075
     },
     {
       "id": "mem_npc_qian_baiwei_0003",
@@ -242,7 +275,7 @@
       "visibility_path": "direct_visual",
       "observed_at": "第 1 日 08:25",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.4033
+      "score": 0.4
     },
     {
       "id": "mem_npc_qian_baiwei_0004",
@@ -279,7 +312,7 @@
       },
       "observed_at": "第 1 日 08:50",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3972
+      "score": 0.3925
     },
     {
       "id": "mem_npc_qian_baiwei_0006",
@@ -315,7 +348,7 @@
       },
       "observed_at": "第 1 日 09:10",
       "location_id": "loc_azure_cloud_market",
-      "score": 0.3259
+      "score": 0.32
     }
   ],
   "interpretation_nodes": [],
