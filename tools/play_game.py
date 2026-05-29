@@ -1986,7 +1986,7 @@ def interactive_loop(config: GameConfig, args: argparse.Namespace) -> None:
         new_theme = None
         if action.startswith("/new "):
             new_theme = action.removeprefix("/new ").strip()
-        elif first_input and looks_like_worldgen_request(action):
+        elif first_input and looks_like_worldgen_request(action) and not (args.root != PROJECT_ROOT):
             new_theme = strip_wrapping_quotes(action)
 
         if new_theme:
@@ -2046,7 +2046,7 @@ def main() -> None:
         if args.mock:
             config.model = "__mock__"
             config.api_key = ""
-    elif args.once and looks_like_worldgen_request(args.once):
+    elif args.once and looks_like_worldgen_request(args.once) and not (args.root != PROJECT_ROOT):
         theme = strip_wrapping_quotes(args.once)
         target_root = (args.new_root or (root / "generated_campaigns" / slugify(theme))).resolve()
         world = run_worldgen(config, theme, target_root, force=True)
