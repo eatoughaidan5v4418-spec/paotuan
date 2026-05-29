@@ -1,9 +1,9 @@
 {
   "campaign_id": "paotuan_demo",
   "title": "未命名战役",
-  "current_turn": 17,
-  "current_time": "第 1 日 22:21",
-  "_time_tick": 1341,
+  "current_turn": 18,
+  "current_time": "第 1 日 22:31",
+  "_time_tick": 1351,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "zone_dock_shadow",
@@ -15,12 +15,12 @@
       "thread_black_lantern_deal",
       "open_thread_0032",
       "open_thread_0033",
-      "open_thread_0034",
-      "open_thread_0035",
-      "open_thread_0036",
       "open_thread_0037",
       "open_thread_0038",
-      "open_thread_0039"
+      "open_thread_0039",
+      "open_thread_0040",
+      "open_thread_0041",
+      "open_thread_0042"
     ]
   },
   "player_characters": [
@@ -40,11 +40,11 @@
       ],
       "conditions": [],
       "stats": {
-        "combat": 3,
+        "combat": 4,
         "perception": 3,
         "social": 2
       },
-      "effect_points": 5,
+      "effect_points": 6,
       "system_rank": 3
     }
   ],
@@ -348,21 +348,27 @@
       "description": "米拉对黑灯会内部流程的了解：她似乎知道账房B不会单独行动等细节。",
       "next_pressure": "米拉可能隐瞒了她与黑灯会的某些联系或经历。可以进一步追问。",
       "created_turn": 14,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 17,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0035",
       "description": "巡夜人A的巡逻节奏：他已完成本轮，正在休息，约10分钟后开始下一轮。",
       "next_pressure": "10分钟后巡夜人A开始新一轮巡逻，届时仓库和主码头区域将再次被覆盖。",
       "created_turn": 14,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 17,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0036",
       "description": "河潮上涨：水位已淹没低洼处，栈桥末端木板已没入水中。",
       "next_pressure": "河潮上涨可能淹没栈桥上的脚印和证据，也可能影响在栈桥设伏或行动的安全性。",
       "created_turn": 14,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 17,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0037",
@@ -383,6 +389,27 @@
       "description": "thread_black_lantern_deal",
       "next_pressure": "黑灯会预计23:00抵达，但可能提前；账房B随时可能前往栈桥或迎接黑灯会；巡夜人A即将开始新一轮巡逻。",
       "created_turn": 16,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0040",
+      "description": "黑灯会旧码头军火交易，倒计时5/6，剩余不到30分钟",
+      "next_pressure": "黑灯会人员即将抵达栈桥，玩家位置暴露风险加剧",
+      "created_turn": 17,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0041",
+      "description": "栈桥末端水面下潜伏的未知人物或生物",
+      "next_pressure": "潜伏者已察觉玩家，可能主动攻击或发出信号",
+      "created_turn": 17,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0042",
+      "description": "账房B离开仓库后去向不明",
+      "next_pressure": "账房B可能已与黑灯会会合，或正在栈桥附近暗中观察",
+      "created_turn": 17,
       "status": "active"
     }
   ],
