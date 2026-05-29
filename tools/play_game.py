@@ -1640,6 +1640,49 @@ def auto_grow_stats(patch: dict[str, Any], campaign_state: dict[str, Any]) -> li
         break
     return auto_changes
 
+
+def spend_effect_points(campaign_state: dict[str, Any], stat: str, amount: int = 1) -> dict[str, Any]:
+    """Spend effect_points to increase a player stat. Cost: 3 EP per stat point."""
+    cost = amount * 3
+    result = {"ok": False, "message": "", "changes": []}
+    for pc in campaign_state.get('player_characters', []):
+        ep = int(pc.get('effect_points', 0) or 0)
+        if ep < cost:
+            result["message"] = f"?? {cost} ???????? {ep}"
+            return result
+        stats = pc.setdefault('stats', {})
+        valid_stats = {'combat', 'perception', 'social'}
+        if stat not in valid_stats:
+            result["message"] = f"????: {stat}???: combat/perception/social"
+            return result
+        old_val = int(stats.get(stat, 0) or 0)
+        if old_val >= 10:
+            result["message"] = f"{stat} ???? 10"
+            return result
+        new_val = min(old_val + amount, 10)
+        actual_amount = new_val - old_val
+        actual_cost = actual_amount * 3
+        pc['effect_points'] = ep - actual_cost
+        stats[stat] = new_val
+        result["ok"] = True
+        result["message"] = f"?? {actual_cost} ????{stat} {old_val} -> {new_val}??? {pc['effect_points']} ???"
+        result["changes"].append({
+            "entity_id": pc.get('id', 'pc_main'),
+            "field": f"stats.{stat}",
+            "operation": "set",
+            "value": new_val,
+            "reason": f"spent {actual_cost} effect_points"
+        })
+        result["changes"].append({
+            "entity_id": pc.get('id', 'pc_main'),
+            "field": "effect_points",
+            "operation": "set",
+            "value": pc['effect_points'],
+            "reason": f"spent {actual_cost} effect_points"
+        })
+        break
+    return result
+
 def auto_level_player(campaign_state: dict[str, Any]) -> list[dict[str, Any]]:
     auto_changes = []
     for pc in campaign_state.get('player_characters', []):

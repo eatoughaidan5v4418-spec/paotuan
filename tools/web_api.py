@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 """Small Web API service layer for the browser RPG UI.
-
 This module keeps HTTP concerns out of the game runner so tests and the
 standard-library web server can both call the same functions.
 """
-
 from __future__ import annotations
-
 import sys as _sys
 _sys.dont_write_bytecode = True  # V34: prevent stale .pyc cache
-
 import argparse
 import json
 import os
@@ -20,15 +16,11 @@ import subprocess
 import sys
 from pathlib import Path
 from typing import Any
-
 TOOLS_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = TOOLS_DIR.parent
 sys.path.insert(0, str(TOOLS_DIR))
-
 import play_game  # noqa: E402
 import obsidian_vault  # noqa: E402
-
-
 def load_json(path: Path, default: Any) -> Any:
     if not path.exists():
         return default
@@ -36,14 +28,10 @@ def load_json(path: Path, default: Any) -> Any:
         return json.loads(path.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError:
         return default
-
-
 def load_text(path: Path, default: str = "") -> str:
     if not path.exists():
         return default
     return path.read_text(encoding="utf-8-sig")
-
-
 def decode_escaped_text(value: str) -> str:
     if "\\u" not in value and "\\n" not in value:
         return value
@@ -54,8 +42,6 @@ def decode_escaped_text(value: str) -> str:
             return value.encode("utf-8").decode("unicode_escape")
         except Exception:
             return value
-
-
 def clean_visible(value: Any) -> Any:
     if isinstance(value, str):
         return decode_escaped_text(value)
@@ -64,26 +50,18 @@ def clean_visible(value: Any) -> Any:
     if isinstance(value, dict):
         return {key: clean_visible(item) for key, item in value.items()}
     return value
-
-
 def as_dict(value: Any, default: dict[str, Any] | None = None) -> dict[str, Any]:
     return value if isinstance(value, dict) else (default or {})
-
-
 def as_list(value: Any) -> list[Any]:
     if isinstance(value, list):
         return value
     if value is None:
         return []
     return [value]
-
-
 def condition_label(value: Any) -> str:
     if isinstance(value, dict):
         return str(value.get("name") or value.get("id") or "").strip()
     return str(value or "").strip()
-
-
 def tracked_conditions(conditions: dict[str, Any], entity_id: str) -> list[str]:
     entities = conditions.get("entities", {})
     record: Any = {}
@@ -99,8 +77,6 @@ def tracked_conditions(conditions: dict[str, Any], entity_id: str) -> list[str]:
         for label in (condition_label(item) for item in as_list(as_dict(record).get("conditions")))
         if label
     ]
-
-
 SECRET_QUEST_KEYS = {
     "gm_notes",
     "secret",
@@ -110,8 +86,6 @@ SECRET_QUEST_KEYS = {
     "hidden_state",
     "private_notes",
 }
-
-
 def is_player_visible_record(item: dict[str, Any]) -> bool:
     if item.get("known_to_players") is False:
         return False
@@ -120,16 +94,12 @@ def is_player_visible_record(item: dict[str, Any]) -> bool:
     if item.get("player_visible") is False:
         return False
     return True
-
-
 def public_record(item: dict[str, Any]) -> dict[str, Any]:
     return {
         key: value
         for key, value in item.items()
         if key not in SECRET_QUEST_KEYS and not str(key).startswith("_")
     }
-
-
 def normalize_quests(raw: Any, *, player_visible_only: bool = True) -> list[dict[str, Any]]:
     quests = []
     for index, item in enumerate(as_list(raw), start=1):
@@ -147,8 +117,6 @@ def normalize_quests(raw: Any, *, player_visible_only: bool = True) -> list[dict
                 }
             )
     return quests
-
-
 def normalize_clocks(raw: Any) -> list[dict[str, Any]]:
     data = raw.get("clocks", raw) if isinstance(raw, dict) else raw
     clocks = []
@@ -176,8 +144,6 @@ def normalize_clocks(raw: Any) -> list[dict[str, Any]]:
                 }
             )
     return clocks
-
-
 def normalize_resource_entities(raw: Any) -> list[dict[str, Any]]:
     entities = raw.get("entities", raw) if isinstance(raw, dict) else raw
     if isinstance(entities, dict):
@@ -186,8 +152,6 @@ def normalize_resource_entities(raw: Any) -> list[dict[str, Any]]:
             for entity_id, values in entities.items()
         ]
     return [item for item in as_list(entities) if isinstance(item, dict)]
-
-
 def normalize_progress_tracks(raw: Any) -> list[dict[str, Any]]:
     tracks = raw.get("tracks", raw) if isinstance(raw, dict) else raw
     if isinstance(tracks, dict):
@@ -205,8 +169,6 @@ def normalize_progress_tracks(raw: Any) -> list[dict[str, Any]]:
             )
         return normalized
     return [item for item in as_list(tracks) if isinstance(item, dict)]
-
-
 def make_args(
     *,
     model: str | None = None,
@@ -220,8 +182,6 @@ def make_args(
         api_key=api_key,
         no_apply=no_apply,
     )
-
-
 def make_config(root: Path, *, mock: bool = False, no_apply: bool = False) -> play_game.GameConfig:
     config = play_game.load_config(PROJECT_ROOT.resolve(), make_args(no_apply=no_apply))
     config.root = root.resolve()
@@ -229,12 +189,8 @@ def make_config(root: Path, *, mock: bool = False, no_apply: bool = False) -> pl
         config.model = "__mock__"
         config.api_key = ""
     return config
-
-
 def is_campaign_root(path: Path) -> bool:
     return (path / "campaign" / "campaign_state.json").exists()
-
-
 def campaign_key(path: Path) -> str:
     path = path.resolve()
     try:
@@ -243,8 +199,6 @@ def campaign_key(path: Path) -> str:
         return "." if key == "." else key
     except ValueError:
         return str(path)
-
-
 def safe_campaign_path(key: str) -> Path:
     if not key or key == ".":
         return PROJECT_ROOT.resolve()
@@ -259,8 +213,6 @@ def safe_campaign_path(key: str) -> Path:
     if not is_campaign_root(candidate):
         raise ValueError(f"not a campaign root: {key}")
     return candidate
-
-
 def list_campaigns() -> list[dict[str, Any]]:
     roots: list[Path] = []
     for candidate in [PROJECT_ROOT, PROJECT_ROOT / "xianxia_campaign"]:
@@ -271,7 +223,6 @@ def list_campaigns() -> list[dict[str, Any]]:
         for child in sorted(generated.iterdir()):
             if child.is_dir() and is_campaign_root(child):
                 roots.append(child.resolve())
-
     seen: set[str] = set()
     campaigns = []
     for root in roots:
@@ -293,8 +244,6 @@ def list_campaigns() -> list[dict[str, Any]]:
             }
         )
     return campaigns
-
-
 def delete_campaign(key: str) -> dict[str, Any]:
     root = safe_campaign_path(key)
     generated_root = (PROJECT_ROOT / "generated_campaigns").resolve()
@@ -308,16 +257,12 @@ def delete_campaign(key: str) -> dict[str, Any]:
     campaigns = list_campaigns()
     next_campaign = campaigns[0]["id"] if campaigns else "."
     return {"deleted": key, "next_campaign": next_campaign, "campaigns": campaigns}
-
-
 def parse_yaml_label(text: str, key: str) -> str:
     for line in text.splitlines():
         stripped = line.strip()
         if stripped.startswith(f"{key}:"):
             return stripped.split(":", 1)[1].strip().strip('"').strip("'")
     return ""
-
-
 def load_public_npcs(root: Path, present_ids: list[str], player_ids: set[str] | None = None) -> list[dict[str, Any]]:
     npcs = []
     npc_dir = root / "campaign" / "npcs"
@@ -338,8 +283,6 @@ def load_public_npcs(root: Path, present_ids: list[str], player_ids: set[str] | 
             }
         )
     return npcs
-
-
 def load_location_summary(root: Path, location_id: str) -> dict[str, Any]:
     loc_dir = root / "campaign" / "locations"
     for path in sorted(loc_dir.glob("*.yaml")):
@@ -353,8 +296,6 @@ def load_location_summary(root: Path, location_id: str) -> dict[str, Any]:
                 "file": str(path.relative_to(root)),
             }
     return {"id": location_id, "name": location_id, "type": "", "summary": "", "file": ""}
-
-
 def visible_state(root: Path) -> dict[str, Any]:
     state = as_dict(load_json(root / "campaign" / "campaign_state.json", {}))
     knowledge = as_dict(load_json(root / "campaign" / "player_knowledge.json", {}))
@@ -363,7 +304,6 @@ def visible_state(root: Path) -> dict[str, Any]:
     resources = as_dict(load_json(root / "campaign" / "resources.json", {"entities": []}))
     progress = as_dict(load_json(root / "campaign" / "progress_tracks.json", {"tracks": []}))
     conditions = as_dict(load_json(root / "campaign" / "conditions.json", {"entities": {}}))
-
     scene = as_dict(state.get("current_scene"))
     present_ids = [str(item) for item in as_list(scene.get("present_entities"))]
     location_id = scene.get("location_id", "")
@@ -402,7 +342,6 @@ def visible_state(root: Path) -> dict[str, Any]:
         if isinstance(thread, dict) and thread.get("status", "active") == "active"
     ]
     clocks = normalize_clocks(clocks_raw)
-
     public_clocks = [
         {
             "id": clock.get("id"),
@@ -416,7 +355,6 @@ def visible_state(root: Path) -> dict[str, Any]:
         for clock in clocks
         if clock.get("visibility") != "secret"
     ]
-
     return clean_visible({
         "campaign": {
             "id": state.get("campaign_id"),
@@ -462,8 +400,6 @@ def visible_state(root: Path) -> dict[str, Any]:
         "progress_tracks": normalize_progress_tracks(progress),
         "api": api_status(root),
     })
-
-
 def api_status(root: Path) -> dict[str, Any]:
     config = make_config(root)
     return {
@@ -473,8 +409,6 @@ def api_status(root: Path) -> dict[str, Any]:
         "auto_apply": config.auto_apply,
         "mode": "api" if config.api_key else "mock_available",
     }
-
-
 def unique_campaign_target(theme: str, force: bool = False) -> Path:
     slug = play_game.slugify(theme, "ai_campaign")
     base = (PROJECT_ROOT / "generated_campaigns" / slug).resolve()
@@ -485,8 +419,6 @@ def unique_campaign_target(theme: str, force: bool = False) -> Path:
         if not candidate.exists():
             return candidate
     raise RuntimeError("too many campaigns with the same theme")
-
-
 def create_campaign(theme: str, *, mock: bool = False, force: bool = False) -> dict[str, Any]:
     if not theme.strip():
         raise ValueError("theme is required")
@@ -502,8 +434,6 @@ def create_campaign(theme: str, *, mock: bool = False, force: bool = False) -> d
         },
         "state": visible_state(target),
     }
-
-
 def run_turn(root: Path, action: str, *, elapsed_minutes: int | None = None, memory_limit: int = 8, mock: bool = False) -> dict[str, Any]:
     if not action.strip():
         raise ValueError("action is required")
@@ -520,8 +450,6 @@ def run_turn(root: Path, action: str, *, elapsed_minutes: int | None = None, mem
         "active_lore": (result.get("packet") or {}).get("context", {}).get("active_lore", []),
         "state": visible_state(root),
     }
-
-
 def roll_dice(expression: str = "1d20") -> dict[str, Any]:
     expr = (expression or "1d20").replace(" ", "").lower()
     match = re.fullmatch(r"(\d*)d(\d+)([+-]\d+)?", expr)
@@ -539,8 +467,6 @@ def roll_dice(expression: str = "1d20") -> dict[str, Any]:
         "modifier": modifier,
         "total": sum(rolls) + modifier,
     }
-
-
 def validate(root: Path) -> dict[str, Any]:
     command = [sys.executable, "validate_project.py"]
     if root.resolve() != PROJECT_ROOT.resolve():
@@ -558,8 +484,6 @@ def validate(root: Path) -> dict[str, Any]:
         "stdout": result.stdout[-20000:],
         "stderr": result.stderr[-8000:],
     }
-
-
 def recent_logs(root: Path, limit: int = 12) -> list[dict[str, Any]]:
     entries: list[dict[str, Any]] = []
     ai_dir = root / "campaign" / "ai_runs"
@@ -583,7 +507,30 @@ def recent_logs(root: Path, limit: int = 12) -> list[dict[str, Any]]:
                 }
             )
     return entries
-
-
+def spend_ep(root: Path, stat: str, amount: int = 1) -> dict[str, Any]:
+    """Spend effect_points to increase a stat. Cost: 3 EP per point."""
+    import play_game
+    from pathlib import Path
+    cs_path = root / "campaign" / "campaign_state.json"
+    if not cs_path.exists():
+        return {"ok": False, "message": "campaign state not found"}
+    cs = json.loads(cs_path.read_text(encoding="utf-8-sig"))
+    result = play_game.spend_effect_points(cs, stat, amount)
+    if result["ok"]:
+        cs_path.write_text(json.dumps(cs, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        # Also update resources
+        try:
+            resources_path = root / "campaign" / "resources.json"
+            if resources_path.exists():
+                res = json.loads(resources_path.read_text(encoding="utf-8-sig"))
+                entities = res.setdefault("entities", {})
+                for pc in cs.get("player_characters", []):
+                    pid = pc.get("id", "pc_main")
+                    if pid in entities:
+                        entities[pid]["effect_points"] = pc.get("effect_points", 0)
+                resources_path.write_text(json.dumps(res, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        except Exception:
+            pass
+    return result
 def export_obsidian(root: Path) -> dict[str, Any]:
     return obsidian_vault.export_campaign(root)

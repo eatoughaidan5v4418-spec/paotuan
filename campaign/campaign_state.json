@@ -40,11 +40,11 @@
       ],
       "conditions": [],
       "stats": {
-        "combat": 4,
+        "combat": 5,
         "perception": 3,
         "social": 2
       },
-      "effect_points": 6,
+      "effect_points": 3,
       "system_rank": 3
     }
   ],
