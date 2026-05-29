@@ -2,7 +2,7 @@ id: npc_a_sentry
 name: A
 role: 旧码头巡夜人
 faction: faction_unaligned_brokers
-location_id: loc_old_dock
+location_id: zone_dock_shadow
 public_face: "靠在旧仓库门边的巡夜人，手里提着一盏低亮度油灯。"
 core_desire: "今晚别惹出会牵连自己的麻烦。"
 fear: "被黑灯会或码头管事当成替罪羊。"

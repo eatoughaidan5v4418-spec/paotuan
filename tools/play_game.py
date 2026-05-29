@@ -1938,6 +1938,25 @@ def run_ai_turn(config: GameConfig, player_action: str, elapsed_minutes: int | N
     patch = normalize_patch(response.get("state_patch"), response, packet)
     try:
         apply_report = apply_state_patch(config, patch)
+        # V33: auto-commit world clock advancement
+        if apply_report.get("applied", False) and packet.get("elapsed_minutes", 0) > 0:
+            try:
+                wc_path = config.root / "campaign" / "world_clocks.json"
+                if wc_path.exists():
+                    wc = json.loads(wc_path.read_text(encoding="utf-8-sig"))
+                    # Use the previewed clocks from the packet
+                    preview = packet.get("world_tick_preview", {}).get("clock_updates", [])
+                    if preview:
+                        for update in preview:
+                            clock_id = update.get("clock_id")
+                            for clock in wc.get("clocks", []):
+                                if clock.get("id") == clock_id:
+                                    clock["value"] = update.get("new_value", clock.get("value", 0))
+                                    clock["next_tick_at"] = update.get("next_tick_at", clock.get("next_tick_at", ""))
+                                    clock["status"] = "complete" if update.get("new_value", 0) >= clock.get("max_value", 1) else "active"
+                        wc_path.write_text(json.dumps(wc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            except Exception:
+                pass
         # V24: auto-check progression after state patch is applied
         if apply_report.get("applied", False):
             try:
