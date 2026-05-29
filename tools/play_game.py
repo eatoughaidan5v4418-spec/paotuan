@@ -654,6 +654,17 @@ def write_worldgen_files(target_root: Path, world: dict[str, Any], force: bool) 
         path.parent.mkdir(parents=True, exist_ok=True)
         content = item.get("content", "")
         if path.suffix == ".json":
+            # V27: handle double-encoded JSON strings from worldgen AI
+            if isinstance(content, str) and content.strip().startswith('{'):
+                try:
+                    content = json.loads(content)
+                except json.JSONDecodeError:
+                    pass  # Not valid JSON string, it'll fail in save_json
+            elif isinstance(content, str) and content.strip().startswith('['):
+                try:
+                    content = json.loads(content)
+                except json.JSONDecodeError:
+                    pass
             save_json(path, content)
         elif path.suffix == ".jsonl":
             if isinstance(content, str):
