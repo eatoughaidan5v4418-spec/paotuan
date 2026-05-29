@@ -1,9 +1,9 @@
 {
   "campaign_id": "paotuan_demo",
   "title": "未命名战役",
-  "current_turn": 15,
-  "current_time": "第 1 日 21:50",
-  "_time_tick": 1310,
+  "current_turn": 16,
+  "current_time": "第 1 日 21:51",
+  "_time_tick": 1311,
   "current_scene": {
     "scene_id": "scene_0001",
     "location_id": "zone_dock_shadow",
@@ -13,14 +13,14 @@
     ],
     "active_threads": [
       "thread_black_lantern_deal",
-      "open_thread_0028",
       "open_thread_0030",
-      "open_thread_0031",
       "open_thread_0032",
       "open_thread_0033",
       "open_thread_0034",
       "open_thread_0035",
-      "open_thread_0036"
+      "open_thread_0036",
+      "open_thread_0037",
+      "open_thread_0038"
     ]
   },
   "player_characters": [
@@ -42,9 +42,9 @@
       "stats": {
         "combat": 3,
         "perception": 2,
-        "social": 1
+        "social": 2
       },
-      "effect_points": 2,
+      "effect_points": 4,
       "system_rank": 3
     }
   ],
@@ -298,7 +298,9 @@
       "description": "纸条‘铜器实为——’内容解析",
       "next_pressure": "如果不在15分钟内查看完整内容，潮水可能浸入口袋导致字迹模糊。",
       "created_turn": 12,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 15,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0029",
@@ -321,7 +323,9 @@
       "description": "米拉的弟弟失踪与军火交易有关，他是否还活着？是否被关押在某个地方？",
       "next_pressure": "随着交易时间逼近，如果米拉弟弟还活着并被关押，他可能被转移或灭口。",
       "created_turn": 13,
-      "status": "active"
+      "status": "dormant",
+      "archived_turn": 15,
+      "archive_reason": "superseded by newer active threads"
     },
     {
       "id": "open_thread_0032",
@@ -356,6 +360,20 @@
       "description": "河潮上涨：水位已淹没低洼处，栈桥末端木板已没入水中。",
       "next_pressure": "河潮上涨可能淹没栈桥上的脚印和证据，也可能影响在栈桥设伏或行动的安全性。",
       "created_turn": 14,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0037",
+      "description": "水下潜伏者",
+      "next_pressure": "如果水下潜伏者是黑灯会先遣人员，他可能已经游到对岸或绕到其他位置，向黑灯会主力发出信号。你的暴露可能加速交易提前。",
+      "created_turn": 15,
+      "status": "active"
+    },
+    {
+      "id": "open_thread_0038",
+      "description": "账房B的警觉",
+      "next_pressure": "如果账房B成功通知黑灯会，黑灯会可能提前抵达或改变交易地点，你的时间窗口将急剧缩短。",
+      "created_turn": 15,
       "status": "active"
     }
   ],

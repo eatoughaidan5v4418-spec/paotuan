@@ -1,8 +1,41 @@
 {
   "npc_id": "npc_b_clerk",
-  "current_turn": 11,
+  "current_turn": 15,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
+    {
+      "id": "mem_npc_b_clerk_0006",
+      "type": "episodic",
+      "content": "听到栈桥方向传来急促脚步声和金属摩擦声，疑似有人从阴影中冲出攻击某目标。立即退回仓库内部并关紧侧门，高度警觉。",
+      "created_turn": 15,
+      "last_recalled_turn": 15,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.5,
+      "emotional_valence": 0.0,
+      "confidence": 0.6,
+      "source": "inferred",
+      "tier": "dormant",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [],
+      "visibility_path": "inferred",
+      "visibility_evidence": {
+        "observer_id": "npc_b_clerk",
+        "memory_allowed": true,
+        "visibility_path": "inferred",
+        "event_id": "",
+        "subjective_summary": "听到栈桥方向传来急促脚步声和金属摩擦声，疑似有人从阴影中冲出攻击某目标。立即退回仓库内部并关紧侧门，高度警觉。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 21:51",
+      "location_id": "zone_dock_shadow",
+      "score": 0.455
+    },
     {
       "id": "mem_npc_b_clerk_0005",
       "type": "episodic",
@@ -34,7 +67,7 @@
       },
       "observed_at": "第 1 日 21:30",
       "location_id": "warehouse_interior",
-      "score": 0.455
+      "score": 0.4175
     },
     {
       "id": "mem_npc_b_clerk_0004",
@@ -67,7 +100,7 @@
       },
       "observed_at": "第 1 日 21:20",
       "location_id": "warehouse_interior",
-      "score": 0.4435
+      "score": 0.4109
     },
     {
       "id": "mem_npc_b_clerk_0003",
@@ -100,7 +133,7 @@
       },
       "observed_at": "第 1 日 21:15",
       "location_id": "warehouse_interior",
-      "score": 0.4336
+      "score": 0.405
     },
     {
       "id": "mem_npc_b_clerk_0002",
@@ -133,7 +166,7 @@
       },
       "observed_at": "第 1 日 21:10",
       "location_id": "warehouse_east_alley",
-      "score": 0.425
+      "score": 0.3997
     },
     {
       "id": "mem_npc_b_clerk_0001",
@@ -166,7 +199,7 @@
       },
       "observed_at": "第 1 日 21:00",
       "location_id": "zone_dock_entrance",
-      "score": 0.4175
+      "score": 0.395
     }
   ],
   "interpretation_nodes": [

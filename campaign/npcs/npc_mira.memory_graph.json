@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_mira",
-  "current_turn": 14,
+  "current_turn": 15,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -24,7 +24,7 @@
         "faction_black_lantern",
         "secret_mira_sold_black_lantern_info"
       ],
-      "score": 0.7699
+      "score": 0.7672
     },
     {
       "id": "mem_npc_mira_0006",
@@ -62,7 +62,7 @@
       },
       "observed_at": "第 1 日 20:25",
       "location_id": "loc_old_dock",
-      "score": 0.7058
+      "score": 0.7025
     },
     {
       "id": "mem_npc_mira_0007",
@@ -101,7 +101,7 @@
       },
       "observed_at": "第 1 日 20:35",
       "location_id": "loc_old_dock",
-      "score": 0.6698
+      "score": 0.6663
     },
     {
       "id": "mem_mira_0001",
@@ -124,7 +124,7 @@
         "loc_old_dock",
         "faction_black_lantern"
       ],
-      "score": 0.607
+      "score": 0.6042
     },
     {
       "id": "mem_npc_mira_0005",
@@ -163,7 +163,7 @@
       },
       "observed_at": "第 1 日 20:15",
       "location_id": "loc_old_dock",
-      "score": 0.5725
+      "score": 0.5695
     },
     {
       "id": "mem_npc_mira_0008",
@@ -201,7 +201,40 @@
       },
       "observed_at": "第 1 日 20:45",
       "location_id": "zone_dock_entrance",
-      "score": 0.5257
+      "score": 0.5218
+    },
+    {
+      "id": "mem_npc_mira_0014",
+      "type": "episodic",
+      "content": "看到玩家从阴影中冲出攻击栈桥上的目标，但目标只是雨布。同时注意到栈桥尽头水面有异常波纹，疑似水下有人潜伏。",
+      "created_turn": 15,
+      "last_recalled_turn": 15,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.5,
+      "emotional_valence": 0.0,
+      "confidence": 0.6,
+      "source": "inferred",
+      "tier": "dormant",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [],
+      "visibility_path": "inferred",
+      "visibility_evidence": {
+        "observer_id": "npc_mira",
+        "memory_allowed": true,
+        "visibility_path": "inferred",
+        "event_id": "",
+        "subjective_summary": "看到玩家从阴影中冲出攻击栈桥上的目标，但目标只是雨布。同时注意到栈桥尽头水面有异常波纹，疑似水下有人潜伏。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 21:51",
+      "location_id": "zone_dock_shadow",
+      "score": 0.455
     },
     {
       "id": "mem_npc_mira_0013",
@@ -234,7 +267,7 @@
       },
       "observed_at": "第 1 日 21:50",
       "location_id": "zone_dock_shadow",
-      "score": 0.455
+      "score": 0.4435
     },
     {
       "id": "mem_npc_mira_0012",
@@ -267,7 +300,7 @@
       },
       "observed_at": "第 1 日 21:40",
       "location_id": "zone_dock_shadow",
-      "score": 0.4435
+      "score": 0.4336
     },
     {
       "id": "mem_mira_0002",
@@ -289,7 +322,7 @@
         "loc_old_dock",
         "feature_warehouse_side_door"
       ],
-      "score": 0.428
+      "score": 0.4252
     },
     {
       "id": "mem_npc_mira_0011",
@@ -322,7 +355,7 @@
       },
       "observed_at": "第 1 日 21:30",
       "location_id": "warehouse_interior",
-      "score": 0.425
+      "score": 0.4175
     },
     {
       "id": "mem_npc_mira_0010",
@@ -355,7 +388,7 @@
       },
       "observed_at": "第 1 日 21:00",
       "location_id": "zone_dock_entrance",
-      "score": 0.3997
+      "score": 0.395
     },
     {
       "id": "mem_npc_mira_0009",
@@ -388,7 +421,7 @@
       },
       "observed_at": "第 1 日 20:55",
       "location_id": "zone_dock_entrance",
-      "score": 0.395
+      "score": 0.3907
     },
     {
       "id": "mem_npc_mira_0004",
@@ -424,7 +457,7 @@
       },
       "observed_at": "第 1 日 20:05",
       "location_id": "loc_old_dock",
-      "score": 0.357
+      "score": 0.3542
     }
   ],
   "interpretation_nodes": [
