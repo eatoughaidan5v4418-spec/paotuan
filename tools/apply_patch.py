@@ -324,6 +324,7 @@ def sync_player_resource_mirror(root: Path, entity_id: str, field: str, value: A
         if stale_key in record and stale_key != resource_field:
             del record[stale_key]
     record[resource_field] = value
+    record[field] = value  # V38: also update English key
     if not dry_run:
         save_json(resources_path, resources)
 
