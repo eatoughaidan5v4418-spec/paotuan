@@ -2001,6 +2001,19 @@ def run_ai_turn(config: GameConfig, player_action: str, elapsed_minutes: int | N
                                     clock["next_tick_at"] = update.get("next_tick_at", clock.get("next_tick_at", ""))
                                     clock["status"] = "complete" if update.get("new_value", 0) >= clock.get("max_value", 1) else "active"
                         wc_path.write_text(json.dumps(wc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                        # V36: sync quest countdowns with updated world clocks
+                        try:
+                            from run_turn import sync_quest_countdowns_from_clocks, load_json as rt_load
+                            qg_path = config.root / "campaign" / "quest_graph.json"
+                            if qg_path.exists():
+                                qg = rt_load(qg_path)
+                                if isinstance(qg, dict):
+                                    quest_updates = sync_quest_countdowns_from_clocks(qg, wc)
+                                    if quest_updates:
+                                        import json as _json
+                                        qg_path.write_text(_json.dumps(qg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                        except Exception:
+                            pass
             except Exception:
                 pass
         # V24: auto-check progression after state patch is applied
