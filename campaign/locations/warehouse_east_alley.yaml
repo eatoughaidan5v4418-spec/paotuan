@@ -1,0 +1,8 @@
+id: warehouse_east_alley
+name: warehouse_east_alley
+type: auto_created
+summary: "Auto-created after movement: 玩家绕到仓库东侧通道，靠近侧门"
+description: |
+  Auto-created location placeholder for warehouse_east_alley.
+zones: []
+exits: []

@@ -1579,14 +1579,15 @@ def auto_grow_stats(patch: dict[str, Any], campaign_state: dict[str, Any]) -> li
     mem_count = len([m for m in patch.get('npc_memory_writes', []) if isinstance(m, dict)])
     thread_count = len([t for t in patch.get('open_threads', []) if isinstance(t, dict)])
     total_events = facts_count + mem_count + thread_count
-    if total_events < 3:
+    if total_events < 2:
         return auto_changes
     player_id = 'pc_main'
     for pc in campaign_state.get('player_characters', []):
         player_id = pc.get('id', 'pc_main')
         stats = pc.get('stats', {})
         # Bias: more facts = perception, more NPC writes = social, more threads = combat
-        if facts_count >= 3 and stats.get('perception', 0) < 10:
+        # Lower thresholds for faster stat progression
+        if facts_count >= 2 and stats.get('perception', 0) < 10:
             auto_changes.append({
                 'entity_id': player_id,
                 'field': 'stats.perception',
@@ -1594,7 +1595,7 @@ def auto_grow_stats(patch: dict[str, Any], campaign_state: dict[str, Any]) -> li
                 'delta': 1,
                 'reason': f'auto: {facts_count} discoveries this turn'
             })
-        elif mem_count >= 3 and stats.get('social', 0) < 10:
+        elif mem_count >= 2 and stats.get('social', 0) < 10:
             auto_changes.append({
                 'entity_id': player_id,
                 'field': 'stats.social',
@@ -1609,6 +1610,15 @@ def auto_grow_stats(patch: dict[str, Any], campaign_state: dict[str, Any]) -> li
                 'operation': 'delta',
                 'delta': 1,
                 'reason': f'auto: {thread_count} escalating tensions this turn'
+            })
+        # Fallback: if no specific category dominates, grant perception (most common)
+        if not auto_changes and total_events >= 3 and stats.get('perception', 0) < 10:
+            auto_changes.append({
+                'entity_id': player_id,
+                'field': 'stats.perception',
+                'operation': 'delta',
+                'delta': 1,
+                'reason': f'auto: {total_events} total events (fallback perception)'
             })
         break
     return auto_changes

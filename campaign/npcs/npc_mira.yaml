@@ -2,7 +2,7 @@ id: npc_mira
 name: 米拉
 role: 消息贩子
 faction: faction_unaligned_brokers
-location_id: offscreen
+location_id: zone_dock_entrance
 public_face: "瘦削、警觉、说话总像在给自己留后路。"
 core_desire: "用情报换取安全、金钱和离开旧码头的机会。"
 fear: "被黑灯会发现她卖出过他们的消息。"
