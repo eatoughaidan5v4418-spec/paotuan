@@ -16,6 +16,9 @@ existing apply_patch.py safety layer.
 
 from __future__ import annotations
 
+import sys as _sys
+_sys.dont_write_bytecode = True  # V34: prevent stale .pyc cache
+
 import argparse
 import hashlib
 import re
