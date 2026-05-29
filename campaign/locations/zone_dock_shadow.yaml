@@ -1,0 +1,8 @@
+id: zone_dock_shadow
+name: zone_dock_shadow
+type: auto_created
+summary: "Auto-created after movement: 翻出仓库后窗，跑回主码头阴影处与米拉会合"
+description: |
+  Auto-created location placeholder for zone_dock_shadow.
+zones: []
+exits: []

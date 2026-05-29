@@ -1,8 +1,41 @@
 {
   "npc_id": "npc_b_clerk",
-  "current_turn": 10,
+  "current_turn": 11,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
+    {
+      "id": "mem_npc_b_clerk_0005",
+      "type": "episodic",
+      "content": "我刚刚听到窗外有脚步声，好像是那个巡夜的老家伙过来了。我赶紧把货单收进怀里，走到侧门边想看看情况。桌上的墨水瓶好像动过，但我不确定——也许是刚才起身时碰到的。今晚的事情越来越不对劲了，货单上的数字对不上，收货人的名字也不认识……我得想办法先把这份抄完，然后去找头儿问问。",
+      "created_turn": 11,
+      "last_recalled_turn": 11,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.5,
+      "emotional_valence": 0.0,
+      "confidence": 0.6,
+      "source": "inferred",
+      "tier": "dormant",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [],
+      "visibility_path": "inferred",
+      "visibility_evidence": {
+        "observer_id": "npc_b_clerk",
+        "memory_allowed": true,
+        "visibility_path": "inferred",
+        "event_id": "",
+        "subjective_summary": "我刚刚听到窗外有脚步声，好像是那个巡夜的老家伙过来了。我赶紧把货单收进怀里，走到侧门边想看看情况。桌上的墨水瓶好像动过，但我不确定——也许是刚才起身时碰到的。今晚的事情越来越不对劲了，货单上的数字对不上，收货人的名字也不认识……我得想办法先把这份抄完，然后去找头儿问问。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 21:30",
+      "location_id": "warehouse_interior",
+      "score": 0.455
+    },
     {
       "id": "mem_npc_b_clerk_0004",
       "type": "episodic",
@@ -34,7 +67,7 @@
       },
       "observed_at": "第 1 日 21:20",
       "location_id": "warehouse_interior",
-      "score": 0.455
+      "score": 0.4435
     },
     {
       "id": "mem_npc_b_clerk_0003",
@@ -67,7 +100,7 @@
       },
       "observed_at": "第 1 日 21:15",
       "location_id": "warehouse_interior",
-      "score": 0.4435
+      "score": 0.4336
     },
     {
       "id": "mem_npc_b_clerk_0002",
@@ -100,7 +133,7 @@
       },
       "observed_at": "第 1 日 21:10",
       "location_id": "warehouse_east_alley",
-      "score": 0.4336
+      "score": 0.425
     },
     {
       "id": "mem_npc_b_clerk_0001",
@@ -133,7 +166,7 @@
       },
       "observed_at": "第 1 日 21:00",
       "location_id": "zone_dock_entrance",
-      "score": 0.425
+      "score": 0.4175
     }
   ],
   "interpretation_nodes": [
@@ -142,7 +175,7 @@
       "npc_id": "npc_b_clerk",
       "derived_from_event_id": "event_current_turn",
       "derived_from_memory_id": "mem_npc_b_clerk_0001",
-      "text": "货单上的数字和记忆中的对不上，可能是抄错了，也可能是有人故意改过。得先确认清楚再决定要不要报上去。",
+      "text": "账房B认为今晚仓库外格外不安宁——先是货单上的异常数字，然后是窗外巡夜人的脚步声。他倾向于认为巡夜人A是例行巡逻，但内心隐隐不安，怀疑有人已经潜入了仓库附近。他对自己的疏忽没有察觉（纸条被抽走），但觉得桌上的墨水瓶似乎被动过，只是无法确定。",
       "appraisal": {
         "goal_impact": "unclear",
         "threat_level": 0.3,
@@ -167,7 +200,7 @@
       "id": "under_npc_b_clerk_0001",
       "npc_id": "npc_b_clerk",
       "type": "belief",
-      "text": "账房B暂时认为货单异常可能是记录错误，但不确定是否涉及黑灯会的秘密交易。",
+      "text": "账房B对当前局势的理解：货单异常需要上报，但巡夜人A在门外让他不便行动。他尚未意识到仓库内还有第三个人。",
       "supporting_interpretation_ids": [],
       "supporting_memory_ids": [],
       "contradicting_interpretation_ids": [],

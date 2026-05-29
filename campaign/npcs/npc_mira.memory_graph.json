@@ -1,6 +1,6 @@
 {
   "npc_id": "npc_mira",
-  "current_turn": 7,
+  "current_turn": 11,
   "memory_policy_id": "npc_memory_policy_v1",
   "memory_nodes": [
     {
@@ -15,7 +15,7 @@
       "emotional_valence": -2,
       "confidence": 1.0,
       "source": "saw",
-      "tier": "core",
+      "tier": "active",
       "valid": true,
       "invalid_at_turn": null,
       "contradicted_by": null,
@@ -24,7 +24,7 @@
         "faction_black_lantern",
         "secret_mira_sold_black_lantern_info"
       ],
-      "score": 0.7979
+      "score": 0.7798
     },
     {
       "id": "mem_npc_mira_0006",
@@ -62,7 +62,7 @@
       },
       "observed_at": "第 1 日 20:25",
       "location_id": "loc_old_dock",
-      "score": 0.74
+      "score": 0.7175
     },
     {
       "id": "mem_npc_mira_0007",
@@ -101,7 +101,7 @@
       },
       "observed_at": "第 1 日 20:35",
       "location_id": "loc_old_dock",
-      "score": 0.708
+      "score": 0.6827
     },
     {
       "id": "mem_mira_0001",
@@ -124,7 +124,7 @@
         "loc_old_dock",
         "faction_black_lantern"
       ],
-      "score": 0.635
+      "score": 0.6168
     },
     {
       "id": "mem_npc_mira_0005",
@@ -163,7 +163,7 @@
       },
       "observed_at": "第 1 日 20:15",
       "location_id": "loc_old_dock",
-      "score": 0.6034
+      "score": 0.5832
     },
     {
       "id": "mem_npc_mira_0008",
@@ -201,7 +201,40 @@
       },
       "observed_at": "第 1 日 20:45",
       "location_id": "zone_dock_entrance",
-      "score": 0.5686
+      "score": 0.54
+    },
+    {
+      "id": "mem_npc_mira_0011",
+      "type": "episodic",
+      "content": "他进了仓库有一阵子了，刚才我听到巡夜人绕到仓库那边去了，还有一声口哨——是他发的信号吗？还是别的什么人？仓库里没有传出打斗声，他应该还没被发现。但他再不出来的话，巡夜人很可能要敲门了……我该继续等，还是先撤到更安全的地方？弟弟的事情还没着落，我不能在这里被抓。",
+      "created_turn": 11,
+      "last_recalled_turn": 11,
+      "recall_count": 0,
+      "importance": 0.5,
+      "salience": 0.5,
+      "emotional_valence": 0.0,
+      "confidence": 0.6,
+      "source": "inferred",
+      "tier": "dormant",
+      "valid": true,
+      "invalid_at_turn": null,
+      "contradicted_by": null,
+      "related_entities": [],
+      "visibility_path": "inferred",
+      "visibility_evidence": {
+        "observer_id": "npc_mira",
+        "memory_allowed": true,
+        "visibility_path": "inferred",
+        "event_id": "",
+        "subjective_summary": "他进了仓库有一阵子了，刚才我听到巡夜人绕到仓库那边去了，还有一声口哨——是他发的信号吗？还是别的什么人？仓库里没有传出打斗声，他应该还没被发现。但他再不出来的话，巡夜人很可能要敲门了……我该继续等，还是先撤到更安全的地方？弟弟的事情还没着落，我不能在这里被抓。",
+        "allowed_memory_scope": [
+          "observed_event"
+        ],
+        "forbidden_memory_scope": []
+      },
+      "observed_at": "第 1 日 21:30",
+      "location_id": "warehouse_interior",
+      "score": 0.455
     },
     {
       "id": "mem_mira_0002",
@@ -223,7 +256,7 @@
         "loc_old_dock",
         "feature_warehouse_side_door"
       ],
-      "score": 0.456
+      "score": 0.4378
     },
     {
       "id": "mem_npc_mira_0010",
@@ -256,7 +289,7 @@
       },
       "observed_at": "第 1 日 21:00",
       "location_id": "zone_dock_entrance",
-      "score": 0.455
+      "score": 0.4175
     },
     {
       "id": "mem_npc_mira_0009",
@@ -289,7 +322,7 @@
       },
       "observed_at": "第 1 日 20:55",
       "location_id": "zone_dock_entrance",
-      "score": 0.4435
+      "score": 0.4109
     },
     {
       "id": "mem_npc_mira_0004",
@@ -325,7 +358,7 @@
       },
       "observed_at": "第 1 日 20:05",
       "location_id": "loc_old_dock",
-      "score": 0.385
+      "score": 0.3668
     }
   ],
   "interpretation_nodes": [
@@ -408,6 +441,30 @@
       "importance": 0.4,
       "related_entities": [],
       "possible_misunderstanding": true
+    },
+    {
+      "id": "interp_npc_mira_0003",
+      "npc_id": "npc_mira",
+      "derived_from_event_id": "event_current_turn",
+      "derived_from_memory_id": "mem_npc_mira_0001",
+      "text": "米拉认为玩家在仓库内可能遇到了麻烦——巡夜人A的靠近和口哨声让她警觉。她不确定是否应该继续等待，还是在被牵连之前撤离到更安全的位置。她对玩家的信任正在经受考验，但弟弟失踪的执念让她倾向于再等一等。",
+      "appraisal": {
+        "goal_impact": "unclear",
+        "threat_level": 0.3,
+        "opportunity_level": 0.3,
+        "agency": "unknown",
+        "moral_judgment": "unknown",
+        "relationship_signal": "none"
+      },
+      "emotion": {
+        "label": "none",
+        "valence": 0,
+        "intensity": 0
+      },
+      "confidence": 0.6,
+      "importance": 0.5,
+      "related_entities": [],
+      "possible_misunderstanding": true
     }
   ],
   "understanding_nodes": [
@@ -457,6 +514,24 @@
       "last_updated_turn": 1,
       "superseded_by": null,
       "behavior_effect": "米拉会把传言包装成有价值的线索，但会提醒自己别完全押上性命。"
+    },
+    {
+      "id": "under_npc_mira_0003",
+      "npc_id": "npc_mira",
+      "type": "belief",
+      "text": "米拉对当前局势的理解：玩家潜入仓库的时间过长，巡夜人A已靠近，风险正在上升。她需要在暴露前决定是继续等待还是撤离。",
+      "supporting_interpretation_ids": [],
+      "supporting_memory_ids": [],
+      "contradicting_interpretation_ids": [],
+      "confidence": 0.6,
+      "stability": 0.4,
+      "importance": 0.5,
+      "tier": "active",
+      "revision_status": "active",
+      "version": 1,
+      "last_updated_turn": 1,
+      "superseded_by": null,
+      "behavior_effect": "影响该 NPC 后续判断与行动。"
     }
   ],
   "revision_events": [
