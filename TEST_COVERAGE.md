@@ -17,17 +17,17 @@ python -m unittest tests.test_web_api
 # 25 passed
 
 python -m unittest tests.test_architecture_hardening
-# ran=30, failures=4；当前 bundled Python 缺少 PyYAML，涉及 YAML/CLI 子进程的 4 项失败；其余 26 项通过
+# ran=32, OK
 ```
 
 ## 二、自动化测试
 
 | 测试文件 | 数量 | 覆盖范围 |
 |----------|------|----------|
-| `tests/test_architecture_hardening.py` | 30 | apply_patch、run_turn、zone_validator、CLI smoke、校验器、文档一致性、API runner 世界时钟提交 |
+| `tests/test_architecture_hardening.py` | 32 | apply_patch、run_turn、zone_validator、CLI smoke、YAML fallback、校验器、文档一致性、API runner 世界时钟提交 |
 | `tests/test_visibility.py` | 12 | 可见性隔离、记忆图谱、visibility evidence、interpretation provenance |
 | `tests/test_web_api.py` | 25 | Web API、API turn、worldgen、可见状态过滤、私有 clock 隔离 |
-| **总计** | **67** | **当前环境已定向验证；完整 pytest 需 pytest + PyYAML 环境** |
+| **总计** | **69** | **当前环境已定向验证；完整 pytest 需 pytest 环境，PyYAML 为可选增强** |
 
 ## 三、关键回归保障
 
@@ -59,7 +59,7 @@ python -m unittest tests.test_architecture_hardening
 
 ## 五、限制
 
-1. 当前 bundled Python 环境缺少 `pytest` 和 `PyYAML`；完整 pytest 需要在具备这些依赖的环境中复验。
+1. 当前 bundled Python 环境缺少 `pytest`；核心 YAML/CLI 路径已有 stdlib fallback，完整 pytest 需要在具备 `pytest` 的环境中复验。
 2. 本报告证明已运行的自动化回归与两个正式支持战役的结构校验状态，不等价于真实 LLM 服务的完整线上验收。
 3. `generated_campaigns/` 包含旧协议样例，不属于发布支持矩阵。
 4. Web 前端已移除公开 Mock 入口，但仍需浏览器人工验收或 Playwright 视觉验收。

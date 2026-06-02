@@ -164,7 +164,7 @@ python -m unittest tests.test_web_api
 # 25 passed
 ```
 
-当前 bundled Python 环境缺少 `pytest` 和 `PyYAML`，完整 pytest 需在依赖齐备后复验。
+当前 bundled Python 环境缺少 `pytest`；核心 YAML/CLI 路径已有 stdlib fallback，`PyYAML` 为可选增强。完整 pytest 需在具备 `pytest` 的环境中复验。
 
 正式支持战役：
 

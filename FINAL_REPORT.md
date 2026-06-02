@@ -6,7 +6,7 @@
 
 ## 一、结论
 
-本轮 API-only 改造已完成主要公开入口清理，并通过 Web API 定向测试与两个正式支持战役的结构校验。完整 pytest 仍需具备 `pytest` 和 `PyYAML` 的运行环境复验。`generated_campaigns/` 中的历史 worldgen 样例不属于正式支持范围，其中仍有旧协议目录无法通过当前校验。
+本轮 API-only 改造已完成主要公开入口清理，并通过 Web API 定向测试、架构硬化测试与两个正式支持战役的结构校验。核心 YAML/CLI 路径已有 stdlib fallback，完整 pytest 仍需具备 `pytest` 的运行环境复验。`generated_campaigns/` 中的历史 worldgen 样例不属于正式支持范围，其中仍有旧协议目录无法通过当前校验。
 
 ## 二、验证证据
 
@@ -21,17 +21,17 @@ python -m unittest tests.test_web_api
 # 25 passed
 
 python -m unittest tests.test_architecture_hardening
-# ran=30, failures=4；当前 bundled Python 缺少 PyYAML，涉及 YAML/CLI 子进程的 4 项失败；其余 26 项通过
+# ran=32, OK
 ```
 
 测试分布：
 
 | 测试文件 | 数量 |
 |----------|------|
-| `tests/test_architecture_hardening.py` | 30 |
+| `tests/test_architecture_hardening.py` | 32 |
 | `tests/test_visibility.py` | 12 |
 | `tests/test_web_api.py` | 25 |
-| **总计** | **67** |
+| **总计** | **69** |
 
 ## 三、本轮已验证修复
 
@@ -77,5 +77,5 @@ python -m unittest tests.test_architecture_hardening
 
 1. worldgen prompt 源头仍在修补，新增生成战役必须单独执行 `python validate_project.py --root <战役目录>`。
 2. 历史生成样例不应被误计入正式支持矩阵。
-3. 当前 bundled Python 环境缺少 `pytest` 和 `PyYAML`，完整 pytest 需要在依赖齐备后复验。
+3. 当前 bundled Python 环境缺少 `pytest`；核心 YAML/CLI 路径已有 stdlib fallback，完整 pytest 需要在具备 `pytest` 后复验。
 4. 当前证据覆盖定向自动化测试和结构校验，不替代真实 LLM 服务验收与 UI 人工验收。

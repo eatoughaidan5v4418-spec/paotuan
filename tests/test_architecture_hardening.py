@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -30,6 +31,21 @@ def run_cmd(args: list[str], cwd: Path = ROOT) -> subprocess.CompletedProcess[st
         text=True,
         capture_output=True,
         timeout=30,
+    )
+
+
+def run_cmd_with_env(
+    args: list[str],
+    cwd: Path = ROOT,
+    env: dict[str, str] | None = None,
+) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        [sys.executable, *args],
+        cwd=cwd,
+        text=True,
+        capture_output=True,
+        timeout=30,
+        env=env,
     )
 
 
@@ -802,6 +818,52 @@ class CliSmokeTests(unittest.TestCase):
             with self.subTest(command=command):
                 result = run_cmd(command)
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_yaml_cli_tools_work_without_external_pyyaml(self) -> None:
+        env = dict(os.environ)
+        env["PYTHONNOUSERSITE"] = "1"
+        commands = [
+            ["tools/zone_validator.py", "campaign/locations/old_dock.yaml", "--validate"],
+            [
+                str(ROOT / "tools" / "run_turn.py"),
+                "--player-action",
+                "我观察旧码头",
+                "--elapsed-minutes",
+                "0",
+            ],
+        ]
+        for command in commands:
+            with self.subTest(command=command):
+                result = run_cmd_with_env(command, env=env)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_project_yaml_files_parse_without_external_pyyaml(self) -> None:
+        script = """
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path("tools").resolve()))
+import yaml_compat
+
+if yaml_compat._pyyaml is not None:
+    raise SystemExit("expected fallback parser")
+
+paths = sorted(list(Path("campaign").rglob("*.yaml")) + list(Path("xianxia_campaign").rglob("*.yaml")))
+for path in paths:
+    yaml_compat.safe_load(path.read_text(encoding="utf-8"))
+print(f"parsed {len(paths)} yaml files")
+"""
+        env = dict(os.environ)
+        env["PYTHONNOUSERSITE"] = "1"
+        result = subprocess.run(
+            [sys.executable, "-S", "-c", script],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            timeout=30,
+            env=env,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_run_turn_commit_world_tick_on_temp_copy(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

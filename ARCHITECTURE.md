@@ -72,8 +72,8 @@ paotuan/
 │   ├── conditions_manager.py          #   角色状态管理
 │   └── progress_tracker.py            #   进度条 (Ironsworn)
 │
-├── tests/                             # 自动化测试 (67 tests)
-│   ├── test_architecture_hardening.py #   工具链、校验器、CLI smoke (30 tests)
+├── tests/                             # 自动化测试 (69 tests)
+│   ├── test_architecture_hardening.py #   工具链、校验器、CLI smoke (32 tests)
 │   ├── test_visibility.py             #   可见性、知识隔离、认知图谱 (12 tests)
 │   └── test_web_api.py                #   Web API、API turn、worldgen (25 tests)
 │
@@ -403,13 +403,13 @@ zone_connections:
 
 ## 10. 测试
 
-截至 2026-06-02，自动化套件共有 67 个测试：
+截至 2026-06-02，自动化套件共有 69 个测试：
 
-> 迁移说明：旧版架构文档曾单列 `tests/test_visibility.py` 的 8 个自动化测试；当前应以完整套件 67 个测试为准。当前 bundled Python 缺少 `pytest` 和 `PyYAML`，完整 pytest 需在依赖齐备后复验。
+> 迁移说明：旧版架构文档曾单列 `tests/test_visibility.py` 的 8 个自动化测试；当前应以完整套件 69 个测试为准。当前 bundled Python 缺少 `pytest`；核心 YAML/CLI 路径已有 stdlib fallback，完整 pytest 需在具备 `pytest` 后复验。
 
 | 测试文件 | 数量 | 覆盖范围 |
 |----------|------|----------|
-| `tests/test_architecture_hardening.py` | 30 | `validate_project.py` 路径解析、`apply_patch.py` 语义错误、CLI smoke、世界时钟提交、文档一致性 |
+| `tests/test_architecture_hardening.py` | 32 | `validate_project.py` 路径解析、`apply_patch.py` 语义错误、CLI smoke、YAML fallback、世界时钟提交、文档一致性 |
 | `tests/test_visibility.py` | 12 | NPC 知识隔离、`visibility_evidence`、记忆图谱、interpretation provenance |
 | `tests/test_web_api.py` | 25 | Web API、API turn、worldgen、可见状态过滤、私有世界时钟隔离 |
 
@@ -436,7 +436,7 @@ python validate_project.py
 python validate_project.py --root xianxia_campaign
 ```
 
-2026-06-02 本轮复验结果：Web API 定向套件 `25 passed`；默认 demo 与仙侠战役校验均通过；完整 pytest 等待 `pytest` + `PyYAML` 环境复验。
+2026-06-02 本轮复验结果：架构硬化套件 `32 passed`；Web API 定向套件 `25 passed`；默认 demo 与仙侠战役校验均通过；完整 pytest 等待 `pytest` 环境复验。
 
 ---
 

@@ -16,7 +16,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import yaml
+import yaml_compat as yaml
 
 from time_utils import sync_campaign_time, tick_to_display
 from zone_validator import parse_zones, build_graph, find_los_path, find_sound_path

@@ -9,7 +9,7 @@ from collections import deque
 from pathlib import Path
 from typing import Any
 
-import yaml
+import yaml_compat as yaml
 
 CONNECTION_DEFAULTS = {
     "open": {"distance": 5, "line_of_sight": True, "sound": "clear", "movement_cost": 1},
