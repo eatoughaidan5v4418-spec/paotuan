@@ -38,8 +38,8 @@
 6. 用 `prompts/state-extractor.md` 抽取结构化状态变更。
 7. 用 `prompts/event-visibility-resolver.md` 判定每个 NPC 是否知道本事件。
 8. 用 `prompts/npc-memory-writer.md` 只为允许知道的 NPC 写入私有记忆。
-9. 把结果追加到 `session_logs/`、`world_graph.jsonl` 和对应 NPC 的 `*.memories.jsonl`。
-10. 用 `tools/memory_manager.py` 更新 `*.memory_graph.json` 的回忆次数、分数和层级。
+9. 把结果追加到 `session_logs/`、`world_graph.jsonl`，并写入对应 NPC 的 `*.memory_graph.json`。
+10. 用 `tools/memory_manager.py` 更新 `*.memory_graph.json` 的回忆次数、分数和层级；旧版 `*.memories.jsonl` 仅作为历史/兼容素材保留。
 
 ## 直接游玩
 
@@ -60,11 +60,7 @@ $env:AI_MODEL="你的模型名"
 python tools/play_game.py
 ```
 
-无 API key 时可以先跑本地冒烟测试：
-
-```powershell
-python tools/play_game.py --mock --no-apply --once "我观察旧码头的巡夜人和缆绳堆"
-```
+运行 `tools/play_game.py` 需要配置 API Key；无 API Key 时，先运行 `python validate_project.py` 做本地结构校验。
 
 也可以让 AI 从零生成一个新世界观和开局战役，不依赖现有 `campaign/`：
 
@@ -72,11 +68,9 @@ python tools/play_game.py --mock --no-apply --once "我观察旧码头的巡夜�
 python tools/play_game.py --new "赛博修仙废城，玩家是刚觉醒的巡城医师"
 ```
 
-生成目录默认在 `generated_campaigns/<主题slug>/`。生成后会自动切到这个新战役继续游玩。测试创世流程但不调用 API：
+生成目录默认在 `generated_campaigns/<主题slug>/`。生成后会自动切到这个新战役继续游玩。
 
-```powershell
-python tools/play_game.py --mock --new "蒸汽朋克海岛悬疑" --force-new --once "我观察周围"
-```
+`generated_campaigns/` 下保留了一些历史 worldgen 样例。它们不是正式支持战役，也不作为当前发布校验门槛；旧样例可能仍使用过期协议。当前正式支持范围是仓库根 `campaign/` 和 `xianxia_campaign/`。worldgen 源头仍在持续修补，新增战役应先运行 `python validate_project.py --root <战役目录>`。
 
 如果想指定生成位置：
 
@@ -154,3 +148,27 @@ python tools/world_tick_manager.py list
 ```powershell
 python tools/world_tick_manager.py tick clock_black_lantern_deal --amount 1 --reason "玩家在酒馆调查消耗 1 小时" --write
 ```
+
+## 当前验证状态
+
+以下结果于 2026-06-02 在当前环境内重新验证：
+
+```powershell
+python validate_project.py
+# [OK] All checks passed
+
+python validate_project.py --root xianxia_campaign
+# [OK] All checks passed
+
+python -m unittest tests.test_web_api
+# 25 passed
+```
+
+当前 bundled Python 环境缺少 `pytest` 和 `PyYAML`，完整 pytest 需在依赖齐备后复验。
+
+正式支持战役：
+
+- `campaign/`：默认 demo 战役。
+- `xianxia_campaign/`：仙侠战役。
+
+`generated_campaigns/` 是历史样例与 worldgen 回归素材集合，不应被描述为全部可用或全部兼容当前 schema。

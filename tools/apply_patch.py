@@ -126,7 +126,10 @@ def resource_entity(data: dict[str, Any], entity_id: str) -> dict[str, Any] | No
     entities = data.get("entities", data)
     if isinstance(entities, dict):
         record = entities.get(entity_id)
-        return record if isinstance(record, dict) else None
+        if isinstance(record, dict):
+            return record
+        fallback = data.get(entity_id)
+        return fallback if isinstance(fallback, dict) else None
     if isinstance(entities, list):
         for item in entities:
             if isinstance(item, dict) and (item.get("id") == entity_id or item.get("entity_id") == entity_id):
@@ -138,22 +141,31 @@ def maybe_mark_starter_pack_opened(root: Path, owner_id: str, gained_items: list
     if not gained_items:
         return None
     resources_path, resources = load_resource_state(root)
+    records = []
     record = resource_entity(resources, owner_id)
-    if not record:
+    if record:
+        records.append(record)
+    legacy_record = resources.get(owner_id)
+    if isinstance(legacy_record, dict) and legacy_record not in records:
+        records.append(legacy_record)
+    if not records:
         return None
     changed = False
-    for key, value in list(record.items()):
-        if not isinstance(value, list):
-            continue
-        new_items = []
-        for item in value:
-            text = str(item)
-            if "新手" in text and "礼包" in text and ("未开启" in text or "未打开" in text):
-                changed = True
+    for record in records:
+        for key, value in list(record.items()):
+            if not isinstance(value, list):
                 continue
-            new_items.append(item)
-        if changed:
-            record[key] = new_items
+            new_items = []
+            key_changed = False
+            for item in value:
+                text = str(item)
+                if "新手" in text and "礼包" in text and ("未开启" in text or "未打开" in text):
+                    changed = True
+                    key_changed = True
+                    continue
+                new_items.append(item)
+            if key_changed:
+                record[key] = new_items
     if changed and not dry_run:
         save_json(resources_path, resources)
     return f"{owner_id} starter pack marked opened in resources.json" if changed else None
@@ -713,6 +725,14 @@ def memory_visibility_evidence_errors(write: dict[str, Any], index_label: str) -
         errors.append(f"{index_label} visibility_evidence allowed_memory_scope must be a list")
     if not isinstance(evidence.get("forbidden_memory_scope"), list):
         errors.append(f"{index_label} visibility_evidence forbidden_memory_scope must be a list")
+    else:
+        folded_memory = re.sub(r"\s+", " ", memory_text).casefold()
+        for forbidden in evidence.get("forbidden_memory_scope", []):
+            folded_forbidden = re.sub(r"\s+", " ", str(forbidden or "")).strip().casefold()
+            if folded_forbidden and folded_forbidden in folded_memory:
+                errors.append(
+                    f"{index_label} memory includes forbidden_memory_scope: {forbidden}"
+                )
     return errors
 
 
@@ -744,6 +764,117 @@ def next_memory_id(npc_id: str, graph: dict[str, Any]) -> str:
             except ValueError:
                 pass
     return f"mem_{npc_id}_{max_idx + 1:04d}"
+
+
+def cognitive_provenance_preflight_errors(root: Path, patch: dict[str, Any], current_turn: int) -> list[str]:
+    """Validate cognitive-layer references before any patch writes hit disk."""
+    errors: list[str] = []
+    memory_ids_by_npc: dict[str, set[str]] = {}
+    interpretation_ids_by_npc: dict[str, set[str]] = {}
+    understanding_ids_by_npc: dict[str, set[str]] = {}
+    next_memory_index_by_npc: dict[str, int] = {}
+
+    def ensure_npc(npc_id: str) -> None:
+        if npc_id in memory_ids_by_npc:
+            return
+        graph = load_graph(memory_graph_path_for(root, npc_id), npc_id, current_turn)
+        memory_ids_by_npc[npc_id] = {
+            item.get("id")
+            for item in graph.get("memory_nodes", [])
+            if item.get("id")
+        }
+        interpretation_ids_by_npc[npc_id] = {
+            item.get("id")
+            for item in graph.get("interpretation_nodes", [])
+            if item.get("id")
+        }
+        understanding_ids_by_npc[npc_id] = {
+            item.get("id")
+            for item in graph.get("understanding_nodes", [])
+            if item.get("id")
+        }
+        max_idx = 0
+        for mem_id in memory_ids_by_npc[npc_id]:
+            parts = str(mem_id).rsplit("_", 1)
+            if len(parts) != 2:
+                continue
+            try:
+                max_idx = max(max_idx, int(parts[1]))
+            except ValueError:
+                continue
+        next_memory_index_by_npc[npc_id] = max_idx + 1
+
+    for raw_write in patch.get("npc_memory_writes", []):
+        if not isinstance(raw_write, dict):
+            continue
+        write = normalize_memory_write(raw_write)
+        if str(write.get("visibility_path", "")).strip().lower() == "none":
+            continue
+        npc_id = write.get("npc_id")
+        if not npc_id or not write.get("memory"):
+            continue
+        ensure_npc(npc_id)
+        planned_id = f"mem_{npc_id}_{next_memory_index_by_npc[npc_id]:04d}"
+        next_memory_index_by_npc[npc_id] += 1
+        memory_ids_by_npc[npc_id].add(planned_id)
+
+    for interpretation in patch.get("npc_interpretation_writes", []):
+        if not isinstance(interpretation, dict):
+            continue
+        npc_id = canonical_npc_id(interpretation.get("npc_id"))
+        if not npc_id:
+            continue
+        ensure_npc(npc_id)
+        source_memory_id = interpretation.get("derived_from_memory_id")
+        if source_memory_id not in memory_ids_by_npc[npc_id]:
+            errors.append(
+                f"{interpretation.get('id')}: derived_from_memory_id not found for {npc_id}: {source_memory_id}"
+            )
+        if interpretation.get("id"):
+            interpretation_ids_by_npc[npc_id].add(interpretation["id"])
+
+    for understanding in patch.get("npc_understanding_writes", []):
+        if not isinstance(understanding, dict):
+            continue
+        npc_id = canonical_npc_id(understanding.get("npc_id"))
+        if not npc_id:
+            continue
+        ensure_npc(npc_id)
+        missing_memories = [
+            item for item in understanding.get("supporting_memory_ids", [])
+            if item not in memory_ids_by_npc[npc_id]
+        ]
+        missing_interpretations = [
+            item for item in understanding.get("supporting_interpretation_ids", [])
+            if item not in interpretation_ids_by_npc[npc_id]
+        ]
+        if missing_memories or missing_interpretations:
+            errors.append(
+                f"{understanding.get('id')}: missing provenance for {npc_id}: "
+                f"memories={missing_memories}, interpretations={missing_interpretations}"
+            )
+        if understanding.get("id"):
+            understanding_ids_by_npc[npc_id].add(understanding["id"])
+
+    for revision in patch.get("npc_revision_writes", []):
+        if not isinstance(revision, dict):
+            continue
+        npc_id = canonical_npc_id(revision.get("npc_id"))
+        if not npc_id:
+            continue
+        ensure_npc(npc_id)
+        target_understanding_id = revision.get("target_understanding_id")
+        missing_source_interpretations = [
+            item for item in revision.get("source_interpretation_ids", [])
+            if item not in interpretation_ids_by_npc[npc_id]
+        ]
+        if target_understanding_id not in understanding_ids_by_npc[npc_id] or missing_source_interpretations:
+            errors.append(
+                f"{revision.get('id')}: missing revision provenance for {npc_id}: "
+                f"target={target_understanding_id}, source_interpretations={missing_source_interpretations}"
+            )
+
+    return errors
 
 
 # ---------------------------------------------------------------------------
@@ -783,6 +914,11 @@ def apply_patch(
         return {"errors": ["campaign_state.json is not a valid object"]}
 
     from_tick = tick_from_campaign(campaign)  # ensures _time_tick exists
+
+    preflight_errors = cognitive_provenance_preflight_errors(root, patch, current_turn)
+    if preflight_errors:
+        report["errors"].extend(preflight_errors)
+        return report
 
 
     # 1. Time delta
@@ -1158,11 +1294,10 @@ def apply_patch(
         memory_ids = memory_ids | same_patch_memory_ids
         source_memory_id = interpretation.get("derived_from_memory_id")
         if source_memory_id not in memory_ids:
-            # Downgrade from error to warning - the memory may be written in a future turn
-            report.setdefault("warnings", []).append(
-                f"{interpretation['id']}: derived_from_memory_id '{source_memory_id}' not found for {npc_id} (memory may arrive in future turn)"
+            report["errors"].append(
+                f"{interpretation['id']}: derived_from_memory_id not found for {npc_id}: {source_memory_id}"
             )
-            # Still write the interpretation, just note the dangling reference
+            continue
 
         existing = {
             item.get("id"): index
@@ -1445,18 +1580,36 @@ def apply_patch(
         npc_dir = root / 'campaign' / 'npcs'
         if npc_dir.exists():
             try:
-                from tools.memory_manager import rerank, load_graph, save_graph
+                from tools.memory_manager import (
+                    load_graph as load_memory_graph,
+                    memory_score,
+                    save_graph as save_memory_graph,
+                    tier_for_score,
+                )
             except ImportError:
-                from memory_manager import rerank, load_graph, save_graph
+                from memory_manager import (
+                    load_graph as load_memory_graph,
+                    memory_score,
+                    save_graph as save_memory_graph,
+                    tier_for_score,
+                )
             for mem_path in sorted(npc_dir.glob('*.memory_graph.json')):
                 try:
-                    graph = load_graph(mem_path)
+                    graph = load_memory_graph(mem_path)
                     last_rerank = graph.get('last_rerank_turn', 0)
                     if current_turn - last_rerank >= consolidation_interval and graph.get('memory_nodes'):
-                        graph = rerank(graph)
+                        for memory in graph['memory_nodes']:
+                            score = memory_score(memory, current_turn, 12)
+                            memory['score'] = score
+                            memory['tier'] = tier_for_score(score, bool(memory.get('pinned', False)))
+                        graph['memory_nodes'] = sorted(
+                            graph['memory_nodes'],
+                            key=lambda item: item.get('score', 0),
+                            reverse=True,
+                        )
                         graph['last_rerank_turn'] = current_turn
                         if not dry_run:
-                            save_graph(mem_path, graph)
+                            save_memory_graph(mem_path, graph)
                         consolidated += 1
                 except Exception:
                     pass

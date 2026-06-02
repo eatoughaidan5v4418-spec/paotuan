@@ -18,6 +18,7 @@ import player_knowledge  # noqa: E402
 import validate_project  # noqa: E402
 import web_api  # noqa: E402
 import play_game  # noqa: E402
+import time_utils  # noqa: E402
 import zone_validator  # noqa: E402
 import run_turn  # noqa: E402
 
@@ -66,13 +67,20 @@ def minimal_campaign(root: Path) -> None:
     )
     write_json(campaign / "world_clocks.json", {"clocks": []})
     write_json(campaign / "conditions.json", {"entities": {}})
-    write_json(campaign / "resources.json", {"pc_main": {"特殊物品": ["系统新手礼包（未开启）"]}})
+    write_json(campaign / "resources.json", {"entities": {"pc_main": {"特效值": 500}}, "pc_main": {"特殊物品": ["系统新手礼包（未开启）"]}})
+    write_json(campaign / "player_knowledge.json", {})
+    write_json(campaign / "quest_graph.json", {"quests": []})
+    write_json(campaign / "rumors.json", {"rumors": []})
+    write_json(campaign / "chaos_factor.json", {})
+    write_json(campaign / "progress_tracks.json", {"tracks": []})
+    write_json(campaign / "oracles.json", {"tables": {}})
     (campaign / "world_graph.jsonl").write_text("", encoding="utf-8")
     write_json(
         campaign / "npcs" / "npc_a.memory_graph.json",
         {
             "npc_id": "npc_a",
             "current_turn": 1,
+            "memory_policy_id": "npc_memory_policy_v1",
             "memory_nodes": [],
             "interpretation_nodes": [],
             "understanding_nodes": [],
@@ -140,6 +148,52 @@ class ValidateProjectRootTests(unittest.TestCase):
         result = run_cmd(["validate_project.py", "--root", "does_not_exist"])
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("root does not exist", result.stdout)
+
+    def test_validate_project_reports_duplicate_world_graph_ids(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            minimal_campaign(root)
+            world_graph = root / "campaign" / "world_graph.jsonl"
+            world_graph.write_text(
+                "\n".join(
+                    [
+                        json.dumps({"record_type": "node", "id": "event_duplicate", "node_type": "Event"}, ensure_ascii=False),
+                        json.dumps({"record_type": "node", "id": "event_duplicate", "node_type": "Event"}, ensure_ascii=False),
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+
+            result = run_cmd(["validate_project.py", "--root", str(root)])
+
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("duplicate world_graph id", result.stdout)
+
+    def test_validate_project_reports_world_graph_missing_source_memory(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            minimal_campaign(root)
+            world_graph = root / "campaign" / "world_graph.jsonl"
+            world_graph.write_text(
+                json.dumps(
+                    {
+                        "record_type": "node",
+                        "id": "interp_missing_source",
+                        "node_type": "Interpretation",
+                        "npc_id": "npc_a",
+                        "source_memory_id": "mem_missing",
+                    },
+                    ensure_ascii=False,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+
+            result = run_cmd(["validate_project.py", "--root", str(root)])
+
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("source_memory_id not found", result.stdout)
 
 
 class ApplyPatchHardeningTests(unittest.TestCase):
@@ -467,6 +521,24 @@ class ApplyPatchHardeningTests(unittest.TestCase):
 
         self.assertEqual(normalized["location_changes"], [])
 
+    def test_normalize_patch_does_not_mutate_project_campaign_state(self) -> None:
+        project_state_path = ROOT / "campaign" / "campaign_state.json"
+        before = project_state_path.read_text(encoding="utf-8-sig")
+        before_mtime = project_state_path.stat().st_mtime_ns
+        packet = {
+            "campaign_before": {
+                "current_scene": {"location_id": "loc_test", "present_entities": ["pc_main"]},
+                "player_characters": [{"id": "pc_main", "effect_points": 0}],
+            },
+        }
+        patch = valid_patch()
+        patch["npc_memory_writes"] = []
+
+        play_game.normalize_patch(patch, None, packet)  # type: ignore[arg-type]
+
+        self.assertEqual(project_state_path.read_text(encoding="utf-8-sig"), before)
+        self.assertEqual(project_state_path.stat().st_mtime_ns, before_mtime)
+
     def test_normalize_patch_infers_split_party_sub_locations(self) -> None:
         packet = {
             "player_action": "我让老陈留在谷口看守退路，不要跟进阵眼；我自己进入古阵核心观察。",
@@ -514,7 +586,7 @@ class ApplyPatchHardeningTests(unittest.TestCase):
                 root=root,
                 base_url="",
                 api_key="",
-                model="__mock__",
+                model="api-test-model",
                 auto_apply=True,
                 max_tool_rounds=0,
                 allowed_roots=["campaign"],
@@ -548,6 +620,98 @@ class ApplyPatchHardeningTests(unittest.TestCase):
 
             self.assertFalse(result["applied"])
             self.assertTrue(result["report"]["errors"])
+
+    def test_run_ai_turn_commits_world_clock_preview_with_audit_fields(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            minimal_campaign(root)
+            write_json(
+                root / "campaign" / "world_clocks.json",
+                {
+                    "current_turn": 1,
+                    "clocks": [
+                        {
+                            "id": "clock_test",
+                            "type": "threat_countdown",
+                            "owner_id": "faction_test",
+                            "title": "Test pressure",
+                            "value": 0,
+                            "max_value": 3,
+                            "status": "active",
+                            "visibility": "secret",
+                            "next_tick_at": "第 1 日 20:10",
+                            "tick_interval": "10 分钟",
+                            "recent_updates": [],
+                        }
+                    ],
+                },
+            )
+            config = play_game.GameConfig(
+                root=root,
+                base_url="",
+                api_key="test-key",
+                model="api-test-model",
+                auto_apply=True,
+                max_tool_rounds=0,
+                allowed_roots=["campaign"],
+            )
+            original_call_chat_api = play_game.call_chat_api
+            try:
+                play_game.call_chat_api = lambda _config, _messages: json.dumps(  # type: ignore[assignment]
+                    {
+                        "tool_requests": [],
+                        "visible_text": {"scene": "你等待片刻，离屏压力继续推进。"},
+                        "state_patch": valid_patch() | {"npc_memory_writes": []},
+                    },
+                    ensure_ascii=False,
+                )
+                play_game.run_ai_turn(config, "我等待半小时", 30, 5)
+            finally:
+                play_game.call_chat_api = original_call_chat_api  # type: ignore[assignment]
+
+            clocks = json.loads((root / "campaign" / "world_clocks.json").read_text(encoding="utf-8"))
+            self.assertEqual(clocks["current_turn"], 2)
+            clock = clocks["clocks"][0]
+            self.assertEqual(clock["value"], 3)
+            self.assertEqual(clock["status"], "complete")
+            self.assertTrue(clock["recent_updates"])
+            self.assertEqual(clock["recent_updates"][-1]["clock_id"], "clock_test")
+
+    def test_apply_patch_semantic_error_does_not_leave_partial_memory_write(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            minimal_campaign(root)
+            patch = valid_patch()
+            patch["npc_interpretation_writes"] = [
+                {
+                    "id": "interp_bad",
+                    "npc_id": "npc_a",
+                    "derived_from_event_id": "event_missing",
+                    "derived_from_memory_id": "mem_missing",
+                    "text": "Bad dangling interpretation.",
+                    "appraisal": {
+                        "goal_impact": "neutral",
+                        "threat_level": 0,
+                        "opportunity_level": 0,
+                        "agency": "unknown",
+                        "moral_judgment": "unknown",
+                        "relationship_signal": "none",
+                    },
+                    "emotion": {"label": "none", "valence": 0, "intensity": 0},
+                    "confidence": 0.5,
+                    "importance": 0.5,
+                    "related_entities": ["npc_a"],
+                    "possible_misunderstanding": True,
+                }
+            ]
+
+            report = patcher.apply_patch(root, patch, 1, "第 1 日 20:00", "0001", dry_run=False)  # type: ignore[arg-type]
+
+            graph = json.loads((root / "campaign" / "npcs" / "npc_a.memory_graph.json").read_text(encoding="utf-8"))
+            world_graph = (root / "campaign" / "world_graph.jsonl").read_text(encoding="utf-8")
+            self.assertTrue(report["errors"])
+            self.assertEqual(graph["memory_nodes"], [])
+            self.assertEqual(world_graph, "")
 
 
 class ZoneValidatorTests(unittest.TestCase):
@@ -588,14 +752,26 @@ class PlayerKnowledgeTests(unittest.TestCase):
 
 class CliSmokeTests(unittest.TestCase):
     def test_run_turn_loads_clock_and_action_relevant_npcs(self) -> None:
-        state = json.loads((ROOT / "campaign" / "campaign_state.json").read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            shutil.copytree(ROOT / "campaign", root / "campaign")
+            state_path = root / "campaign" / "campaign_state.json"
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            state["current_scene"]["location_id"] = "loc_old_dock"
+            state["current_scene"]["present_entities"] = ["pc_main", "npc_mira"]
+            clocks_path = root / "campaign" / "world_clocks.json"
+            clocks = json.loads(clocks_path.read_text(encoding="utf-8"))
+            for clock in clocks["clocks"]:
+                if clock["id"] == "clock_b_ledger_copy":
+                    clock["status"] = "active"
+            write_json(clocks_path, clocks)
 
-        context = run_turn.collect_context(
-            ROOT,
-            state,
-            3,
-            "我在旧码头观察 npc_a_sentry，并确认 npc_b_clerk 是否听到动静。",
-        )
+            context = run_turn.collect_context(
+                root,
+                state,
+                3,
+                "我在旧码头观察 npc_a_sentry，并确认 npc_b_clerk 是否听到动静。",
+            )
 
         npc_ids = {npc["id"] for npc in context["present_npcs"]}
         self.assertIn("npc_mira", npc_ids)
@@ -631,6 +807,11 @@ class CliSmokeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             shutil.copytree(ROOT / "campaign", root / "campaign")
+            state_path = root / "campaign" / "campaign_state.json"
+            initial_state = json.loads(state_path.read_text(encoding="utf-8"))
+            expected_time = time_utils.tick_to_display(
+                time_utils.display_to_tick(initial_state["current_time"]) + 60
+            )
 
             result = run_cmd(
                 [
@@ -645,8 +826,8 @@ class CliSmokeTests(unittest.TestCase):
             )
 
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            state = json.loads((root / "campaign" / "campaign_state.json").read_text(encoding="utf-8"))
-            self.assertEqual(state["current_time"], "第 1 日 21:00")
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertEqual(state["current_time"], expected_time)
             clocks = json.loads((root / "campaign" / "world_clocks.json").read_text(encoding="utf-8"))
             quests = json.loads((root / "campaign" / "quest_graph.json").read_text(encoding="utf-8"))
             by_clock = {clock["id"]: clock for clock in clocks["clocks"]}

@@ -1,9 +1,8 @@
 const state = {
   campaigns: [],
   currentCampaign: "",
-  mock: false,
-  serverMock: false,
   busy: false,
+  toastTimer: null,
 };
 
 const $ = (id) => document.getElementById(id);
@@ -20,9 +19,11 @@ function rememberCampaign(id) {
 
 function showToast(message, isError = false) {
   const toast = $("toast");
+  clearTimeout(state.toastTimer);
   toast.textContent = message;
   toast.className = `toast ${isError ? "error" : ""}`;
-  setTimeout(() => toast.classList.add("hidden"), 3600);
+  toast.setAttribute("role", isError ? "alert" : "status");
+  state.toastTimer = setTimeout(() => toast.classList.add("hidden"), 3600);
 }
 
 function text(value, fallback = "未记录") {
@@ -49,11 +50,39 @@ function card(title, body, extra = "") {
   return `<article class="info-card"><h4>${escapeHtml(title)}</h4><p>${escapeHtml(body)}</p>${extra}</article>`;
 }
 
+function emptyNote(message) {
+  return `<p class="empty-note">${escapeHtml(message)}</p>`;
+}
+
+function statusClass(status) {
+  const normalized = String(status || "").toLowerCase();
+  if (["complete", "completed", "success", "resolved"].includes(normalized)) return "ok";
+  if (["failed", "danger", "blocked"].includes(normalized)) return "danger";
+  return "active";
+}
+
+function statusLabel(status) {
+  const labels = {
+    active: "进行中",
+    complete: "已完成",
+    completed: "已完成",
+    failed: "已失败",
+    resolved: "已解决",
+    dormant: "暂缓",
+  };
+  return labels[String(status || "").toLowerCase()] || text(status, "状态未记录");
+}
+
+function statusBadge(status) {
+  return `<span class="status-badge ${statusClass(status)}">${escapeHtml(statusLabel(status))}</span>`;
+}
+
 function scrollNarrativeToEnd() {
   requestAnimationFrame(() => {
     const narrative = $("narrative");
     if (narrative) {
-      narrative.scrollTo({ top: narrative.scrollHeight, behavior: "smooth" });
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      narrative.scrollTo({ top: narrative.scrollHeight, behavior: reduceMotion ? "auto" : "smooth" });
     }
   });
 }
@@ -75,7 +104,7 @@ function setBusy(message = "") {
   state.busy = Boolean(message);
   $("sendTurnButton").disabled = state.busy;
   $("newCampaignButton").disabled = state.busy;
-  $("sendTurnButton").textContent = message || (state.mock ? "执行 Mock 回合" : "执行回合");
+  $("sendTurnButton").textContent = message || "执行回合";
   if (message) {
     $("apiStatus").textContent = message;
   } else {
@@ -84,16 +113,10 @@ function setBusy(message = "") {
 }
 
 function renderModeHint(config = null) {
-  if (state.mock) {
-    $("apiStatus").textContent = "Mock 演示模式";
-    $("sendTurnButton").textContent = "执行 Mock 回合";
-    $("newCampaignButton").textContent = "Mock 生成并进入";
-    return;
-  }
   const apiInfo = config?.api;
   if (apiInfo) {
     $("apiStatus").textContent = `${apiInfo.model || "未知模型"} / ${apiInfo.has_key ? "API 已配置" : "未配置 API Key"}`;
-  } else if ($("apiStatus").textContent.includes("Mock")) {
+  } else {
     $("apiStatus").textContent = "API 模式";
   }
   $("sendTurnButton").textContent = "执行回合";
@@ -192,24 +215,24 @@ function renderState(data) {
   }).slice(0, 4);
   const playerResources = (data.resources || []).find((item) => item.id === player.id) || {};
   const resourceRows = Object.entries(playerResources)
-    .filter(([key]) => key !== "id" && key !== "type")
-    .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join("、") : value}`);
+    .filter(([key]) => key !== "id" && key !== "type");
   const specialEffects = player.special_effects || [];
 
   $("characterSheet").innerHTML = `
-    ${card(player.name || "玩家角色", `${text(player.realm)} / 灵根 ${text(player.spiritual_root)}`)}
-    <div class="info-card">
+    <article class="info-card character-hero">
+      <div class="character-name"><strong>${escapeHtml(player.name || "玩家角色")}</strong><span>${escapeHtml(text(player.realm))}</span></div>
+      <div class="character-desc">灵根 ${escapeHtml(text(player.spiritual_root))}</div>
+    </article>
+    <div class="info-card compact-card">
       <h4>系统</h4>
-      <p>等级 ${text(player.system_rank)} / 特效值 ${text(player.effect_points)}</p>
+      <p>等级 ${escapeHtml(text(player.system_rank))} / 特效值 ${escapeHtml(text(player.effect_points))}</p>
       <div class="pill-list">${specialEffects.map((v) => `<span class="pill">${escapeHtml(v)}</span>`).join("") || `<span class="pill">暂无特效</span>`}</div>
     </div>
-    <div class="info-card">
+    <div class="info-card compact-card">
       <h4>资源</h4>
-      <p>生命 ${hp}/${maxHp}</p>
-      <div class="meter"><span style="width:${Math.max(0, Math.min(100, hp / maxHp * 100))}%"></span></div>
-      <p>灵力 ${qi}/${maxQi}</p>
-      <div class="meter"><span style="width:${Math.max(0, Math.min(100, qi / maxQi * 100))}%"></span></div>
-      ${resourceRows.length ? `<div class="gm-section">${listItems(resourceRows)}</div>` : ""}
+      ${renderMeter("生命", hp, maxHp)}
+      ${renderMeter("灵力", qi, maxQi, "gold-fill")}
+      ${resourceRows.length ? renderResourceRows(resourceRows) : ""}
     </div>
     <div class="info-card"><h4>属性</h4><div class="pill-list">${Object.entries(player.stats || {}).map(([k, v]) => `<span class="pill">${escapeHtml(k)} ${escapeHtml(v)}</span>`).join("") || `<span class="pill">暂无</span>`}</div></div>
     <div class="info-card"><h4>词条 / 状态</h4><div class="pill-list">${[...(player.traits || []), ...(player.conditions || [])].map((v) => `<span class="pill">${escapeHtml(v)}</span>`).join("") || `<span class="pill">暂无</span>`}</div></div>
@@ -221,18 +244,48 @@ function renderState(data) {
   $("scenePanel").innerHTML = `
     ${card(location.name || location.id || "未知地点", location.summary || data.scene?.summary || "暂无地点摘要")}
     <div class="info-card"><h4>在场实体</h4><div class="pill-list">${(data.scene?.present_entities || []).map((id) => `<span class="pill">${escapeHtml(id)}</span>`).join("") || `<span class="pill">暂无</span>`}</div></div>
-    <div class="info-card"><h4>世界时钟</h4>${listItems((data.clocks || []).map((clock) => `${clock.title || clock.id}: ${clock.value || 0}/${clock.max_value || "?"}`))}</div>
   `;
 
+  const clocks = data.clocks || [];
+  $("clockPanel").innerHTML = clocks.map((clock) => `
+    <article class="info-card clock-card">
+      <div class="card-heading">
+        <h4>${escapeHtml(clock.title || clock.id)}</h4>
+        ${statusBadge(clock.status)}
+      </div>
+      ${renderMeter("推进", clock.value ?? 0, clock.max_value ?? "?")}
+      ${clock.stakes ? `<p class="card-note">${escapeHtml(clock.stakes)}</p>` : ""}
+    </article>
+  `).join("") || emptyNote("暂无公开时钟");
+
   $("npcPanel").innerHTML = (data.npcs || []).map((npc) =>
-    card(npc.name || npc.id, `${text(npc.role, "身份未明")} / 记忆 ${npc.memory_count || 0} / 理解 ${npc.understanding_count || 0}`)
-  ).join("") || `<p class="muted">当前场景没有可见 NPC</p>`;
+    `<article class="info-card npc-card">
+      <div class="card-heading"><h4>${escapeHtml(npc.name || npc.id)}</h4><span class="status-badge active">在场</span></div>
+      <p>${escapeHtml(text(npc.role, "身份未明"))}</p>
+      <p class="card-note">记忆 ${escapeHtml(npc.memory_count || 0)} / 理解 ${escapeHtml(npc.understanding_count || 0)}</p>
+    </article>`
+  ).join("") || emptyNote("当前场景没有可见 NPC");
 
   const quests = data.quests || [];
-  $("questPanel").innerHTML = quests.map((quest) => {
-    const extra = quest.clues ? `<div class="gm-section"><div class="muted">线索</div>${listItems(quest.clues.map((clue) => `${clue.found ? "已发现" : "未发现"} / ${clue.text}`))}</div>` : "";
-    return card(quest.title || quest.id, `${text(quest.status)} / ${text(quest.pressure || quest.failure_consequence)}`, extra);
-  }).join("") || `<p class="muted">暂无任务</p>`;
+  const questCards = quests.map((quest) => {
+    const foundClues = (quest.clues || []).filter((clue) => clue.found);
+    const extra = foundClues.length
+      ? `<div class="card-subsection"><div class="muted">已发现线索</div>${listItems(foundClues.map((clue) => clue.text))}</div>`
+      : "";
+    return `<article class="info-card quest-card">
+      <div class="card-heading"><h4>${escapeHtml(quest.title || quest.id)}</h4>${statusBadge(quest.status)}</div>
+      <p>${escapeHtml(text(quest.pressure || quest.failure_consequence, "暂无压力记录"))}</p>
+      ${extra}
+    </article>`;
+  });
+  const openThreads = (data.open_threads || []).slice(-5).reverse().map((thread) => `
+    <article class="info-card thread-card">
+      <div class="card-heading"><h4>悬念</h4>${statusBadge(thread.status)}</div>
+      <p>${escapeHtml(thread.description || thread.thread || thread.summary || thread.id)}</p>
+      ${thread.next_pressure ? `<p class="card-note">下一步压力：${escapeHtml(thread.next_pressure)}</p>` : ""}
+    </article>
+  `);
+  $("questPanel").innerHTML = [...questCards, ...openThreads].join("") || emptyNote("暂无任务或悬念");
 
   const knowledge = data.knowledge || {};
   const clueTexts = [
@@ -240,7 +293,7 @@ function renderState(data) {
     ...(knowledge.facts_understood || []).map((item) => item.fact || item),
     ...(knowledge.locations_explored || []).map((item) => `${item.name || item.id}: ${item.notes || ""}`),
   ];
-  $("knowledgePanel").innerHTML = listItems(clueTexts);
+  $("knowledgePanel").innerHTML = clueTexts.length ? listItems(clueTexts) : emptyNote("尚未记录可见线索");
 }
 
 function renderResourceRows(rows) {
@@ -253,17 +306,15 @@ function renderMeter(label, value, maxValue, fillClass = "") {
     return `<div class="meter-row"><div class="meter-label"><span>${escapeHtml(label)}</span><strong>未记录</strong></div><div class="meter"><span class="${fillClass}" style="width:0%"></span></div></div>`;
   }
   const current = Number(value || 0);
-  const max = Number(maxValue || current || 1);
-  const pct = Math.max(0, Math.min(100, (current / max) * 100));
-  return `<div class="meter-row"><div class="meter-label"><span>${escapeHtml(label)}</span><strong>${escapeHtml(current)}/${escapeHtml(max)}</strong></div><div class="meter"><span class="${fillClass}" style="width:${pct}%"></span></div></div>`;
+  const parsedMax = Number(maxValue);
+  const hasNumericMax = Number.isFinite(parsedMax) && parsedMax > 0;
+  const pct = hasNumericMax ? Math.max(0, Math.min(100, (current / parsedMax) * 100)) : 0;
+  return `<div class="meter-row"><div class="meter-label"><span>${escapeHtml(label)}</span><strong>${escapeHtml(current)}/${escapeHtml(maxValue)}</strong></div><div class="meter"><span class="${fillClass}" style="width:${pct}%"></span></div></div>`;
 }
 
 async function loadConfig() {
   const config = await api("/api/config");
-  state.serverMock = Boolean(config.mock);
-  state.mock = Boolean(config.mock);
   rememberCampaign(localStorage.getItem(CAMPAIGN_KEY) || config.current_campaign || "");
-  $("mockToggle").checked = state.mock;
   renderModeHint(config);
 }
 
@@ -303,14 +354,14 @@ async function submitTurn() {
     return;
   }
   const startedAt = Date.now();
-  setBusy(state.mock ? "Mock 回合生成中..." : "AI 回合生成中...");
+  setBusy("AI 回合生成中...");
   $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card"><h3>你</h3><p>${escapeHtml(action)}</p></article>`);
-  $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card" id="pendingTurn"><h3>处理中</h3><p>${state.mock ? "正在生成本地演示回合。" : "正在调用 AI，并等待状态校验写回。"}</p></article>`);
+  $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card" id="pendingTurn"><h3>处理中</h3><p>正在调用 AI，并等待状态校验写回。</p></article>`);
   scrollNarrativeToEnd();
   try {
     const result = await api("/api/turn", {
       method: "POST",
-      body: JSON.stringify({ campaign: state.currentCampaign, action, mock: state.mock }),
+      body: JSON.stringify({ campaign: state.currentCampaign, action }),
     });
     $("pendingTurn")?.remove();
     renderVisible(result.visible_text, result.rendered);
@@ -339,11 +390,11 @@ async function createCampaign() {
     showToast("请输入世界观设定。", true);
     return;
   }
-  setBusy(state.mock ? "Mock 生成中..." : "AI 生成中...");
+  setBusy("AI 生成中...");
   try {
     const result = await api("/api/campaigns/new", {
       method: "POST",
-      body: JSON.stringify({ theme, mock: state.mock }),
+      body: JSON.stringify({ theme }),
     });
     rememberCampaign(result.campaign.id);
     await loadCampaigns();
@@ -447,11 +498,6 @@ function bindEvents() {
   $("newCampaignButton").addEventListener("click", createCampaign);
   $("validateButton").addEventListener("click", validateProject);
   $("obsidianButton").addEventListener("click", exportObsidian);
-  $("mockToggle").addEventListener("change", (event) => {
-    state.mock = event.target.checked;
-    renderModeHint();
-    showToast(state.mock ? "已切换到 Mock 演示模式。" : "已切换到真实 API 模式。");
-  });
 }
 
 async function boot() {

@@ -16,7 +16,69 @@ import web_api  # noqa: E402
 import obsidian_vault  # noqa: E402
 
 
+def api_turn_response() -> str:
+    return json.dumps(
+        {
+            "tool_requests": [],
+            "visible_text": {
+                "scene": "你观察当前局势，离屏压力仍在推进。",
+                "action_result": "你保留了主动权。",
+                "actionable_clues": ["继续观察", "主动交谈"],
+                "check": "无",
+            },
+            "state_patch": {
+                "time_delta": "无",
+                "location_changes": [],
+                "inventory_changes": [],
+                "relationship_changes": [],
+                "new_facts": [],
+                "contradictions": [],
+                "npc_memory_writes": [],
+                "open_threads": [],
+            },
+        },
+        ensure_ascii=False,
+    )
+
+
+def api_worldgen_response() -> str:
+    world = web_api.play_game.fallback_worldgen("赛博修仙废城，玩家是拥有词条系统的魂穿者")
+    return json.dumps(world, ensure_ascii=False)
+
+
+class StubChatApi:
+    def __init__(self, response: str) -> None:
+        self.response = response
+        self.original = web_api.play_game.call_chat_api
+
+    def __enter__(self) -> None:
+        web_api.play_game.call_chat_api = lambda _config, _messages: self.response  # type: ignore[assignment]
+
+    def __exit__(self, *args: object) -> None:
+        web_api.play_game.call_chat_api = self.original  # type: ignore[assignment]
+
+
 class WebApiTests(unittest.TestCase):
+    def test_api_status_reports_unconfigured_api_instead_of_mock_available(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            target = Path(temp) / "campaign_root"
+            shutil.copytree(ROOT / "campaign", target / "campaign")
+
+            status = web_api.api_status(target)
+
+            if not status["has_key"]:
+                self.assertEqual(status["mode"], "api_unconfigured")
+
+    def test_public_web_api_rejects_mock_mode(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            target = Path(temp) / "campaign_root"
+            shutil.copytree(ROOT / "campaign", target / "campaign")
+
+            with self.assertRaisesRegex(ValueError, "mock mode has been removed"):
+                web_api.run_turn(target, "我观察周围", mock=True)
+            with self.assertRaisesRegex(ValueError, "mock mode has been removed"):
+                web_api.create_campaign("边境小城", mock=True, force=True)
+
     def test_visible_state_hides_private_memory_but_shows_play_panels(self) -> None:
         state = web_api.visible_state(ROOT)
 
@@ -52,11 +114,13 @@ class WebApiTests(unittest.TestCase):
 
             self.assertEqual(visible["player"]["location_id"], "qingyun_valley")
 
-    def test_mock_worldgen_creates_playable_campaign(self) -> None:
+    def test_api_worldgen_creates_playable_campaign(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             target = Path(temp) / "campaign_root"
-            config = web_api.make_config(ROOT, mock=True)
-            world = web_api.play_game.run_worldgen(config, "赛博修仙废城，玩家是拥有词条系统的魂穿者", target, force=True)
+            config = web_api.make_config(ROOT)
+            config.api_key = "test-key"
+            with StubChatApi(api_worldgen_response()):
+                world = web_api.play_game.run_worldgen(config, "赛博修仙废城，玩家是拥有词条系统的魂穿者", target, force=True)
 
             self.assertTrue((target / "campaign" / "campaign_state.json").exists())
             self.assertTrue(world.get("files"))
@@ -64,12 +128,13 @@ class WebApiTests(unittest.TestCase):
             self.assertIn("scene", state)
             self.assertTrue(state["quests"])
 
-    def test_mock_turn_returns_visible_text_and_apply_report(self) -> None:
+    def test_api_turn_returns_visible_text_and_apply_report(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             target = Path(temp) / "campaign_root"
             shutil.copytree(ROOT / "campaign", target / "campaign")
 
-            result = web_api.run_turn(target, "我观察周围的异常痕迹", mock=True)
+            with StubChatApi(api_turn_response()):
+                result = web_api.run_turn(target, "我观察周围的异常痕迹")
 
             self.assertIn("visible_text", result)
             self.assertEqual(result["inferred_action"]["action_type"], "观察")
@@ -83,7 +148,8 @@ class WebApiTests(unittest.TestCase):
             target = Path(temp) / "campaign_root"
             shutil.copytree(ROOT / "campaign", target / "campaign")
 
-            result = web_api.run_turn(target, "我在码头边等半小时，看看谁出现", mock=True)
+            with StubChatApi(api_turn_response()):
+                result = web_api.run_turn(target, "我在码头边等半小时，看看谁出现")
 
             self.assertEqual(result["inferred_action"]["action_type"], "等待")
             self.assertEqual(result["inferred_action"]["elapsed_minutes"], 30)
@@ -94,7 +160,8 @@ class WebApiTests(unittest.TestCase):
             target = Path(temp) / "campaign_root"
             shutil.copytree(ROOT / "campaign", target / "campaign")
 
-            result = web_api.run_turn(target, "[交谈] 我问米拉黑灯会什么时候来", mock=True)
+            with StubChatApi(api_turn_response()):
+                result = web_api.run_turn(target, "[交谈] 我问米拉黑灯会什么时候来")
 
             self.assertEqual(result["inferred_action"]["normalized_action"], "我问米拉黑灯会什么时候来")
             self.assertEqual(result["inferred_action"]["action_type"], "交谈")
@@ -201,7 +268,7 @@ class WebApiTests(unittest.TestCase):
         self.assertEqual(clocks[0]["max_value"], 6)
         self.assertEqual(clocks[0]["visibility"], "public")
 
-    def test_visible_state_hides_secret_world_clocks(self) -> None:
+    def test_visible_state_hides_private_and_secret_world_clocks(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             target = Path(temp) / "campaign_root"
             shutil.copytree(ROOT / "campaign", target / "campaign")
@@ -210,6 +277,7 @@ class WebApiTests(unittest.TestCase):
                     {
                     "clocks": [
                         {"id": "public_clock", "title": "public", "value": 1, "max_value": 4, "visibility": "public"},
+                        {"id": "private_clock", "title": "private", "value": 1, "max_value": 4, "visibility": "private"},
                         {"id": "secret_clock", "title": "secret", "value": 1, "max_value": 4, "visibility": "secret"},
                     ]
                     },
@@ -296,7 +364,8 @@ class WebApiTests(unittest.TestCase):
             target = Path(temp) / "campaign_root"
             shutil.copytree(ROOT / "campaign", target / "campaign")
 
-            result = web_api.run_turn(target, "我观察当前局势", mock=True)
+            with StubChatApi(api_turn_response()):
+                result = web_api.run_turn(target, "我观察当前局势")
 
             self.assertIn("visible_text", result)
             self.assertIn("apply_report", result)
@@ -306,7 +375,8 @@ class WebApiTests(unittest.TestCase):
             target = Path(temp) / "campaign_root"
             shutil.copytree(ROOT / "campaign", target / "campaign")
 
-            web_api.run_turn(target, "我观察当前局势", mock=True)
+            with StubChatApi(api_turn_response()):
+                web_api.run_turn(target, "我观察当前局势")
             logs = web_api.recent_logs(target)
 
             self.assertTrue(logs)

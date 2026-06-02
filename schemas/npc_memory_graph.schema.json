@@ -63,6 +63,26 @@
             "items": {"type": "string"}
           },
           "visibility_path": {"enum": ["direct_visual", "direct_auditory", "detected_observer", "told_by", "overheard", "inferred", "public_signal"]},
+          "visibility_evidence": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["event_id", "observer_id", "memory_allowed", "visibility_path", "subjective_summary", "allowed_memory_scope", "forbidden_memory_scope"],
+            "properties": {
+              "event_id": {"type": "string"},
+              "observer_id": {"type": "string"},
+              "memory_allowed": {"type": "boolean"},
+              "visibility_path": {"enum": ["direct_visual", "direct_auditory", "detected_observer", "told_by", "overheard", "inferred", "public_signal"]},
+              "subjective_summary": {"type": "string"},
+              "allowed_memory_scope": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "forbidden_memory_scope": {
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            }
+          },
           "observed_at": {"type": "string"},
           "location_id": {"type": "string"}
         }

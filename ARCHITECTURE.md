@@ -1,7 +1,8 @@
 ﻿# Paotuan AI RPG Kit — 架构文档
 
-> 生成日期: 2026-05-23
-> 版本: v2.0
+> 初始生成日期: 2026-05-23
+> 最近同步日期: 2026-06-02
+> 版本: v2.1-doc-sync
 > 基于: Mythic GME Chaos Factor, Ironsworn Progress Tracks, Burning Wheel BITs, PbtA Tags + Instincts, FATE Aspects
 
 ## 目录
@@ -71,8 +72,10 @@ paotuan/
 │   ├── conditions_manager.py          #   角色状态管理
 │   └── progress_tracker.py            #   进度条 (Ironsworn)
 │
-├── tests/                             # 自动化测试
-│   └── test_visibility.py             #   可见性/知识隔离 (7 tests)
+├── tests/                             # 自动化测试 (67 tests)
+│   ├── test_architecture_hardening.py #   工具链、校验器、CLI smoke (30 tests)
+│   ├── test_visibility.py             #   可见性、知识隔离、认知图谱 (12 tests)
+│   └── test_web_api.py                #   Web API、API turn、worldgen (25 tests)
 │
 ├── campaign/                          #   ★ demo 战局 (码头/黑灯会)
 │   ├── campaign_state.json
@@ -382,7 +385,7 @@ zone_connections:
 | 工具 | 用途 | 关键参数 |
 |------|------|---------|
 | `run_turn.py` | 一键回合包生成 | `--player-action`, `--elapsed-minutes`, `--write`, `--commit-world-tick` |
-| `play_game.py` | 可玩循环/AI GM 执行器 | `--once`, `--mock`, `--new`；默认自动从玩家文本推断行动类型和耗时 |
+| `play_game.py` | 可玩循环/AI GM 执行器 | `--once`, `--new`；默认自动从玩家文本推断行动类型和耗时 |
 | `apply_patch.py` | 安全写入状态变更 | `--write`, `--dry-run`, `--session-id` |
 | `memory_manager.py` | 记忆评分/分层/回忆次数 | `rerank`, `recall` |
 | `world_tick_manager.py` | 世界时钟查看/推进 | `list`, `tick` |
@@ -400,7 +403,17 @@ zone_connections:
 
 ## 10. 测试
 
-`tests/test_visibility.py` — 8 个自动化测试:
+截至 2026-06-02，自动化套件共有 67 个测试：
+
+> 迁移说明：旧版架构文档曾单列 `tests/test_visibility.py` 的 8 个自动化测试；当前应以完整套件 67 个测试为准。当前 bundled Python 缺少 `pytest` 和 `PyYAML`，完整 pytest 需在依赖齐备后复验。
+
+| 测试文件 | 数量 | 覆盖范围 |
+|----------|------|----------|
+| `tests/test_architecture_hardening.py` | 30 | `validate_project.py` 路径解析、`apply_patch.py` 语义错误、CLI smoke、世界时钟提交、文档一致性 |
+| `tests/test_visibility.py` | 12 | NPC 知识隔离、`visibility_evidence`、记忆图谱、interpretation provenance |
+| `tests/test_web_api.py` | 25 | Web API、API turn、worldgen、可见状态过滤、私有世界时钟隔离 |
+
+`tests/test_visibility.py` 的关键验证包括：
 
 | 测试 | 验证 |
 |------|------|
@@ -412,15 +425,18 @@ zone_connections:
 | `test_memory_ids_sequential` | 记忆 ID 唯一且连续 |
 | `test_new_npc_creates_graph` | 新 NPC 自动创建记忆图谱 |
 | `test_cognitive_layer_writes` | 事件理解、稳定理解和修正事件可写入 |
-
-补充硬化测试位于 `tests/test_architecture_hardening.py`，覆盖 `validate_project.py` 路径解析、`apply_patch.py` 错误处理和字段范围、`zone_validator.py` 多跳感知、玩家知识转义展示、只读 CLI smoke test、临时战局世界时钟提交，以及文档一致性。
+| `test_memory_write_without_visibility_evidence_rejected` | 缺少可见性证据的记忆写入被拒绝 |
+| `test_dangling_interpretation_provenance_rejected` | 悬空 interpretation 来源被拒绝 |
 
 运行:
 
 ```powershell
-python -m pytest -q
-python tests/test_visibility.py
+python -m unittest tests.test_web_api
+python validate_project.py
+python validate_project.py --root xianxia_campaign
 ```
+
+2026-06-02 本轮复验结果：Web API 定向套件 `25 passed`；默认 demo 与仙侠战役校验均通过；完整 pytest 等待 `pytest` + `PyYAML` 环境复验。
 
 ---
 
@@ -438,6 +454,12 @@ python ..\tools\run_turn.py --player-action "我要..." --write
 ```
 
 `validate_project.py --root <path>` 可指定校验目标：`<path>` 可以是项目根、战局目录（如 `xianxia_campaign`），也可以直接是 campaign 数据目录（如 `campaign` 或 `xianxia_campaign/campaign`）。校验器会在输出中显示解析后的 `project_root` 和 `campaign_dir`。
+
+### 正式支持范围
+
+- `campaign/`：默认 demo 战役，纳入发布校验。
+- `xianxia_campaign/`：仙侠战役，纳入发布校验。
+- `generated_campaigns/`：历史 worldgen 样例与回归素材，不纳入正式支持承诺。旧样例可能使用过期协议；worldgen prompt 源头修补完成前，新生成战役必须单独执行 `validate_project.py --root <战役目录>`。
 
 ---
 

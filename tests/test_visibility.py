@@ -171,6 +171,34 @@ class VisibilityIsolationTests(unittest.TestCase):
         # V23: subjective_summary mismatch no longer blocks writes
         self.assertGreater(len(self._graph("npc_b")["memory_nodes"]), 0)
 
+    def test_memory_write_cannot_include_forbidden_visibility_scope(self):
+        import apply_patch
+        patch = make_patch([{
+            "npc_id": "npc_b",
+            "memory": "B knows the player hid behind the rope pile.",
+            "memory_type": "episodic",
+            "source": "heard",
+            "visibility_path": "direct_auditory",
+            "visibility_evidence": {
+                "event_id": "event_noise_0002",
+                "observer_id": "npc_b",
+                "memory_allowed": True,
+                "visibility_path": "direct_auditory",
+                "subjective_summary": "B heard muffled footsteps outside the warehouse.",
+                "allowed_memory_scope": ["muffled footsteps"],
+                "forbidden_memory_scope": ["player hid behind the rope pile"],
+            },
+            "confidence": 0.9,
+            "emotional_valence": -0.5,
+            "salience": 0.7,
+        }])
+
+        errors = apply_patch.validate_patch_structure(patch)
+        self.assertTrue(any("forbidden_memory_scope" in err for err in errors), errors)
+        report = apply_patch.apply_patch(self.tmp, patch, 1, "\u7b2c 1 \u65e5 20:00", "0001", dry_run=False)
+        self.assertTrue(any("forbidden_memory_scope" in err for err in report["errors"]), report)
+        self.assertEqual(self._graph("npc_b")["memory_nodes"], [])
+
     # ----------------------------------------------------------------
     # Test 4: Invalid visibility_path caught by validator
     # ----------------------------------------------------------------

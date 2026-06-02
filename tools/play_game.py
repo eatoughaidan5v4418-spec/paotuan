@@ -345,43 +345,6 @@ def run_tool(config: GameConfig, request: dict[str, Any]) -> dict[str, Any]:
 
 
 def call_chat_api(config: GameConfig, messages: list[dict[str, str]]) -> str:
-    if config.model == "__mock__":
-        return json.dumps(
-            {
-                "tool_requests": [],
-                "visible_text": {
-                    "scene": "你停在当前场景边缘，潮湿的空气里有旧木头、冷水和金属锈蚀混在一起的味道。近处的地面留下几道新旧交叠的痕迹，有些来自匆忙经过的人，有些像是被故意擦去。远处传来断续的低语，声音被风切碎，只剩下几个含混的词。这个地方不是静止的布景，至少有两股力量正在它背后拉扯：一个想把事情压下去，一个想在你看清之前把证据带走。\n\n你能感觉到当前场景已经被整理成可执行的本地回合包：在场 NPC、地点特征、世界时钟和任务压力都已进入判断。你现在的每个选择都会决定下一次写入谁的记忆、谁会误解你、以及哪条线索会先变得昂贵。",
-                    "action_result": "这次行动没有直接触发战斗或检定，但它建立了当前回合的观察姿态：你没有贸然暴露敌意，也没有立刻交出承诺。周围 NPC 会把你归类为一个正在评估局势的人，而不是已经站队的人。这个结果让你暂时保留主动权，但也意味着对方会开始试探你。",
-                    "npc_actions": [
-                        "最近的 NPC 没有立刻摊牌，而是用问题、沉默或站位来试探你的来意。",
-                        "远处的环境压力继续推进：有人可能正在移动、整理证据，或等待你离开视线。"
-                    ],
-                    "world_motion": "系统会根据你的自然语言行动自动估算耗时，并据此推进任务压力、NPC 记忆和世界变化。当前最重要的是：场景不会因为你停下观察而冻结。",
-                    "tension": "你需要在继续观察、主动交涉和抢先调查之间做选择；拖得越久，某些线索越可能变质或被他人先处理。",
-                    "actionable_clues": [
-                        "继续询问在场 NPC，重点追问他们刚才看见或隐瞒了什么。",
-                        "调查当前地点最显眼的异常痕迹，确认它是新出现还是被伪造。",
-                        "花费 5-10 分钟静观其变，换取更多环境变化和离屏推进。",
-                        "移动到更高或更隐蔽的位置，尝试扩大视野但承担暴露风险。"
-                    ],
-                    "check": "无",
-                    "state_summary": {
-                        "time": "本回合会按后端推断的耗时写入时间变化。",
-                        "memory": "正式回合中，相关 NPC 会按可见性获得独立记忆和主观理解。",
-                        "quests": "正式回合中，任务压力会随等待、移动和调查推进。",
-                        "unresolved": [
-                            "谁正在推动当前场景背后的压力？",
-                            "哪些线索会因为玩家拖延而消失或变质？"
-                        ]
-                    }
-                },
-                "elapsed_minutes": 0,
-                "state_patch": DEFAULT_PATCH,
-                "gm_notes": ["mock mode: no API call was made"]
-            },
-            ensure_ascii=False,
-        )
-
     if not config.api_key:
         raise RuntimeError(
             "Missing API key. Set AI_API_KEY or OPENAI_API_KEY, or pass --api-key."
@@ -564,12 +527,12 @@ def fallback_worldgen(theme: str) -> dict[str, Any]:
                 )
                 + "\n",
             },
-            {"path": "campaign/resources.json", "content": {"entities": []}},
+            {"path": "campaign/resources.json", "content": {"entities": {}}},
             {"path": "campaign/player_knowledge.json", "content": {"clues_discovered": [], "npcs_known": [], "locations_explored": [], "facts_understood": [], "events_witnessed": []}},
             {"path": "campaign/quest_graph.json", "content": {"quests": [{"id": "thread_opening_crisis", "title": "开局危机", "status": "active"}]}},
             {"path": "campaign/rumors.json", "content": {"rumors": []}},
             {"path": "campaign/chaos_factor.json", "content": default_chaos_factor()},
-            {"path": "campaign/conditions.json", "content": {"entities": []}},
+            {"path": "campaign/conditions.json", "content": {"entities": {}}},
             {"path": "campaign/progress_tracks.json", "content": {"tracks": []}},
             {"path": "campaign/oracles.json", "content": default_oracles()},
             {"path": "campaign/memory_policy.yaml", "content": default_memory_policy()},
@@ -644,7 +607,149 @@ def assert_campaign_relative(path: str) -> Path:
     return Path(normalized)
 
 
+WORLDGEN_REQUIRED_PATHS = {
+    "campaign/campaign_state.json",
+    "campaign/world_clocks.json",
+    "campaign/world_graph.jsonl",
+    "campaign/resources.json",
+    "campaign/player_knowledge.json",
+    "campaign/quest_graph.json",
+    "campaign/rumors.json",
+    "campaign/chaos_factor.json",
+    "campaign/conditions.json",
+    "campaign/progress_tracks.json",
+    "campaign/oracles.json",
+    "campaign/memory_policy.yaml",
+    "campaign/world_tick_policy.yaml",
+    "campaign/lore/factions.yaml",
+    "campaign/lore/rules.yaml",
+    "campaign/lore/world_lore.yaml",
+    "campaign/session_logs/0001.md",
+}
+
+WORLDGEN_CONTAINER_RULES: dict[str, tuple[str, type]] = {
+    "campaign/world_clocks.json": ("clocks", list),
+    "campaign/resources.json": ("entities", dict),
+    "campaign/quest_graph.json": ("quests", list),
+    "campaign/rumors.json": ("rumors", list),
+    "campaign/conditions.json": ("entities", dict),
+    "campaign/progress_tracks.json": ("tracks", list),
+    "campaign/oracles.json": ("tables", dict),
+}
+
+
+def normalize_worldgen_json_content(content: Any) -> Any:
+    if not isinstance(content, str):
+        return content
+    try:
+        return json.loads(content)
+    except json.JSONDecodeError:
+        return content
+
+
+def validate_worldgen_package(world: dict[str, Any]) -> None:
+    errors: list[str] = []
+    raw_files = world.get("files")
+    if not isinstance(raw_files, list):
+        raise ValueError("invalid worldgen package: files must be an array")
+
+    files: dict[str, dict[str, Any]] = {}
+    for index, item in enumerate(raw_files):
+        if not isinstance(item, dict):
+            errors.append(f"files[{index}] must be an object")
+            continue
+        try:
+            rel = assert_campaign_relative(str(item.get("path", ""))).as_posix()
+        except ValueError as exc:
+            errors.append(str(exc))
+            continue
+        if rel in files:
+            errors.append(f"duplicate worldgen file: {rel}")
+            continue
+        if rel.endswith(".json"):
+            item["content"] = normalize_worldgen_json_content(item.get("content"))
+        files[rel] = item
+
+    missing = sorted(WORLDGEN_REQUIRED_PATHS - set(files))
+    if missing:
+        errors.append(f"missing required worldgen files: {missing}")
+
+    for rel, item in files.items():
+        content = item.get("content")
+        if rel.endswith(".json") and not isinstance(content, dict):
+            errors.append(f"{rel} content must be a JSON object")
+        elif rel.endswith(".jsonl") and not isinstance(content, str):
+            errors.append(f"{rel} content must be a JSONL string")
+        elif (rel.endswith(".yaml") or rel.endswith(".md")) and not isinstance(content, str):
+            errors.append(f"{rel} content must be a string")
+
+    for rel, (container, expected_type) in WORLDGEN_CONTAINER_RULES.items():
+        content = files.get(rel, {}).get("content")
+        if not isinstance(content, dict):
+            continue
+        value = content.get(container)
+        if not isinstance(value, expected_type):
+            errors.append(f"{rel} must contain {container!r} as {expected_type.__name__}")
+
+    state = files.get("campaign/campaign_state.json", {}).get("content")
+    if isinstance(state, dict):
+        required = {"campaign_id", "title", "current_turn", "current_time", "_time_tick", "current_scene", "player_characters", "quests", "rules"}
+        missing_state = sorted(required - set(state))
+        if missing_state:
+            errors.append(f"campaign/campaign_state.json missing fields: {missing_state}")
+        scene = state.get("current_scene")
+        if not isinstance(scene, dict) or not {"location_id", "present_entities"} <= set(scene):
+            errors.append("campaign/campaign_state.json current_scene must contain location_id and present_entities")
+
+    clocks = files.get("campaign/world_clocks.json", {}).get("content")
+    if isinstance(clocks, dict) and isinstance(clocks.get("clocks"), list):
+        required = {"id", "type", "owner_id", "title", "value", "max_value", "status", "visibility", "next_tick_at", "tick_interval"}
+        for index, clock in enumerate(clocks["clocks"]):
+            if not isinstance(clock, dict) or not required <= set(clock):
+                errors.append(f"campaign/world_clocks.json clocks[{index}] missing runtime fields")
+
+    quests = files.get("campaign/quest_graph.json", {}).get("content")
+    if isinstance(quests, dict) and isinstance(quests.get("quests"), list):
+        for index, quest in enumerate(quests["quests"]):
+            if not isinstance(quest, dict) or not {"id", "title", "status"} <= set(quest):
+                errors.append(f"campaign/quest_graph.json quests[{index}] must contain id, title, and status")
+
+    npc_profiles = {
+        rel.removesuffix(".yaml")
+        for rel in files
+        if rel.startswith("campaign/npcs/") and rel.endswith(".yaml")
+    }
+    npc_graphs = {
+        rel.removesuffix(".memory_graph.json")
+        for rel in files
+        if rel.startswith("campaign/npcs/") and rel.endswith(".memory_graph.json")
+    }
+    if len(npc_profiles) < 2:
+        errors.append("worldgen package must include at least two NPC profiles")
+    if npc_profiles != npc_graphs:
+        errors.append("every NPC profile must have exactly one matching independent memory graph")
+
+    required_graph_fields = {
+        "npc_id", "current_turn", "memory_policy_id", "memory_nodes",
+        "interpretation_nodes", "understanding_nodes", "revision_events",
+        "relation_edges", "beliefs", "plans",
+    }
+    for rel, item in files.items():
+        if not rel.endswith(".memory_graph.json"):
+            continue
+        graph = item.get("content")
+        if not isinstance(graph, dict) or not required_graph_fields <= set(graph):
+            errors.append(f"{rel} missing required NPC memory graph fields")
+
+    if not any(rel.startswith("campaign/locations/") and rel.endswith(".yaml") for rel in files):
+        errors.append("worldgen package must include at least one location YAML file")
+
+    if errors:
+        raise ValueError("invalid worldgen package:\n- " + "\n- ".join(errors))
+
+
 def write_worldgen_files(target_root: Path, world: dict[str, Any], force: bool) -> None:
+    validate_worldgen_package(world)
     campaign_dir = target_root / "campaign"
     if campaign_dir.exists():
         if not force:
@@ -658,16 +763,7 @@ def write_worldgen_files(target_root: Path, world: dict[str, Any], force: bool) 
         content = item.get("content", "")
         if path.suffix == ".json":
             # V27: handle double-encoded JSON strings from worldgen AI
-            if isinstance(content, str) and content.strip().startswith('{'):
-                try:
-                    content = json.loads(content)
-                except json.JSONDecodeError:
-                    pass  # Not valid JSON string, it'll fail in save_json
-            elif isinstance(content, str) and content.strip().startswith('['):
-                try:
-                    content = json.loads(content)
-                except json.JSONDecodeError:
-                    pass
+            content = normalize_worldgen_json_content(content)
             save_json(path, content)
         elif path.suffix == ".jsonl":
             if isinstance(content, str):
@@ -720,30 +816,27 @@ def write_worldgen_files(target_root: Path, world: dict[str, Any], force: bool) 
 
 
 def run_worldgen(config: GameConfig, theme: str, target_root: Path, force: bool) -> dict[str, Any]:
-    if config.model == "__mock__":
-        world = fallback_worldgen(theme)
-    else:
-        prompt_path = config.root / "prompts" / "worldgen-runner.md"
-        if not prompt_path.exists():
-            prompt_path = PROJECT_ROOT / "prompts" / "worldgen-runner.md"
-        prompt = read_text(prompt_path)
-        raw = call_chat_api(
-            config,
-            [
-                {"role": "system", "content": prompt},
-                {
-                    "role": "user",
-                    "content": json.dumps(
-                        {
-                            "theme": theme,
-                            "instruction": "Generate a complete new playable campaign file package.",
-                        },
-                        ensure_ascii=False,
-                    ),
-                },
-            ],
-        )
-        world = parse_ai_json(raw)
+    prompt_path = config.root / "prompts" / "worldgen-runner.md"
+    if not prompt_path.exists():
+        prompt_path = PROJECT_ROOT / "prompts" / "worldgen-runner.md"
+    prompt = read_text(prompt_path)
+    raw = call_chat_api(
+        config,
+        [
+            {"role": "system", "content": prompt},
+            {
+                "role": "user",
+                "content": json.dumps(
+                    {
+                        "theme": theme,
+                        "instruction": "Generate a complete new playable campaign file package.",
+                    },
+                    ensure_ascii=False,
+                ),
+            },
+        ],
+    )
+    world = parse_ai_json(raw)
 
     write_worldgen_files(target_root, world, force)
     return world
@@ -1387,6 +1480,11 @@ def first_player_id(packet: dict[str, Any] | None) -> str:
     return "pc_main"
 
 
+def campaign_before_from_packet(packet: dict[str, Any] | None) -> dict[str, Any] | None:
+    campaign = (packet or {}).get("campaign_before")
+    return campaign if isinstance(campaign, dict) else None
+
+
 def append_inferred_effect_point_rewards(
     changes: list[dict[str, Any]],
     response: dict[str, Any] | None,
@@ -1783,28 +1881,14 @@ def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: 
         response,
         packet,
     )
-    # V24: auto-award effect_points based on turn events
-    try:
-        campaign_path2 = PROJECT_ROOT / "campaign" / "campaign_state.json"
-        if campaign_path2.exists():
-            cs2 = json.loads(campaign_path2.read_text(encoding="utf-8-sig"))
-            auto_ep = auto_award_effect_points(patch, cs2)
-            if auto_ep:
-                patch["player_state_changes"] = list(patch.get("player_state_changes", [])) + auto_ep
-            auto_stats = auto_grow_stats(patch, cs2)
-            if auto_stats:
-                patch["player_state_changes"] = list(patch.get("player_state_changes", [])) + auto_stats
-    except Exception:
-        pass
-    # V24: ensure effect_points initialized in campaign state
-    campaign_path = PROJECT_ROOT / "campaign" / "campaign_state.json"
-    if campaign_path.exists():
-        try:
-            cs = json.loads(campaign_path.read_text(encoding="utf-8-sig"))
-            cs = ensure_effect_points_initialized(cs)
-            campaign_path.write_text(json.dumps(cs, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        except Exception:
-            pass
+    campaign_before = campaign_before_from_packet(packet)
+    if campaign_before is not None:
+        auto_ep = auto_award_effect_points(patch, campaign_before)
+        if auto_ep:
+            patch["player_state_changes"] = list(patch.get("player_state_changes", [])) + auto_ep
+        auto_stats = auto_grow_stats(patch, campaign_before)
+        if auto_stats:
+            patch["player_state_changes"] = list(patch.get("player_state_changes", [])) + auto_stats
     patch["player_state_changes"], patch["inventory_changes"] = append_inferred_state_changes_from_narrative(
         patch["player_state_changes"],
         patch["inventory_changes"],
@@ -1862,6 +1946,9 @@ def apply_state_patch(config: GameConfig, patch: dict[str, Any]) -> dict[str, An
     if errors:
         return {"applied": False, "errors": errors}
     campaign = patcher.load_json(config.root / "campaign" / "campaign_state.json")
+    if config.auto_apply:
+        campaign = ensure_effect_points_initialized(campaign)
+        save_json(config.root / "campaign" / "campaign_state.json", campaign)
     current_turn = int(campaign.get("current_turn", 1))
     current_time = campaign.get("current_time", "unknown")
     report = patcher.apply_patch(
@@ -1874,6 +1961,27 @@ def apply_state_patch(config: GameConfig, patch: dict[str, Any]) -> dict[str, An
     )
     errors = report.get("errors", []) if isinstance(report, dict) else []
     return {"applied": config.auto_apply and not errors, "report": report}
+
+
+def commit_world_clock_preview(config: GameConfig, packet: dict[str, Any]) -> None:
+    preview = packet.get("world_tick_preview") or {}
+    if not preview.get("clock_updates"):
+        return
+    campaign_before = packet.get("campaign_before") or {}
+    current_turn = int(campaign_before.get("current_turn", 1) or 1)
+    wc_path = config.root / "campaign" / "world_clocks.json"
+    if not wc_path.exists():
+        return
+
+    wc = run_turn.load_json(wc_path)
+    from_time = (packet.get("time_preview") or {}).get("from_time") or campaign_before.get("current_time", "")
+    to_time = (packet.get("time_preview") or {}).get("to_time") or from_time
+    from_minutes = run_turn.parse_game_time(from_time)
+    to_minutes = run_turn.parse_game_time(to_time)
+    reason = f"{packet.get('turn_id', f'turn_{current_turn:04d}')}: committed from AI runner"
+    clocks_committed, _, _ = run_turn.advance_clock_preview(wc, from_minutes, to_minutes, reason)
+    clocks_committed["current_turn"] = current_turn + 1
+    save_json(wc_path, clocks_committed)
 
 
 def render_visible(response: dict[str, Any]) -> str:
@@ -1998,57 +2106,20 @@ def run_ai_turn(config: GameConfig, player_action: str, elapsed_minutes: int | N
         # V33: auto-commit world clock advancement
         if apply_report.get("applied", False) and packet.get("elapsed_minutes", 0) > 0:
             try:
-                wc_path = config.root / "campaign" / "world_clocks.json"
-                if wc_path.exists():
-                    wc = json.loads(wc_path.read_text(encoding="utf-8-sig"))
-                    # Use the previewed clocks from the packet
-                    preview = packet.get("world_tick_preview", {}).get("clock_updates", [])
-                    if preview:
-                        for update in preview:
-                            clock_id = update.get("clock_id")
-                            for clock in wc.get("clocks", []):
-                                if clock.get("id") == clock_id:
-                                    clock["value"] = update.get("new_value", clock.get("value", 0))
-                                    clock["next_tick_at"] = update.get("next_tick_at", clock.get("next_tick_at", ""))
-                                    clock["status"] = "complete" if update.get("new_value", 0) >= clock.get("max_value", 1) else "active"
-                        wc_path.write_text(json.dumps(wc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-                        # V36: sync quest countdowns with updated world clocks (inline, no fragile import)
-                        try:
-                            qg_path = config.root / "campaign" / "quest_graph.json"
-                            if qg_path.exists():
-                                qg = json.loads(qg_path.read_text(encoding="utf-8-sig"))
-                                if isinstance(qg, dict):
-                                    clocks_by_id = {str(c.get("id")): c for c in wc.get("clocks", []) if isinstance(c, dict) and c.get("id")}
-                                    changed = False
-                                    for quest in qg.get("quests", []):
-                                        if not isinstance(quest, dict):
-                                            continue
-                                        matched = None
-                                        # Try explicit clock_id, then infer from quest id
-                                        cid = quest.get("clock_id")
-                                        if cid and cid in clocks_by_id:
-                                            matched = clocks_by_id[cid]
-                                        if not matched:
-                                            qid = str(quest.get("id", ""))
-                                            for suffix in ("clock_" + qid, "clock_" + qid.removeprefix("thread_")):
-                                                if suffix in clocks_by_id:
-                                                    matched = clocks_by_id[suffix]
-                                                    quest["clock_id"] = suffix
-                                                    break
-                                        if not matched:
-                                            continue
-                                        old_ticks = quest.get("countdown_ticks")
-                                        new_val = matched.get("value")
-                                        new_max = matched.get("max_value")
-                                        quest["countdown_ticks"] = new_val
-                                        quest["countdown_max"] = new_max
-                                        if matched.get("status") == "complete" and quest.get("status") == "active":
-                                            quest["status"] = "failed"
-                                        changed = True
-                                    if changed:
-                                        qg_path.write_text(json.dumps(qg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-                        except Exception:
-                            pass
+                commit_world_clock_preview(config, packet)
+                # V36: sync quest countdowns with updated world clocks (inline, no fragile import)
+                try:
+                    wc_path = config.root / "campaign" / "world_clocks.json"
+                    qg_path = config.root / "campaign" / "quest_graph.json"
+                    if wc_path.exists() and qg_path.exists():
+                        wc = json.loads(wc_path.read_text(encoding="utf-8-sig"))
+                        qg = json.loads(qg_path.read_text(encoding="utf-8-sig"))
+                        if isinstance(qg, dict):
+                            updates = run_turn.sync_quest_countdowns_from_clocks(qg, wc)
+                            if updates:
+                                qg_path.write_text(json.dumps(qg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                except Exception:
+                    pass
             except Exception:
                 pass
         # V24: auto-check progression after state patch is applied
@@ -2133,7 +2204,6 @@ def main() -> None:
     parser.add_argument("--base-url", default=None)
     parser.add_argument("--api-key", default=None)
     parser.add_argument("--no-apply", action="store_true", help="Do not write state patches.")
-    parser.add_argument("--mock", action="store_true", help="Run without an API call for local smoke tests.")
     parser.add_argument("--elapsed-minutes", type=int, default=None, help="Override automatic elapsed-time inference.")
     parser.add_argument("--memory-limit", type=int, default=8)
     parser.add_argument("--once", help="Run one player action and exit.")
@@ -2144,9 +2214,6 @@ def main() -> None:
 
     root = args.root.resolve()
     config = load_config(root, args)
-    if args.mock:
-        config.model = "__mock__"
-        config.api_key = ""
     if args.new:
         target_root = (args.new_root or (root / "generated_campaigns" / slugify(args.new))).resolve()
         world = run_worldgen(config, args.new, target_root, args.force_new)
@@ -2156,9 +2223,6 @@ def main() -> None:
             print(world["opening_prompt"])
         config = load_config(root, args)
         config.root = target_root
-        if args.mock:
-            config.model = "__mock__"
-            config.api_key = ""
     elif args.once and looks_like_worldgen_request(args.once) and not (args.root != PROJECT_ROOT):
         theme = strip_wrapping_quotes(args.once)
         target_root = (args.new_root or (root / "generated_campaigns" / slugify(theme))).resolve()
@@ -2168,9 +2232,6 @@ def main() -> None:
             print("\n开场：")
             print(world["opening_prompt"])
         config.root = target_root
-        if args.mock:
-            config.model = "__mock__"
-            config.api_key = ""
         args.once = "我观察周围"
     if args.once:
         result = run_ai_turn(config, args.once, args.elapsed_minutes, args.memory_limit)

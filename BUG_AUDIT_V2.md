@@ -1,5 +1,10 @@
 ﻿# Paotuan AI RPG - BUG_AUDIT_V2 实机测试报告
 
+> 历史状态: **Superseded**
+> 本文保留 2026-05-28 的发现过程，不代表当前发布状态。
+> 当前可信验证请查看 `FINAL_REPORT.md` 与 `TEST_COVERAGE.md`。
+> 文中“59/59通过”“待修复”等结论均应按当时快照理解。
+>
 > 日期: 2026-05-28
 > 测试方法: API实机测试(DeepSeek) + 静态分析 + CLI直接调用
 > 参考: CALYPSO (arXiv 2308.07540), Generative Agents, LangGraph Memory

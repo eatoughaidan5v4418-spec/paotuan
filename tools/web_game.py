@@ -25,8 +25,7 @@ import web_api  # noqa: E402
 
 
 class GameServer:
-    def __init__(self, *, mock: bool = False) -> None:
-        self.mock = mock
+    def __init__(self) -> None:
         self.current_root = PROJECT_ROOT.resolve()
 
 
@@ -85,7 +84,6 @@ def make_handler(server_state: GameServer):
                     self,
                     200,
                     {
-                        "mock": server_state.mock,
                         "project_root": str(PROJECT_ROOT),
                         "current_campaign": web_api.campaign_key(server_state.current_root),
                         "api": web_api.api_status(server_state.current_root),
@@ -100,7 +98,6 @@ def make_handler(server_state: GameServer):
             if parsed.path == "/api/campaigns/new":
                 result = web_api.create_campaign(
                     str(body.get("theme", "")),
-                    mock=bool(body.get("mock", server_state.mock)),
                     force=bool(body.get("force", True)),
                 )
                 server_state.current_root = web_api.safe_campaign_path(result["campaign"]["id"])
@@ -126,7 +123,6 @@ def make_handler(server_state: GameServer):
                     str(body.get("action", "")),
                     elapsed_minutes=elapsed_minutes,
                     memory_limit=int(body.get("memory_limit", 8)),
-                    mock=bool(body.get("mock", server_state.mock)),
                 )
                 json_response(self, 200, result)
                 return
@@ -173,15 +169,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run Paotuan browser RPG UI.")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)
-    parser.add_argument("--mock", action="store_true", help="Use mock AI responses for UI testing.")
     parser.add_argument("--no-open", action="store_true", help="Do not open the browser automatically.")
     args = parser.parse_args()
 
-    state = GameServer(mock=args.mock)
+    state = GameServer()
     httpd = ThreadingHTTPServer((args.host, args.port), make_handler(state))
     url = f"http://{args.host}:{args.port}/"
     print(f"Paotuan RPG UI running at {url}")
-    print(f"Mode: {'mock' if args.mock else 'api'}")
+    print("Mode: api")
     if not args.no_open:
         webbrowser.open(url)
     try:

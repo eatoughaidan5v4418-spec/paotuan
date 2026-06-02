@@ -182,12 +182,15 @@ def make_args(
         api_key=api_key,
         no_apply=no_apply,
     )
+def reject_public_mock_mode(mock: bool) -> None:
+    if mock:
+        raise ValueError("mock mode has been removed from the public API; configure an API key instead")
+
+
 def make_config(root: Path, *, mock: bool = False, no_apply: bool = False) -> play_game.GameConfig:
+    reject_public_mock_mode(mock)
     config = play_game.load_config(PROJECT_ROOT.resolve(), make_args(no_apply=no_apply))
     config.root = root.resolve()
-    if mock:
-        config.model = "__mock__"
-        config.api_key = ""
     return config
 def is_campaign_root(path: Path) -> bool:
     return (path / "campaign" / "campaign_state.json").exists()
@@ -353,7 +356,7 @@ def visible_state(root: Path) -> dict[str, Any]:
             "visibility": clock.get("visibility"),
         }
         for clock in clocks
-        if clock.get("visibility") != "secret"
+        if is_player_visible_record(clock)
     ]
     return clean_visible({
         "campaign": {
@@ -407,7 +410,7 @@ def api_status(root: Path) -> dict[str, Any]:
         "base_url": config.base_url,
         "has_key": bool(config.api_key),
         "auto_apply": config.auto_apply,
-        "mode": "api" if config.api_key else "mock_available",
+        "mode": "api" if config.api_key else "api_unconfigured",
     }
 def unique_campaign_target(theme: str, force: bool = False) -> Path:
     slug = play_game.slugify(theme, "ai_campaign")
@@ -420,6 +423,7 @@ def unique_campaign_target(theme: str, force: bool = False) -> Path:
             return candidate
     raise RuntimeError("too many campaigns with the same theme")
 def create_campaign(theme: str, *, mock: bool = False, force: bool = False) -> dict[str, Any]:
+    reject_public_mock_mode(mock)
     if not theme.strip():
         raise ValueError("theme is required")
     target = unique_campaign_target(theme, force=force)
@@ -435,6 +439,7 @@ def create_campaign(theme: str, *, mock: bool = False, force: bool = False) -> d
         "state": visible_state(target),
     }
 def run_turn(root: Path, action: str, *, elapsed_minutes: int | None = None, memory_limit: int = 8, mock: bool = False) -> dict[str, Any]:
+    reject_public_mock_mode(mock)
     if not action.strip():
         raise ValueError("action is required")
     config = make_config(root, mock=mock)

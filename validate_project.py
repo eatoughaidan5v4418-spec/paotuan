@@ -179,6 +179,78 @@ def check_jsonl(path: Path, label: str) -> bool:
         return False
 
 
+def load_jsonl_records(path: Path) -> list[dict]:
+    records: list[dict] = []
+    if not path.exists():
+        return records
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        item = json.loads(line)
+        if isinstance(item, dict):
+            records.append(item)
+    return records
+
+
+def load_npc_memory_ids(campaign_dir: Path) -> dict[str, set[str]]:
+    memory_ids: dict[str, set[str]] = {}
+    npcs_dir = campaign_dir / "npcs"
+    if not npcs_dir.exists():
+        return memory_ids
+    for graph_path in sorted(npcs_dir.glob("*memory_graph.json")):
+        try:
+            graph = json.loads(graph_path.read_text(encoding="utf-8-sig"))
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(graph, dict):
+            continue
+        npc_id = str(graph.get("npc_id") or graph_path.name.removesuffix(".memory_graph.json"))
+        memory_ids[npc_id] = {
+            item.get("id")
+            for item in graph.get("memory_nodes", [])
+            if isinstance(item, dict) and item.get("id")
+        }
+    return memory_ids
+
+
+def check_world_graph_integrity(campaign_dir: Path) -> bool:
+    path = campaign_dir / "world_graph.jsonl"
+    if not path.exists():
+        return True
+    records = load_jsonl_records(path)
+    ok_integrity = True
+    seen: dict[str, int] = {}
+    duplicate_ids: list[str] = []
+    for record in records:
+        record_id = record.get("id")
+        if not record_id:
+            continue
+        if record_id in seen:
+            duplicate_ids.append(str(record_id))
+        seen[str(record_id)] = seen.get(str(record_id), 0) + 1
+    if duplicate_ids:
+        for record_id in sorted(set(duplicate_ids)):
+            fail(f"duplicate world_graph id: {record_id}")
+        ok_integrity = False
+    else:
+        ok("world_graph.jsonl ids unique")
+
+    memory_ids = load_npc_memory_ids(campaign_dir)
+    for record in records:
+        source_memory_id = record.get("source_memory_id")
+        npc_id = record.get("npc_id")
+        if not source_memory_id or not npc_id:
+            continue
+        if source_memory_id not in memory_ids.get(str(npc_id), set()):
+            fail(
+                f"source_memory_id not found in NPC graph: {record.get('id')} "
+                f"npc_id={npc_id} source_memory_id={source_memory_id}"
+            )
+            ok_integrity = False
+
+    return ok_integrity
+
+
 def main() -> int:
     import argparse
     ap = argparse.ArgumentParser()
@@ -209,7 +281,11 @@ def main() -> int:
     if not check_json(c / "world_clocks.json", "world_clocks.json", ["clocks"]): errors += 1
 
     print("\n=== World graph ===")
-    if not check_jsonl(c / "world_graph.jsonl", "world_graph.jsonl"): errors += 1
+    world_graph_path = c / "world_graph.jsonl"
+    if not check_jsonl(world_graph_path, "world_graph.jsonl"):
+        errors += 1
+    elif not check_world_graph_integrity(c):
+        errors += 1
 
     print("\n=== Resources ===")
     if not check_json(c / "resources.json", "resources.json", ["entities"]): errors += 1

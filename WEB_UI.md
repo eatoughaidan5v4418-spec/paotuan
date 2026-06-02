@@ -6,13 +6,10 @@ Launch the local browser interface instead of the shell loop:
 python tools/web_game.py
 ```
 
-For UI smoke tests without spending API calls:
-
-```powershell
-python tools/web_game.py --mock
-```
-
 Then open `http://127.0.0.1:8765/`.
+
+The browser UI is API-only. Configure `AI_API_KEY` / `OPENAI_API_KEY` before
+running turns or generating a new world.
 
 The UI provides campaign selection, new world generation, a GM narrative feed,
 natural-language action input, character sheet, NPC panel, quest and clue panels,
