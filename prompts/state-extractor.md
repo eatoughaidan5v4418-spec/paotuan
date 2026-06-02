@@ -13,6 +13,9 @@ Use `entity_id`, `field`, `operation`, and `value`/`delta`.
 - `special_effects` use add/remove
 - `stats.xxx` use set (e.g. stats.strength)
 - `conditions` use add/remove
+- Do not emit `system_rank`, `effect_points`, or `special_effects` unless the campaign rules enable `system`/`effect_points`.
+- Do not emit `qi`, `max_qi`, `realm`, `realm_level`, or `spiritual_root` unless the campaign rules enable `cultivation` or those fields already exist on the player.
+- For world-specific mechanics, use the exact English field declared in `rules.character_sheet.sections[].items[].field` (for example `sequence`, `potion_stage`, `sanity`, `corruption`). These fields are valid player_state_changes fields when declared by the world.
 
 Operations: set, add, remove, delta
 

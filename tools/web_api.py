@@ -169,6 +169,114 @@ def normalize_progress_tracks(raw: Any) -> list[dict[str, Any]]:
             )
         return normalized
     return [item for item in as_list(tracks) if isinstance(item, dict)]
+
+
+SYSTEM_RESOURCE_KEYS = {
+    "effect_points",
+    "system_rank",
+    "special_effects",
+    "特效值",
+    "系统等级",
+    "特殊效果",
+    "特效",
+}
+
+DEFAULT_HIDDEN_SHEET_FIELDS = {
+    "id",
+    "name",
+    "location_id",
+    "description",
+    "inventory",
+    "conditions",
+    "traits",
+    "tags",
+    "stats",
+}
+
+
+def filter_resource_entities_by_mechanics(items: list[dict[str, Any]], mechanics: dict[str, bool]) -> list[dict[str, Any]]:
+    filtered = []
+    for item in items:
+        record = dict(item)
+        if not mechanics.get("effect_points"):
+            for key in list(record):
+                if str(key) in SYSTEM_RESOURCE_KEYS:
+                    record.pop(key, None)
+        filtered.append(record)
+    return filtered
+
+
+def filter_progress_tracks_by_mechanics(items: list[dict[str, Any]], mechanics: dict[str, bool]) -> list[dict[str, Any]]:
+    if mechanics.get("system") or mechanics.get("effect_points"):
+        return items
+    filtered = []
+    for item in items:
+        text = " ".join(str(item.get(key, "")) for key in ("id", "title", "owner_id", "entity_id", "subject_id"))
+        lowered = text.lower()
+        if "system" in lowered or "effect" in lowered or "系统" in text or "特效" in text:
+            continue
+        filtered.append(item)
+    return filtered
+
+
+def sheet_value(player: dict[str, Any], field: str) -> Any:
+    current: Any = player
+    for part in field.split("."):
+        if isinstance(current, dict):
+            current = current.get(part)
+        else:
+            return None
+    return current
+
+
+def build_character_sheet(player: dict[str, Any], mechanics: dict[str, bool], rules: dict[str, Any]) -> dict[str, Any]:
+    manifest = rules.get("character_sheet") if isinstance(rules.get("character_sheet"), dict) else {}
+    sections = []
+    for section in as_list(manifest.get("sections")):
+        if not isinstance(section, dict):
+            continue
+        items = []
+        for item in as_list(section.get("items")):
+            if not isinstance(item, dict) or not item.get("field"):
+                continue
+            field = str(item["field"])
+            if field in SYSTEM_RESOURCE_KEYS and not mechanics.get("effect_points"):
+                continue
+            value = sheet_value(player, field)
+            if value is None or value == "":
+                continue
+            items.append(
+                {
+                    "field": field,
+                    "label": item.get("label") or field,
+                    "value": value,
+                    "type": item.get("type", "text"),
+                }
+            )
+        if items:
+            sections.append(
+                {
+                    "id": str(section.get("id") or f"section_{len(sections) + 1}"),
+                    "title": section.get("title") or section.get("id") or "Character",
+                    "items": items,
+                }
+            )
+
+    if not sections:
+        auto_items = []
+        for field, value in player.items():
+            if field in DEFAULT_HIDDEN_SHEET_FIELDS or value in (None, "", [], {}):
+                continue
+            if field in {"qi", "max_qi", "realm", "realm_level", "spiritual_root"} and not mechanics.get("cultivation"):
+                continue
+            if field in {"system_rank", "effect_points", "special_effects"} and not (
+                mechanics.get("system") or mechanics.get("effect_points")
+            ):
+                continue
+            auto_items.append({"field": field, "label": field, "value": value, "type": "text"})
+        if auto_items:
+            sections.append({"id": "core", "title": "角色状态", "items": auto_items})
+    return {"sections": sections}
 def make_args(
     *,
     model: str | None = None,
@@ -312,6 +420,8 @@ def visible_state(root: Path) -> dict[str, Any]:
     location_id = scene.get("location_id", "")
     players = [item for item in as_list(state.get("player_characters")) if isinstance(item, dict)]
     player = players[0] if players else {}
+    rules = state.get("rules") if isinstance(state.get("rules"), dict) else {}
+    mechanics = play_game.mechanics_capabilities(state)
     player_id = str(player.get("id", "pc_main"))
     player_conditions = list(dict.fromkeys([
         *[condition_label(item) for item in as_list(player.get("conditions")) if condition_label(item)],
@@ -358,6 +468,68 @@ def visible_state(root: Path) -> dict[str, Any]:
         for clock in clocks
         if is_player_visible_record(clock)
     ]
+    player_data = {
+        "id": player_id,
+        "name": player.get("name", "鐜╁瑙掕壊"),
+        "health": player.get("health"),
+        "max_health": player.get("max_health"),
+        "location_id": player.get("location_id") or location_id,
+        "description": player.get("description"),
+        "stats": player.get("stats", {}),
+        "inventory": player.get("inventory", []),
+        "conditions": player_conditions,
+        "traits": player.get("traits", player.get("tags", [])),
+    }
+    if mechanics.get("cultivation"):
+        player_data.update(
+            {
+                "qi": player.get("qi"),
+                "max_qi": player.get("max_qi"),
+                "realm": player.get("realm"),
+                "realm_level": player.get("realm_level"),
+                "spiritual_root": player.get("spiritual_root"),
+            }
+        )
+    if mechanics.get("system"):
+        player_data.update(
+            {
+                "system_rank": player.get("system_rank"),
+                "special_effects": player.get("special_effects", []),
+            }
+        )
+    if mechanics.get("effect_points"):
+        player_data["effect_points"] = player.get("effect_points")
+    resource_entities = filter_resource_entities_by_mechanics(normalize_resource_entities(resources), mechanics)
+    progress_tracks = filter_progress_tracks_by_mechanics(normalize_progress_tracks(progress), mechanics)
+    character_sheet = build_character_sheet(player, mechanics, rules if isinstance(rules, dict) else {})
+    return clean_visible({
+        "campaign": {
+            "id": state.get("campaign_id"),
+            "title": state.get("title") or state.get("campaign_id"),
+            "root": campaign_key(root),
+            "turn": state.get("current_turn", 1),
+            "time": state.get("current_time", ""),
+        },
+        "scene": {
+            "id": scene.get("scene_id", ""),
+            "summary": scene.get("summary", ""),
+            "active_threads": scene.get("active_threads", []),
+            "location": load_location_summary(root, location_id),
+            "present_entities": present_ids,
+        },
+        "mechanics": mechanics,
+        "character_sheet": character_sheet,
+        "player": player_data,
+        "npcs": load_public_npcs(root, present_ids, player_ids),
+        "quests": quest_list,
+        "open_threads": open_threads,
+        "quest_graph": {"quests": normalize_quests(quest_graph.get("quests", []))},
+        "knowledge": knowledge,
+        "clocks": public_clocks,
+        "resources": resource_entities,
+        "progress_tracks": progress_tracks,
+        "api": api_status(root),
+    })
     return clean_visible({
         "campaign": {
             "id": state.get("campaign_id"),

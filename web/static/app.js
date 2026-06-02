@@ -41,6 +41,12 @@ function escapeHtml(value) {
   })[ch]);
 }
 
+function displayValue(value) {
+  if (Array.isArray(value)) return value.map((item) => displayValue(item)).join(", ");
+  if (value && typeof value === "object") return JSON.stringify(value);
+  return text(value);
+}
+
 function listItems(items) {
   if (!items || !items.length) return `<p class="muted">暂无</p>`;
   return `<ul>${items.map((item) => `<li>${escapeHtml(typeof item === "string" ? item : JSON.stringify(item))}</li>`).join("")}</ul>`;
@@ -205,6 +211,7 @@ function renderState(data) {
   updateDeleteButton();
 
   const player = data.player || {};
+  const mechanics = data.mechanics || {};
   const hp = Number(player.health || 0);
   const maxHp = Number(player.max_health || hp || 1);
   const qi = Number(player.qi || 0);
@@ -217,6 +224,22 @@ function renderState(data) {
   const resourceRows = Object.entries(playerResources)
     .filter(([key]) => key !== "id" && key !== "type");
   const specialEffects = player.special_effects || [];
+  const sheetSections = data.character_sheet?.sections || [];
+  const dynamicSheetCards = sheetSections.map((section) => `
+    <div class="info-card">
+      <h4>${escapeHtml(section.title || section.id || "Character")}</h4>
+      <div class="pill-list">${(section.items || []).map((item) => `<span class="pill">${escapeHtml(item.label || item.field)} ${escapeHtml(displayValue(item.value))}</span>`).join("") || `<span class="pill">None</span>`}</div>
+    </div>
+  `).join("");
+  const systemCard = (mechanics.system || mechanics.effect_points) ? `
+    <div class="info-card compact-card">
+      <h4>绯荤粺</h4>
+      <p>${mechanics.system ? `绛夌骇 ${escapeHtml(text(player.system_rank))}` : ""}${mechanics.system && mechanics.effect_points ? " / " : ""}${mechanics.effect_points ? `鐗规晥鍊?${escapeHtml(text(player.effect_points))}` : ""}</p>
+      ${mechanics.system ? `<div class="pill-list">${specialEffects.map((v) => `<span class="pill">${escapeHtml(v)}</span>`).join("") || `<span class="pill">鏆傛棤鐗规晥</span>`}</div>` : ""}
+    </div>
+  ` : "";
+  const cultivationLine = mechanics.cultivation ? `<div class="character-desc">鐏垫牴 ${escapeHtml(text(player.spiritual_root))}</div>` : "";
+  const qiMeter = mechanics.cultivation ? renderMeter("鐏靛姏", qi, maxQi, "gold-fill") : "";
 
   $("characterSheet").innerHTML = `
     <article class="info-card character-hero">
@@ -239,6 +262,20 @@ function renderState(data) {
     <div class="info-card"><h4>物品</h4>${listItems(player.inventory || [])}</div>
     <div class="info-card"><h4>进度</h4>${listItems(playerProgress.map((track) => `${track.title || track.id}: ${track.value || track.progress || 0}/${track.max_value || track.target || "?"}`))}</div>
   `;
+  if (dynamicSheetCards) {
+    $("characterSheet").querySelector(".character-hero")?.insertAdjacentHTML("afterend", dynamicSheetCards);
+  }
+  if (!(mechanics.system || mechanics.effect_points)) {
+    const cards = Array.from($("characterSheet").querySelectorAll(".info-card"));
+    const systemLikeCard = cards.find((card) => card.textContent.includes("绯荤粺") || card.textContent.includes("系统"));
+    systemLikeCard?.remove();
+  }
+  if (!mechanics.cultivation) {
+    $("characterSheet").querySelector(".character-desc")?.remove();
+    const meters = Array.from($("characterSheet").querySelectorAll(".meter-row"));
+    const qiLikeMeter = meters.find((meter) => meter.textContent.includes("鐏靛姏") || meter.textContent.includes("灵力"));
+    qiLikeMeter?.remove();
+  }
 
   const location = data.scene?.location || {};
   $("scenePanel").innerHTML = `

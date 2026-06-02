@@ -194,6 +194,19 @@ PLAYER_STATE_FIELDS = NUMERIC_PLAYER_FIELDS | TEXT_PLAYER_FIELDS | LIST_PLAYER_F
     "condition",
     "stats",
 }
+CUSTOM_PLAYER_FIELD_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_]*$")
+RESERVED_CUSTOM_PLAYER_FIELDS = {
+    "id",
+    "stats",
+    "traits",
+    "conditions",
+    "inventory",
+    "special_effects",
+}
+
+
+def is_custom_player_field(field: str) -> bool:
+    return bool(CUSTOM_PLAYER_FIELD_RE.fullmatch(field)) and field not in RESERVED_CUSTOM_PLAYER_FIELDS
 
 
 def find_player_character(campaign: dict[str, Any], entity_id: str) -> dict[str, Any] | None:
@@ -551,6 +564,17 @@ def apply_player_state_change(
                 if str(v) not in [str(x) for x in current]:
                     current.append(str(v))
         return f"{entity_id} special_effects {operation}: {values} ({reason})"
+
+    if is_custom_player_field(field):
+        old_value = pc.get(field)
+        if operation == "delta":
+            new_value = float(old_value or 0) + float(delta_value)
+            pc[field] = int(new_value) if new_value.is_integer() else new_value
+        elif operation == "remove":
+            pc.pop(field, None)
+        else:
+            pc[field] = value
+        return f"{entity_id} {field}: {old_value} -> {pc.get(field)} ({reason})"
 
     # Handle resources.json fields (e.g. ??, ???)
     if field not in PLAYER_STATE_FIELDS and not field.startswith("stats."):
@@ -1695,7 +1719,7 @@ def validate_patch_structure(patch: dict[str, Any]) -> list[str]:
                 errors.append(f"player_state_changes[{i}] missing: {sf}")
         field = str(change.get("field", ""))
         root_field = field.split(".", 1)[0]
-        if field and root_field not in PLAYER_STATE_FIELDS:
+        if field and root_field not in PLAYER_STATE_FIELDS and not is_custom_player_field(field):
             errors.append(f"player_state_changes[{i}] invalid field: {field}")
         operation = change.get("operation", "set")
         if operation not in valid_player_ops:

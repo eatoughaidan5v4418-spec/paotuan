@@ -114,6 +114,109 @@ class WebApiTests(unittest.TestCase):
 
             self.assertEqual(visible["player"]["location_id"], "qingyun_valley")
 
+    def test_visible_state_hides_disabled_world_mechanics(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            campaign = root / "campaign"
+            (campaign / "locations").mkdir(parents=True)
+            (campaign / "npcs").mkdir(parents=True)
+            state = {
+                "campaign_id": "ordinary",
+                "current_turn": 1,
+                "current_time": "\u7b2c 1 \u65e5 08:00",
+                "current_scene": {"location_id": "town", "present_entities": ["pc_main"]},
+                "player_characters": [
+                    {
+                        "id": "pc_main",
+                        "name": "\u666e\u901a\u4eba",
+                        "location_id": "town",
+                        "health": 10,
+                        "max_health": 10,
+                        "effect_points": 99,
+                        "system_rank": 7,
+                        "special_effects": ["legacy leak"],
+                    }
+                ],
+                "rules": {"system": "rules_lightweight_d20", "capabilities": {"system": False}},
+            }
+            (campaign / "campaign_state.json").write_text(json.dumps(state, ensure_ascii=False), encoding="utf-8")
+            (campaign / "player_knowledge.json").write_text("{}", encoding="utf-8")
+            (campaign / "quest_graph.json").write_text('{"quests":[]}', encoding="utf-8")
+            (campaign / "world_clocks.json").write_text('{"clocks":[]}', encoding="utf-8")
+            (campaign / "resources.json").write_text('{"entities":{}}', encoding="utf-8")
+            (campaign / "progress_tracks.json").write_text('{"tracks":[]}', encoding="utf-8")
+            (campaign / "conditions.json").write_text('{"entities":{}}', encoding="utf-8")
+
+            visible = web_api.visible_state(root)
+
+            self.assertNotIn("effect_points", visible["player"])
+            self.assertNotIn("system_rank", visible["player"])
+            self.assertNotIn("special_effects", visible["player"])
+            self.assertEqual(visible["mechanics"]["system"], False)
+            sheet_fields = {
+                item["field"]
+                for section in visible["character_sheet"]["sections"]
+                for item in section["items"]
+            }
+            self.assertNotIn("effect_points", sheet_fields)
+            self.assertNotIn("system_rank", sheet_fields)
+
+    def test_visible_state_uses_world_character_sheet_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            campaign = root / "campaign"
+            (campaign / "locations").mkdir(parents=True)
+            (campaign / "npcs").mkdir(parents=True)
+            state = {
+                "campaign_id": "sequence_world",
+                "current_turn": 1,
+                "current_time": "\u7b2c 1 \u65e5 08:00",
+                "current_scene": {"location_id": "fog_city", "present_entities": ["pc_main"]},
+                "player_characters": [
+                    {
+                        "id": "pc_main",
+                        "name": "\u5360\u535c\u5bb6",
+                        "location_id": "fog_city",
+                        "health": 9,
+                        "max_health": 10,
+                        "sequence": 9,
+                        "potion_stage": "\u5360\u535c\u5bb6\u9b54\u836f\u5df2\u6d88\u5316 20%",
+                    }
+                ],
+                "rules": {
+                    "system": "rules_lightweight_d20",
+                    "capabilities": {"system": False, "cultivation": False},
+                    "character_sheet": {
+                        "sections": [
+                            {
+                                "id": "mystery_path",
+                                "title": "\u9014\u5f84",
+                                "items": [
+                                    {"field": "sequence", "label": "\u5e8f\u5217"},
+                                    {"field": "potion_stage", "label": "\u9b54\u836f"},
+                                ],
+                            }
+                        ]
+                    },
+                },
+            }
+            (campaign / "campaign_state.json").write_text(json.dumps(state, ensure_ascii=False), encoding="utf-8")
+            (campaign / "player_knowledge.json").write_text("{}", encoding="utf-8")
+            (campaign / "quest_graph.json").write_text('{"quests":[]}', encoding="utf-8")
+            (campaign / "world_clocks.json").write_text('{"clocks":[]}', encoding="utf-8")
+            (campaign / "resources.json").write_text('{"entities":{}}', encoding="utf-8")
+            (campaign / "progress_tracks.json").write_text('{"tracks":[]}', encoding="utf-8")
+            (campaign / "conditions.json").write_text('{"entities":{}}', encoding="utf-8")
+
+            visible = web_api.visible_state(root)
+
+            section = visible["character_sheet"]["sections"][0]
+            self.assertEqual(section["id"], "mystery_path")
+            self.assertEqual(
+                {item["field"]: item["value"] for item in section["items"]},
+                {"sequence": 9, "potion_stage": "\u5360\u535c\u5bb6\u9b54\u836f\u5df2\u6d88\u5316 20%"},
+            )
+
     def test_api_worldgen_creates_playable_campaign(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             target = Path(temp) / "campaign_root"
@@ -200,11 +303,81 @@ class WebApiTests(unittest.TestCase):
                 ]
             },
             {"visible_text": {"state_summary": {"quests": "获得至少10点特效值。"}}},
-            {"campaign_before": {"player_characters": [{"id": "player_lin"}]}},
+            {
+                "campaign_before": {
+                    "rules": {"capabilities": {"system": True, "effect_points": True}},
+                    "player_characters": [{"id": "player_lin", "effect_points": 0}],
+                }
+            },
         )
 
         deltas = [item.get("delta", item.get("value")) for item in patch["player_state_changes"] if item["field"] == "effect_points"]
         self.assertEqual(deltas, [-50.0, 10])
+
+    def test_effect_point_reward_ignored_when_mechanic_disabled(self) -> None:
+        patch = web_api.play_game.normalize_patch(
+            {},
+            {"visible_text": {"state_summary": {"quests": "\u83b7\u5f9710\u70b9\u7279\u6548\u503c\u3002"}}},
+            {
+                "campaign_before": {
+                    "rules": {"capabilities": {"system": False}},
+                    "player_characters": [{"id": "pc_main"}],
+                }
+            },
+        )
+
+        self.assertEqual(
+            [item for item in patch["player_state_changes"] if item["field"] == "effect_points"],
+            [],
+        )
+
+    def test_worldgen_write_does_not_inject_disabled_mechanics(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            target = Path(temp) / "campaign_root"
+            world = web_api.play_game.fallback_worldgen("\u666e\u901a\u5c0f\u9547\u60ac\u7591")
+            web_api.play_game.write_worldgen_files(target, world, force=True)
+
+            state = json.loads((target / "campaign" / "campaign_state.json").read_text(encoding="utf-8"))
+            player = state["player_characters"][0]
+
+            self.assertNotIn("qi", player)
+            self.assertNotIn("realm", player)
+            self.assertNotIn("realm_level", player)
+            self.assertNotIn("spiritual_root", player)
+            self.assertNotIn("effect_points", player)
+            self.assertNotIn("system_rank", player)
+
+    def test_worldgen_write_preserves_manifest_fields_without_code_support(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            target = Path(temp) / "campaign_root"
+            world = web_api.play_game.fallback_worldgen("\u5e8f\u5217\u9b54\u836f\u60ac\u7591")
+            state_file = next(item for item in world["files"] if item["path"] == "campaign/campaign_state.json")
+            state = state_file["content"]
+            state["rules"]["capabilities"] = {"system": False, "cultivation": False}
+            state["rules"]["character_sheet"] = {
+                "sections": [
+                    {
+                        "id": "mystery_path",
+                        "title": "\u9014\u5f84",
+                        "items": [
+                            {"field": "sequence", "label": "\u5e8f\u5217"},
+                            {"field": "potion_stage", "label": "\u9b54\u836f"},
+                        ],
+                    }
+                ]
+            }
+            state["player_characters"][0]["sequence"] = 9
+            state["player_characters"][0]["potion_stage"] = "\u672a\u6d88\u5316"
+
+            web_api.play_game.write_worldgen_files(target, world, force=True)
+            visible = web_api.visible_state(target)
+            section = visible["character_sheet"]["sections"][0]
+
+            self.assertEqual(section["id"], "mystery_path")
+            self.assertEqual(
+                {item["field"]: item["value"] for item in section["items"]},
+                {"sequence": 9, "potion_stage": "\u672a\u6d88\u5316"},
+            )
 
     def test_render_visible_accepts_structured_check_and_clues(self) -> None:
         rendered = web_api.play_game.render_visible(

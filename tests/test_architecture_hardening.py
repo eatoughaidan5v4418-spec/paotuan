@@ -415,6 +415,56 @@ class ApplyPatchHardeningTests(unittest.TestCase):
             self.assertEqual(visible["player"]["effect_points"], 450)
             self.assertIn("injured", visible["player"]["conditions"])
 
+    def test_apply_patch_accepts_manifest_player_fields(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            minimal_campaign(root)
+            state_path = root / "campaign" / "campaign_state.json"
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            state["rules"] = {
+                "capabilities": {"system": False, "cultivation": False},
+                "character_sheet": {
+                    "sections": [
+                        {
+                            "id": "mystery_path",
+                            "title": "\u9014\u5f84",
+                            "items": [
+                                {"field": "sequence", "label": "\u5e8f\u5217"},
+                                {"field": "potion_stage", "label": "\u9b54\u836f"},
+                            ],
+                        }
+                    ]
+                },
+            }
+            state["player_characters"][0]["sequence"] = 9
+            state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+
+            patch = valid_patch()
+            patch["npc_memory_writes"] = []
+            patch["player_state_changes"] = [
+                {
+                    "entity_id": "pc_main",
+                    "field": "potion_stage",
+                    "operation": "set",
+                    "value": "\u5360\u535c\u5bb6\u9b54\u836f\u6d88\u5316 40%",
+                    "reason": "potion digestion progressed",
+                }
+            ]
+
+            errors = patcher.validate_patch_structure(patch)  # type: ignore[arg-type]
+            self.assertEqual(errors, [])
+            patcher.apply_patch(root, patch, 1, "\u7b2c 1 \u65e5 20:00", "0001", dry_run=False)  # type: ignore[arg-type]
+
+            updated = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertEqual(updated["player_characters"][0]["potion_stage"], "\u5360\u535c\u5bb6\u9b54\u836f\u6d88\u5316 40%")
+            visible = web_api.visible_state(root)
+            sheet_values = {
+                item["field"]: item["value"]
+                for section in visible["character_sheet"]["sections"]
+                for item in section["items"]
+            }
+            self.assertEqual(sheet_values["potion_stage"], "\u5360\u535c\u5bb6\u9b54\u836f\u6d88\u5316 40%")
+
     def test_inventory_gain_marks_starter_pack_opened(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

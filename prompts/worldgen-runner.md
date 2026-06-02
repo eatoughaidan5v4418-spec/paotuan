@@ -93,9 +93,21 @@
     }
   ],
   "quests": [],
-  "rules": {}
+  "rules": {
+    "system": "rules_lightweight_d20",
+    "capabilities": {
+      "system": false,
+      "effect_points": false,
+      "cultivation": false
+    },
+    "character_sheet": {
+      "sections": []
+    }
+  }
 }
 ```
+
+`rules.capabilities` 必须显式声明本世界启用哪些玩家机制。普通悬疑、现代、历史、科幻等世界默认不要启用 `system/effect_points/cultivation`。如果世界有自己的机制（例如序列、魔药、理智、污染、金钱、声望），不要要求本地程序新增字段；在 `rules.character_sheet.sections[].items[]` 中声明英文 `field` 和中文 `label`，并在玩家角色对象上保存同名字段。前端会按 `character_sheet` 自动显示。
 
 ### `campaign/world_clocks.json`
 

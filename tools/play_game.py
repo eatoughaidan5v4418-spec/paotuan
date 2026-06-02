@@ -60,6 +60,38 @@ DEFAULT_PATCH = {
 MAX_NEW_OPEN_THREADS = 5
 
 
+def mechanics_capabilities(campaign_state: dict[str, Any] | None) -> dict[str, bool]:
+    campaign_state = campaign_state or {}
+    rules = campaign_state.get("rules") if isinstance(campaign_state.get("rules"), dict) else {}
+    raw = rules.get("capabilities") or rules.get("enabled_player_mechanics") or {}
+    capabilities: dict[str, bool] = {}
+    if isinstance(raw, dict):
+        capabilities.update({str(key): bool(value) for key, value in raw.items()})
+    elif isinstance(raw, list):
+        capabilities.update({str(item): True for item in raw})
+
+    players = [pc for pc in campaign_state.get("player_characters", []) if isinstance(pc, dict)]
+    has_system_fields = any(
+        "effect_points" in pc or "system_rank" in pc or "special_effects" in pc
+        for pc in players
+    )
+    has_cultivation_fields = any(
+        "qi" in pc or "max_qi" in pc or "realm" in pc or "realm_level" in pc or "spiritual_root" in pc
+        for pc in players
+    )
+    if "system" not in capabilities:
+        capabilities["system"] = has_system_fields
+    if "effect_points" not in capabilities:
+        capabilities["effect_points"] = bool(capabilities.get("system") and has_system_fields)
+    if "cultivation" not in capabilities:
+        capabilities["cultivation"] = has_cultivation_fields
+    return capabilities
+
+
+def mechanic_enabled(campaign_state: dict[str, Any] | None, mechanic: str) -> bool:
+    return bool(mechanics_capabilities(campaign_state).get(mechanic))
+
+
 ACTION_PREFIX_RE = re.compile(r"^\s*\[(?P<kind>[^\]]+)\]\s*(?P<body>.*)$")
 
 
@@ -440,6 +472,8 @@ def fallback_worldgen(theme: str) -> dict[str, Any]:
     slug = slugify(theme, "ai_campaign")
     location_id = "loc_first_scene"
     npc_ids = ["npc_gatekeeper", "npc_informant"]
+    has_system_theme = any(keyword in theme for keyword in ("系统", "詞條", "词条", "特效值", "effect", "system"))
+    has_cultivation_theme = any(keyword in theme for keyword in ("修仙", "灵力", "境界", "炼气", "筑基", "cultivation"))
     title = theme.strip() or "新战役"
     return {
         "campaign_id": slug,
@@ -484,6 +518,11 @@ def fallback_worldgen(theme: str) -> dict[str, Any]:
                     "rules": {
                         "system": "rules_lightweight_d20",
                         "dice_policy": "玩家或程序掷骰，GM 根据结果描述后果。",
+                        "capabilities": {
+                            "system": has_system_theme,
+                            "effect_points": has_system_theme,
+                            "cultivation": has_cultivation_theme,
+                        },
                     },
                 },
             },
@@ -700,6 +739,10 @@ def validate_worldgen_package(world: dict[str, Any]) -> None:
         scene = state.get("current_scene")
         if not isinstance(scene, dict) or not {"location_id", "present_entities"} <= set(scene):
             errors.append("campaign/campaign_state.json current_scene must contain location_id and present_entities")
+        rules = state.get("rules")
+        capabilities = rules.get("capabilities") if isinstance(rules, dict) else None
+        if not isinstance(capabilities, dict):
+            errors.append("campaign/campaign_state.json rules must include capabilities")
 
     clocks = files.get("campaign/world_clocks.json", {}).get("content")
     if isinstance(clocks, dict) and isinstance(clocks.get("clocks"), list):
@@ -783,12 +826,12 @@ def write_worldgen_files(target_root: Path, world: dict[str, Any], force: bool) 
         try:
             cs = json.loads(cs_path.read_text(encoding="utf-8-sig"))
             pcs = cs.get("player_characters", [])
+            mechanics = mechanics_capabilities(cs)
             if isinstance(pcs, list):
                 for pc in pcs:
                     if isinstance(pc, dict):
                         pc.setdefault("health", 10)
                         pc.setdefault("max_health", 10)
-                        pc.setdefault("qi", 5)
                         # V40: enforce character balance constraints
                         stats = pc.setdefault("stats", {})
                         for s in ("combat", "perception", "social"):
@@ -800,10 +843,12 @@ def write_worldgen_files(target_root: Path, world: dict[str, Any], force: bool) 
                         if isinstance(hp, (int, float)) and hp > 12:
                             pc["health"] = 10
                             pc["max_health"] = 10
-                        pc.setdefault("max_qi", 5)
-                        pc.setdefault("realm_level", pc.get("sequence", 1))
-                        pc.setdefault("realm", pc.get("path", "unknown"))
-                        pc.setdefault("spiritual_root", "none")
+                        if mechanics.get("cultivation"):
+                            pc.setdefault("qi", 5)
+                            pc.setdefault("max_qi", 5)
+                            pc.setdefault("realm_level", pc.get("sequence", 1))
+                            pc.setdefault("realm", pc.get("path", "unknown"))
+                            pc.setdefault("spiritual_root", "none")
                         pc.setdefault("location_id", cs.get("current_scene", {}).get("location_id", ""))
                         pc.setdefault("inventory", [])
                         pc.setdefault("conditions", [])
@@ -1490,6 +1535,9 @@ def append_inferred_effect_point_rewards(
     response: dict[str, Any] | None,
     packet: dict[str, Any] | None,
 ) -> list[dict[str, Any]]:
+    campaign_before = campaign_before_from_packet(packet)
+    if campaign_before is not None and not mechanic_enabled(campaign_before, "effect_points"):
+        return changes
     visible_text = flatten_text((response or {}).get("visible_text"))
     if not visible_text:
         return changes
@@ -1666,6 +1714,8 @@ def append_inferred_state_changes_from_narrative(
 
 
 def ensure_effect_points_initialized(campaign_state: dict[str, Any]) -> dict[str, Any]:
+    if not mechanic_enabled(campaign_state, "effect_points"):
+        return campaign_state
     for pc in campaign_state.get('player_characters', []):
         if 'effect_points' not in pc:
             pc['effect_points'] = 0
@@ -1676,6 +1726,8 @@ def ensure_effect_points_initialized(campaign_state: dict[str, Any]) -> dict[str
 
 
 def auto_award_effect_points(patch: dict[str, Any], campaign_state: dict[str, Any]) -> list[dict[str, Any]]:
+    if not mechanic_enabled(campaign_state, "effect_points"):
+        return []
     auto_changes = []
     events = 0
     # Count significant events
@@ -1754,6 +1806,9 @@ def spend_effect_points(campaign_state: dict[str, Any], stat: str, amount: int =
     """Spend effect_points to increase a player stat. Cost: 3 EP per stat point."""
     cost = amount * 3
     result = {"ok": False, "message": "", "changes": []}
+    if not mechanic_enabled(campaign_state, "effect_points"):
+        result["message"] = "effect_points mechanic is not enabled for this campaign"
+        return result
     for pc in campaign_state.get('player_characters', []):
         ep = int(pc.get('effect_points', 0) or 0)
         if ep < cost:
@@ -1793,6 +1848,8 @@ def spend_effect_points(campaign_state: dict[str, Any], stat: str, amount: int =
     return result
 
 def auto_level_player(campaign_state: dict[str, Any]) -> list[dict[str, Any]]:
+    if not mechanic_enabled(campaign_state, "effect_points"):
+        return []
     auto_changes = []
     for pc in campaign_state.get('player_characters', []):
         effect = int(pc.get('effect_points', 0) or 0)
@@ -1847,6 +1904,26 @@ def auto_level_player(campaign_state: dict[str, Any]) -> list[dict[str, Any]]:
             threshold = level * 5 + 5
     return auto_changes
 
+
+def filter_player_state_changes_by_mechanics(
+    changes: list[dict[str, Any]],
+    campaign_state: dict[str, Any],
+) -> list[dict[str, Any]]:
+    mechanics = mechanics_capabilities(campaign_state)
+    filtered = []
+    for change in changes:
+        field = str(change.get("field", ""))
+        root_field = field.split(".", 1)[0]
+        if root_field in {"system_rank", "effect_points", "special_effects"} and not (
+            mechanics.get("system") or mechanics.get("effect_points")
+        ):
+            continue
+        if root_field in {"qi", "max_qi", "realm", "realm_level", "spiritual_root"} and not mechanics.get("cultivation"):
+            continue
+        filtered.append(change)
+    return filtered
+
+
 def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: dict[str, Any] | None = None) -> dict[str, Any]:
     patch = dict(DEFAULT_PATCH)
     if isinstance(value, dict):
@@ -1883,6 +1960,10 @@ def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: 
     )
     campaign_before = campaign_before_from_packet(packet)
     if campaign_before is not None:
+        patch["player_state_changes"] = filter_player_state_changes_by_mechanics(
+            patch.get("player_state_changes", []),
+            campaign_before,
+        )
         auto_ep = auto_award_effect_points(patch, campaign_before)
         if auto_ep:
             patch["player_state_changes"] = list(patch.get("player_state_changes", [])) + auto_ep
@@ -1895,6 +1976,11 @@ def normalize_patch(value: Any, response: dict[str, Any] | None = None, packet: 
         response,
         packet,
     )
+    if campaign_before is not None:
+        patch["player_state_changes"] = filter_player_state_changes_by_mechanics(
+            patch.get("player_state_changes", []),
+            campaign_before,
+        )
     # V21: normalize player entity_id to match actual player
     actual_player_id = first_player_id(packet)
     if actual_player_id and actual_player_id != "pc_main":

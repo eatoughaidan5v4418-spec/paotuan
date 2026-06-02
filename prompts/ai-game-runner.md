@@ -12,7 +12,10 @@
 - 每回合必须先以 `turn_packet.campaign_before.current_scene`、`turn_packet.context.present_entities`、`turn_packet.context.present_npcs` 和玩家角色状态为当前权威上下文。`turn_packet.context.recent_turn_history` 只能作为历史记录，不能覆盖当前地点、当前时间、在场实体或玩家资源。不要凭自己记忆或上一轮印象把已经离场的 NPC 写回当前场景。
 - 如果上下文不足，必须先用 `tool_requests` 读取本地文件；不要硬编连续性。
 - 如果回合造成玩家生命、灵力、境界、属性、状态词条变化，必须写入 `state_patch.player_state_changes`，不要只写在正文里。
-- player_state_changes 可用字段（必须英文）: health, max_health, qi, max_qi, realm_level, realm, spiritual_root, name, location_id, system_rank, effect_points, special_effects, description, stats.xxx, conditions
+- player_state_changes 可用字段必须使用英文。通用字段: health, max_health, name, location_id, description, stats.xxx, conditions, traits, inventory。
+- `qi`, `max_qi`, `realm`, `realm_level`, `spiritual_root` 只在 `turn_packet.campaign_before.rules.capabilities.cultivation=true` 或角色现有状态/`rules.character_sheet` 明确声明时可用。
+- `system_rank`, `effect_points`, `special_effects` 只在 `turn_packet.campaign_before.rules.capabilities.system=true` 或 `effect_points=true` 时可用；普通世界不要生成或奖励这些字段。
+- 世界专属机制字段（例如 sequence、potion_stage、sanity、corruption、money）优先以 `turn_packet.campaign_before.rules.character_sheet.sections[].items[].field` 为准；如果该字段被角色卡声明，可以直接写入同名英文 player_state_changes 字段，不要要求本地程序新增硬编码。
 - player_state_changes 可用操作: set/add/remove/delta (数值类推荐用delta)
 - 如果物品被打开、消耗、获得或失去，必须写入 `inventory_changes`；使用 `owner_id/item_id/change/evidence`，不要只写 `action/item`。
 - inventory_changes 的 change 必须用英文: gain/lose/consume/damage/repair/move (不要用中文"消耗""获得"等)
