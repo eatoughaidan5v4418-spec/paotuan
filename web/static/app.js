@@ -233,48 +233,34 @@ function renderState(data) {
   `).join("");
   const systemCard = (mechanics.system || mechanics.effect_points) ? `
     <div class="info-card compact-card">
-      <h4>绯荤粺</h4>
-      <p>${mechanics.system ? `绛夌骇 ${escapeHtml(text(player.system_rank))}` : ""}${mechanics.system && mechanics.effect_points ? " / " : ""}${mechanics.effect_points ? `鐗规晥鍊?${escapeHtml(text(player.effect_points))}` : ""}</p>
-      ${mechanics.system ? `<div class="pill-list">${specialEffects.map((v) => `<span class="pill">${escapeHtml(v)}</span>`).join("") || `<span class="pill">鏆傛棤鐗规晥</span>`}</div>` : ""}
+      <h4>\u7cfb\u7edf</h4>
+      <p>${mechanics.system ? `\u7b49\u7ea7 ${escapeHtml(text(player.system_rank))}` : ""}${mechanics.system && mechanics.effect_points ? " / " : ""}${mechanics.effect_points ? `\u7279\u6548\u503c ${escapeHtml(text(player.effect_points))}` : ""}</p>
+      ${mechanics.system ? `<div class="pill-list">${specialEffects.map((v) => `<span class="pill">${escapeHtml(v)}</span>`).join("") || `<span class="pill">\u6682\u65e0\u7279\u6548</span>`}</div>` : ""}
     </div>
   ` : "";
-  const cultivationLine = mechanics.cultivation ? `<div class="character-desc">鐏垫牴 ${escapeHtml(text(player.spiritual_root))}</div>` : "";
-  const qiMeter = mechanics.cultivation ? renderMeter("鐏靛姏", qi, maxQi, "gold-fill") : "";
+  const cultivationLine = mechanics.cultivation ? `<div class="character-desc">\u7075\u6839 ${escapeHtml(text(player.spiritual_root))}</div>` : "";
+  const qiMeter = mechanics.cultivation ? renderMeter("\u7075\u529b", qi, maxQi, "gold-fill") : "";
+  const characterMeta = mechanics.cultivation ? `<span>${escapeHtml(text(player.realm))}</span>` : "";
 
   $("characterSheet").innerHTML = `
     <article class="info-card character-hero">
-      <div class="character-name"><strong>${escapeHtml(player.name || "玩家角色")}</strong><span>${escapeHtml(text(player.realm))}</span></div>
-      <div class="character-desc">灵根 ${escapeHtml(text(player.spiritual_root))}</div>
+      <div class="character-name"><strong>${escapeHtml(player.name || "\u73a9\u5bb6\u89d2\u8272")}</strong>${characterMeta}</div>
+      ${cultivationLine}
     </article>
+    ${systemCard}
     <div class="info-card compact-card">
-      <h4>系统</h4>
-      <p>等级 ${escapeHtml(text(player.system_rank))} / 特效值 ${escapeHtml(text(player.effect_points))}</p>
-      <div class="pill-list">${specialEffects.map((v) => `<span class="pill">${escapeHtml(v)}</span>`).join("") || `<span class="pill">暂无特效</span>`}</div>
-    </div>
-    <div class="info-card compact-card">
-      <h4>资源</h4>
-      ${renderMeter("生命", hp, maxHp)}
-      ${renderMeter("灵力", qi, maxQi, "gold-fill")}
+      <h4>\u8d44\u6e90</h4>
+      ${renderMeter("\u751f\u547d", hp, maxHp)}
+      ${qiMeter}
       ${resourceRows.length ? renderResourceRows(resourceRows) : ""}
     </div>
-    <div class="info-card"><h4>属性</h4><div class="pill-list">${Object.entries(player.stats || {}).map(([k, v]) => `<span class="pill">${escapeHtml(k)} ${escapeHtml(v)}</span>`).join("") || `<span class="pill">暂无</span>`}</div></div>
-    <div class="info-card"><h4>词条 / 状态</h4><div class="pill-list">${[...(player.traits || []), ...(player.conditions || [])].map((v) => `<span class="pill">${escapeHtml(v)}</span>`).join("") || `<span class="pill">暂无</span>`}</div></div>
-    <div class="info-card"><h4>物品</h4>${listItems(player.inventory || [])}</div>
-    <div class="info-card"><h4>进度</h4>${listItems(playerProgress.map((track) => `${track.title || track.id}: ${track.value || track.progress || 0}/${track.max_value || track.target || "?"}`))}</div>
+    <div class="info-card"><h4>\u5c5e\u6027</h4><div class="pill-list">${Object.entries(player.stats || {}).map(([k, v]) => `<span class="pill">${escapeHtml(k)} ${escapeHtml(v)}</span>`).join("") || `<span class="pill">\u6682\u65e0</span>`}</div></div>
+    <div class="info-card"><h4>\u8bcd\u6761 / \u72b6\u6001</h4><div class="pill-list">${[...(player.traits || []), ...(player.conditions || [])].map((v) => `<span class="pill">${escapeHtml(v)}</span>`).join("") || `<span class="pill">\u6682\u65e0</span>`}</div></div>
+    <div class="info-card"><h4>\u7269\u54c1</h4>${listItems(player.inventory || [])}</div>
+    <div class="info-card"><h4>\u8fdb\u5ea6</h4>${listItems(playerProgress.map((track) => `${track.title || track.id}: ${track.value || track.progress || 0}/${track.max_value || track.target || "?"}`))}</div>
   `;
   if (dynamicSheetCards) {
     $("characterSheet").querySelector(".character-hero")?.insertAdjacentHTML("afterend", dynamicSheetCards);
-  }
-  if (!(mechanics.system || mechanics.effect_points)) {
-    const cards = Array.from($("characterSheet").querySelectorAll(".info-card"));
-    const systemLikeCard = cards.find((card) => card.textContent.includes("绯荤粺") || card.textContent.includes("系统"));
-    systemLikeCard?.remove();
-  }
-  if (!mechanics.cultivation) {
-    $("characterSheet").querySelector(".character-desc")?.remove();
-    const meters = Array.from($("characterSheet").querySelectorAll(".meter-row"));
-    const qiLikeMeter = meters.find((meter) => meter.textContent.includes("鐏靛姏") || meter.textContent.includes("灵力"));
-    qiLikeMeter?.remove();
   }
 
   const location = data.scene?.location || {};
