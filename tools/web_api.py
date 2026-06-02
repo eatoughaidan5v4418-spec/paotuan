@@ -184,6 +184,8 @@ SYSTEM_RESOURCE_KEYS = {
 DEFAULT_HIDDEN_SHEET_FIELDS = {
     "id",
     "name",
+    "health",
+    "max_health",
     "location_id",
     "description",
     "inventory",
@@ -191,6 +193,14 @@ DEFAULT_HIDDEN_SHEET_FIELDS = {
     "traits",
     "tags",
     "stats",
+    "qi",
+    "max_qi",
+    "realm",
+    "realm_level",
+    "spiritual_root",
+    "system_rank",
+    "effect_points",
+    "special_effects",
 }
 
 

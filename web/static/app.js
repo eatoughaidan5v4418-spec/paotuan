@@ -142,7 +142,7 @@ function updateDeleteButton() {
 function renderVisible(visible, rendered) {
   const narrative = $("narrative");
   if (!visible || typeof visible === "string") {
-    narrative.insertAdjacentHTML("beforeend", `<article class="gm-card"><p>${escapeHtml(rendered || visible || "")}</p></article>`);
+    narrative.insertAdjacentHTML("beforeend", `<article class="gm-card gm-card-turn"><p>${escapeHtml(rendered || visible || "")}</p></article>`);
     scrollNarrativeToEnd();
     return;
   }
@@ -158,7 +158,7 @@ function renderVisible(visible, rendered) {
   ];
 
   const summary = visible.state_summary || {};
-  let html = `<article class="gm-card"><h3>GM 回合</h3>`;
+  let html = `<article class="gm-card gm-card-turn"><h3>GM 回合</h3>`;
   for (const [title, value] of sections) {
     if (!value || (Array.isArray(value) && value.length === 0)) continue;
     html += `<div class="gm-section"><h3>${escapeHtml(title)}</h3>`;
@@ -180,12 +180,12 @@ function renderVisible(visible, rendered) {
 
 function renderLogEntry(entry) {
   if (entry.player_action) {
-    $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card"><h3>你</h3><p>${escapeHtml(entry.player_action)}</p></article>`);
+    $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card player-card"><h3>你</h3><p>${escapeHtml(entry.player_action)}</p></article>`);
   }
   if (entry.visible_text) {
     renderVisible(entry.visible_text, entry.rendered);
   } else if (entry.rendered) {
-    $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card"><h3>GM 回合</h3><p>${escapeHtml(entry.rendered)}</p></article>`);
+    $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card gm-card-turn"><h3>GM 回合</h3><p>${escapeHtml(entry.rendered)}</p></article>`);
   }
 }
 
@@ -194,7 +194,7 @@ async function loadLogs() {
   const logs = (data.logs || []).slice().reverse();
   $("narrative").innerHTML = "";
   if (!logs.length) {
-    $("narrative").innerHTML = `<article class="gm-card"><h3>等待开团</h3><p>选择战役或生成新世界后，在下方输入玩家行动。</p></article>`;
+    $("narrative").innerHTML = `<article class="gm-card waiting-card"><h3>等待开团</h3><p>选择战役或生成新世界后，在下方输入玩家行动。</p></article>`;
     return;
   }
   logs.forEach(renderLogEntry);
@@ -224,18 +224,34 @@ function renderState(data) {
   const resourceRows = Object.entries(playerResources)
     .filter(([key]) => key !== "id" && key !== "type");
   const specialEffects = player.special_effects || [];
+  const builtInSheetFields = new Set([
+    "health",
+    "max_health",
+    "qi",
+    "max_qi",
+    "realm",
+    "realm_level",
+    "spiritual_root",
+    "system_rank",
+    "effect_points",
+    "special_effects",
+  ]);
   const sheetSections = data.character_sheet?.sections || [];
-  const dynamicSheetCards = sheetSections.map((section) => `
-    <div class="info-card">
-      <h4>${escapeHtml(section.title || section.id || "Character")}</h4>
-      <div class="pill-list">${(section.items || []).map((item) => `<span class="pill">${escapeHtml(item.label || item.field)} ${escapeHtml(displayValue(item.value))}</span>`).join("") || `<span class="pill">None</span>`}</div>
-    </div>
-  `).join("");
+  const dynamicSheetCards = sheetSections.map((section) => {
+    const customItems = (section.items || []).filter((item) => !builtInSheetFields.has(String(item.field || "")));
+    if (!customItems.length) return "";
+    return `
+      <div class="info-card">
+        <h4>${escapeHtml(section.title || section.id || "Character")}</h4>
+        <div class="pill-list">${customItems.map((item) => `<span class="pill">${escapeHtml(item.label || item.field)} ${escapeHtml(displayValue(item.value))}</span>`).join("")}</div>
+      </div>
+    `;
+  }).join("");
   const systemCard = (mechanics.system || mechanics.effect_points) ? `
     <div class="info-card compact-card">
-      <h4>\u7cfb\u7edf</h4>
-      <p>${mechanics.system ? `\u7b49\u7ea7 ${escapeHtml(text(player.system_rank))}` : ""}${mechanics.system && mechanics.effect_points ? " / " : ""}${mechanics.effect_points ? `\u7279\u6548\u503c ${escapeHtml(text(player.effect_points))}` : ""}</p>
-      ${mechanics.system ? `<div class="pill-list">${specialEffects.map((v) => `<span class="pill">${escapeHtml(v)}</span>`).join("") || `<span class="pill">\u6682\u65e0\u7279\u6548</span>`}</div>` : ""}
+      <h4>\u4e16\u754c\u673a\u5236</h4>
+      <p>${mechanics.system ? `\u9636\u5c42 ${escapeHtml(text(player.system_rank))}` : ""}${mechanics.system && mechanics.effect_points ? " / " : ""}${mechanics.effect_points ? `\u8d44\u6e90 ${escapeHtml(text(player.effect_points))}` : ""}</p>
+      ${mechanics.system ? `<div class="pill-list">${specialEffects.map((v) => `<span class="pill">${escapeHtml(v)}</span>`).join("") || `<span class="pill">\u6682\u65e0\u6548\u679c</span>`}</div>` : ""}
     </div>
   ` : "";
   const cultivationLine = mechanics.cultivation ? `<div class="character-desc">\u7075\u6839 ${escapeHtml(text(player.spiritual_root))}</div>` : "";
@@ -378,8 +394,8 @@ async function submitTurn() {
   }
   const startedAt = Date.now();
   setBusy("AI 回合生成中...");
-  $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card"><h3>你</h3><p>${escapeHtml(action)}</p></article>`);
-  $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card" id="pendingTurn"><h3>处理中</h3><p>正在调用 AI，并等待状态校验写回。</p></article>`);
+  $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card player-card"><h3>你</h3><p>${escapeHtml(action)}</p></article>`);
+  $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card pending-card" id="pendingTurn"><h3>处理中</h3><p>正在调用 AI，并等待状态校验写回。</p></article>`);
   scrollNarrativeToEnd();
   try {
     const result = await api("/api/turn", {
@@ -399,7 +415,7 @@ async function submitTurn() {
   } catch (error) {
     $("pendingTurn")?.remove();
     showToast(error.message, true);
-    $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card"><h3>执行失败</h3><p>${escapeHtml(error.message)}</p></article>`);
+    $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card error-card"><h3>执行失败</h3><p>${escapeHtml(error.message)}</p></article>`);
     scrollNarrativeToEnd();
   } finally {
     setBusy("");
@@ -432,7 +448,7 @@ async function createCampaign() {
     showToast("新世界已生成。");
   } catch (error) {
     showToast(error.message, true);
-    $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card"><h3>生成失败</h3><p>${escapeHtml(error.message)}</p></article>`);
+    $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card error-card"><h3>生成失败</h3><p>${escapeHtml(error.message)}</p></article>`);
   } finally {
     setBusy("");
   }
@@ -445,7 +461,7 @@ async function validateProject() {
       body: JSON.stringify({ campaign: state.currentCampaign }),
     });
     showToast(result.ok ? "校验通过。" : "校验发现问题，详情已写入剧情区。", !result.ok);
-    $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card"><h3>项目校验</h3><pre>${escapeHtml(result.stdout || result.stderr)}</pre></article>`);
+    $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card tool-card"><h3>项目校验</h3><pre>${escapeHtml(result.stdout || result.stderr)}</pre></article>`);
   } catch (error) {
     showToast(error.message, true);
   }
@@ -468,7 +484,7 @@ async function deleteCurrentCampaign() {
     await loadCampaigns();
     renderState(result.state);
     $("campaignSelect").value = state.currentCampaign;
-    $("narrative").innerHTML = `<article class="gm-card"><h3>已删除战役</h3><p>${escapeHtml(campaign.title)}</p></article>`;
+    $("narrative").innerHTML = `<article class="gm-card tool-card"><h3>已删除战役</h3><p>${escapeHtml(campaign.title)}</p></article>`;
     showToast("生成战役已删除。");
   } catch (error) {
     showToast(error.message, true);
@@ -482,7 +498,7 @@ async function exportObsidian() {
       body: JSON.stringify({ campaign: state.currentCampaign }),
     });
     showToast(`已导出 Obsidian vault: ${result.notes} 个笔记`);
-    $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card"><h3>Obsidian Vault</h3><p>${escapeHtml(result.vault)}</p><p>已生成 ${escapeHtml(result.notes)} 个 Markdown 笔记，可直接用 Obsidian 打开该文件夹。</p></article>`);
+    $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card tool-card"><h3>Obsidian Vault</h3><p>${escapeHtml(result.vault)}</p><p>已生成 ${escapeHtml(result.notes)} 个 Markdown 笔记，可直接用 Obsidian 打开该文件夹。</p></article>`);
   } catch (error) {
     showToast(error.message, true);
   }
@@ -495,7 +511,7 @@ async function rollDice() {
       method: "POST",
       body: JSON.stringify({ expression }),
     });
-    $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card"><h3>掷骰</h3><p>${escapeHtml(result.expression)} = ${escapeHtml(result.rolls.join(" + "))}${result.modifier ? escapeHtml(result.modifier > 0 ? ` + ${result.modifier}` : ` - ${Math.abs(result.modifier)}`) : ""} -> ${escapeHtml(result.total)}</p></article>`);
+    $("narrative").insertAdjacentHTML("beforeend", `<article class="gm-card dice-card"><h3>掷骰</h3><p>${escapeHtml(result.expression)} = ${escapeHtml(result.rolls.join(" + "))}${result.modifier ? escapeHtml(result.modifier > 0 ? ` + ${result.modifier}` : ` - ${Math.abs(result.modifier)}`) : ""} -> ${escapeHtml(result.total)}</p></article>`);
     scrollNarrativeToEnd();
   } catch (error) {
     showToast(error.message, true);
