@@ -19,6 +19,7 @@ from urllib.parse import parse_qs, urlparse
 TOOLS_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = TOOLS_DIR.parent
 STATIC_ROOT = PROJECT_ROOT / "web" / "static"
+REACT_STATIC_ROOT = PROJECT_ROOT / "web" / "static-react"
 sys.path.insert(0, str(TOOLS_DIR))
 
 import web_api  # noqa: E402
@@ -67,6 +68,12 @@ def make_handler(server_state: GameServer):
 
         def route_get(self) -> None:
             parsed = urlparse(self.path)
+            if parsed.path == "/api/app/bootstrap":
+                query = parse_qs(parsed.query)
+                if "campaign" in query:
+                    server_state.current_root = web_api.safe_campaign_path(query["campaign"][0])
+                json_response(self, 200, web_api.app_bootstrap(server_state.current_root))
+                return
             if parsed.path == "/api/campaigns":
                 json_response(self, 200, {"campaigns": web_api.list_campaigns()})
                 return
@@ -143,14 +150,15 @@ def make_handler(server_state: GameServer):
 
         def serve_static(self, request_path: str) -> None:
             relative = request_path.lstrip("/") or "index.html"
-            path = (STATIC_ROOT / relative).resolve()
-            if STATIC_ROOT.resolve() not in path.parents and path != STATIC_ROOT.resolve():
+            static_root = REACT_STATIC_ROOT if (REACT_STATIC_ROOT / "index.html").exists() else STATIC_ROOT
+            path = (static_root / relative).resolve()
+            if static_root.resolve() not in path.parents and path != static_root.resolve():
                 json_response(self, 403, {"error": "forbidden"})
                 return
             if path.is_dir():
                 path = path / "index.html"
             if not path.exists():
-                path = STATIC_ROOT / "index.html"
+                path = static_root / "index.html"
             content = path.read_bytes()
             mime = mimetypes.guess_type(str(path))[0] or "application/octet-stream"
             if path.suffix in {".html", ".css", ".js"}:

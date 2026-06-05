@@ -5,6 +5,7 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import Mock
 
 import sys
 
@@ -13,6 +14,7 @@ TOOLS = ROOT / "tools"
 sys.path.insert(0, str(TOOLS))
 
 import web_api  # noqa: E402
+import web_game  # noqa: E402
 import obsidian_vault  # noqa: E402
 
 
@@ -88,6 +90,46 @@ class WebApiTests(unittest.TestCase):
         self.assertIn("quests", state)
         self.assertIn("knowledge", state)
         self.assertNotIn("memory_nodes", state)
+
+    def test_app_bootstrap_returns_frontend_contract_without_hidden_payloads(self) -> None:
+        bootstrap = web_api.app_bootstrap(ROOT)
+
+        self.assertEqual(bootstrap["contract_version"], 1)
+        self.assertIn("config", bootstrap)
+        self.assertIn("campaigns", bootstrap)
+        self.assertIn("current_campaign", bootstrap)
+        self.assertIn("state", bootstrap)
+        self.assertIn("logs", bootstrap)
+        self.assertIn("api", bootstrap)
+        self.assertEqual(bootstrap["current_campaign"], web_api.campaign_key(ROOT))
+        self.assertEqual(bootstrap["state"]["campaign"]["root"], web_api.campaign_key(ROOT))
+        self.assertIsInstance(bootstrap["campaigns"], list)
+        self.assertIsInstance(bootstrap["logs"], list)
+
+        encoded = json.dumps(bootstrap, ensure_ascii=False)
+        for forbidden in ["memory_nodes", "state_patch", "tool_results", "artifact_path", "gm_notes", "hidden_state"]:
+            self.assertNotIn(forbidden, encoded)
+
+    def test_web_game_routes_app_bootstrap(self) -> None:
+        state = web_game.GameServer()
+        handler_cls = web_game.make_handler(state)
+        handler = object.__new__(handler_cls)
+        handler.path = "/api/app/bootstrap"
+        handler.command = "GET"
+        handler.request_version = "HTTP/1.1"
+        handler.wfile = Mock()
+        handler.send_response = Mock()
+        handler.send_header = Mock()
+        handler.end_headers = Mock()
+
+        handler.route_get()
+
+        handler.send_response.assert_called_once_with(200)
+        body = b"".join(call.args[0] for call in handler.wfile.write.call_args_list)
+        payload = json.loads(body.decode("utf-8"))
+        self.assertEqual(payload["contract_version"], 1)
+        self.assertIn("state", payload)
+        self.assertIn("logs", payload)
 
     def test_visible_state_exposes_player_location_id(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -240,9 +282,8 @@ class WebApiTests(unittest.TestCase):
                 result = web_api.run_turn(target, "我观察周围的异常痕迹")
 
             self.assertIn("visible_text", result)
-            self.assertEqual(result["inferred_action"]["action_type"], "观察")
-            self.assertEqual(result["inferred_action"]["elapsed_minutes"], 5)
-            self.assertIn("state_patch", result)
+            self.assertEqual(result["turn_meta"]["inferred_action"]["action_type"], "观察")
+            self.assertEqual(result["turn_meta"]["elapsed_minutes"], 5)
             self.assertIn("apply_report", result)
             self.assertTrue((target / "campaign" / "ai_runs").exists())
 
@@ -254,9 +295,9 @@ class WebApiTests(unittest.TestCase):
             with StubChatApi(api_turn_response()):
                 result = web_api.run_turn(target, "我在码头边等半小时，看看谁出现")
 
-            self.assertEqual(result["inferred_action"]["action_type"], "等待")
-            self.assertEqual(result["inferred_action"]["elapsed_minutes"], 30)
-            self.assertEqual(result["state_patch"]["time_delta"], "30 分钟")
+            self.assertEqual(result["turn_meta"]["inferred_action"]["action_type"], "等待")
+            self.assertEqual(result["turn_meta"]["elapsed_minutes"], 30)
+            self.assertEqual(result["turn_meta"]["time_delta"], "30 分钟")
 
     def test_turn_strips_legacy_action_prefix(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -266,8 +307,8 @@ class WebApiTests(unittest.TestCase):
             with StubChatApi(api_turn_response()):
                 result = web_api.run_turn(target, "[交谈] 我问米拉黑灯会什么时候来")
 
-            self.assertEqual(result["inferred_action"]["normalized_action"], "我问米拉黑灯会什么时候来")
-            self.assertEqual(result["inferred_action"]["action_type"], "交谈")
+            self.assertEqual(result["turn_meta"]["inferred_action"]["normalized_action"], "我问米拉黑灯会什么时候来")
+            self.assertEqual(result["turn_meta"]["inferred_action"]["action_type"], "交谈")
 
     def test_status_lookup_does_not_advance_time(self) -> None:
         inferred = web_api.play_game.infer_player_action("查看角色卡和任务面板")
@@ -501,6 +542,92 @@ class WebApiTests(unittest.TestCase):
             self.assertNotIn("GM SECRET", encoded)
             self.assertNotIn("gm_notes", encoded)
 
+    def test_visible_state_sanitizes_player_knowledge_threads_resources_and_progress(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            target = Path(temp) / "campaign_root"
+            shutil.copytree(ROOT / "campaign", target / "campaign")
+
+            state_path = target / "campaign" / "campaign_state.json"
+            state_data = json.loads(state_path.read_text(encoding="utf-8"))
+            state_data["open_threads"] = [
+                {
+                    "id": "thread_public",
+                    "description": "Public unresolved situation",
+                    "next_pressure": "GM-only pressure escalation",
+                    "visibility": "public",
+                    "status": "active",
+                },
+                {
+                    "id": "thread_secret",
+                    "description": "Hidden ambush",
+                    "visibility": "secret",
+                    "status": "active",
+                },
+            ]
+            state_path.write_text(json.dumps(state_data, ensure_ascii=False, indent=2), encoding="utf-8")
+            (target / "campaign" / "player_knowledge.json").write_text(
+                json.dumps(
+                    {
+                        "facts_understood": [
+                            {"fact": "Public clue", "visibility": "public"},
+                            {"fact": "GM-only clue", "visibility": "gm_only"},
+                        ],
+                        "private_notes": "do not show",
+                        "nested": {"hidden_state": "secret engine detail", "public_note": "safe"},
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
+            (target / "campaign" / "resources.json").write_text(
+                json.dumps(
+                    {
+                        "entities": {
+                            "pc_main": {"money": 10},
+                            "faction_secret": {"money": 999, "visibility": "secret"},
+                            "npc_private": {"money": 5, "visibility": "private", "gm_notes": "hidden"},
+                        }
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
+            (target / "campaign" / "progress_tracks.json").write_text(
+                json.dumps(
+                    {
+                        "tracks": [
+                            {"id": "track_public", "title": "Public", "value": 1, "max_value": 3},
+                            {"id": "track_secret", "title": "Secret", "visibility": "private", "value": 2},
+                        ]
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
+
+            visible = web_api.visible_state(target)
+            encoded = json.dumps(visible, ensure_ascii=False)
+
+            self.assertIn("Public clue", encoded)
+            self.assertIn("Public unresolved situation", encoded)
+            self.assertIn("track_public", encoded)
+            self.assertIn("pc_main", encoded)
+            for forbidden in [
+                "GM-only clue",
+                "private_notes",
+                "hidden_state",
+                "GM-only pressure escalation",
+                "Hidden ambush",
+                "faction_secret",
+                "npc_private",
+                "gm_notes",
+                "track_secret",
+            ]:
+                self.assertNotIn(forbidden, encoded)
+
     def test_validate_reports_failure_for_invalid_campaign(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             target = Path(temp) / "bad_root"
@@ -542,6 +669,11 @@ class WebApiTests(unittest.TestCase):
 
             self.assertIn("visible_text", result)
             self.assertIn("apply_report", result)
+            self.assertIn("state", result)
+            self.assertNotIn("state_patch", result)
+            self.assertNotIn("tool_results", result)
+            self.assertNotIn("artifact_path", result)
+            self.assertNotIn("active_lore", result)
 
     def test_recent_logs_expose_applied_status(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

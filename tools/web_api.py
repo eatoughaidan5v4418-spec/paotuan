@@ -86,6 +86,11 @@ SECRET_QUEST_KEYS = {
     "hidden_state",
     "private_notes",
 }
+PUBLIC_THREAD_KEYS = {"id", "description", "thread", "summary", "title", "status", "created_turn", "visibility"}
+PUBLIC_APPLY_REPORT_KEYS = {"applied", "auto_level_changes"}
+PUBLIC_APPLY_SECTION_KEYS = {"errors"}
+
+
 def is_player_visible_record(item: dict[str, Any]) -> bool:
     if item.get("known_to_players") is False:
         return False
@@ -94,19 +99,49 @@ def is_player_visible_record(item: dict[str, Any]) -> bool:
     if item.get("player_visible") is False:
         return False
     return True
-def public_record(item: dict[str, Any]) -> dict[str, Any]:
-    return {
+
+
+def public_value(value: Any) -> Any:
+    if isinstance(value, list):
+        return [
+            cleaned
+            for item in value
+            if not (isinstance(item, dict) and not is_player_visible_record(item))
+            for cleaned in [public_value(item)]
+            if cleaned not in ({}, [], None)
+        ]
+    if isinstance(value, dict):
+        if not is_player_visible_record(value):
+            return {}
+        return {
+            str(key): cleaned
+            for key, item in value.items()
+            if str(key) not in SECRET_QUEST_KEYS and not str(key).startswith("_")
+            for cleaned in [public_value(item)]
+            if cleaned not in ({}, [], None)
+        }
+    return value
+
+
+def public_record(item: dict[str, Any], *, allowed_keys: set[str] | None = None) -> dict[str, Any]:
+    if not is_player_visible_record(item):
+        return {}
+    source = {
         key: value
         for key, value in item.items()
-        if key not in SECRET_QUEST_KEYS and not str(key).startswith("_")
+        if allowed_keys is None or str(key) in allowed_keys
     }
+    cleaned = public_value(source)
+    return cleaned if isinstance(cleaned, dict) else {}
 def normalize_quests(raw: Any, *, player_visible_only: bool = True) -> list[dict[str, Any]]:
     quests = []
     for index, item in enumerate(as_list(raw), start=1):
         if isinstance(item, dict):
             if player_visible_only and not is_player_visible_record(item):
                 continue
-            quests.append(public_record(item))
+            record = public_record(item)
+            if record:
+                quests.append(record)
         else:
             quests.append(
                 {
@@ -419,7 +454,7 @@ def load_location_summary(root: Path, location_id: str) -> dict[str, Any]:
     return {"id": location_id, "name": location_id, "type": "", "summary": "", "file": ""}
 def visible_state(root: Path) -> dict[str, Any]:
     state = as_dict(load_json(root / "campaign" / "campaign_state.json", {}))
-    knowledge = as_dict(load_json(root / "campaign" / "player_knowledge.json", {}))
+    knowledge = as_dict(public_value(load_json(root / "campaign" / "player_knowledge.json", {})))
     quest_graph = as_dict(load_json(root / "campaign" / "quest_graph.json", {"quests": []}))
     clocks_raw = load_json(root / "campaign" / "world_clocks.json", {"clocks": []})
     resources = as_dict(load_json(root / "campaign" / "resources.json", {"entities": []}))
@@ -460,9 +495,9 @@ def visible_state(root: Path) -> dict[str, Any]:
                 deduped.append(item)
         knowledge["facts_understood"] = deduped
     open_threads = [
-        thread
+        public_record(thread, allowed_keys=PUBLIC_THREAD_KEYS)
         for thread in as_list(state.get("open_threads"))
-        if isinstance(thread, dict) and thread.get("status", "active") == "active"
+        if isinstance(thread, dict) and thread.get("status", "active") == "active" and is_player_visible_record(thread)
     ]
     clocks = normalize_clocks(clocks_raw)
     public_clocks = [
@@ -509,8 +544,18 @@ def visible_state(root: Path) -> dict[str, Any]:
         )
     if mechanics.get("effect_points"):
         player_data["effect_points"] = player.get("effect_points")
-    resource_entities = filter_resource_entities_by_mechanics(normalize_resource_entities(resources), mechanics)
-    progress_tracks = filter_progress_tracks_by_mechanics(normalize_progress_tracks(progress), mechanics)
+    resource_entities = [
+        public_record(item)
+        for item in filter_resource_entities_by_mechanics(normalize_resource_entities(resources), mechanics)
+        if is_player_visible_record(item)
+    ]
+    resource_entities = [item for item in resource_entities if item]
+    progress_tracks = [
+        public_record(item)
+        for item in filter_progress_tracks_by_mechanics(normalize_progress_tracks(progress), mechanics)
+        if is_player_visible_record(item)
+    ]
+    progress_tracks = [item for item in progress_tracks if item]
     character_sheet = build_character_sheet(player, mechanics, rules if isinstance(rules, dict) else {})
     return clean_visible({
         "campaign": {
@@ -540,51 +585,6 @@ def visible_state(root: Path) -> dict[str, Any]:
         "progress_tracks": progress_tracks,
         "api": api_status(root),
     })
-    return clean_visible({
-        "campaign": {
-            "id": state.get("campaign_id"),
-            "title": state.get("title") or state.get("campaign_id"),
-            "root": campaign_key(root),
-            "turn": state.get("current_turn", 1),
-            "time": state.get("current_time", ""),
-        },
-        "scene": {
-            "id": scene.get("scene_id", ""),
-            "summary": scene.get("summary", ""),
-            "active_threads": scene.get("active_threads", []),
-            "location": load_location_summary(root, location_id),
-            "present_entities": present_ids,
-        },
-        "player": {
-            "id": player_id,
-            "name": player.get("name", "玩家角色"),
-            "health": player.get("health"),
-            "max_health": player.get("max_health"),
-            "qi": player.get("qi"),
-            "max_qi": player.get("max_qi"),
-            "realm": player.get("realm"),
-            "realm_level": player.get("realm_level"),
-            "spiritual_root": player.get("spiritual_root"),
-            "location_id": player.get("location_id") or location_id,
-            "description": player.get("description"),
-            "system_rank": player.get("system_rank"),
-            "effect_points": player.get("effect_points"),
-            "special_effects": player.get("special_effects", []),
-            "stats": player.get("stats", {}),
-            "inventory": player.get("inventory", []),
-            "conditions": player_conditions,
-            "traits": player.get("traits", player.get("tags", [])),
-        },
-        "npcs": load_public_npcs(root, present_ids, player_ids),
-        "quests": quest_list,
-        "open_threads": open_threads,
-        "quest_graph": {"quests": normalize_quests(quest_graph.get("quests", []))},
-        "knowledge": knowledge,
-        "clocks": public_clocks,
-        "resources": normalize_resource_entities(resources),
-        "progress_tracks": normalize_progress_tracks(progress),
-        "api": api_status(root),
-    })
 def api_status(root: Path) -> dict[str, Any]:
     config = make_config(root)
     return {
@@ -594,6 +594,58 @@ def api_status(root: Path) -> dict[str, Any]:
         "auto_apply": config.auto_apply,
         "mode": "api" if config.api_key else "api_unconfigured",
     }
+
+
+def app_bootstrap(root: Path) -> dict[str, Any]:
+    current_campaign = campaign_key(root)
+    return {
+        "contract_version": 1,
+        "project": {"root": str(PROJECT_ROOT)},
+        "config": {"api": api_status(root), "current_campaign": current_campaign},
+        "api": api_status(root),
+        "campaigns": list_campaigns(),
+        "current_campaign": current_campaign,
+        "session": {"current_campaign": current_campaign},
+        "state": visible_state(root),
+        "logs": recent_logs(root),
+    }
+
+
+def public_apply_report(report: dict[str, Any]) -> dict[str, Any]:
+    cleaned = {key: report[key] for key in PUBLIC_APPLY_REPORT_KEYS if key in report}
+    details = as_dict(report.get("report"))
+    public_details = {key: details[key] for key in PUBLIC_APPLY_SECTION_KEYS if key in details}
+    if public_details:
+        cleaned["report"] = public_details
+    return cleaned
+
+
+def public_world_tick_preview(preview: dict[str, Any]) -> dict[str, Any]:
+    updates = [
+        public_record(update)
+        for update in as_list(preview.get("clock_updates"))
+        if isinstance(update, dict) and is_player_visible_record(update)
+    ]
+    updates = [update for update in updates if update]
+    return {
+        "clock_updates": updates,
+        "requires_visibility_resolution": bool(preview.get("requires_visibility_resolution")),
+    }
+
+
+def public_turn_meta(result: dict[str, Any]) -> dict[str, Any]:
+    packet = as_dict(result.get("packet"))
+    patch = as_dict(result.get("patch"))
+    return {
+        "turn_id": packet.get("turn_id"),
+        "elapsed_minutes": packet.get("elapsed_minutes"),
+        "time_delta": patch.get("time_delta"),
+        "time_preview": public_value(packet.get("time_preview") or {}),
+        "inferred_action": public_value(packet.get("inferred_action") or {}),
+        "world_tick_preview": public_world_tick_preview(as_dict(packet.get("world_tick_preview"))),
+    }
+
+
 def unique_campaign_target(theme: str, force: bool = False) -> Path:
     slug = play_game.slugify(theme, "ai_campaign")
     base = (PROJECT_ROOT / "generated_campaigns" / slug).resolve()
@@ -629,12 +681,8 @@ def run_turn(root: Path, action: str, *, elapsed_minutes: int | None = None, mem
     return {
         "visible_text": result["response"].get("visible_text", {}),
         "rendered": play_game.render_visible(result["response"]),
-        "inferred_action": (result.get("packet") or {}).get("inferred_action", {}),
-        "state_patch": result["patch"],
-        "apply_report": result["apply_report"],
-        "artifact_path": str(result["artifact_path"]),
-        "tool_results": result.get("tool_results", []),
-        "active_lore": (result.get("packet") or {}).get("context", {}).get("active_lore", []),
+        "turn_meta": public_turn_meta(result),
+        "apply_report": public_apply_report(as_dict(result.get("apply_report"))),
         "state": visible_state(root),
     }
 def roll_dice(expression: str = "1d20") -> dict[str, Any]:
