@@ -37,8 +37,13 @@
 - `npm install`：通过，安装 75 个包。
 - `npm run typecheck`：首次发现 `valueText` 返回类型和任务 fallback 类型问题，修复后通过。
 - `npm run build`：通过，产物位于 `web/static-react`。
+- `npm install -D @playwright/test`：通过，用于本地截图和交互审计。
+- `python tools/web_game.py --no-open --port 8765`：已有本地服务响应，确认返回新版 `web/static-react/index.html`。
+- Playwright 桌面/移动截图审计：通过，输出到 `output/ui-check/react/`；覆盖 `1440x900`、`1024x768`、`390x844`、`360x740`。
+- Playwright DOM 审计：通过，四个视口均未检测到乱码 token、无横向溢出、行动输入可见且可聚焦、控制台无错误。
+- Playwright 交互审计：通过，空行动提交按钮 disabled，输入后 enabled，系统抽屉可打开，行动输入 focus outline 为 `2px solid`。
 
 ### 未解决风险
 - 当前工作区已有未提交改动，包括旧 `web/static/*`、`tests/test_web_api.py` 和部分后端安全过滤草稿；本阶段未回滚这些改动。
 - `/api/config`、`/api/campaigns`、`/api/obsidian/export` 仍可能暴露本地路径，玩家端不展示，但后端合同还需要继续收紧。
-- 需要用 Playwright 实测中文渲染、移动布局、按钮状态和截图。
+- Playwright 截图文件位于被忽略的 `output/` 下，作为本地验证证据，不纳入提交。
