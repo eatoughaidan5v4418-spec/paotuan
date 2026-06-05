@@ -47,3 +47,35 @@
 - 当前工作区已有未提交改动，包括旧 `web/static/*`、`tests/test_web_api.py` 和部分后端安全过滤草稿；本阶段未回滚这些改动。
 - `/api/config`、`/api/campaigns`、`/api/obsidian/export` 仍可能暴露本地路径，玩家端不展示，但后端合同还需要继续收紧。
 - Playwright 截图文件位于被忽略的 `output/` 下，作为本地验证证据，不纳入提交。
+
+## 阶段 2：滚动锁定修复
+
+### 本阶段目标
+- 修复桌面端长日志时页面被固定在中段、无法上下滑动、行动栏不可达的问题。
+
+### 修改文件
+- `web/frontend/src/styles.css`
+- `web/frontend/src/App.tsx`
+- `web/static-react/index.html`
+- `web/static-react/assets/index-D3CIFOL9.css`
+- `web/static-react/assets/index-lCuny7QR.js`
+
+### 设计决策
+- 根因是 `.archive-app` 使用 `max-height: 100dvh` 和 `overflow: hidden`，真实内容高度超过 19000px 时被外壳裁切。
+- 桌面端改为页面级滚动：`.archive-app` 不再裁切，左右档案栏使用 `position: sticky` 和各自内部滚动。
+- 行动输入栏改为桌面和移动统一 `position: sticky; bottom: 0`，保证长日志中随时可达。
+- 历史日志首次载入不再自动 `scrollIntoView` 到底部；只在 pending 回合生成时滚动到底。
+
+### 子代理分工与结论
+- 主代理按 systematic-debugging 复现并采集 DOM 证据：修复前 `.archive-app` `clientHeight=1110`、`scrollHeight=19102`、`overflowY=hidden`，行动栏 top 超过 15000px。
+- 本阶段未再次派发子代理，问题范围集中在布局 CSS 和一次自动滚动副作用。
+
+### 验证命令和结果
+- `npm run typecheck`：通过。
+- `npm run build`：通过，新产物哈希为 `index-D3CIFOL9.css` 和 `index-lCuny7QR.js`。
+- Playwright 2048x1110 复现脚本：通过，初始 `scrollY=0`，文档可滚动，行动栏位于视口底部，左右栏 sticky。
+- Playwright 桌面 1440x900 与移动 390x844 滚动审计：通过，主叙事区域滚轮后 `scrollY=600`，无横向溢出、无乱码 token、行动栏可见、控制台无错误。
+
+### 未解决风险
+- 旧 `web/static/*` 仍有未提交改动，本阶段没有触碰或提交。
+- `output/ui-check/react/` 内有本地截图证据，按仓库忽略规则未提交。

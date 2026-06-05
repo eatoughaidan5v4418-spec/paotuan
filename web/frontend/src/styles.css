@@ -148,9 +148,9 @@ textarea::placeholder {
   z-index: 1;
   display: grid;
   grid-template-columns: minmax(290px, 350px) minmax(0, 1fr) minmax(315px, 410px);
+  align-items: start;
   min-height: 100dvh;
-  max-height: 100dvh;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .skip-link {
@@ -172,7 +172,10 @@ textarea::placeholder {
 
 .left-rail,
 .right-rail {
-  min-height: 0;
+  position: sticky;
+  top: 0;
+  min-height: 100dvh;
+  max-height: 100dvh;
   overflow-y: auto;
   padding: 1rem;
   scrollbar-color: var(--line-lit) transparent;
@@ -191,9 +194,9 @@ textarea::placeholder {
 
 .play-surface {
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto minmax(0, auto) auto;
   min-width: 0;
-  min-height: 0;
+  min-height: 100dvh;
   background:
     linear-gradient(90deg, rgb(208 168 90 / 0.04), transparent 22rem, rgb(111 139 114 / 0.035)),
     rgb(8 6 4 / 0.76);
@@ -555,7 +558,7 @@ textarea::placeholder {
 
 .timeline {
   min-height: 0;
-  overflow-y: auto;
+  overflow: visible;
   padding: 1rem 1.4rem 1.3rem;
   scrollbar-color: var(--line-lit) transparent;
 }
@@ -638,6 +641,9 @@ textarea::placeholder {
 }
 
 .action-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
   gap: 0.65rem;
@@ -860,11 +866,13 @@ textarea::placeholder {
 @media (max-width: 1220px) {
   .archive-app {
     grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
-    max-height: none;
     overflow: visible;
   }
 
   .right-rail {
+    position: static;
+    max-height: none;
+    min-height: 0;
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -897,6 +905,9 @@ textarea::placeholder {
 
   .left-rail {
     order: 2;
+    position: static;
+    min-height: 0;
+    max-height: none;
     border-right: 0;
     border-top: 1px solid rgb(109 86 48 / 0.52);
   }
@@ -931,9 +942,6 @@ textarea::placeholder {
   }
 
   .action-bar {
-    position: sticky;
-    bottom: 0;
-    z-index: 20;
     grid-template-columns: 1fr 1fr;
     padding: 0.85rem 1rem 1rem;
   }

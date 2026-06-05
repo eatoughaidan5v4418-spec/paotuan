@@ -334,8 +334,9 @@ function NarrativeTimeline({ logs, pending, phase }: { logs: LogEntry[]; pending
   const reduced = useReducedMotion();
   const endRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
+    if (!pending) return;
     endRef.current?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "end" });
-  }, [logs.length, pending, reduced]);
+  }, [pending, reduced]);
 
   if (phase === "loading") {
     return (
